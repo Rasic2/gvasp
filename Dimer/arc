@@ -1,0 +1,43 @@
+#!/bin/bash
+#########################################################################
+# File Name: /data/home/wdhu/car.sh
+# Author: wdhu@59.78.92.45
+# Created Time: Mon 01 Dec 2014 04:43:08 PM CST
+#########################################################################
+outcar=OUTCAR
+if [ x$1 == x ];then
+	infile=OUT.ANI
+else
+	infile=$1
+fi
+if [ $infile == CONTCAR ];then
+	pos2xyz.pl CONTCAR
+	infile=CONTCAR.xyz
+fi
+
+
+#outfile=`grep "PBS -N" vasp.script | awk '{print $3}' | head -1`.arc
+workdir=`pwd`
+outfile=${workdir##*/}.arc
+frames=`grep STEP $infile | cat -n | tail -1 | awk '{print $1}'`
+atomsnum=`sed -n 1p $infile`
+a=`$HOME/scripts/lattice.py | sed -n '2'p | awk '{printf"%.5f", $3} '`
+b=`$HOME/scripts/lattice.py | sed -n '3'p | awk '{printf"%.5f", $3} '`
+c=`$HOME/scripts/lattice.py | sed -n '4'p | awk '{printf"%.5f", $3} '`
+alpla=`$HOME/scripts/lattice.py | sed -n '5'p | awk '{printf"%.5f",  $3} '`
+beta=`$HOME/scripts/lattice.py | sed -n '6'p | awk '{printf"%.5f",  $3} '`
+gamma=`$HOME/scripts/lattice.py | sed -n '7'p | awk '{printf"%.5f",  $3} '`
+echo "!BIOSYM archive 3" > $outfile
+echo "PBC=ON" >> $outfile
+for i in `seq 1 $frames ` #create sequence
+do
+	echo "Auto Generated CAR File"  >> $outfile
+	echo "!DATE `date | sed 's/CST / /g'`" >> $outfile
+	echo "PBC   $a  $b  $c  $alpla  $beta  $gamma (P1)" >> $outfile
+	ionsend=$((atomsnum * i + i * 2))
+	ionsstart=$(( ionsend - atomsnum + 1))
+	sed -n ''$ionsstart','$ionsend''p $infile | awk '{printf "%-5s %14.10f %14.10f %14.10f XXXX 1       xx     %-2s 0.0000\n",$1NR,$2,$3,$4,$1}' >> $outfile
+	echo end >> $outfile
+	echo end >> $outfile
+done
+sz $outfile
