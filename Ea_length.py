@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from matplotlib.ticker import MultipleLocator,FormatStrFormatter
 from pandas import DataFrame
 from scipy import interpolate
-import statsmodels.api as sm
+#import statsmodels.api as sm
 #import rpy2.robjects as robjects
 #from rpy2.robjects import FloatVector
 #from rpy2.robjects.packages import importr

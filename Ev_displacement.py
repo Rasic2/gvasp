@@ -9,7 +9,7 @@ from matplotlib.ticker import MultipleLocator,FormatStrFormatter
 from matplotlib.legend_handler import HandlerLine2D, HandlerTuple
 from pandas import DataFrame
 from scipy import interpolate
-import statsmodels.api as sm
+#import statsmodels.api as sm
 #import rpy2.robjects as robjects
 #from rpy2.robjects import FloatVector
 #from rpy2.robjects.packages import importr
@@ -17,13 +17,14 @@ import statsmodels.api as sm
 def plot_wrapper(func):
 	@wraps(func)
 	def wrapper(*args,**kargs):
+		#plt.rcParams['text.usetex']=True
 		plt.rc('font',family='Times New Roman') #配置全局字体
 		plt.rcParams['mathtext.default']='regular' #配置数学公式字体
 		plt.rcParams['lines.linewidth']=3 #配置线条宽度
 		plt.rcParams['lines.markersize']=7 #配置标记大小
 		func(*args,**kargs)
-		#plt.show()
-		plt.savefig('/Users/apple/Desktop/figure.svg',dpi=300,bbox_inches='tight')
+		plt.show()
+		#plt.savefig('/Users/apple/Desktop/figure.svg',dpi=300,bbox_inches='tight')
 	return wrapper
 
 def interpolated_plot(x,y,label='',color=''):
@@ -62,7 +63,8 @@ def sm_ols(x,y):
 def main():
 	colors=['#000000','#01545a','#ed0345','#ef6932']
 	#labels=[r'$O^A$',r'$O^B$',r'$O^C$',r'$O^D$']
-	labels=[r'clean  O-t',r'hydro O-t',r'clean  $CeO_4$-t',r'hydro $CeO_4$-t']
+	#labels=[r'clean  O-t',r'hydro O-t',r'clean  $CeO_4$-t',r'hydro $CeO_4$-t']
+	labels=[r'clean  surface',r'hydro surface',r'clean  surface',r'hydro surface']
 	x=np.array([1.91,1.08,0.89,1.13]) #空穴形成能
 	y=np.array([0.70,0.58,0.18,0.25]) #barrier1
 	z=np.array([0.85,0.60,0.26,0.50]) #barrier2
@@ -74,12 +76,13 @@ def main():
 	fig=plt.figure(figsize=(8,6))
 	#plt.subplots_adjust(wspace=0.5)
 	ax1=fig.add_subplot(111)
-	markers=['v','^','o','D']
+	markers=['o','o','o','o']
+	fill_styles=['full','none','full','none']
 	points_1=[]
 	points_2=[]
-	for x_,y_,z_,marker,label in zip(x,y,z,markers,labels):
-		points_1.append(ax1.plot(x_,y_,marker,color='#01545a',label=label))
-		points_2.append(ax1.plot(x_,z_,marker,color='#ed0345',label=label))
+	for x_,y_,z_,marker,fill_style,label in zip(x,y,z,markers,fill_styles,labels):
+		points_1.append(ax1.plot(x_,y_,marker,fillstyle=fill_style,color='#01545a',label=label))
+		points_2.append(ax1.plot(x_,z_,marker,fillstyle=fill_style,color='#ed0345',label=label))
 
 	x_major_locator=MultipleLocator(0.2) #把x轴的刻度间隔设置为0.2，并存在变量里
 	ax1.xaxis.set_major_locator(x_major_locator)
@@ -87,7 +90,7 @@ def main():
 	#ax1.yaxis.set_major_formatter(ymajorFormatter)
 	regr=LinearRegression()
 	regr.fit(x_fit.reshape(-1,1),y_fit)
-	line_1=ax1.plot(x_fit,regr.predict(x_fit.reshape(-1,1)),color='#01545a',label=r'$E_{a1}$')
+	line_1=ax1.plot(x_fit,regr.predict(x_fit.reshape(-1,1)),color='#01545a',label=r'E$_{a1}$')
 
 	regr=LinearRegression()
 	regr.fit(x_fit.reshape(-1,1),z_fit)
@@ -97,11 +100,13 @@ def main():
 	plt.text(1.15,0.6,r"$R^2=0.83$",color='#ed0345',fontsize=16)
 	plt.xticks(fontsize=16)
 	plt.yticks(fontsize=16)
-	plt.xlabel(r'$E_{v}/(eV)$',fontsize=18)
-	plt.ylabel(r'$E_{a}/(eV)$',fontsize=18)
-	first_legend=plt.legend([(points_1[i][0],points_2[i][0]) for i in range(4)],labels,handler_map={tuple: HandlerTuple(ndivide=None)},fontsize=14,ncol=2)
-	plt.gca().add_artist(first_legend)
-	plt.legend(handles=[line_1[0],line_2[0]],loc='lower right',fontsize=14,ncol=2)
+	plt.xlabel(r'$E_{v}$ / eV',fontsize=18)
+	plt.ylabel(r'$E_{a}$ / eV',fontsize=18)
+	labels=[r'clean  surface',r'hydro surface',r'$E_{a1}$',r'$E_{a2}$']
+	#first_legend=plt.legend([(points_1[i][0],points_2[i][0]) for i in range(4)],labels,handler_map={tuple: HandlerTuple(ndivide=None)},fontsize=14,ncol=2)
+	first_legend=plt.legend([(points_1[i][0],points_2[i][0]) for i in range(2)]+[line_1[0],line_2[0]],labels,handler_map={tuple: HandlerTuple(ndivide=None)},fontsize=14,ncol=2)
+	#plt.gca().add_artist(first_legend)
+	#plt.legend(handles=[line_1[0],line_2[0]],loc='lower right',fontsize=14,ncol=2)
 
 	#ax2=ax1.twinx()
 	#fig.legend(loc='center',bbox_to_anchor=(1,1),bbox_transform=ax1.transAxes)

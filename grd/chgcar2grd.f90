@@ -15,7 +15,7 @@ PROGRAM CHGCAR2GRD
   REAL(8) :: scale, temp1, temp2
   REAL(8), DIMENSION(3) :: length, angle
   REAL(8), DIMENSION(:,:,:), POINTER :: work1, work2, work3, work4
-  INTEGER :: nspin, nx, ny, nz, sum, number, i, j, k, l
+  INTEGER :: nspin, nx, ny, nz, sum, number, i, j, k, l, m
 
   !input parameters
   write(*,*) 'The program is convert the CHGCAR to the .grd file format!'
@@ -45,9 +45,9 @@ PROGRAM CHGCAR2GRD
 
   READ(16,*) !element name
   READ(16,'(A)') HEADER !element counts (最多四种元素)
-  i=0; j=0; k=0; l=0
-  READ(HEADER,*,END=12) i,j,k,l
-  12  sum=i+j+k+l
+  i=0; j=0; k=0; l=0; m=0
+  READ(HEADER,*,END=12) i,j,k,l,m
+  12  sum=i+j+k+l+m
 
   READ (16,*) !direct line
   DO i = 1, sum
