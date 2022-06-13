@@ -11,7 +11,7 @@ import os
 import math
 import random
 import numpy as np
-import numexpr as ne
+import numexpr as ne # numpy 加速库
 from collections import defaultdict,Counter
 
 #import profile,pstats
