@@ -1,4 +1,7 @@
 #!/bin/env python3
+# Create the MODECAR file for the Dimer calculation
+# --> 1. Run the `freq.sh` to obtain the freq$num file;
+# --> 2. Apply current script to make `MODECAR`
 
 import sys
 import re

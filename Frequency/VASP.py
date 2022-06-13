@@ -2,7 +2,6 @@ import re
 import subprocess
 # 注意：所有函数读取的坐标统一为笛卡尔坐标
 
-
 class CmdRrror(Exception):
     def __init__(self, errorinfo):
         super().__init__(self)  # 初始化父类
@@ -10,7 +9,6 @@ class CmdRrror(Exception):
 
     def __str__(self):
         return 'Command Execution Error: ' + self.errorinfo
-
 
 def execCmd(command):
     pipe = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -22,7 +20,6 @@ def execCmd(command):
 
     if error != "":
         raise CmdRrror(error)
-
 
 # this function can only read file in VASP 5.0 or later
 def readVasp(file_name):
