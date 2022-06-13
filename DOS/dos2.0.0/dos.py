@@ -1,23 +1,25 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-#created by hui_zhou@mail.ecust.edu.cn
-#modified by 周慧，2019-3-19
-#modified at 2019/4/11 增加绘制多原子求和DOS
-#modified at 2019/4/14 增加f电子绘制
-#modified at 2019/4/20 简化绘制多个原子的API
-#modified at 2019/4/22 性能优化,DOSCAR、CONTCAR设置只读一次
-#inspired by 刘颖,modified at 2019/4/25 增加读入多个DOSCAR文件进行数据对比分析
-#modified at 2019/04/26 全局修改线宽
-#modified at 2019/05/25 增加DOS数据三次插值拟合,提供颜色参数
-#modified at 2019/06/23 提供绘图填充method方法；增加band-center计算方法
-#modified at 2019/07/27 性能优化，去掉正则模块
-#modified at 2019/07/27 利用Cython性能优化
-#modified at 2019/10/17 增加线类型 'fill' 'line' 'dash line'
-# <--Version:1.9.7-->
+# created by hui_zhou@mail.ecust.edu.cn
+# modified at 2019/03/19
+# modified at 2019/04/11 增加绘制多原子求和DOS
+# modified at 2019/04/14 增加f电子绘制
+# modified at 2019/04/20 简化绘制多个原子的API
+# modified at 2019/04/22 性能优化,DOSCAR、CONTCAR设置只读一次
+# modified at 2019/04/25 增加读入多个DOSCAR文件进行数据对比分析
+# modified at 2019/04/26 全局修改线宽
+# modified at 2019/05/25 增加DOS数据三次插值拟合,提供颜色参数
+# modified at 2019/06/23 提供绘图填充method方法；增加band-center计算方法
+# modified at 2019/07/27 性能优化，去掉正则模块
+# modified at 2019/07/27 利用Cython性能优化
+# modified at 2019/10/17 增加线类型 'fill' 'line' 'dash line'
+# modified at 2021/05/24 支持数据导出，method=output
+# <--Version:2.0.0-->
 
 import os
 import math
 import time
+import glob
 import profile,pstats
 from concurrent import futures
 from collections import defaultdict
@@ -27,6 +29,8 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
 from functools import wraps
 
 from c_doscar_load import doscar_load #.so文件
@@ -88,7 +92,7 @@ def plot_wrapper(func):
 		plt.rcParams['lines.color']=self.color #配置线条颜色
 		func(self,*args,**kargs)
 		plt.xlim((self.atom_list[0][0],self.atom_list[0][-1])) if self.xlim==None else plt.xlim(self.xlim)
-		plt.ylim([-0.5,0.5])
+		#plt.ylim([-0.5,0.5])
 		plt.xticks(fontsize=29) #if self.xlim==None else plt.xticks(np.linspace(self.xlim[0],self.xlim[1],int((self.xlim[1]-self.xlim[0])/0.4)),fontsize=14)#坐标轴刻度
 		plt.yticks(fontsize=29)
 		plt.xlabel('Energy/eV',fontsize=28) #坐标轴标签
@@ -148,15 +152,19 @@ def interpolated_plot(x,y,label='',color='',method=''):
 	#f=interpolate.PchipInterpolator(x_arr,y_arr)
 	f=interpolate.interp1d(x_arr,y_arr,kind='cubic')
 	y_new=f(x_new)
+
 	if method=='fill':
 		plt.fill(x_new,y_new,label=label,color=color)
 	elif method=='line':
 		plt.plot(x_new,y_new,label=label,color=color)
 	elif method=='dash line':
 		plt.plot(x_new,y_new,'--',label=label,color=color)
-	else:
-		print("Unsupported method!!! Using default setting!")
-		plt.plot(x_new,y_new,label=label,color=color)
+	elif method=='output':
+		file_prefix=time.strftime("%H-%M-%S",time.localtime())
+		np.savetxt("datafile_x_{}".format(file_prefix),x_new)
+		np.savetxt("datafile_y_{}".format(file_prefix),y_new)
+		#print("Unsupported method!!! Using default setting!")
+		#plt.plot(x_new,y_new,label=label,color=color)
 
 class DOS():
 	def __init__(self,total_dos,atom_list,element,color,xlim=None,show=False,method=None,**atoms):
@@ -257,8 +265,7 @@ def main_wrapper(func):
 			plt.show()
 		elif args[0]=='save':
 			plt.savefig('figure.svg',dpi=300,bbox_inches='tight',format='svg')
-		else:
-			print('Wrong Option!')
+
 	return wrapper
 
 def future(DOSCAR,CONTCAR):
@@ -267,26 +274,56 @@ def future(DOSCAR,CONTCAR):
 
 @main_wrapper
 def main(option):
+	datafiles=glob.glob("datafile*")
+	for file in datafiles:
+		os.remove(file)
 	#e.g.
-	DS=['D1','D2']
-	CS=['C1','C2']
+	#DS=[ 'DOSCAR_I', 'DOSCAR_II']
+	#CS=['CONTCAR_I','CONTCAR_II']
+	#DS=['DOSCAR_Cu0','DOSCAR_Cu2']
+	#CS=['CONTCAR_Cu0','CONTCAR_Cu2']
+	DS=['DOSCAR_II']
+	CS=['CONTCAR_II']
 	print("正在加载文件...")
 	with futures.ProcessPoolExecutor() as executor:
 		P=executor.map(future,DS,CS)
 	P=list(P)
 	print("文件加载完成...")
 
-	#P[0].plot(atom=29,xlim=[-1,0],color='#ed0345',method='fill')
-	P[0].plot(atom=37,xlim=[-0.5,0],color='#ed0345',method='fill')
+	#P[0].plot(atom='1-176',xlim=[-36,5],color='#000000',method='line')
+	P[0].plot(atom='1-176',xlim=[-1,1],color='#FCBE8F',method='output')
+	P[0].plot(atom='177-178',xlim=[-1,1],color='#FCBE8F',method='output')
+	#plt.fill(x_new,y_new,color='#FCBE8F')
+	#P[2].plot(xlim=[-36,5],color='#004370',method='line')
+
+	#P[0].plot(atom=159,xlim=[-35,5],color='#000000',method='line')
+	#P[0].plot(atom=127,xlim=[-35,5],color='#ed0345',method='line')
+
+	#P[0].plot(atom=160,xlim=[-35,5],color='#000000',method='line')
+	#P[0].plot(atom=134,xlim=[-35,5],color='#ed0345',method='line')
+
+	#P[0].plot(atom=160,xlim=[-35,5],color='#000000',method='line')
+	#P[0].plot(atom=128,xlim=[-35,5],color='#ed0345',method='line')
+
+	#P[0].plot(atom='161-176',xlim=[-35,5],color='#000000',method='line')
+	#P[1].plot(atom=[159,160,162,164,165,166,167,168,169,170,171,172,173,174,175,176],xlim=[-35,5],color='#ed0345',method='line')
+	#P[2].plot(atom=[153,154,155,156,157,158,159,160,161,162,163,164,166,167,168,169],xlim=[-35,5],color='#004370',method='line')
+
+	#P[0].plot(atom=[153,154,155,156],xlim=[-35,5],color='#000000',method='line')
+	#P[1].plot(atom=[153,154,155,156],xlim=[-35,5],color='#ed0345',method='line')
+	#P[1].plot(atom=[157,158,161,163],xlim=[-35,5],color='#ed0345',method='line')
+	#P[1].plot(atom=[177,178],xlim=[-35,5],color='#F69221',method='line')
+	#P[2].plot(atom=[153,154,155,156],xlim=[-35,5],color='#004370',method='line')
+
 	#P[1].plot(atom=32,xlim=[-1,0],color='#ed0345',method='fill')
-	P[1].plot(atom=40,xlim=[-0.5,0],color='#F69221',method='fill')
+	#P[1].plot(atom=40,xlim=[-0.5,0],color='#F69221',method='fill')
 
-#if __name__ == '__main__':
-#	main('')
+if __name__ == '__main__':
+	main('')
 
-profile.run('main("")','result')
-p=pstats.Stats("result")
-p.strip_dirs().sort_stats("time").print_stats()
+#profile.run('main("")','result')
+#p=pstats.Stats("result")
+#p.strip_dirs().sort_stats("time").print_stats()
 
 
 

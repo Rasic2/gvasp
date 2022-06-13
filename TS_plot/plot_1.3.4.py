@@ -5,8 +5,7 @@
 # modified at 2019/06/03 增加CO3绘制过程
 # modified at 2019/07/01 用于论文撰写
 # modified at 2020/11/22 调整文本框避免重叠（反复横跳机制，考虑截距）
-# modified at 2020/11/30 增加识别None值功能
-# <--Version:1.4.1-->
+# <--Version:1.3.4-->
 
 import math
 from matplotlib import pyplot as plt
@@ -22,20 +21,11 @@ def plot_wrap(func):
 		plt.rc('font',family='Times New Roman') #配置全局字体
 		plt.rcParams['mathtext.default']='regular' #配置数学公式字体
 		func(self,*args,**kargs)
-		bwith=3
-		ax=plt.gca()
-		ax.spines['bottom'].set_linewidth(bwith) # 设置边框宽度
-		ax.spines['left'].set_linewidth(bwith)
-		ax.spines['top'].set_linewidth(bwith)
-		ax.spines['right'].set_linewidth(bwith)
-		plt.tick_params(axis='y',which='both')
-		plt.tick_params(width=2,length=4)
 		plt.title(self.title,fontsize=18)
-		#plt.xticks([1,3,5,7,9,11,13,15,17],[r'$IS$',r'$CH_3OH*$','TS1',r'$CH_3O*+H*$','TS2',r'$CH_2O*+2H*$',r'$CH_2O(t)*+2H*$','TS3'],fontsize=22,rotation=15)
-		plt.xticks([])
+		plt.xticks([1,3,5,7,9,11,13,15,17],[r'$IS$',r'$CH_3OH*$','TS1',r'$CH_3O*+H*$','TS2',r'$CH_2O*+2H*$',r'$CH_2O(t)*+2H*$','TS3'],fontsize=22,rotation=15)
+		#plt.xticks([])
 		plt.yticks(fontsize=22)
-		plt.xlim((0.5,15.5))
-		plt.ylim((-2.6,0.9))
+		#plt.ylim((-5,3.2))
 		plt.xlabel(self.xlabel,fontsize=24)
 		plt.ylabel(self.ylabel,fontsize=24)
 		#plt.legend(loc='best')
@@ -44,9 +34,7 @@ def plot_wrap(func):
 class Figure():
 	"""图像类，为图像增加实线对象、虚线对象"""
 	@plot_wrap
-	def __init__(self,xticks='',title='',xlabel='Reaction coordinate',ylabel='Energy / eV',width=15.6,height=4):
-		self.width=width
-		self.height=height
+	def __init__(self,xticks='',title='',xlabel='Reaction coordinate',ylabel='Energy / eV',width=15.6,height=8):
 		self.fig=plt.figure(figsize=(width,height))
 		self.ax=self.fig.add_subplot(1,1,1)
 		ymajorFormatter=FormatStrFormatter('%.1f') #设置y轴主刻度小数位数
@@ -54,13 +42,14 @@ class Figure():
 		#y_major_locator=MultipleLocator(0.5) #把y轴的刻度间隔设置为10，并存在变量里
 		#self.ax.yaxis.set_major_locator(y_major_locator)
 		#self.colors=['#000000','#01545a','#ed0345','#ef6932','#710162','#017351','#03c383','#aad962','#fbbf45','#a12a5e']
-		self.colors=['#000000','#ed0345','#004370','#01545a','#ef6932','#fbbf45',]
+		self.colors=['#000000','#ed0345','#01545a','#ef6932','#fbbf45','#004370',]
 		self.title=title
 		#self.count=count
 		self.xticks=xticks
 		self.xlabel=xlabel
 		self.ylabel=ylabel
 		self.texts=defaultdict(list)
+		self.texts_ref=[]
 
 	def add_solid(self,linewidth,x,y,color):
 		SolidLine(linewidth,x=x,y=y,color=color)
@@ -81,7 +70,8 @@ class Data():
 		solid_x=[[0.75+2*i,1.25+2*i] for i in range(len(self.data))]
 		solid_y=[[value,value] for value in self.data]
 		dash_x_1=[2*index+1.25 for index,value in enumerate(self.data[:-1]) if value is not None]
-		dash_x_2=[value+1.5 for value in dash_x_1]
+		dash_x_2=[2*index+2.75 for index,value in enumerate(self.data[1:]) if value is not None]
+		#dash_x_2=[value+1.50 for value in dash_x_1]
 		dash_x=[item for item in zip(dash_x_1,dash_x_2)]
 		dash_y=[[self.data[int((index[0]-1.25)/2)],self.data[int((index[1]-2.75)/2+1)]] for index in dash_x]
 		return solid_x,solid_y,dash_x,dash_y
@@ -124,11 +114,11 @@ class Text():
 		self.plot_text()
 
 	def check_overlap(self):
-		left_m=-0.3*(self.fontsize/18)/(self.fig.width/15.6)/(self.fig.height/8) 	# 左边缘
-		right_m=0.3*(self.fontsize/18)/(self.fig.width/15.6)/(self.fig.height/8)	# 右边缘
-		top_m=0.07*(self.fontsize/18)/(self.fig.width/15.6)/(self.fig.height/8) 	# 上边缘
-		bottom_m=-0.05*(self.fontsize/18)/(self.fig.width/15.6)/(self.fig.height/8) # 下边缘
-		index_color=list(self.fig.texts.keys()).index(self.color)
+		left_m=-0.3*self.fontsize/18 	# 左边缘
+		right_m=0.3*self.fontsize/18	# 右边缘
+		top_m=0.05*self.fontsize/18 	# 上边缘
+		bottom_m=-0.03*self.fontsize/18 # 下边缘
+		index_color=self.fig.colors.index(self.color)
 		if(index_color!=0):
 			SOD=(self.x_ave+right_m<self.x[1] and self.x_ave+left_m>self.x[0])	# 反复横跳截止判据
 			count=1
@@ -136,12 +126,8 @@ class Text():
 			while(SOD):
 				CODs=[]
 				for i in range(index_color):
-					values=[j.x_ave for j in self.fig.texts[list(self.fig.texts.keys())[i]]]
-					if (sum(self.x)/2 in values):
-						index_fragment=values.index(sum(self.x)/2)
-						item=self.fig.texts[list(self.fig.texts.keys())[i]][index_fragment]
-					else:
-						continue
+					index_fragment=int(sum(self.x)/4-1)
+					item=self.fig.texts[self.fig.colors[i]][index_fragment]
 					COD1=(self.y_ave+bottom_m>item.y_ave+top_m or self.y_ave+top_m<item.y_ave+bottom_m) # 重叠判据.1
 					COD2=(self.x_ave+right_m<item.x_ave+left_m or self.x_ave+left_m>item.x_ave+right_m) # 重叠判据.2
 					CODs.append(0) if(COD1 or COD2) else CODs.append(1)
@@ -187,39 +173,19 @@ def main():
 	figure=Figure()
 
 	lines={
-	#r'undoped_CH3OH_1':[None,None,None,0.44,0.89,-1.07],
-	#r'undoped_CH3OH_2':[None,None,None,None,None,-2.05,-0.62,-1.07],
-	#r'undoped':[0,-0.06,1.20,0.44,0.59,-2.05,-0.87,-1.41],
-	r'Ca-doped_CH3OH_1':[None,None,None,0.06,0.39,-1.51],
-	r'Ca-doped_CH3OH_2':[None,None,None,None,None,-2.46,-0.95,-1.66],
-	r'Ca-doped':[0,-0.09,0.75,0.06,0.26,-2.46,-1.02,-1.58],
-	#r'Ca-doped_CH3OH_2':[0,-0.07,0.89,0.25],
+	r'$CeO_2(111)$':[0,-0.48,-0.41,-0.58,0.35,-1.44,-2.04,-1.08],
+	r'$Ce_6O_{13}/Au(111)$':[0,-0.51,-0.77,-0.79,0.02,-1.05,-2.14,-1.22],
+	r'$Ce_6O_{13}/Cu(111)$':[0,-0.43,-0.77,-0.79,0.02,-1.05,-2.14,-1.22],
 	}
 
-	models=['undoped','Ca-doped']
-	suffix=['','_CH3OH_1','_CH3OH_2']
-	names=[x+y for x in models for y in suffix]
-
-	#plt.fill_between([0.6,7],-2.2,1.4,facecolor='#FFE1E1')
-	#plt.fill_between([7,11],-2.2,1.4,facecolor='#E6FFE7')
-	#plt.fill_between([11,15.4],-2.2,1.4,facecolor='#E2E2FF')
-	plt.fill_between([0.6,7],-2.6,0.9,facecolor='#FFE1E1')
-	plt.fill_between([7,11],-2.6,0.9,facecolor='#E6FFE7')
-	plt.fill_between([11,15.4],-2.6,0.9,facecolor='#E2E2FF')
+	names=[r'$CeO_2(111)$',r'$Ce_6O_{13}/Au(111)$',r'$Ce_6O_{13}/Cu(111)$']
 
 	for name,line,color in zip(lines.keys(),lines.values(),figure.colors):
-		if(name=='undoped_CH3OH_1' or name=='Ca-doped_CH3OH_1'):
-			plot_(name,names,line,figure,'#ed0345',option='default')
-		elif(name=='undoped_CH3OH_2' or name=='Ca-doped_CH3OH_2'):
-			plot_(name,names,line,figure,'#004370',option='default')
-		elif(name=='undoped'or name=='Ca-doped'):
-			plot_(name,names,line,figure,'#000000',option='default')
-		else:
-			plot_(name,names,line,figure,color)
-			plt.plot(0.5,0,color=color,label=name)
-	#plt.legend(loc='best',fontsize=18)
+		plot_(name,names,line,figure,color)
+		plt.plot(0,0,color=color,label=name)
+	plt.legend(loc='best',fontsize=18)
 	#plt.show()
-	plt.savefig('/Users/apple/Desktop/figure.svg',dpi=300,bbox_inches='tight')
+	plt.savefig('/Users/apple/Desktop/figure.png',dpi=300,bbox_inches='tight')
 
 if __name__ == '__main__':
 	main()

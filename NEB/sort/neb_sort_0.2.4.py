@@ -5,11 +5,9 @@
 # modified at 2019/07/18 修改确认相同原子算法
 # modified at 2019/07/30 修改算法，添加PBC（周期性边界条件规则）
 # modified at 2019/12/25 修改算法，增加键长信息
-# modified at 2020/12/17 修改算法，最小原子距离限制（0.2 default）
-# <--Version:1.0.0-->
+# <--Version:0.2.4-->
 
 import os
-import re
 import sys
 import json
 import numpy as np
@@ -108,8 +106,8 @@ def bond_info(base,loc_dict,ignore_bond):
 			bond_dict[key].remove(ignore_bond_reverse)
 	return bond_dict
 
-def atom_sort_1(IS_dict,IS_bond_dict,FS_dict,FS_bond_dict,distance):
-	#对IS、FS坐标重新排序，考虑周期性边界条件下，最小原子距离(<0.2)认为是同一个原子
+def atom_sort(IS_dict,IS_bond_dict,FS_dict,FS_bond_dict):
+	#对IS、FS坐标重新排序，考虑周期性边界条件下，最小原子距离认为是同一个原子
 	"""
 		IS_dict:IS坐标结构字典
 		IS_bond_dict：IS成键字典
@@ -158,52 +156,22 @@ def atom_sort_1(IS_dict,IS_bond_dict,FS_dict,FS_bond_dict,distance):
 				dist=np.linalg.norm(np.array(atom_IS_list_e)-np.array(atom_FS_list_e)) #计算欧式距离
 				dists.append(dist)
 			#print(dists)
-			#print(min(dists))
-			#exit()
-			if(min(dists)<distance):
-				index_min_FS=ini_list_bond[dists.index(min(dists))]
-				IS_TF_dict[element].append(atom_IS)
-				FS_TF_dict[element].append(FS_dict[element][index_min_FS])
-				ini_list=[item for item in ini_list if item!=index_min_FS]
+			index_min_FS=ini_list_bond[dists.index(min(dists))]
+			IS_TF_dict[element].append(atom_IS)
+			FS_TF_dict[element].append(FS_dict[element][index_min_FS])
+			ini_list=[item for item in ini_list if item!=index_min_FS]
 	return IS_TF_dict,FS_TF_dict
 
-def atom_sort_2(IS_dict,IS_TF_dict,IS_bond_dict,FS_dict,FS_TF_dict,FS_bond_dict,):
-	# 对大于最小距离的原子集群进行排序
+def check(IS_dict,IS_TF_dict):
+	#检查距离合理性，通过计算初始和处理后原子个数
 	"""
 		IS_dict: 排序前IS坐标结构字典
-		IS_TF_dict：第一次排序后IS坐标结构字典
-		FS_dict: 排序前FS坐标结构字典
-		FS_TF_dict：第一次排序后FS坐标结构字典
+		IS_TF_dict：排序后IS坐标结构字典
 	"""
-	IS_dict2=defaultdict(list)
-	FS_dict2=defaultdict(list)
 	for element in IS_dict:
-		if(len(IS_TF_dict[element])!=len(FS_TF_dict[element])):
-			print("\e[1;32m 第一次排序出错，请检查！ \e[0m")
+		if(len(IS_dict[element])!=len(IS_TF_dict[element])):
+			print("\e[1;32m 距离太小，请适当增大距离 \e[0m")
 			exit()
-		IS_keys=[list(item.keys())[0] for item in IS_dict[element]]
-		IS_TF_keys=[list(item.keys())[0] for item in IS_TF_dict[element]]
-		FS_keys=[list(item.keys())[0] for item in FS_dict[element]]
-		FS_TF_keys=[list(item.keys())[0] for item in FS_TF_dict[element]]
-
-		for item in IS_keys:
-			if(item not in IS_TF_keys):
-				element=''.join(re.split(r'[^A-Za-z]', item))
-				IS_dict2[element].append(IS_dict[element][IS_keys.index(item)])
-
-		for item in FS_keys:
-			if(item not in FS_TF_keys):
-				element=''.join(re.split(r'[^A-Za-z]', item))
-				FS_dict2[element].append(FS_dict[element][FS_keys.index(item)])
-	IS_TF_dict2,FS_TF_dict2=atom_sort_1(IS_dict2,IS_bond_dict,FS_dict2,FS_bond_dict,100)
-	return IS_TF_dict2,FS_TF_dict2
-
-def merge(dict1,dict2):
-	# 按元素合并两个排序字典
-	for element in dict1:
-		for item in dict2[element]:
-			dict1[element].append(item)
-	return dict1
 
 def write(filename,head,body):
 	#将排序好的结构写入IS_sort和FS_sort文件
@@ -235,13 +203,10 @@ def main():
 
 	IS_bond_dict=bond_info(IS_base,IS_loc_dict,ignore_bond)
 	FS_bond_dict=bond_info(FS_base,FS_loc_dict,ignore_bond)
-	IS_TF_dict,FS_TF_dict=atom_sort_1(IS_loc_dict,IS_bond_dict,FS_loc_dict,FS_bond_dict,0.01)
-	IS_TF_dict2,FS_TF_dict2=atom_sort_2(IS_loc_dict,IS_TF_dict,IS_bond_dict,FS_loc_dict,FS_TF_dict,FS_bond_dict)
-	print(IS_TF_dict2,FS_TF_dict2)
-	IS_sort_dict=merge(IS_TF_dict,IS_TF_dict2)
-	FS_sort_dict=merge(FS_TF_dict,FS_TF_dict2)
-	write('IS_sort',IS_head,IS_sort_dict)
-	write('FS_sort',FS_head,FS_sort_dict)
+	IS_TF_dict,FS_TF_dict=atom_sort(IS_loc_dict,IS_bond_dict,FS_loc_dict,FS_bond_dict)
+	check(IS_loc_dict,IS_TF_dict)
+	write('IS_sort',IS_head,IS_TF_dict)
+	write('FS_sort',FS_head,FS_TF_dict)
 	print("排序后：\t"+os.popen('perl ./dist.pl IS_sort FS_sort').read().rstrip("\n"))
 
 if __name__ == '__main__':
