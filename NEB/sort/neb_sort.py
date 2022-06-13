@@ -6,7 +6,8 @@
 # modified at 2019/07/30 修改算法，添加PBC（周期性边界条件规则）
 # modified at 2019/12/25 修改算法，增加键长信息
 # modified at 2020/12/17 修改算法，最小原子距离限制（0.2 default）
-# <--Version:1.0.0-->
+# modified at 2021/1/5 按文件头中的元素顺序输出坐标
+# <--Version:1.0.1-->
 
 import os
 import re
@@ -213,9 +214,10 @@ def write(filename,head,body):
 		body：坐标字典
 	"""
 
+	ele_list=head[5].split() # 锁定元素顺序
 	with open(filename,'w') as f:
 		f.writelines(head)
-		for element in body.keys():
+		for element in ele_list: # 按信息头输出元素坐标
 			for atom in body[element]:
 				line=[str(item)+"\t" for item in list(atom.values())[0]]
 				f.writelines(line)
@@ -235,9 +237,10 @@ def main():
 
 	IS_bond_dict=bond_info(IS_base,IS_loc_dict,ignore_bond)
 	FS_bond_dict=bond_info(FS_base,FS_loc_dict,ignore_bond)
+	#print(IS_bond_dict)
 	IS_TF_dict,FS_TF_dict=atom_sort_1(IS_loc_dict,IS_bond_dict,FS_loc_dict,FS_bond_dict,0.01)
 	IS_TF_dict2,FS_TF_dict2=atom_sort_2(IS_loc_dict,IS_TF_dict,IS_bond_dict,FS_loc_dict,FS_TF_dict,FS_bond_dict)
-	print(IS_TF_dict2,FS_TF_dict2)
+	#print(IS_TF_dict2,FS_TF_dict2)
 	IS_sort_dict=merge(IS_TF_dict,IS_TF_dict2)
 	FS_sort_dict=merge(FS_TF_dict,FS_TF_dict2)
 	write('IS_sort',IS_head,IS_sort_dict)
