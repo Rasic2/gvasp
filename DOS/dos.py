@@ -1,21 +1,27 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-#created by hui_zhou@mail.ecust.edu.cn
-#modified by 周慧，2019-3-19
-#modified at 2019/4/11 增加绘制多原子求和DOS
-#modified at 2019/4/14 增加f电子绘制
-#modified at 2019/4/20 简化绘制多个原子的API
-#modified at 2019/4/22 性能优化,DOSCAR、CONTCAR设置只读一次
-#inspired by 刘颖,modified at 2019/4/25 增加读入多个DOSCAR文件进行数据对比分析
-#modified at 2019/04/26 全局修改线宽
-#modified at 2019/05/25 增加DOS数据三次插值拟合,提供颜色参数
-#modified at 2019/06/23 提供绘图填充method方法；增加band-center计算方法
-#modified at 2019/07/27 性能优化，去掉正则模块
-#modified at 2019/07/27 利用Cython性能优化
-# <--Version:1.9.6-->
+# created by hui_zhou@mail.ecust.edu.cn
+# modified at 2019/03/19
+# modified at 2019/04/11 增加绘制多原子求和DOS
+# modified at 2019/04/14 增加f电子绘制
+# modified at 2019/04/20 简化绘制多个原子的API
+# modified at 2019/04/22 性能优化,DOSCAR、CONTCAR设置只读一次
+# modified at 2019/04/25 增加读入多个DOSCAR文件进行数据对比分析
+# modified at 2019/04/26 全局修改线宽
+# modified at 2019/05/25 增加DOS数据三次插值拟合,提供颜色参数
+# modified at 2019/06/23 提供绘图填充method方法；增加band-center计算方法
+# modified at 2019/07/27 性能优化，去掉正则模块
+# modified at 2019/07/27 利用Cython性能优化
+# modified at 2019/10/17 增加线类型 'fill' 'line' 'dash line'
+# modified at 2021/05/24 支持数据导出，method=output
+# modified at 2022/05/07 增加平均DOS选项（按原子数），统一参数名称（e.g., atom->atoms）
+# <--Version:2.0.1-->
 
 import os
 import math
+import time
+import glob
+import profile,pstats
 from concurrent import futures
 from collections import defaultdict
 import numpy as np
@@ -24,6 +30,8 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 from functools import wraps
 
 from c_doscar_load import doscar_load #.so文件
@@ -35,7 +43,7 @@ def datatype_convert(energy_list,Total_up,Total_down,atom_list,length):
 	columns=['s_up','s_down','py_up','py_down','pz_up','pz_down','px_up','px_down','dxy_up','dxy_down','dyz_up','dyz_down','dz2_up','dz2_down','dxz_up','dxz_down','dx2_up','dx2_down','f1_up','f1_down','f2_up','f2_down','f3_up','f3_down','f4_up','f4_down','f5_up','f5_down','f6_up','f6_down','f7_up','f7_down']
 	orbitals=['s','p','d','f']
 	atom_data=[]
-	Total_Dos=DataFrame(index=energy_list,columns=['tot_up','tot_down'])
+	Total_Dos=DataFrame(index=energy_list,columns=['tot_up','tot_down'], dtype='object')
 	Total_Dos['tot_up']=Total_up
 	Total_Dos['tot_down']=Total_down
 	atom_data.append(energy_list)
@@ -60,7 +68,9 @@ def datatype_convert(energy_list,Total_up,Total_down,atom_list,length):
 	return Total_Dos,atom_data
 
 def doscar_parase(DOSCAR):
-	energy_list,Total_up,Total_down,atom_list,length=doscar_load(DOSCAR)
+	result = doscar_load(DOSCAR)
+	energy_list,Total_up,Total_down,atom_list,length = result.energy_list, result.Total_up, result.Total_down, result.atom_total_dos, result.orbitals_num
+	# energy_list,Total_up,Total_down,atom_list,length=doscar_load(DOSCAR)
 	Total_Dos,atom_data=datatype_convert(energy_list,Total_up,Total_down,atom_list,length)
 	return Total_Dos,atom_data
 
@@ -79,17 +89,17 @@ def contcar_require(CONTCAR):
 def plot_wrapper(func):
 	@wraps(func)
 	def wrapper(self,*args,**kargs):
-		plt.rc('font',family='Times New Roman') #配置全局字体
+		plt.rc('font',family='Arial') #配置全局字体
 		plt.rcParams['mathtext.default']='regular' #配置数学公式字体
 		plt.rcParams['lines.linewidth']=2 #配置线条宽度
 		plt.rcParams['lines.color']=self.color #配置线条颜色
 		func(self,*args,**kargs)
 		plt.xlim((self.atom_list[0][0],self.atom_list[0][-1])) if self.xlim==None else plt.xlim(self.xlim)
-		#plt.ylim([-0.5,0.5])
-		plt.xticks(fontsize=29) #if self.xlim==None else plt.xticks(np.linspace(self.xlim[0],self.xlim[1],int((self.xlim[1]-self.xlim[0])/0.4)),fontsize=14)#坐标轴刻度
-		plt.yticks(fontsize=29)
-		plt.xlabel('Energy/eV',fontsize=28) #坐标轴标签
-		plt.ylabel('DOS',fontsize=28)
+		plt.ylim([-15,15])
+		plt.xticks(fontsize=26) #if self.xlim==None else plt.xticks(np.linspace(self.xlim[0],self.xlim[1],int((self.xlim[1]-self.xlim[0])/0.4)),fontsize=14)#坐标轴刻度
+		plt.yticks(fontsize=26)
+		plt.xlabel('Energy (eV)',fontsize=28) #坐标轴标签
+		plt.ylabel('Density of States (a.u.)',fontsize=28)
 	return wrapper
 
 class PlotDOS():
@@ -107,15 +117,26 @@ class PlotDOS():
 		self.total_dos,self.atom_list=doscar_parase(self.DOSCAR)
 		self.element=contcar_require(self.CONTCAR)
 
-	def plot(self,xlim=None,show=False,color='',method='fill',**atoms):
+	def plot(self,xlim=None,show=False,color='',method='fill',**kargs):
 		"""实例化一个DOS对象
 		1、可以指定x坐标范围
 		2、指定是否将DOS分别绘制
 		"""
-		DOS(self.total_dos,self.atom_list,self.element,xlim=xlim,show=show,color=color,method=method,**atoms)
+		DOS(self.total_dos,self.atom_list,self.element,xlim=xlim,show=show,color=color,method=method,**kargs)
 
 	def center(self,atoms=None,orbitals=None,xlim=None):
 		"""计算DOS 特定原子轨道的center值"""
+
+		old_atoms=atoms
+		if isinstance(old_atoms, str): #modified at 2019/04/20 实现'a-b'代替列表求plut_dos
+			if '-' in old_atoms:
+				pre_atom=[int(item) for item in old_atoms.split('-')]
+				atoms=list(range(pre_atom[0],pre_atom[1]+1,1))
+			else:
+				atoms=[index for index,element in enumerate(self.element) if old_atoms==element]
+				print(atoms)
+				# exit()
+
 		y=0
 		rang=(self.total_dos.index.values<xlim[1])&(self.total_dos.index.values>xlim[0])
 		if atoms is None:
@@ -134,7 +155,7 @@ class PlotDOS():
 		dos=simps([a*b for a,b in zip(y.values,y.index.values)],y.index.values)
 		print("电子数为: {0:.4f} center值为: {1:.4f}".format(e_count,dos/e_count))
 
-def interpolated_plot(x,y,label='',color='',method=''):
+def interpolated_plot(x,y,number=1,label='',color='',method='',avgflag=False):
 	"""数据拟合函数，返回拟合后的x和y""" #modified at 2019/05/25 DOS数据三次插值拟合
 	# method---控制绘图填充方法(fill/line) modified at 2019/06/25
 	count=len(x)
@@ -145,16 +166,25 @@ def interpolated_plot(x,y,label='',color='',method=''):
 	#f=interpolate.PchipInterpolator(x_arr,y_arr)
 	f=interpolate.interp1d(x_arr,y_arr,kind='cubic')
 	y_new=f(x_new)
+
+	if not avgflag:
+		number = 1
+
 	if method=='fill':
-		plt.fill(x_new,y_new,label=label,color=color)
+		plt.fill(x_new,y_new/number,label=label,color=color)
 	elif method=='line':
-		plt.plot(x_new,y_new,label=label,color=color)
-	else:
-		print("Unsupported method!!! Using default setting!")
-		plt.plot(x_new,y_new,label=label,color=color)
+		plt.plot(x_new,y_new/number,label=label,color=color)
+	elif method=='dash line':
+		plt.plot(x_new,y_new/number,'--',label=label,color=color)
+	elif method=='output':
+		file_prefix=time.strftime("%H-%M-%S",time.localtime())
+		np.savetxt("datafile_x_{}".format(file_prefix),x_new)
+		np.savetxt("datafile_y_{}".format(file_prefix),y_new)
+		#print("Unsupported method!!! Using default setting!")
+		#plt.plot(x_new,y_new,label=label,color=color)
 
 class DOS():
-	def __init__(self,total_dos,atom_list,element,color,xlim=None,show=False,method=None,**atoms):
+	def __init__(self,total_dos,atom_list,element,color,xlim=None,show=False,method=None,avgflag=False,**kargs):
 		"""
 		-->不指定参数，画TOT_DOS								e.g. DOS()
 		-->原子列表，画原子Plus_DOS							e.g. DOS(atom=[1,2,3])
@@ -167,13 +197,14 @@ class DOS():
 		self.total_dos=total_dos
 		self.atom_list=atom_list
 		self.element=element
-		self.atom=None
-		self.orbital=None
+		self.atoms=None
+		self.orbitals=None
 		self.xlim=xlim
-		self.atoms=atoms
+		self.kargs=kargs
 		self.color=color
 		self.method=method
-		for key,value in self.atoms.items():
+		self.avgflag=avgflag # modified at 2022/05/07 是否计算平均DOS选项（按原子数）
+		for key,value in self.kargs.items():
 			setattr(self,key,value)
 		self.show=show
 		self.__plot
@@ -184,15 +215,20 @@ class DOS():
 	@plot_wrapper
 	def __plot(self):
 		"""DOS画图函数"""
-		if 'atom' not in self.atoms.keys():
+		if 'atoms' not in self.kargs.keys():
 			self.__plot_tot()
-		elif isinstance(self.atoms['atom'],list):
+		elif isinstance(self.kargs['atoms'],list):
 			self.__plot_plus_tot()
-		elif isinstance(self.atoms['atom'],str): #modified at 2019/04/20 实现'a-b'代替列表求plut_dos
-			pre_atom=[int(item) for item in self.atoms['atom'].split('-')]
-			setattr(self,'atom',list(range(pre_atom[0],pre_atom[1]+1,1)))
+		elif isinstance(self.kargs['atoms'],str): #modified at 2019/04/20 实现'a-b'代替列表求plut_dos
+			if '-' in self.kargs['atoms']:
+				pre_atom=[int(item) for item in self.kargs['atoms'].split('-')]
+				setattr(self,'atoms',list(range(pre_atom[0],pre_atom[1]+1,1)))
+			else:
+				self.atoms=[index for index,element in enumerate(self.element) if self.kargs['atoms']==element]
+				# print(self.atom)
+				# exit()
 			self.__plot_plus_tot()
-		elif self.atom and self.orbital is None:
+		elif self.atoms and self.orbitals is None:
 			self.__plot_atom_tot()
 		else:
 			self.__plot_orbital()
@@ -208,21 +244,21 @@ class DOS():
 		"""给出多原子求和的DOS，modified at 2019/4/12"""
 		columns=['s_up','s_down','py_up','py_down','pz_up','pz_down','px_up','px_down','dxy_up','dxy_down','dyz_up','dyz_down','dz2_up','dz2_down','dxz_up','dxz_down','dx2_up','dx2_down','f1_up','f1_down','f2_up','f2_down','f3_up','f3_down','f4_up','f4_down','f5_up','f5_down','f6_up','f6_down','f7_up','f7_down']
 		plus_tot=defaultdict(list)
-		plus_tot=DataFrame(plus_tot,index=self.atom_list[0],columns=['up','down','p_up','p_down','d_up','d_down','f_up','f_down']+columns)
+		plus_tot=DataFrame(plus_tot,index=self.atom_list[0],columns=['up','down','p_up','p_down','d_up','d_down','f_up','f_down']+columns, dtype='object')
 		plus_tot.iloc[:,:]=0.0
-		for atom in self.atom:
+		for atom in self.atoms:
 			for column in plus_tot.columns.values:
 				try:
 					plus_tot[column]+=self.atom_list[atom][column]
 				except KeyError:
 					plus_tot[column]=0
-		if self.orbital==None:
-			interpolated_plot(plus_tot.index.values,plus_tot['up'].values,color=self.color,method=self.method)
-			interpolated_plot(plus_tot.index.values,plus_tot['down'].values,color=self.color,method=self.method)
+		if self.orbitals==None:
+			interpolated_plot(plus_tot.index.values,plus_tot['up'].values,number=len(self.atoms),color=self.color,method=self.method,avgflag=self.avgflag)
+			interpolated_plot(plus_tot.index.values,plus_tot['down'].values,number=len(self.atoms),color=self.color,method=self.method,avgflag=self.avgflag)
 		else:
-			for orbital in self.orbital:
-				interpolated_plot(plus_tot.index.values,plus_tot['{}_up'.format(orbital)],color=self.color,method=self.method)
-				interpolated_plot(plus_tot.index.values,plus_tot['{}_down'.format(orbital)],color=self.color,method=self.method)
+			for orbital in self.orbitals:
+				interpolated_plot(plus_tot.index.values,plus_tot['{}_up'.format(orbital)],number=len(self.atoms),color=self.color,method=self.method,avgflag=self.avgflag)
+				interpolated_plot(plus_tot.index.values,plus_tot['{}_down'.format(orbital)],number=len(self.atoms),color=self.color,method=self.method,avgflag=self.avgflag)
 
 	def __plot_atom_tot(self):
 		"""给出单个原子的up、down图"""
@@ -241,3 +277,63 @@ class DOS():
 			setattr(self,'show',False)
 		else:
 			plt.legend(loc='best')
+
+def main_wrapper(func):
+	"""main函数封装 modified at 2019/04/25"""
+	@wraps(func)
+	def wrapper(*args,**kargs):
+		fig=plt.figure(figsize=(10,8))
+		func(*args,**kargs)
+		if args[0]=='show':
+			plt.show()
+		elif args[0]=='save':
+			plt.savefig('figure.svg',dpi=300,bbox_inches='tight',format='svg')
+
+	return wrapper
+
+def future(DOSCAR,CONTCAR):
+	"main函数多进程并行future对象 modified at 2019/04/25"
+	return PlotDOS(DOSCAR,CONTCAR)
+
+@main_wrapper
+def main(option):
+	datafiles=glob.glob("datafile*")
+
+	name='test'
+	DS=[f'DOSCAR-{name}']
+	CS=[f'CONTCAR-{name}']
+
+	print(time.ctime()+"-->正在加载文件...")
+	# with futures.ProcessPoolExecutor() as executor:
+	# 	P=executor.map(future,DS,CS)
+	P=map(future,DS,CS)
+	P=list(P)
+	print(time.ctime()+"-->文件加载完成...")
+
+	P[0].plot(xlim=[-6,9],color='#123E09')
+	# P[0].plot(atoms='185-232', orbitals=['d'], xlim=[-6,9], color='#123E09', method='line',avgflag=True)
+	# P[0].plot(atoms='191-238', orbitals=['d'], xlim=[-6,9], color='#123E09', method='line',avgflag=True)
+	# P[0].plot(atoms='199-246', orbitals=['d'], xlim=[-6,9], color='#123E09', method='line',avgflag=True)
+	# P[0].plot(atoms='Ce', orbitals=['f'], xlim=[-6,9], color='#ed0345', method='line',avgflag=True)
+	# P[0].plot(atoms='1-33',xlim=[-6,9],color='#B30099', method='line') # pyridine
+	# P[0].plot(atoms=[12,14], xlim=[-36,10], color='#B30099', method='line',)
+
+	# P[0].center(atoms='Ce',xlim=[-6,0],orbitals=['f'])
+	# P[0].center(atoms='Cu',xlim=[-6,0],orbitals=['d'])
+	# P[0].center(atoms='C',xlim=[-6,0])
+	# P[0].center(atoms='N',xlim=[-6,0])
+	# P[0].center(atoms=[13,16],xlim=[-6,0]) # (13,16) (16,17), (12,14)
+
+if __name__ == '__main__':
+	main('save')
+	# main('')
+
+#profile.run('main("")','result')
+#p=pstats.Stats("result")
+#p.strip_dirs().sort_stats("time").print_stats()
+
+
+
+
+
+
