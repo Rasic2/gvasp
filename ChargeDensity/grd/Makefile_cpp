@@ -1,11 +1,10 @@
 CC = g++
-STATIC = 
-CCFLAG = -g -O3 $(STATIC)
+STATIC = -static
+CCFLAG = -g -O3 -Wl,--as-needed $(STATIC)
 
 target = chgcar2grd
 $(target): $(target).cpp
 	$(CC) $(CCFLAG) -o $@ $<
-	rm -rf *.dSYM
 
 .PHONY: clean
 clean:
