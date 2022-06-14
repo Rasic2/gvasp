@@ -1,5 +1,4 @@
 ## VASP-scripts
----
 
 This is a lot of `scripts` (not a `module`) to help post-process of the VASP calculations, and if you  want to use them, please go to the following directory and run the main function in the *.py file.
 
@@ -20,7 +19,6 @@ This is a lot of `scripts` (not a `module`) to help post-process of the VASP cal
 * VaspTask (mainly to create the `INCAR`, `POSCAR`, `POTCAR`, `KPOINTS` and `job.script` from only `*.xsd` file)
 
 * Temp (some temp scripts, mostly of them are useless)
----
 ## Notes
 Mostly scripts can be run in a single *.py or *.sh file, but still some process need first to be compiled, for example, **`chgcar2grd`**.
 
@@ -43,7 +41,6 @@ python setup.py build_ext --inplace
 ```
 and the `*.so` file can be created and imported by the python.
 
----
 ## Requirements
 * GNU compiler (gcc, gfortran and g++)
 * Cython (use for dosPlot)
