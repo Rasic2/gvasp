@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 # created by hui_zhou@mail.ecust.edu.cn
-# modified at 2019/04/19
-# modified at 2019/06/03 增加CO3绘制过程
-# modified at 2019/07/01 用于论文撰写
-# modified at 2020/11/22 调整文本框避免重叠（反复横跳机制，考虑截距）
-# modified at 2020/11/30 增加识别None值功能
-# <--Version:1.4.1-->
 
 import math
 from matplotlib import pyplot as plt
@@ -15,11 +9,14 @@ from matplotlib.pyplot import MultipleLocator
 from functools import wraps
 from collections import defaultdict,deque
 
+import matplotlib
+matplotlib.use("TkAgg") # set backend for plt.show()
+
 def plot_wrap(func):
 	"""图像类的装饰器，增加字体，字号功能"""
 	@wraps(func)
 	def wrapper(self,*args,**kargs):
-		plt.rc('font',family='Times New Roman') #配置全局字体
+		plt.rc('font',family='Arial', weight='bold') # set Arial as the global font
 		plt.rcParams['mathtext.default']='regular' #配置数学公式字体
 		func(self,*args,**kargs)
 		bwith=3
@@ -81,7 +78,7 @@ class Data():
 		solid_x=[[0.75+2*i,1.25+2*i] for i in range(len(self.data))]
 		solid_y=[[value,value] for value in self.data]
 		dash_x_1=[2*index+1.25 for index,value in enumerate(self.data[:-1]) if value is not None]
-		dash_x_2=[value+1.5 for value in dash_x_1]
+		dash_x_2=[2*(index+1)+0.75 for index, value in enumerate(self.data[1:]) if value is not None] # reset the dash_2 values to solve the `None`
 		dash_x=[item for item in zip(dash_x_1,dash_x_2)]
 		dash_y=[[self.data[int((index[0]-1.25)/2)],self.data[int((index[1]-2.75)/2+1)]] for index in dash_x]
 		return solid_x,solid_y,dash_x,dash_y
@@ -166,9 +163,8 @@ class Text():
 
 	def plot_text(self):
 		plt.text(self.x_ave,self.y_ave,self.text,ha='center',va='center',fontsize=self.fontsize,color=self.color)
-		#print(test.__dict__)
-		#exit()
-def plot_(name,names,line,f,color,states='',option='default'):
+
+def plot_apply(name,names,line,f,color,states='',option='default'):
 	data=Data(line)
 
 	states=deque(states)
@@ -209,13 +205,13 @@ def main():
 
 	for name,line,color in zip(lines.keys(),lines.values(),figure.colors):
 		if(name=='undoped_CH3OH_1' or name=='Ca-doped_CH3OH_1'):
-			plot_(name,names,line,figure,'#ed0345',option='default')
+			plot_apply(name,names,line,figure,'#ed0345',option='default')
 		elif(name=='undoped_CH3OH_2' or name=='Ca-doped_CH3OH_2'):
-			plot_(name,names,line,figure,'#004370',option='default')
+			plot_apply(name,names,line,figure,'#004370',option='default')
 		elif(name=='undoped'or name=='Ca-doped'):
-			plot_(name,names,line,figure,'#000000',option='default')
+			plot_apply(name,names,line,figure,'#000000',option='default')
 		else:
-			plot_(name,names,line,figure,color)
+			plot_apply(name,names,line,figure,color)
 			plt.plot(0.5,0,color=color,label=name)
 	#plt.legend(loc='best',fontsize=18)
 	#plt.show()
