@@ -1,0 +1,115 @@
+#!/usr/bin/bash
+
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+YELLOW="\033[1;33m"
+BLUE="\033[1;34m"
+RESET="\033[0m"
+
+# set the rootdir
+rootdir=`pwd`
+echo -e "\n $RED \t This script will help you to configure the xsd2in.sh $RESET \n"
+echo -e " --> The (default) rootdir is: \t $GREEN`pwd`$RESET"
+while true
+do
+    echo -e " --> Please confirm it or reset the rootdir! Not use the relative path! [y/n]"
+    read conflag
+    if [[ "$conflag" =~ ^y.*|^Y.* ]];then
+        break
+    else
+        echo -e " --> Please input a new path:"
+        read rootdir
+        echo -e " --> Your input rootir path is: \t $GREEN $rootdir $RESET"
+    fi
+done
+
+# set the potential
+echo -e " --> Please set the potential! [PBE|PW91|LDA]"
+while true
+do
+    read pot
+    if [[ "$pot" =~ "PBE"|"PW91"|"LDA" ]];then
+        break
+    else
+        echo -e " --> $YELLOW $pot $RESET is wrong input, please input again! [PBE|PW91|LDA]"
+    fi
+done
+echo -e " --> Your input pot is: \t $GREEN $pot $RESET"
+
+examdir=$rootdir/example/$pot
+potdir=$rootdir/pot/PAW_$pot
+pUdir=$rootdir/Uvalue
+jobscript=sbatch.vasp
+
+# check the directory is or not exist
+while true
+do
+    existflag=1
+    for dir in `echo examdir potdir pUdir`
+    do
+        if [ ! -d ${!dir} ];then # e.g., dir=examdir, ${!dir}=$examdir
+            echo -e " \t --> $dir not exist! Please input a new path:"
+            read $dir
+            existflag=0
+        fi
+    done
+    if [ $existflag -eq 1 ];then
+        break
+    fi
+done
+
+# set the vasp
+while true
+do
+    echo -e " --> Please input the vasp process path (std version):"
+    read VaspEXEC
+    if [ ! -f $VaspEXEC ];then
+        echo -e " --> The VASP process ($YELLOW $VaspEXEC $RESET) is not exist."
+        continue
+    fi
+    if [[ ! "$VaspEXEC" =~ "_std" ]];then
+        echo -e " --> The VASP process ($YELLOW $VaspEXEC $RESET) is not std version."
+        continue
+    fi
+    break
+done
+
+# set the vasp-neb 
+while true
+do
+    echo -e " --> Please input the vasp-neb process path (std version):"
+    read VaspNebEXEC
+    if [ ! -f $VaspNebEXEC ];then
+        echo -e " --> The VASP-neb process ($YELLOW $VaspNebEXEC $RESET) is not exist."
+        continue
+    fi
+    if [[ ! "$VaspNebEXEC" =~ "_std" ]];then
+        echo -e " --> The VASP-neb process ($YELLOW $VaspNebEXEC $RESET) is not std version."
+        continue
+    fi
+    break
+done
+
+# summary the configuration
+echo -e " --> According to your input: "
+echo -e " \t --> examdir is set to $GREEN $examdir $RESET"
+echo -e " \t --> potdir is set to $GREEN $potdir $RESET"
+echo -e " \t --> pUdir is set to $GREEN $pUdir $RESET"
+echo -e " \t --> The jobscript is $GREEN $jobscript $RESET (other system is not accepted now)"
+echo -e " \t --> The vasp process is $GREEN $VaspEXEC $RESET"
+echo -e " \t --> The vasp-neb process is $GREEN $VaspNebEXEC $RESET"
+
+# write the configuration into the head file <xsd2in.h>
+sed -i "/rootdir=/c\rootdir=$rootdir" xsd2in.sh
+if [ ! -f $rootdir/xsd2in.h ];then
+    echo -e "Heading file <xsd2in.h> is not exist! Please check the $rootdir!"
+    echo -e " \n $BLUE \t Configuration failure! $RESET \n"
+fi
+sed -i "/potdir=/c\potdir=$potdir" xsd2in.h
+sed -i "/examdir=/c\examdir=$examdir" xsd2in.h
+sed -i "/pUdir=/c\pUdir=$pUdir" xsd2in.h
+sed -i "/jobscript=/c\jobscript=$jobscript" xsd2in.h
+sed -i "/VaspEXEC=/c\VaspEXEC=$VaspEXEC" xsd2in.h
+sed -i "/VaspNebEXEC=/c\VaspNebEXEC=$VaspNebEXEC" xsd2in.h
+
+echo -e "\n $RED \t Configuration successful! $RESET \n"

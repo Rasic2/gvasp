@@ -1,0 +1,11 @@
+v0.1 (2014-12-22):  initinal version by Wen-De Hu
+
+v0.2 (2022-06-16):  update the script, add various functions 
+                    (e.g., charge density, dos, frequency, TS calculations and so on)
+
+v0.3 (2022-06-17):  add the `configure` file for first setting;
+                    move the variable statement in the `xsd2in.h` head file;
+                    delete the <dimer> and <cineb> function, <posfm> variable;
+                    define <PW91> mode according to the directory name (because it is not very useful);
+                    remove the `auto` opption for ckpoint, cscript variables;
+                    remove the support for PBS system (i.e., vasp.script)
