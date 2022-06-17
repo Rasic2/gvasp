@@ -5,9 +5,6 @@ if [ "$1" == "-h" -o "$1" == "--help" ]; then
 
 [34m#########################################################################
 # File Name: xsd2pos.sh
-# Author: wdhu; hzhou
-# Created Time: Mon 22 Dec 2014 11:54:27 PM CST
-# Modified Time: Wed Apr 27 13:19:00 CST 2022 
 #########################################################################
 [0m
 creat the POSCAR POTCAR... according to the xsdfiles;
@@ -20,12 +17,11 @@ the priority of parameters is (1)script ARGVs; (2).setting_xsd2pos in work direc
 
 Examples                               Choices
 [31m cpot=1 [0m                          [34m #0:don't create POTCAR;not 0:create POTCAR [0m
-[31m cscript=1  [0m                      [34m #0:don't update vasp.script;not 0:update; -1 auto [0m
-[31m ckpoint=-1 [0m                      [34m #0:don't create KPOINTS;not 0:create KPOINTS; -1: auto[0m
-[31m setmag=1 [0m                        [34m #0:don't set MAGMOM in INCAR;not 0:set MAGMOM; -1: auto [0m
-[31m setpU=1  [0m                        [34m #0:don't set DFT plus U; not 1:set DFT+U; -1: auto [0m
+[31m cscript=1  [0m                      [34m #0:don't update jobscript;not 0:update [0m
+[31m ckpoint=1 [0m                      [34m #0:don't create KPOINTS;not 0:create KPOINTS [0m
+[31m setmag=1 [0m                        [34m #0:don't set MAGMOM in INCAR;not 0:set MAGMOM [0m
+[31m setpU=1  [0m                        [34m #0:don't set DFT plus U; not 0:set DFT+U [0m
 [31m sortZ=1  [0m                        [34m #0:sort default ; not 0: sort by Z axis [0m
-[31m posfm=5  [0m                        [34m #the Format of POSCAR: 4 or 5 [0m
 [31m cmark=_c  [0m                       [34m #Constrainmark: _c(default) [0m
 [31m potmode=new [0m                     [34m #new, ori, sv, pv ,GW or Custom  [0m
 [31m incell=0 [0m                        [34m #the XYZ positions convert into cell; 1: yes;0;not [0m
@@ -52,35 +48,11 @@ fi
 rm -rf temp_x2p_*
 
 # default paramenters
-IMAGES=4
-ppn=20
-node=1
-cpot=1
-cscript=1
-ckpoint=-1
-setmag=1
-setpU=1
-incell=0
-posfm=5
-inmode=opt
-potmode=ori
-nelectmode=no
-gammamode=no
-solmode=no
-hsemode=no
-vdwmode=no
-lowmode=no
-potdir=$HOME/pot/PAW_PBE/
-examdir=$HOME/example/PBE
-pUdir=$HOME/Uvalue
-cmark=_c
-sortZ=1 #>0:sort by atoms Z axis; 0: only sort by atom element name.
-potcfgdir=$HOME
-jobscript=vasp.script
-
-workdir=$(pwd)
+rootdir=/mnt/c/Users/hui_zhou/Desktop/VASP_scripts/VaspTask/xsd2in
+source $rootdir/xsd2in.h
 
 echo -e "\n  >>>>>>>>>>>>>>>>>> Check Information <<<<<<<<<<<<<<<<<<\n"
+
 # import the setting files
 cd $HOME
 if [[ -f .setting_xsd2pos ]]; then
@@ -106,9 +78,6 @@ until [[ $# -eq 0 ]]; do
 			exit
 		fi
 		eval $argvs1=$argvs2
-	elif [[ $1 == "PW91" ]]; then
-		potdir=~/POT/PAW_PW91/
-		examdir=~/example
 	elif [[ "$1" =~ "N"[+-][0-9]* ]]; then
 		nelectmode=$1
 	elif [[ $1 == "new" ]]; then
@@ -153,20 +122,12 @@ until [[ $# -eq 0 ]]; do
 		inmode=NEB
 		cp $examdir/INCAR_NEB ./INCAR
 		echo -e "\e[1;32m \t\t\tNEB计算 \n\e[0m"
-	elif [[ $1 == "CINEB" || $1 == "cineb" ]]; then
-		inmode=CINEB
-		cp $examdir/INCAR_NEB ./INCAR
-		echo -e "\e[1;32m \t\t\tCI-NEB计算 \n\e[0m"
-	elif [[ $1 == "dimer" || $1 == "Dimer" ]]; then
-		inmode=dimer
-		cp $examdir/INCAR_dimer ./INCAR
-		echo -e "\e[1;32m \t\t\tDimer过渡态计算 \n\e[0m"
 	elif [[ $1 == "MD" || $1 == "md" ]]; then
 		inmode=MD
 		cp $examdir/INCAR_MD ./INCAR
 		echo -e "\e[1;32m \t\t\t分子动力学计算 \n\e[0m"
 	elif [[ $1 == "gamma" || $1 == "G" ]]; then
-		gammamode=yes
+		gammode=yes
 	elif [[ $1 == "SOL" ]]; then
 		solmode=yes
 	elif [[ $1 == "HSE" || $1 == "hse" ]]; then
@@ -194,6 +155,7 @@ echo $potdir | awk -F/ '{print "所用赝势为："$8}'
 echo -e "\e[0m"
 
 if [[ $inmode == "opt" ]]; then
+	cp $examdir/INCAR ./INCAR
 	echo -e "\e[1;32m \t\t\t结构优化计算 \n\e[0m"
 fi
 
@@ -217,7 +179,7 @@ fi
 
 grep Atom3d $xsdfile | grep Components | awk -F Name=\" '{print$2}' | awk -F \" '{print $1}' >temp_x2p_Name &
 grep Atom3d $xsdfile | grep Components | awk -F Components=\" '{print$2}' | awk -F \" '{print $1}' | sed 's/,.*[0-9]//g' >temp_x2p_Element &
-grep Atom3d $xsdfile | grep Components | awk -F Components=\" '{print$2}' | awk -F \" '{print $1}' | sed 's/,//g;s/[a-Z]//g' >temp_x2p_Iso &
+grep Atom3d $xsdfile | grep Components | awk -F Components=\" '{print$2}' | awk -F \" '{print $1}' | sed 's/,//g;s/[a-Z]//g' >temp_x2p_Iso 2>/dev/null &
 grep Atom3d $xsdfile | grep Components | awk -F FormalSpin=\" '{print$2}' | awk -F \" '{print $1+0}' | sed 's/00//g' >temp_x2p_Spin &
 if [[ "$incell" -eq 1 ]]; then
 	grep Atom3d $xsdfile | grep Components | awk -F XYZ=\" '{print$2}' | awk -F \" '{print $1}' |
@@ -253,9 +215,7 @@ awk '{printf "%5s", $1}END{printf"\n"}' temp_x2p_shortinfo >>POSCAR
 awk '{print $3}' temp_x2p_shortinfo | awk '{printf "%5d",$1}END{printf"\n"}' >>POSCAR
 echo -e "Selective Dynamics\nDirect" >>POSCAR
 awk -F : '{printf"%s    %s\n", $5, $6}' temp_x2p_tot >>POSCAR
-if [[ "$posfm" == 4 ]]; then
-	sed -i 6d POSCAR
-fi
+
 # creat fort.188
 grep -i "$cmark" temp_x2p_tot | sed 's/:/ /g;s/\t/ /g;s/  / /g' | awk '{printf"%3s %-2s %-5s%10.6f%10.6f%10.6f  %s %s %s\n",$1,$3,$4,$5,$6,$7,$8,$9,$10}' >temp_x2p_Constrain
 if [[ -f temp_x2p_Constrain ]]; then
@@ -283,19 +243,8 @@ else
 	echo -e "\n    find $nc contrained atom(s), fort.188 don't Creat !\n"
 fi
 
-# spin set
-if [[ "$setmag" == -1 ]]; then
-	if [[ -f INCAR ]]; then
-		setmag=1
-	else
-		setmag=0
-	fi
-fi
+# update spin
 if [[ "$setmag" -gt 0 ]]; then
-	if [[ ! -f INCAR ]]; then
-		cp $examdir/INCAR .
-	fi
-
 	magmomtag=$(awk -F : '{print $7 }' temp_x2p_tot | uniq -c | awk '{printf " %d*%d",$1,$2}')
 	if [[ $(grep ISPIN INCAR | awk -F \# '{print $1}' | awk -F = '{print$2}' | sed 's/ //g') == 2 ]]; then
 		sed -i 's/MAGMOM *=.*/MAGMOM ='"$magmomtag"' #magnetic/' INCAR
@@ -309,6 +258,7 @@ if [[ "$setmag" -gt 0 ]]; then
 		echo -e "    the ISPIN-tag isn't set to 2 !!"
 	fi
 fi
+
 # creat POTCAR
 if [[ "$cpot" -gt 0 ]]; then
 	if [[ -d "$potdir" ]]; then
@@ -393,55 +343,33 @@ if [[ "$cpot" -gt 0 ]]; then
 		echo -e "    The POTCAR folder ($potdir) is nonexistent!!!"
 	fi
 fi
-# creat KPOINTS
-if [[ "$ckpoint" == -1 ]]; then
-	if [[ -f KPOINTS ]]; then
-		ckpoint=0
+
+# creat jobscript (slurm system only)
+if [[ "$cscript" -gt 0 ]]; then
+	if [[ $lowmode != "no" ]]; then
+		cp $examdir/"$jobscript"_low ./$jobscript
 	else
-		ckpoint=1
+		cp $examdir/$jobscript ./$jobscript
 	fi
+	USER=$(pwd | awk -F/ '{print $5}')
+	sed -i 's/^#SBATCH -J .*/#SBATCH -J '"$USER-${xsdfile%.*}"'/g' $jobscript
 fi
+
+# creat KPOINTS
 if [[ "$ckpoint" -gt 0 ]]; then
 	kpoint=$(awk '{print sqrt($1*$1+$2*$2+$3*$3)}' temp_x2p_lattice | awk '{printf"%d ",int(20/$1)+1}')
 	echo -e "mesh auto\n0\nG\n$kpoint\n0 0 0" >KPOINTS
-	if [ $gammamode == "no" ]; then
+	if [ $gammode == "no" ]; then
 		echo -e "    Creat KPOINTS successfully ( $kpoint) !!!\n"
 	else
+		sed -i "/EXEC=/c\EXEC=${VaspEXEC/_std/_gam}" $jobscript
+		sed -i "4c\1 1 1" KPOINTS
 		echo -e "    Creat KPOINTS successfully ( 1 1 1 ) !!!\n"
 	fi
 fi
-# creat job.script
-if [[ "$cscript" == -1 ]]; then
-	if [[ -f $jobscript ]]; then
-		cscript=1
-	else
-		cscript=0
-	fi
-fi
-if [[ "$cscript" -gt 0 ]]; then
-	if [[ ! -f sbatch.vasp ]]; then
-		if [[ $lowmode != "no" ]]; then
-			cp $examdir/sbatch.vasp_low ./sbatch.vasp
-		else
-			cp $examdir/sbatch.vasp ./sbatch.vasp
-		fi
-	fi
-	USER=$(pwd | awk -F/ '{print $5}')
-	sed -i 's/^#SBATCH -J .*/#SBATCH -J '"$USER-${xsdfile%.*}"'/g' sbatch.vasp
-fi
 
-# set U-value
-if [[ "$setpU" == -1 ]]; then
-	if [[ -f INCAR ]]; then
-		setpU=1
-	else
-		setpU=0
-	fi
-fi
+# update U-value
 if [[ "$setpU" -gt 0 ]]; then
-	if [[ ! -f INCAR ]]; then
-		cp $examdir/INCAR .
-	fi
 	if [[ -d "$pUdir" ]]; then
 		for i in $(awk '{print $1}' temp_x2p_shortinfo); do
 			if [[ ! -f "$pUdir/$i" ]]; then
@@ -467,52 +395,23 @@ if [[ "$setpU" -gt 0 ]]; then
 	fi
 fi
 
-echo -e "  <<<<<<<<<<<<<<<<<<<<<<<<<<<=>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"
-rm -f temp_x2p_*
-
-if [ $gammamode != "no" ]; then
-	before="EXEC=/public1/home/sc81049/soft/vasp/bin/vasp_std"
-	after="EXEC=/public1/home/sc81049/soft/vasp/bin/vasp_gam"
-	sed -i "s#$before#$after#" sbatch.vasp
-	sed -i "4c\1 1 1" KPOINTS
-fi
-
 if [ $inmode == "NEB" ]; then
 	rm POSCAR
-	#	read -p "Please input IMAGES,node,ppn: " IMAGES node ppn
-	EXEC="EXEC=/public1/home/sc81049/soft/vasp+vtst/bin/vasp_gam"
-	sed -i "/EXEC=/c$EXEC" sbatch.vasp
-	#sed -i "s/nodes=1/nodes=$node/" vasp.script
-	#sed -i "s/ppn=20/ppn=$ppn/" vasp.script
-	sed -i "s/LCLIMB = .TRUE./LCLIMB = .FALSE./" INCAR
-	sed -i "s/EDIFFG = -0.05/EDIFFG = -0.1/" INCAR
-	sed -i "s/IOPT = 1/IOPT = 3/" INCAR
-	sed -i "s/IMAGES = 4/IMAGES = $IMAGES/" INCAR
-	sed -i "4c\1 1 1" KPOINTS
-	echo -e "\e[1;31m <EDIFFG = -0.1>\n<LCLIMB = .FALSE.> \n <IOPT = 3> \n\e[0m"
-	echo -e "\e[1;31m Please don't forget check NPAR and IMAGES!!!\n \e[0m"
-	echo -e "\e[1;31m KPOINTS set to Gamma point!\n \e[0m"
-fi
-
-if [ $inmode == "CINEB" ]; then
-	rm POSCAR
-	#	read -p "Please input IMAGES,node,ppn: " IMAGES node ppn
-	before="EXEC=/data/apps/vasp/5.4.1/vasp"
-	after="EXEC=/data/apps/vasp/5.4.1/old/vtst+TS/vasp_gam"
-	#sed -i "s#$before#$after#" vasp.script
-	#sed -i "s/nodes=1/nodes=$node/" vasp.script
-	#sed -i "s/ppn=20/ppn=$ppn/" vasp.script
-	sed -i "s/IMAGES = 4/IMAGES = $IMAGES/" INCAR
-	sed -i "4c\1 1 1" KPOINTS
-	echo -e "\e[1;31m <LCLIMB = .TRUE.> \n <IOPT = 1> \n\e[0m"
-	echo -e "\e[1;31m Please don't forget check NPAR and IMAGES!!!\n \e[0m"
-	echo -e "\e[1;31m KPOINTS set to Gamma point!\n \e[0m"
-fi
-
-if [ $inmode == "dimer" ]; then
-	before="EXEC=/data/apps/vasp/5.4.1/vasp"
-	after="EXEC=/data/apps/vasp/5.4.1/old/vasp"
-	#sed -i "s#$before#$after#" vasp.script
+	IMAGES=`find . -type d -name "0*" | wc -l`
+	if [ $IMAGES -gt 2 ];then
+		IMAGES=$[$IMAGES-2]
+	else
+		read -p " Please input IMAGES: " IMAGES
+	fi
+	sed -i "/EDIFFG/c\  EDIFFG = -0.1" INCAR
+	sed -i "/IMAGES/c\  IMAGES = $IMAGES" INCAR
+	if [ $gammode == "no" ];then
+		sed -i "/EXEC=/c\EXEC=$VaspNebEXEC" $jobscript
+	else
+		sed -i "/EXEC=/c\EXEC=${VaspNebEXEC/_std/_gam}" $jobscript
+	fi
+	echo -e "\e[1;31m\n <Parameters: EDIFFG = -0.1; LCLIMB = .FALSE.; IOPT = 3> \n\e[0m"
+	echo -e "\e[1;31m Please don't forget check IMAGES!!!\n \e[0m"
 fi
 
 # MD set
@@ -521,34 +420,10 @@ if [ $inmode == "MD" ]; then
 	echo -e "\e[1;31m Please don't forget check TEBEG and TEEND!!!\n \e[0m"
 fi
 
-# chg_cal
-if [ $inmode == "chg" ]; then
-	before="#PBS -l walltime=72:00:00"
-	after="#PBS -l walltime=24:00:00"
-	#sed -i "s/$before/$after/" vasp.script
-fi
-
-# dos_cal
-if [ $inmode == "DOS" ]; then
-	before="#PBS -l walltime=72:00:00"
-	after="#PBS -l walltime=12:00:00"
-	#sed -i "s/$before/$after/" vasp.script
-fi
-
-# freq_cal
-if [ $inmode == "freq" ]; then
-	before="#PBS -l walltime=72:00:00"
-	after="#PBS -l walltime=18:00:00"
-	#sed -i "s/$before/$after/" vasp.script
-fi
-
 # nelect_set
 if [ $nelectmode != "no" ]; then
 	ele_num_str=$(sed -n '7p' POSCAR)
-	#OLD_IFS="$IFS"
-	#IFS=" "
 	ele_num=($ele_num_str)
-	#IFS=$OLD_IFS
 	pattern=$(sed -n '1p' POTCAR | awk '{print $1}')
 	eletron_str=$(egrep -A 1 "^\s+${pattern}" POTCAR | grep -v "-" | grep -v "$pattern")
 	eletron=($eletron_str)
@@ -596,7 +471,10 @@ fi
 # LMAXMIX set
 lmaxmix=$(grep LDAUL INCAR | grep 3 | wc -l)
 if [ $lmaxmix -ne 0 ]; then
-	sed -i "/LMAXMIX/c\  LMAXMIX = 6" INCAR
+	sed -i "/LMAXMIX/c\ LMAXMIX = 6" INCAR
 else
-	sed -i "/LMAXMIX/c\  LMAXMIX = 4" INCAR
+	sed -i "/LMAXMIX/c\ LMAXMIX = 4" INCAR
 fi
+
+echo -e "  <<<<<<<<<<<<<<<<<<<<<<<<<<<=>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"
+rm -f temp_x2p_*
