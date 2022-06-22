@@ -1,6 +1,6 @@
 #!/bin/bash
-# created by hzhou
-# 解决PtCl6中Pt-Cl键长的统计问题
+
+# Variable: [python3] --> the path of python.exe
 
 dispy()
 {
@@ -31,7 +31,8 @@ for i in range(NCl):
 EOF
 }
 
-python3=/home/apps/intel/intelpython3/bin/python3
+# python3=/home/apps/intel/intelpython3/bin/python3
+python3=python3
 if [ "$1x" == "x" ];then
 	dis=2.5
 else
