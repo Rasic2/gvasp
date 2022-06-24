@@ -1,21 +1,4 @@
 #!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# created by hui_zhou@mail.ecust.edu.cn
-# modified at 2019/03/19
-# modified at 2019/04/11 增加绘制多原子求和DOS
-# modified at 2019/04/14 增加f电子绘制
-# modified at 2019/04/20 简化绘制多个原子的API
-# modified at 2019/04/22 性能优化,DOSCAR、CONTCAR设置只读一次
-# modified at 2019/04/25 增加读入多个DOSCAR文件进行数据对比分析
-# modified at 2019/04/26 全局修改线宽
-# modified at 2019/05/25 增加DOS数据三次插值拟合,提供颜色参数
-# modified at 2019/06/23 提供绘图填充method方法；增加band-center计算方法
-# modified at 2019/07/27 性能优化，去掉正则模块
-# modified at 2019/07/27 利用Cython性能优化
-# modified at 2019/10/17 增加线类型 'fill' 'line' 'dash line'
-# modified at 2021/05/24 支持数据导出，method=output
-# modified at 2022/05/07 增加平均DOS选项（按原子数），统一参数名称（e.g., atom->atoms）
-# <--Version:2.0.1-->
 
 import os
 import math
@@ -67,7 +50,7 @@ def datatype_convert(energy_list,Total_up,Total_down,atom_list,length):
 		atom_data.append(DATA)
 	return Total_Dos,atom_data
 
-def doscar_parase(DOSCAR):
+def doscar_parse(DOSCAR):
 	energy_list,Total_up,Total_down,atom_list,length=doscar_load(DOSCAR)
 	Total_Dos,atom_data=datatype_convert(energy_list,Total_up,Total_down,atom_list,length)
 	return Total_Dos,atom_data
@@ -112,7 +95,7 @@ class PlotDOS():
 		self.__load()
 
 	def __load(self):
-		self.total_dos,self.atom_list=doscar_parase(self.DOSCAR)
+		self.total_dos,self.atom_list=doscar_parse(self.DOSCAR)
 		self.element=contcar_require(self.CONTCAR)
 
 	def plot(self,xlim=None,show=False,color='',method='fill',**kargs):
@@ -126,7 +109,7 @@ class PlotDOS():
 		"""计算DOS 特定原子轨道的center值"""
 
 		old_atoms=atoms
-		if isinstance(old_atoms, str): #modified at 2019/04/20 实现'a-b'代替列表求plut_dos
+		if isinstance(old_atoms, str): #modified at 2019/04/20 实现'a-b'代替列表求plot_dos
 			if '-' in old_atoms:
 				pre_atom=[int(item) for item in old_atoms.split('-')]
 				atoms=list(range(pre_atom[0],pre_atom[1]+1,1))
@@ -217,7 +200,7 @@ class DOS():
 			self.__plot_tot()
 		elif isinstance(self.kargs['atoms'],list):
 			self.__plot_plus_tot()
-		elif isinstance(self.kargs['atoms'],str): #modified at 2019/04/20 实现'a-b'代替列表求plut_dos
+		elif isinstance(self.kargs['atoms'],str): #modified at 2019/04/20 实现'a-b'代替列表求plot_dos
 			if '-' in self.kargs['atoms']:
 				pre_atom=[int(item) for item in self.kargs['atoms'].split('-')]
 				setattr(self,'atoms',list(range(pre_atom[0],pre_atom[1]+1,1)))
@@ -329,9 +312,3 @@ if __name__ == '__main__':
 #profile.run('main("")','result')
 #p=pstats.Stats("result")
 #p.strip_dirs().sort_stats("time").print_stats()
-
-
-
-
-
-
