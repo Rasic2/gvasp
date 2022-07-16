@@ -5,7 +5,8 @@ import math
 import os
 import time
 from collections import defaultdict
-from functools import wraps
+from functools import wraps, partial
+from itertools import product
 
 import numpy as np
 import pandas as pd
@@ -253,17 +254,18 @@ class DOS():
                     plus_tot[column] += self.atom_list[atom][column]
                 except KeyError:
                     plus_tot[column] = 0
-        if self.orbitals == None:
-            interpolated_plot(plus_tot.index.values, plus_tot['up'].values, number=len(self.atoms), color=self.color,
-                              method=self.method, avgflag=self.avgflag)
-            interpolated_plot(plus_tot.index.values, plus_tot['down'].values, number=len(self.atoms), color=self.color,
-                              method=self.method, avgflag=self.avgflag)
+
+        if self.orbitals is None:
+            orbitals = [plus_tot['up'].values, plus_tot['down'].values]
         else:
-            for orbital in self.orbitals:
-                interpolated_plot(plus_tot.index.values, plus_tot[f'{orbital}_up'], number=len(self.atoms),
-                                  color=self.color, method=self.method, avgflag=self.avgflag)
-                interpolated_plot(plus_tot.index.values, plus_tot[f'{orbital}_down'], number=len(self.atoms),
-                                  color=self.color, method=self.method, avgflag=self.avgflag)
+            orbitals = [plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_up', '_down'])]
+
+        interpolated_partial = partial(interpolated_plot, plus_tot.index.values, number=len(self.atoms),
+                                       color=self.color,
+                                       method=self.method, avgflag=self.avgflag)
+
+        for _ in map(interpolated_partial, orbitals):
+            pass
 
 
 def main_wrapper(func):
@@ -293,7 +295,7 @@ def main(option):
     P = list(P)
     print("文件加载完成...")
 
-    P[0].plot(atoms=1, orbitals=['s'], xlim=[-6, 9], color='#123E09', method='line')
+    P[0].plot(atoms=1, orbitals=None, xlim=[-6, 9], color='#123E09', method='line')
 
 
 if __name__ == '__main__':
