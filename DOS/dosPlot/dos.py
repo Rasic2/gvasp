@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-
 import glob
 import math
 import os
 import time
 from collections import defaultdict
-from functools import wraps, partial
+from functools import wraps
 from itertools import product
 
 import numpy as np
@@ -32,7 +31,7 @@ def plot_wrapper(func):
         plt.rc('font', family='DejaVu Sans')  # set the font globally
         plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
         plt.rcParams['lines.linewidth'] = 2  # set line-width
-        plt.rcParams['lines.color'] = self.color  # set line-color
+        plt.rcParams['lines.color'] = kargs['color']  # set line-color
         func(self, *args, **kargs)
         plt.xlim((self.atom_list[0][0], self.atom_list[0][-1])) if self.xlim == None else plt.xlim(self.xlim)
         plt.xticks(fontsize=26)
@@ -43,18 +42,44 @@ def plot_wrapper(func):
     return wrapper
 
 
-class PlotDOS():
+def interpolated_wrapper(func):
+    @wraps(func)
+    def wrapper(self):
+        for x, y, number in func(self):
+            x_arr = np.array(x)
+            y_arr = np.array(y)
+            x_new = np.linspace(np.min(x_arr), np.max(x_arr), len(x) * 100)
+            f = interpolate.interp1d(x_arr, y_arr, kind='cubic')
+            y_new = f(x_new)
+
+            if not self.avgflag:
+                number = 1
+
+            if self.method == 'fill':
+                plt.fill(x_new, y_new / number, color=self.color)
+            elif self.method == 'line':
+                plt.plot(x_new, y_new / number, color=self.color)
+            elif self.method == 'dash line':
+                plt.plot(x_new, y_new / number, '--', color=self.color)
+            elif self.method == 'output':
+                time_prefix = time.strftime("%H-%M-%S", time.localtime())
+                np.savetxt(f"datafile_x_{time_prefix}", x_new)
+                np.savetxt(f"datafile_y_{time_prefix}", y_new)
+
+    return wrapper
+
+
+class PlotDOS(object):
     """
     <PlotDOS main class>
 
     @method:
-        __load: load DOSCAR、CONTCAR or POSCAR data
-        plot(): plot main func
-        center: calculate the band-center
+        plot():     plot main func
+        center():   calculate the band-center
 
     @static-method:
-        contcar_parse:  load CONTCAR
-        doscar_parse:   load DOSCAR
+        contcar_parse:  parse CONTCAR data
+        doscar_parse:   parse DOSCAR data
     """
 
     def __init__(self, DOSCAR, CONTCAR, max_orbital='f'):
@@ -64,18 +89,83 @@ class PlotDOS():
         self.element = PlotDOS.contcar_parse(self.CONTCAR)
         self.total_dos, self.atom_list = PlotDOS.doscar_parse(self.DOSCAR)
 
-    def plot(self, xlim=None, show=False, color='', method='fill', **kargs):
-        """实例化一个DOS对象
-        1、可以指定x坐标范围
-        2、指定是否将DOS分别绘制
+    @plot_wrapper
+    def plot(self, atoms=None, orbitals=None, xlim=None, color='', method='fill', avgflag=False):
         """
-        DOS(self.total_dos, self.atom_list, self.element, xlim=xlim, show=show, color=color, method=method, **kargs)
+        Plot DOS Main Func
+
+        @params:
+            atoms:      accept int, list, and str('1-10' or 'Ce') type
+            orbitals:   list, e.g., ['s',  'p']
+            method:     ['line', 'dash line','fill', 'output']
+            avgflag:    whether calculate the average dos
+        """
+
+        self.atoms = atoms
+        self.orbitals = orbitals
+        self.xlim = xlim
+        self.color = color
+        self.method = method
+        self.avgflag = avgflag
+
+        @interpolated_wrapper
+        def plot_tot(self):
+            """Plot Total DOS"""
+            for column in self.total_dos.columns.values:
+                yield self.total_dos.index.values, list(self.total_dos[column].values), 1
+
+        @interpolated_wrapper
+        def plot_atoms(self):
+            """Plot DOS of atom list"""
+            plus_tot = defaultdict(list)
+            plus_tot = DataFrame(plus_tot, index=self.atom_list[0],
+                                 columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] + COLUMNS,
+                                 dtype='object')
+            plus_tot.iloc[:, :] = 0.0
+            for atom in self.atoms:
+                for column in plus_tot.columns.values:
+                    try:
+                        plus_tot[column] += self.atom_list[atom][column]
+                    except KeyError:
+                        plus_tot[column] = 0
+
+            if self.orbitals is None:
+                orbitals = [plus_tot['up'].values, plus_tot['down'].values]
+            else:
+                orbitals = [plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_up', '_down'])]
+
+            for orbital_value in orbitals:
+                yield plus_tot.index.values, orbital_value, len(self.atoms)
+
+        """Main Content of Plot func"""
+        if self.atoms is None:
+            return plot_tot(self)
+
+        elif isinstance(self.atoms, list):
+            assert all([isinstance(item, int) for item in self.atoms]), f"Atoms must be a Int List!"
+            return plot_atoms(self)
+
+        elif isinstance(self.atoms, str):
+            if '-' in self.atoms:
+                pre_atom = [int(item) for item in self.atoms.split('-')]
+                self.atoms = list(range(pre_atom[0], pre_atom[1] + 1, 1))
+            else:
+                self.atoms = [index for index, element in enumerate(self.element) if self.atoms == element]
+                assert len(self.atoms) > 0, f"Atoms don't have this element!"
+            return plot_atoms(self)
+
+        elif isinstance(self.atoms, int):
+            self.atoms = [self.atoms]
+            return plot_atoms(self)
+
+        else:
+            raise ValueError(f"The format of {self.atoms} is not correct!")
 
     def center(self, atoms=None, orbitals=None, xlim=None):
-        """计算DOS 特定原子轨道的center值"""
+        """Calculate Band-Center Value"""
 
         old_atoms = atoms
-        if isinstance(old_atoms, str):  # modified at 2019/04/20 实现'a-b'代替列表求plot_dos
+        if isinstance(old_atoms, str):
             if '-' in old_atoms:
                 pre_atom = [int(item) for item in old_atoms.split('-')]
                 atoms = list(range(pre_atom[0], pre_atom[1] + 1, 1))
@@ -155,134 +245,8 @@ class PlotDOS():
         return datatype_convert(*doscar_load(DOSCAR))
 
 
-def interpolated_plot(x, y, number=1, label='', color='', method='', avgflag=False):
-    """
-    fitting the DOSCAR data
-    
-    @params:
-        method:     control how to plot the dos, ['fill', 'line', 'dash line', 'output']
-    """
-
-    count = len(x)
-    x_arr = np.array(x)
-    y_arr = np.array(y)
-    x_new = np.linspace(np.min(x_arr), np.max(x_arr), count * 100)
-    f = interpolate.interp1d(x_arr, y_arr, kind='cubic')
-    y_new = f(x_new)
-
-    if not avgflag:
-        number = 1
-
-    if method == 'fill':
-        plt.fill(x_new, y_new / number, label=label, color=color)
-    elif method == 'line':
-        plt.plot(x_new, y_new / number, label=label, color=color)
-    elif method == 'dash line':
-        plt.plot(x_new, y_new / number, '--', label=label, color=color)
-    elif method == 'output':
-        time_prefix = time.strftime("%H-%M-%S", time.localtime())
-        np.savetxt(f"datafile_x_{time_prefix}", x_new)
-        np.savetxt(f"datafile_y_{time_prefix}", y_new)
-
-
-class DOS():
-    def __init__(self, total_dos, atom_list, element, color, xlim=None, show=False, method=None, avgflag=False,
-                 **kargs):
-        """
-        -->不指定参数, 画TOT_DOS								e.g. DOS()
-        -->原子列表, 画原子Plus_DOS							e.g. DOS(atom=[1,2,3])
-           --> 指定原子列表, 同时指定轨道, 画该轨道下plus_dos	e.g. DOS(atom=[1,3,4],orbital=['s','p'])
-           --> 简化获取连续多原子方法							e.g. DOS(atom='1-3',orbital=['s','p'])
-        -->单个原子, 不指定轨道, atom_tot						e.g. DOS(atom=1)
-        -->单个原子, 指定轨道, PDOS							e.g. DOS(atom=1,orbital=['s','p'])
-        """
-        # super().__init__()
-        self.total_dos = total_dos
-        self.atom_list = atom_list
-        self.element = element
-        self.atoms = None
-        self.orbitals = None
-        self.xlim = xlim
-        self.kargs = kargs
-        self.color = color
-        self.method = method
-        self.avgflag = avgflag  # modified at 2022/05/07 是否计算平均DOS选项（按原子数）
-        for key, value in self.kargs.items():
-            setattr(self, key, value)
-        self.show = show
-        self.plot()
-        if self.show == True:
-            plt.show()
-
-    @plot_wrapper
-    def plot(self):
-        """DOS画图函数"""
-        if 'atoms' not in self.kargs.keys():
-            self.plot_tot()
-        elif isinstance(self.kargs['atoms'], list):
-            self.plot_atoms()
-        elif isinstance(self.kargs['atoms'], str):  # modified at 2019/04/20 实现'a-b'代替列表求plot_dos
-            if '-' in self.kargs['atoms']:
-                pre_atom = [int(item) for item in self.kargs['atoms'].split('-')]
-                setattr(self, 'atoms', list(range(pre_atom[0], pre_atom[1] + 1, 1)))
-            else:
-                self.atoms = [index for index, element in enumerate(self.element) if self.kargs['atoms'] == element]
-            self.plot_atoms()
-        elif isinstance(self.atoms, int):
-            self.atoms = [self.atoms]
-            self.plot_atoms()
-        else:
-            raise ValueError(f"The format of {self.atoms} is not correct!")
-
-    def plot_tot(self):
-        """Plot Total DOS"""
-        for column in self.total_dos.columns.values:
-            interpolated_plot(self.total_dos.index.values, list(self.total_dos[column].values), label=column,
-                              color=self.color, method=self.method)
-        plt.legend(loc='best')
-
-    def plot_atoms(self):
-        """Plot DOS of atom list"""
-        plus_tot = defaultdict(list)
-        plus_tot = DataFrame(plus_tot, index=self.atom_list[0],
-                             columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] + COLUMNS,
-                             dtype='object')
-        plus_tot.iloc[:, :] = 0.0
-        for atom in self.atoms:
-            for column in plus_tot.columns.values:
-                try:
-                    plus_tot[column] += self.atom_list[atom][column]
-                except KeyError:
-                    plus_tot[column] = 0
-
-        if self.orbitals is None:
-            orbitals = [plus_tot['up'].values, plus_tot['down'].values]
-        else:
-            orbitals = [plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_up', '_down'])]
-
-        interpolated_partial = partial(interpolated_plot, plus_tot.index.values, number=len(self.atoms),
-                                       color=self.color,
-                                       method=self.method, avgflag=self.avgflag)
-
-        for _ in map(interpolated_partial, orbitals):
-            pass
-
-
-def main_wrapper(func):
-    @wraps(func)
-    def wrapper(*args, **kargs):
-        plt.figure(figsize=(10, 8))
-        func(*args, **kargs)
-        if args[0] == 'show':
-            plt.show()
-        elif args[0] == 'save':
-            plt.savefig('figure.svg', dpi=300, bbox_inches='tight', format='svg')
-
-    return wrapper
-
-
-@main_wrapper
-def main(option):
+if __name__ == '__main__':
+    plt.figure(figsize=(10, 8))
     datafiles = glob.glob("datafile*")
 
     name = 'test'
@@ -295,12 +259,9 @@ def main(option):
     P = list(P)
     print("文件加载完成...")
 
-    P[0].plot(atoms=1, orbitals=None, xlim=[-6, 9], color='#123E09', method='line')
+    P[0].plot(atoms='Ce', orbitals=None, xlim=[-6, 9], color='#123E09', method='line')
 
-
-if __name__ == '__main__':
-    main('save')
-# main('')
+    plt.savefig('figure.svg', dpi=300, bbox_inches='tight', format='svg')
 
 # profile.run('main("")','result')
 # p=pstats.Stats("result")
