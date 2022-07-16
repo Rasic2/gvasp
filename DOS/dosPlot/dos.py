@@ -141,11 +141,11 @@ class PlotDOS():
                                       item.startswith(orbital) and item.endswith('down') and item != '{}_down'.format(
                                           orbital) and item != 'down']
                     for item in orbital_p_up:
-                        DATA['{}_up'.format(orbital)] += DATA[item]
+                        DATA[f'{orbital}_up'] += DATA[item]
                     for item in orbital_p_down:
-                        DATA['{}_down'.format(orbital)] += DATA[item]
-                    DATA['up'] += DATA['{}_up'.format(orbital)]
-                    DATA['down'] += DATA['{}_down'.format(orbital)]
+                        DATA[f'{orbital}_down'] += DATA[item]
+                    DATA['up'] += DATA[f'{orbital}_up']
+                    DATA['down'] += DATA[f'{orbital}_down']
                 DATA['up'] += DATA['s_up']
                 DATA['down'] += DATA['s_down']
                 atom_data.append(DATA)
@@ -209,39 +209,39 @@ class DOS():
         for key, value in self.kargs.items():
             setattr(self, key, value)
         self.show = show
-        self.__plot()
+        self.plot()
         if self.show == True:
             plt.show()
 
     @plot_wrapper
-    def __plot(self):
+    def plot(self):
         """DOS画图函数"""
         if 'atoms' not in self.kargs.keys():
-            self.__plot_tot()
+            self.plot_tot()
         elif isinstance(self.kargs['atoms'], list):
-            self.__plot_plus_tot()
+            self.plot_atoms()
         elif isinstance(self.kargs['atoms'], str):  # modified at 2019/04/20 实现'a-b'代替列表求plot_dos
             if '-' in self.kargs['atoms']:
                 pre_atom = [int(item) for item in self.kargs['atoms'].split('-')]
                 setattr(self, 'atoms', list(range(pre_atom[0], pre_atom[1] + 1, 1)))
             else:
                 self.atoms = [index for index, element in enumerate(self.element) if self.kargs['atoms'] == element]
-            self.__plot_plus_tot()
-        elif self.atoms and self.orbitals is None:
-            self.__plot_atom_tot()
+            self.plot_atoms()
+        elif isinstance(self.atoms, int):
+            self.atoms = [self.atoms]
+            self.plot_atoms()
         else:
-            self.__plot_orbital()
+            raise ValueError(f"The format of {self.atoms} is not correct!")
 
-    def __plot_tot(self):
-        """给出全部原子的total_up、total_down图, modified at 2019/03/19"""
+    def plot_tot(self):
+        """Plot Total DOS"""
         for column in self.total_dos.columns.values:
             interpolated_plot(self.total_dos.index.values, list(self.total_dos[column].values), label=column,
                               color=self.color, method=self.method)
-        # plt.plot(x_new,y_new,label=column)
         plt.legend(loc='best')
 
-    def __plot_plus_tot(self):
-        """给出多原子求和的DOS, modified at 2019/4/12"""
+    def plot_atoms(self):
+        """Plot DOS of atom list"""
         plus_tot = defaultdict(list)
         plus_tot = DataFrame(plus_tot, index=self.atom_list[0],
                              columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] + COLUMNS,
@@ -260,35 +260,10 @@ class DOS():
                               method=self.method, avgflag=self.avgflag)
         else:
             for orbital in self.orbitals:
-                interpolated_plot(plus_tot.index.values, plus_tot['{}_up'.format(orbital)], number=len(self.atoms),
+                interpolated_plot(plus_tot.index.values, plus_tot[f'{orbital}_up'], number=len(self.atoms),
                                   color=self.color, method=self.method, avgflag=self.avgflag)
-                interpolated_plot(plus_tot.index.values, plus_tot['{}_down'.format(orbital)], number=len(self.atoms),
+                interpolated_plot(plus_tot.index.values, plus_tot[f'{orbital}_down'], number=len(self.atoms),
                                   color=self.color, method=self.method, avgflag=self.avgflag)
-
-    def __plot_atom_tot(self):
-        """给出单个原子的up、down图"""
-        interpolated_plot(self.atom_list[0], list(self.atom_list[self.atom]['up'].values),
-                          label=self.element[self.atom] + '_up', color=self.color, method=self.method)
-        interpolated_plot(self.atom_list[0], list(self.atom_list[self.atom]['down'].values),
-                          label=self.element[self.atom] + '_down', color=self.color, method=self.method)
-
-    # plt.legend(loc='best')
-
-    def __plot_orbital(self):
-        """绘制单个原子的多种orbital"""
-        try:
-            for orbital in self.orbital:
-                interpolated_plot(self.atom_list[0], list(self.atom_list[self.atom][orbital + '_up'].values),
-                                  label=self.element[self.atom] + '_' + orbital + '_up', color=self.color,
-                                  method=self.method)  # modified at 2019/03/19 添加显示元素功能
-                interpolated_plot(self.atom_list[0], list(self.atom_list[self.atom][orbital + '_down'].values),
-                                  label=self.element[self.atom] + '_' + orbital + '_down', color=self.color,
-                                  method=self.method)
-        except KeyError:
-            print("Warning:Don't plot this non-exist orbital!")
-            setattr(self, 'show', False)
-        else:
-            plt.legend(loc='best')
 
 
 def main_wrapper(func):
@@ -318,7 +293,7 @@ def main(option):
     P = list(P)
     print("文件加载完成...")
 
-    P[0].plot(xlim=[-6, 9], color='#123E09', method='line')
+    P[0].plot(atoms=1, orbitals=['s'], xlim=[-6, 9], color='#123E09', method='line')
 
 
 if __name__ == '__main__':
