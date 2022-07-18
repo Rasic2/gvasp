@@ -1,0 +1,43 @@
+Element C:
+    formula: C
+    number: 6
+    period: 2
+    group: 14
+    color: '#828282'
+    bonds:
+        Element C: 1.540
+        Element O: 1.142
+        Element Ce: 2.480
+
+Element O:
+    formula: O
+    number: 8
+    period: 2
+    group: 16
+    color: '#FF0000'
+    bonds:
+        Element C: 1.142
+        Element O: 1.490
+        Element Ce: 2.356
+
+Element Cu:
+    formula: Cu
+    number: 29
+    period: 4
+    group: 11
+    color: '#FFFFC8'
+    bonds:
+        Element C: 2.480
+        Element O: 2.356
+        Element Ce: 3.420
+
+Element Ce:
+    formula: Ce
+    number: 58
+    period: 6
+    group: 3
+    color: '#FFFFC8'
+    bonds:
+        Element C: 2.480
+        Element O: 2.356
+        Element Ce: 3.420

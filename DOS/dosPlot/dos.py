@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import glob
 import math
-import os
 import time
 from collections import defaultdict
 from functools import wraps
@@ -14,6 +13,8 @@ from matplotlib import pyplot as plt
 from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
+
+from file import CONTCAR
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -192,21 +193,20 @@ class PlotDOS(object):
         print("电子数为: {0:.4f} center值为: {1:.4f}".format(e_count, dos / e_count))
 
     @staticmethod
-    def contcar_parse(CONTCAR):
+    def contcar_parse(name):
         """
         read CONTCAR file, obtain the elements list.
 
-        return:     elements list, e.g., ['','Be','Be','C']
+        @params:
+            name:       CONTCAR file name
+
+        @return:
+            element:    elements list, e.g., ['','Be','Be','C']
         """
-        elem_name, elem_count = os.popen("sed -n '6p' {}".format(CONTCAR)), os.popen("sed -n '7p' {}".format(CONTCAR))
-        names = elem_name.read().rstrip().split()
-        counts = [int(item) for item in elem_count.read().rstrip().split()]
-        result = ['']
-        for index, count in enumerate(counts):
-            while count != 0:
-                result.append(names[index])
-                count -= 1
-        return result
+
+        structure = CONTCAR(name=name).to_structure()
+        element = [' '] + structure.atoms.formula
+        return element
 
     @staticmethod
     def doscar_parse(DOSCAR):
