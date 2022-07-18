@@ -116,3 +116,7 @@ Uvalue
 test
 OUT.ANI
 dis_*
+CONTCAR*
+DOSCAR*
+.idea
+*.svg

@@ -32,3 +32,5 @@ v1.4 (2021-05-24):  support output the DOSCAR data, only need set method=output
 
 v1.5 (2022-05-07):  add calculation of average DOS (divided by atoms number)
                     unify the parameters name (e.g., atom --> atoms)
+
+v1.6 (2022-07-16):  simplify the PlotDOS API, remove the <class DOS>
