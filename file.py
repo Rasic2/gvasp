@@ -1,4 +1,5 @@
 from structure import Structure
+from c_doscar_load import doscar_load
 
 
 class VASPFile(object):
@@ -10,6 +11,7 @@ class VASPFile(object):
 
     def __init__(self, name):
         self.name = name
+        self._strings = None
 
     # def __repr__(self):
     #     return f"<{self.ftype} '{self.fname}'>"
@@ -20,9 +22,10 @@ class VASPFile(object):
 
     @property
     def strings(self):
-        with open(self.name) as f:
-            cfg = f.readlines()
-        return cfg
+        if self._strings is None:
+            with open(self.name, "r") as f:
+                self._strings = f.readlines()
+        return self._strings
 
 
 class POSCAR(VASPFile):
@@ -93,9 +96,19 @@ class CONTCAR(POSCAR):
 #             pool.close()
 #             pool.join()
 
+class DOSCAR(VASPFile):
+    def __init__(self, name):
+        super(DOSCAR, self).__init__(name=name)
+        self.Emax, self.Emin, self.NDOS, self.fermi = tuple(map(float, self.strings[5].split()[:4]))
+
+    def read(self):
+        return doscar_load(self.name)
+
+
 if __name__ == '__main__':
-    # cc = VASPFile(name='test')
-    test = CONTCAR(name='CONTCAR-test')
-    structure = test.to_structure()
-    element = [' '] + structure.atoms.formula
+    # # cc = VASPFile(name='test')
+    # test = CONTCAR(name='CONTCAR-test')
+    # structure = test.to_structure()
+    # element = [' '] + structure.atoms.formula
+    test = DOSCAR("DOSCAR-test")
     print()
