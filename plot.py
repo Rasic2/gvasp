@@ -7,8 +7,8 @@ from itertools import product
 
 import numpy as np
 import pandas as pd
-from file import CONTCAR, DOSCAR
-from matplotlib import pyplot as plt
+from file import CONTCAR, DOSCAR, EIGENVAL
+from matplotlib import pyplot as plt, cycler
 from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
@@ -21,20 +21,25 @@ COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'p
            'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up', 'f6_down', 'f7_up',
            'f7_down']
 
+COLOR = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+
 
 def plot_wrapper(func):
     @wraps(func)
-    def wrapper(self, *args, **kargs):
-        plt.rc('font', family='DejaVu Sans')  # set the font globally
+    def wrapper(self, *args, figsize=(10, 6), family='DejaVu Sans', fontsize=20, xlim=None, xlabel=None, ylabel=None,
+                color=None, title=None, **kargs):
+        plt.figure(figsize=figsize)
+        plt.rc('font', family=family)  # set the font globally
         plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
         plt.rcParams['lines.linewidth'] = 2  # set line-width
-        plt.rcParams['lines.color'] = kargs['color']  # set line-color
+        plt.rcParams['axes.prop_cycle'] = cycler('color', COLOR) if color is None else cycler('color', color)
         func(self, *args, **kargs)
-        plt.xlim((self.atom_list[0][0], self.atom_list[0][-1])) if self.xlim == None else plt.xlim(self.xlim)
-        plt.xticks(fontsize=26)
-        plt.yticks(fontsize=26)
-        plt.xlabel('Energy (eV)', fontsize=28)
-        plt.ylabel('Density of States (a.u.)', fontsize=28)
+        plt.xlim() if xlim is None else plt.xlim(xlim)
+        plt.xticks(fontsize=fontsize)
+        plt.yticks(fontsize=fontsize)
+        plt.xlabel(xlabel, fontsize=fontsize + 1)
+        plt.ylabel(ylabel, fontsize=fontsize + 1)
+        plt.title(title, fontsize=fontsize + 2)
 
     return wrapper
 
@@ -79,15 +84,15 @@ class PlotDOS(object):
         doscar_parse:   parse DOSCAR data
     """
 
-    def __init__(self, DOSCAR, CONTCAR, max_orbital='f'):
-        self.DOSCAR = DOSCAR
-        self.CONTCAR = CONTCAR
+    def __init__(self, dos_file, pos_file, max_orbital='f'):
+        self.dos_file = dos_file
+        self.pos_file = pos_file
         self.max_orbital = max_orbital  # whether you need to plot the f-orbital, default: True
-        self.element = PlotDOS.contcar_parse(self.CONTCAR)
-        self.total_dos, self.atom_list = PlotDOS.doscar_parse(self.DOSCAR)
+        self.element = PlotDOS.contcar_parse(self.pos_file)
+        self.total_dos, self.atom_list = PlotDOS.doscar_parse(self.dos_file)
 
     @plot_wrapper
-    def plot(self, atoms=None, orbitals=None, xlim=None, color='', method='fill', avgflag=False):
+    def plot(self, atoms=None, orbitals=None, color='', method='fill', avgflag=False, **kargs):
         """
         Plot DOS Main Func
 
@@ -100,7 +105,6 @@ class PlotDOS(object):
 
         self.atoms = atoms
         self.orbitals = orbitals
-        self.xlim = xlim
         self.color = color
         self.method = method
         self.avgflag = avgflag
@@ -218,6 +222,25 @@ class PlotDOS(object):
         """
         dos_instance = DOSCAR(name=name).load()
         return dos_instance.TDOS, dos_instance.LDOS
+
+
+class PlotBand(object):
+    def __init__(self, name):
+        self.name = name
+        self.energy = EIGENVAL(self.name).load().energy
+
+    @plot_wrapper
+    def plot(self):
+        """
+        Plot Band Structure, for spin-system, the average energy was applied
+        """
+        energy_avg = self.energy.mean(axis=-1)
+        for band_index in range(energy_avg.shape[1]):
+            plt.plot(energy_avg[:, band_index])
+
+    @staticmethod
+    def show():
+        plt.show()
 
 
 if __name__ == '__main__':

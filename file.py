@@ -1,5 +1,7 @@
 import math
 
+import numpy as np
+
 from CLib import _dos
 from pandas import DataFrame
 from structure import Structure
@@ -152,11 +154,38 @@ class DOSCAR(VASPFile):
         return merge_dos(*_dos.load(self.strings, self.NDOS, self.fermi))
 
 
+class EIGENVAL(VASPFile):
+    def __init__(self, name):
+        super(EIGENVAL, self).__init__(name=name)
+        self.NKPoint, self.NBand  = tuple(map(int, self.strings[5].split()[1:]))
+
+    def load(self):
+        self.KPoint_coord = []
+        self.energy = []
+        energy_flag=False
+        sBand = []
+        for index, line in enumerate(self.strings):
+            if index % (self.NBand+2) == 7:
+                self.KPoint_coord.append(tuple(map(float, line.split()[0:3])))
+                energy_flag = True
+                continue
+            elif energy_flag:
+                sBand.append(list(map(float, line.split()[1:])))
+                if len(sBand) == self.NBand:
+                    energy_flag = False
+                    self.energy.append(sBand)
+                    sBand = []
+
+        self.KPoint_coord = np.array(self.KPoint_coord)
+        self.energy = np.array(self.energy)
+
+        return self
+
 if __name__ == '__main__':
     # # cc = VASPFile(name='test')
     # test = CONTCAR(name='CONTCAR-test')
     # structure = test.to_structure()
     # element = [' '] + structure.atoms.formula
-    test = DOSCAR("DOSCAR-test")
-    result = test.load()
+    # test = DOSCAR("DOSCAR-test")
+    # result = test.load()
     print()
