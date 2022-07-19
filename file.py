@@ -1,3 +1,4 @@
+import numpy as np
 from CLib import _dos
 
 from structure import Structure
@@ -101,10 +102,10 @@ class DOSCAR(VASPFile):
     def __init__(self, name):
         super(DOSCAR, self).__init__(name=name)
         self.Emax, self.Emin, self.NDOS, self.fermi = tuple(map(float, self.strings[5].split()[:4]))
+        self.NDOS = int(self.NDOS)
 
-    def read(self):
-        return _dos.load(self.name)
-
+    def load(self):
+        return _dos.load(self.strings, self.NDOS, self.fermi)
 
 if __name__ == '__main__':
     # # cc = VASPFile(name='test')
@@ -112,5 +113,5 @@ if __name__ == '__main__':
     # structure = test.to_structure()
     # element = [' '] + structure.atoms.formula
     test = DOSCAR("DOSCAR-test")
-    result = test.read()
+    result = test.load()
     print()

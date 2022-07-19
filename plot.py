@@ -8,13 +8,11 @@ from itertools import product
 
 import numpy as np
 import pandas as pd
-from c_doscar_load import doscar_load
+from file import CONTCAR, DOSCAR
 from matplotlib import pyplot as plt
 from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
-
-from file import CONTCAR
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -209,7 +207,7 @@ class PlotDOS(object):
         return element
 
     @staticmethod
-    def doscar_parse(DOSCAR):
+    def doscar_parse(name):
         def datatype_convert(energy_list, Total_up, Total_down, atom_list, length):
             atom_data = [energy_list]
             columns = COLUMNS[:length]
@@ -242,7 +240,7 @@ class PlotDOS(object):
                 atom_data.append(DATA)
             return Total_Dos, atom_data
 
-        return datatype_convert(*doscar_load(DOSCAR))
+        return datatype_convert(*DOSCAR(name=name).load())
 
 
 if __name__ == '__main__':
