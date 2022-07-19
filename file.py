@@ -1,6 +1,7 @@
-import numpy as np
-from CLib import _dos
+import math
 
+from CLib import _dos
+from pandas import DataFrame
 from structure import Structure
 
 
@@ -101,11 +102,55 @@ class CONTCAR(POSCAR):
 class DOSCAR(VASPFile):
     def __init__(self, name):
         super(DOSCAR, self).__init__(name=name)
+        self.NAtom = int(self.strings[0].split()[0])
         self.Emax, self.Emin, self.NDOS, self.fermi = tuple(map(float, self.strings[5].split()[:4]))
         self.NDOS = int(self.NDOS)
 
     def load(self):
-        return _dos.load(self.strings, self.NDOS, self.fermi)
+        ORBITALS = ['s', 'p', 'd', 'f']
+        COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'px_down', 'dxy_up', 'dxy_down',
+                   'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
+                   'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
+                   'f6_down', 'f7_up', 'f7_down']
+
+        def merge_dos(energy_list, Total_up, Total_down, atom_list, length):
+            """TODO:  need  optimize, deprecate DataFrame"""
+            atom_data = [energy_list]
+            columns = COLUMNS[:length]
+            orbitals = ORBITALS[1:int(math.sqrt(length / 2))]
+            Total_Dos = DataFrame(index=energy_list, columns=['tot_up', 'tot_down'], dtype='object')
+            Total_Dos['tot_up'] = Total_up
+            Total_Dos['tot_down'] = Total_down
+
+            for data in atom_list:
+                DATA = DataFrame(data, index=energy_list, columns=columns)
+                DATA['up'] = 0.0
+                DATA['down'] = 0.0
+                for orbital in orbitals:
+                    DATA[orbital + '_up'] = 0.0
+                    DATA[orbital + '_down'] = 0.0
+                    orbital_p_up = [item for item in DATA.columns.values if
+                                    item.startswith(orbital) and item.endswith('up') and item != '{}_up'.format(
+                                        orbital) and item != 'up']
+                    orbital_p_down = [item for item in DATA.columns.values if
+                                      item.startswith(orbital) and item.endswith('down') and item != '{}_down'.format(
+                                          orbital) and item != 'down']
+                    for item in orbital_p_up:
+                        DATA[f'{orbital}_up'] += DATA[item]
+                    for item in orbital_p_down:
+                        DATA[f'{orbital}_down'] += DATA[item]
+                    DATA['up'] += DATA[f'{orbital}_up']
+                    DATA['down'] += DATA[f'{orbital}_down']
+                DATA['up'] += DATA['s_up']
+                DATA['down'] += DATA['s_down']
+                atom_data.append(DATA)
+
+            self.TDOS = Total_Dos  # DataFrame(NDOS, 2)
+            self.LDOS = atom_data  # energy + List(NAtom, NDOS, NOrbital+8)
+            return self
+
+        return merge_dos(*_dos.load(self.strings, self.NDOS, self.fermi))
+
 
 if __name__ == '__main__':
     # # cc = VASPFile(name='test')
