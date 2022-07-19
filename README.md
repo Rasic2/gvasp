@@ -38,13 +38,25 @@ g++ -g -O3 chgcar2grd -c chgcar2grd.cpp
 ```
 
 While for the `*.pyx` file, operation above may not work, you need to write the `setup.py` firstly, and then run the following command:
-```
-python setup.py build_ext --inplace
-```
-and the `*.so` file can be created and imported by the python.
+
+- MACOS/Linux System
+    ```
+    python setup.py build_ext --inplace
+    ```
+    and the `*.so` file can be created and imported by the python.
+
+
+- Windows System
+    ```
+    1. Run "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars64.bat" in CMD
+    2. python.exe setup.py build_ext --inplace --compiler=msvc
+    ```
+  and thr `*.pyd` file can be created and imported by the python.
+
 
 ## Requirements
 * GNU compiler (gcc, gfortran and g++)
+* MSVC compiler
 * Cython (use for dosPlot)
 
 

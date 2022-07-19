@@ -1,5 +1,6 @@
+from CLib import _dos
+
 from structure import Structure
-from c_doscar_load import doscar_load
 
 
 class VASPFile(object):
@@ -102,7 +103,7 @@ class DOSCAR(VASPFile):
         self.Emax, self.Emin, self.NDOS, self.fermi = tuple(map(float, self.strings[5].split()[:4]))
 
     def read(self):
-        return doscar_load(self.name)
+        return _dos.load(self.name)
 
 
 if __name__ == '__main__':
@@ -111,4 +112,5 @@ if __name__ == '__main__':
     # structure = test.to_structure()
     # element = [' '] + structure.atoms.formula
     test = DOSCAR("DOSCAR-test")
+    result = test.read()
     print()

@@ -5,12 +5,12 @@
     "distutils": {
         "depends": [],
         "language": "c++",
-        "name": "c_doscar_load",
+        "name": "QVasp.DOS.dosPlot.c_doscar_load",
         "sources": [
             "c_doscar_load.pyx"
         ]
     },
-    "module_name": "c_doscar_load"
+    "module_name": "QVasp.DOS.dosPlot.c_doscar_load"
 }
 END: Cython Metadata */
 
@@ -707,8 +707,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__c_doscar_load
-#define __PYX_HAVE_API__c_doscar_load
+#define __PYX_HAVE__QVasp__DOS__dosPlot__c_doscar_load
+#define __PYX_HAVE_API__QVasp__DOS__dosPlot__c_doscar_load
 /* Early includes */
 #include <string.h>
 #include <stdlib.h>
@@ -932,16 +932,16 @@ static const char *__pyx_f[] = {
 };
 
 /*--- Type declarations ---*/
-struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator;
+struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator;
 
-/* "c_doscar_load.pyx":8
+/* "QVasp/DOS/dosPlot/c_doscar_load.pyx":8
  * from libcpp.string cimport string
  * 
  * def read_genator(unicode DOSCAR):             # <<<<<<<<<<<<<<
  * 	with open(DOSCAR) as f:
  * 		yield from f.readlines()
  */
-struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator {
+struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator {
   PyObject_HEAD
   PyObject *__pyx_v_DOSCAR;
   PyObject *__pyx_v_f;
@@ -1479,15 +1479,15 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libcpp.string' */
 
-/* Module declarations from 'c_doscar_load' */
-static PyTypeObject *__pyx_ptype_13c_doscar_load___pyx_scope_struct__read_genator = 0;
+/* Module declarations from 'QVasp.DOS.dosPlot.c_doscar_load' */
+static PyTypeObject *__pyx_ptype_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator = 0;
 static std::vector<double>  __pyx_convert_vector_from_py_double(PyObject *); /*proto*/
 static PyObject *__pyx_convert_vector_to_py_double(const std::vector<double>  &); /*proto*/
-#define __Pyx_MODULE_NAME "c_doscar_load"
-extern int __pyx_module_is_main_c_doscar_load;
-int __pyx_module_is_main_c_doscar_load = 0;
+#define __Pyx_MODULE_NAME "QVasp.DOS.dosPlot.c_doscar_load"
+extern int __pyx_module_is_main_QVasp__DOS__dosPlot__c_doscar_load;
+int __pyx_module_is_main_QVasp__DOS__dosPlot__c_doscar_load = 0;
 
-/* Implementation of 'c_doscar_load' */
+/* Implementation of 'QVasp.DOS.dosPlot.c_doscar_load' */
 static PyObject *__pyx_builtin_open;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_enumerate;
@@ -1521,18 +1521,18 @@ static const char __pyx_k_line_array[] = "line_array";
 static const char __pyx_k_doscar_load[] = "doscar_load";
 static const char __pyx_k_energy_list[] = "energy_list";
 static const char __pyx_k_read_genator[] = "read_genator";
-static const char __pyx_k_c_doscar_load[] = "c_doscar_load";
 static const char __pyx_k_c_doscar_load_pyx[] = "c_doscar_load.pyx";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_QVasp_DOS_dosPlot_c_doscar_load[] = "QVasp.DOS.dosPlot.c_doscar_load";
 static PyObject *__pyx_n_s_DATA_list;
 static PyObject *__pyx_n_s_DOSCAR;
 static PyObject *__pyx_n_s_E_Fermi;
 static PyObject *__pyx_n_s_NEDOS;
+static PyObject *__pyx_n_s_QVasp_DOS_dosPlot_c_doscar_load;
 static PyObject *__pyx_n_s_Total_down;
 static PyObject *__pyx_n_s_Total_up;
 static PyObject *__pyx_n_s_args;
 static PyObject *__pyx_n_s_atom_list;
-static PyObject *__pyx_n_s_c_doscar_load;
 static PyObject *__pyx_kp_s_c_doscar_load_pyx;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_close;
@@ -1557,9 +1557,9 @@ static PyObject *__pyx_n_s_send;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_throw;
 static PyObject *__pyx_n_s_var;
-static PyObject *__pyx_pf_13c_doscar_load_read_genator(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /* proto */
-static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /* proto */
-static PyObject *__pyx_tp_new_13c_doscar_load___pyx_scope_struct__read_genator(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_pf_5QVasp_3DOS_7dosPlot_13c_doscar_load_read_genator(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /* proto */
+static PyObject *__pyx_pf_5QVasp_3DOS_7dosPlot_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /* proto */
+static PyObject *__pyx_tp_new_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_6;
 static PyObject *__pyx_codeobj_;
@@ -1569,9 +1569,9 @@ static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_codeobj__6;
 /* Late includes */
-static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
+static PyObject *__pyx_gb_5QVasp_3DOS_7dosPlot_13c_doscar_load_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "c_doscar_load.pyx":8
+/* "QVasp/DOS/dosPlot/c_doscar_load.pyx":8
  * from libcpp.string cimport string
  * 
  * def read_genator(unicode DOSCAR):             # <<<<<<<<<<<<<<
@@ -1580,9 +1580,9 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13c_doscar_load_1read_genator(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /*proto*/
-static PyMethodDef __pyx_mdef_13c_doscar_load_1read_genator = {"read_genator", (PyCFunction)__pyx_pw_13c_doscar_load_1read_genator, METH_O, 0};
-static PyObject *__pyx_pw_13c_doscar_load_1read_genator(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
+static PyObject *__pyx_pw_5QVasp_3DOS_7dosPlot_13c_doscar_load_1read_genator(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /*proto*/
+static PyMethodDef __pyx_mdef_5QVasp_3DOS_7dosPlot_13c_doscar_load_1read_genator = {"read_genator", (PyCFunction)__pyx_pw_5QVasp_3DOS_7dosPlot_13c_doscar_load_1read_genator, METH_O, 0};
+static PyObject *__pyx_pw_5QVasp_3DOS_7dosPlot_13c_doscar_load_1read_genator(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1590,7 +1590,7 @@ static PyObject *__pyx_pw_13c_doscar_load_1read_genator(PyObject *__pyx_self, Py
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("read_genator (wrapper)", 0);
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_DOSCAR), (&PyUnicode_Type), 1, "DOSCAR", 1))) __PYX_ERR(0, 8, __pyx_L1_error)
-  __pyx_r = __pyx_pf_13c_doscar_load_read_genator(__pyx_self, ((PyObject*)__pyx_v_DOSCAR));
+  __pyx_r = __pyx_pf_5QVasp_3DOS_7dosPlot_13c_doscar_load_read_genator(__pyx_self, ((PyObject*)__pyx_v_DOSCAR));
 
   /* function exit code */
   goto __pyx_L0;
@@ -1601,17 +1601,17 @@ static PyObject *__pyx_pw_13c_doscar_load_1read_genator(PyObject *__pyx_self, Py
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13c_doscar_load_read_genator(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
-  struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *__pyx_cur_scope;
+static PyObject *__pyx_pf_5QVasp_3DOS_7dosPlot_13c_doscar_load_read_genator(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
+  struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *__pyx_cur_scope;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("read_genator", 0);
-  __pyx_cur_scope = (struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *)__pyx_tp_new_13c_doscar_load___pyx_scope_struct__read_genator(__pyx_ptype_13c_doscar_load___pyx_scope_struct__read_genator, __pyx_empty_tuple, NULL);
+  __pyx_cur_scope = (struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *)__pyx_tp_new_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator(__pyx_ptype_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator, __pyx_empty_tuple, NULL);
   if (unlikely(!__pyx_cur_scope)) {
-    __pyx_cur_scope = ((struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *)Py_None);
+    __pyx_cur_scope = ((struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *)Py_None);
     __Pyx_INCREF(Py_None);
     __PYX_ERR(0, 8, __pyx_L1_error)
   } else {
@@ -1621,7 +1621,7 @@ static PyObject *__pyx_pf_13c_doscar_load_read_genator(CYTHON_UNUSED PyObject *_
   __Pyx_INCREF(__pyx_cur_scope->__pyx_v_DOSCAR);
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_DOSCAR);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_13c_doscar_load_2generator, __pyx_codeobj_, (PyObject *) __pyx_cur_scope, __pyx_n_s_read_genator, __pyx_n_s_read_genator, __pyx_n_s_c_doscar_load); if (unlikely(!gen)) __PYX_ERR(0, 8, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_5QVasp_3DOS_7dosPlot_13c_doscar_load_2generator, __pyx_codeobj_, (PyObject *) __pyx_cur_scope, __pyx_n_s_read_genator, __pyx_n_s_read_genator, __pyx_n_s_QVasp_DOS_dosPlot_c_doscar_load); if (unlikely(!gen)) __PYX_ERR(0, 8, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -1629,7 +1629,7 @@ static PyObject *__pyx_pf_13c_doscar_load_read_genator(CYTHON_UNUSED PyObject *_
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_AddTraceback("c_doscar_load.read_genator", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QVasp.DOS.dosPlot.c_doscar_load.read_genator", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
   __Pyx_XGIVEREF(__pyx_r);
@@ -1637,9 +1637,9 @@ static PyObject *__pyx_pf_13c_doscar_load_read_genator(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value) /* generator body */
+static PyObject *__pyx_gb_5QVasp_3DOS_7dosPlot_13c_doscar_load_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value) /* generator body */
 {
-  struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *__pyx_cur_scope = ((struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *)__pyx_generator->closure);
+  struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *__pyx_cur_scope = ((struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *)__pyx_generator->closure);
   PyObject *__pyx_r = NULL;
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -1667,7 +1667,7 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
   __pyx_L3_first_run:;
   if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 8, __pyx_L1_error)
 
-  /* "c_doscar_load.pyx":9
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":9
  * 
  * def read_genator(unicode DOSCAR):
  * 	with open(DOSCAR) as f:             # <<<<<<<<<<<<<<
@@ -1710,7 +1710,7 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
           __pyx_cur_scope->__pyx_v_f = __pyx_t_4;
           __pyx_t_4 = 0;
 
-          /* "c_doscar_load.pyx":10
+          /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":10
  * def read_genator(unicode DOSCAR):
  * 	with open(DOSCAR) as f:
  * 		yield from f.readlines()             # <<<<<<<<<<<<<<
@@ -1774,7 +1774,7 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
             }
           }
 
-          /* "c_doscar_load.pyx":9
+          /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":9
  * 
  * def read_genator(unicode DOSCAR):
  * 	with open(DOSCAR) as f:             # <<<<<<<<<<<<<<
@@ -1792,7 +1792,7 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         /*except:*/ {
-          __Pyx_AddTraceback("c_doscar_load.read_genator", __pyx_clineno, __pyx_lineno, __pyx_filename);
+          __Pyx_AddTraceback("QVasp.DOS.dosPlot.c_doscar_load.read_genator", __pyx_clineno, __pyx_lineno, __pyx_filename);
           if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_1, &__pyx_t_3) < 0) __PYX_ERR(0, 9, __pyx_L10_except_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_GOTREF(__pyx_t_1);
@@ -1856,7 +1856,7 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
   }
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "c_doscar_load.pyx":8
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":8
  * from libcpp.string cimport string
  * 
  * def read_genator(unicode DOSCAR):             # <<<<<<<<<<<<<<
@@ -1884,7 +1884,7 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
   return __pyx_r;
 }
 
-/* "c_doscar_load.pyx":12
+/* "QVasp/DOS/dosPlot/c_doscar_load.pyx":12
  * 		yield from f.readlines()
  * 
  * def doscar_load(unicode DOSCAR):             # <<<<<<<<<<<<<<
@@ -1893,9 +1893,9 @@ static PyObject *__pyx_gb_13c_doscar_load_2generator(__pyx_CoroutineObject *__py
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13c_doscar_load_4doscar_load(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /*proto*/
-static PyMethodDef __pyx_mdef_13c_doscar_load_4doscar_load = {"doscar_load", (PyCFunction)__pyx_pw_13c_doscar_load_4doscar_load, METH_O, 0};
-static PyObject *__pyx_pw_13c_doscar_load_4doscar_load(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
+static PyObject *__pyx_pw_5QVasp_3DOS_7dosPlot_13c_doscar_load_4doscar_load(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR); /*proto*/
+static PyMethodDef __pyx_mdef_5QVasp_3DOS_7dosPlot_13c_doscar_load_4doscar_load = {"doscar_load", (PyCFunction)__pyx_pw_5QVasp_3DOS_7dosPlot_13c_doscar_load_4doscar_load, METH_O, 0};
+static PyObject *__pyx_pw_5QVasp_3DOS_7dosPlot_13c_doscar_load_4doscar_load(PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1903,7 +1903,7 @@ static PyObject *__pyx_pw_13c_doscar_load_4doscar_load(PyObject *__pyx_self, PyO
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("doscar_load (wrapper)", 0);
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_DOSCAR), (&PyUnicode_Type), 1, "DOSCAR", 1))) __PYX_ERR(0, 12, __pyx_L1_error)
-  __pyx_r = __pyx_pf_13c_doscar_load_3doscar_load(__pyx_self, ((PyObject*)__pyx_v_DOSCAR));
+  __pyx_r = __pyx_pf_5QVasp_3DOS_7dosPlot_13c_doscar_load_3doscar_load(__pyx_self, ((PyObject*)__pyx_v_DOSCAR));
 
   /* function exit code */
   goto __pyx_L0;
@@ -1914,7 +1914,7 @@ static PyObject *__pyx_pw_13c_doscar_load_4doscar_load(PyObject *__pyx_self, PyO
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
+static PyObject *__pyx_pf_5QVasp_3DOS_7dosPlot_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_DOSCAR) {
   PyObject *__pyx_v_atom_list = 0;
   PyObject *__pyx_v_DATA_list = 0;
   PyObject *__pyx_v_line_array = 0;
@@ -1953,7 +1953,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("doscar_load", 0);
 
-  /* "c_doscar_load.pyx":14
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":14
  * def doscar_load(unicode DOSCAR):
  * 	cdef:
  * 		list atom_list=[],DATA_list=[],line_array,Total_up=[],Total_down=[],energy_list=[]             # <<<<<<<<<<<<<<
@@ -1981,7 +1981,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
   __pyx_v_energy_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "c_doscar_load.pyx":16
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":16
  * 		list atom_list=[],DATA_list=[],line_array,Total_up=[],Total_down=[],energy_list=[]
  * 		vector[double] var
  * 		int NEDOS=1000,count=0,index=0             # <<<<<<<<<<<<<<
@@ -1992,7 +1992,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
   __pyx_v_count = 0;
   __pyx_v_index = 0;
 
-  /* "c_doscar_load.pyx":20
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":20
  * 		unicode line
  * 
  * 	for line in read_genator(DOSCAR):             # <<<<<<<<<<<<<<
@@ -2060,7 +2060,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
     __Pyx_XDECREF_SET(__pyx_v_line, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "c_doscar_load.pyx":21
+    /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":21
  * 
  * 	for line in read_genator(DOSCAR):
  * 		if index==5:             # <<<<<<<<<<<<<<
@@ -2070,7 +2070,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
     __pyx_t_6 = ((__pyx_v_index == 5) != 0);
     if (__pyx_t_6) {
 
-      /* "c_doscar_load.pyx":22
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":22
  * 	for line in read_genator(DOSCAR):
  * 		if index==5:
  * 			E_Fermi=atof(line.split()[3])             # <<<<<<<<<<<<<<
@@ -2090,7 +2090,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __pyx_v_E_Fermi = atof(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "c_doscar_load.pyx":23
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":23
  * 		if index==5:
  * 			E_Fermi=atof(line.split()[3])
  * 			NEDOS=atoi(line.split()[2])             # <<<<<<<<<<<<<<
@@ -2110,7 +2110,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __pyx_v_NEDOS = atoi(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "c_doscar_load.pyx":21
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":21
  * 
  * 	for line in read_genator(DOSCAR):
  * 		if index==5:             # <<<<<<<<<<<<<<
@@ -2119,7 +2119,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
     }
 
-    /* "c_doscar_load.pyx":24
+    /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":24
  * 			E_Fermi=atof(line.split()[3])
  * 			NEDOS=atoi(line.split()[2])
  * 		if index in range(6,6+NEDOS):             # <<<<<<<<<<<<<<
@@ -2147,7 +2147,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
     __pyx_t_10 = (__pyx_t_6 != 0);
     if (__pyx_t_10) {
 
-      /* "c_doscar_load.pyx":25
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":25
  * 			NEDOS=atoi(line.split()[2])
  * 		if index in range(6,6+NEDOS):
  * 			line_array=line.split()             # <<<<<<<<<<<<<<
@@ -2163,7 +2163,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __Pyx_XDECREF_SET(__pyx_v_line_array, ((PyObject*)__pyx_t_3));
       __pyx_t_3 = 0;
 
-      /* "c_doscar_load.pyx":26
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":26
  * 		if index in range(6,6+NEDOS):
  * 			line_array=line.split()
  * 			energy_list.append(atof(line_array[0])-E_Fermi)             # <<<<<<<<<<<<<<
@@ -2183,7 +2183,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_energy_list, __pyx_t_1); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 26, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "c_doscar_load.pyx":27
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":27
  * 			line_array=line.split()
  * 			energy_list.append(atof(line_array[0])-E_Fermi)
  * 			Total_up.append(atof(line_array[1]))             # <<<<<<<<<<<<<<
@@ -2203,7 +2203,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_Total_up, __pyx_t_3); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "c_doscar_load.pyx":28
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":28
  * 			energy_list.append(atof(line_array[0])-E_Fermi)
  * 			Total_up.append(atof(line_array[1]))
  * 			Total_down.append(-atof(line_array[2]))             # <<<<<<<<<<<<<<
@@ -2223,7 +2223,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_Total_down, __pyx_t_1); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 28, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "c_doscar_load.pyx":24
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":24
  * 			E_Fermi=atof(line.split()[3])
  * 			NEDOS=atoi(line.split()[2])
  * 		if index in range(6,6+NEDOS):             # <<<<<<<<<<<<<<
@@ -2232,7 +2232,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
     }
 
-    /* "c_doscar_load.pyx":29
+    /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":29
  * 			Total_up.append(atof(line_array[1]))
  * 			Total_down.append(-atof(line_array[2]))
  * 		if index>=(6+NEDOS+1) and (index-5)%(NEDOS+1)!=0:             # <<<<<<<<<<<<<<
@@ -2256,7 +2256,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_10) {
 
-      /* "c_doscar_load.pyx":30
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":30
  * 			Total_down.append(-atof(line_array[2]))
  * 		if index>=(6+NEDOS+1) and (index-5)%(NEDOS+1)!=0:
  * 			count+=1             # <<<<<<<<<<<<<<
@@ -2265,7 +2265,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
       __pyx_v_count = (__pyx_v_count + 1);
 
-      /* "c_doscar_load.pyx":31
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":31
  * 		if index>=(6+NEDOS+1) and (index-5)%(NEDOS+1)!=0:
  * 			count+=1
  * 			var=[atof(item)*(-1)**index for index,item in enumerate(line.split()[1:])] #for             # <<<<<<<<<<<<<<
@@ -2347,7 +2347,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_var = __pyx_t_17;
 
-      /* "c_doscar_load.pyx":32
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":32
  * 			count+=1
  * 			var=[atof(item)*(-1)**index for index,item in enumerate(line.split()[1:])] #for
  * 			DATA_list.append(var)             # <<<<<<<<<<<<<<
@@ -2359,7 +2359,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_DATA_list, __pyx_t_1); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 32, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "c_doscar_load.pyx":33
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":33
  * 			var=[atof(item)*(-1)**index for index,item in enumerate(line.split()[1:])] #for
  * 			DATA_list.append(var)
  * 			if count==NEDOS:             # <<<<<<<<<<<<<<
@@ -2369,7 +2369,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
       __pyx_t_10 = ((__pyx_v_count == __pyx_v_NEDOS) != 0);
       if (__pyx_t_10) {
 
-        /* "c_doscar_load.pyx":34
+        /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":34
  * 			DATA_list.append(var)
  * 			if count==NEDOS:
  * 				count=0             # <<<<<<<<<<<<<<
@@ -2378,7 +2378,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
         __pyx_v_count = 0;
 
-        /* "c_doscar_load.pyx":35
+        /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":35
  * 			if count==NEDOS:
  * 				count=0
  * 				atom_list.append(DATA_list)             # <<<<<<<<<<<<<<
@@ -2387,7 +2387,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
         __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_atom_list, __pyx_v_DATA_list); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 35, __pyx_L1_error)
 
-        /* "c_doscar_load.pyx":36
+        /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":36
  * 				count=0
  * 				atom_list.append(DATA_list)
  * 				DATA_list=[]             # <<<<<<<<<<<<<<
@@ -2399,7 +2399,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
         __Pyx_DECREF_SET(__pyx_v_DATA_list, ((PyObject*)__pyx_t_1));
         __pyx_t_1 = 0;
 
-        /* "c_doscar_load.pyx":33
+        /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":33
  * 			var=[atof(item)*(-1)**index for index,item in enumerate(line.split()[1:])] #for
  * 			DATA_list.append(var)
  * 			if count==NEDOS:             # <<<<<<<<<<<<<<
@@ -2408,7 +2408,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
       }
 
-      /* "c_doscar_load.pyx":29
+      /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":29
  * 			Total_up.append(atof(line_array[1]))
  * 			Total_down.append(-atof(line_array[2]))
  * 		if index>=(6+NEDOS+1) and (index-5)%(NEDOS+1)!=0:             # <<<<<<<<<<<<<<
@@ -2417,7 +2417,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
     }
 
-    /* "c_doscar_load.pyx":37
+    /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":37
  * 				atom_list.append(DATA_list)
  * 				DATA_list=[]
  * 		index+=1             # <<<<<<<<<<<<<<
@@ -2426,7 +2426,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
  */
     __pyx_v_index = (__pyx_v_index + 1);
 
-    /* "c_doscar_load.pyx":20
+    /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":20
  * 		unicode line
  * 
  * 	for line in read_genator(DOSCAR):             # <<<<<<<<<<<<<<
@@ -2436,7 +2436,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "c_doscar_load.pyx":39
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":39
  * 		index+=1
  * 
  * 	return energy_list,Total_up,Total_down,atom_list,len(var)             # <<<<<<<<<<<<<<
@@ -2469,7 +2469,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "c_doscar_load.pyx":12
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":12
  * 		yield from f.readlines()
  * 
  * def doscar_load(unicode DOSCAR):             # <<<<<<<<<<<<<<
@@ -2483,7 +2483,7 @@ static PyObject *__pyx_pf_13c_doscar_load_3doscar_load(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("c_doscar_load.doscar_load", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("QVasp.DOS.dosPlot.c_doscar_load.doscar_load", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_atom_list);
@@ -2686,14 +2686,14 @@ static PyObject *__pyx_convert_vector_to_py_double(const std::vector<double>  &_
   return __pyx_r;
 }
 
-static struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *__pyx_freelist_13c_doscar_load___pyx_scope_struct__read_genator[8];
-static int __pyx_freecount_13c_doscar_load___pyx_scope_struct__read_genator = 0;
+static struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *__pyx_freelist_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator[8];
+static int __pyx_freecount_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator = 0;
 
-static PyObject *__pyx_tp_new_13c_doscar_load___pyx_scope_struct__read_genator(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+static PyObject *__pyx_tp_new_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
   PyObject *o;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_13c_doscar_load___pyx_scope_struct__read_genator > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator)))) {
-    o = (PyObject*)__pyx_freelist_13c_doscar_load___pyx_scope_struct__read_genator[--__pyx_freecount_13c_doscar_load___pyx_scope_struct__read_genator];
-    memset(o, 0, sizeof(struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator));
+  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator)))) {
+    o = (PyObject*)__pyx_freelist_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator[--__pyx_freecount_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator];
+    memset(o, 0, sizeof(struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator));
     (void) PyObject_INIT(o, t);
     PyObject_GC_Track(o);
   } else {
@@ -2703,8 +2703,8 @@ static PyObject *__pyx_tp_new_13c_doscar_load___pyx_scope_struct__read_genator(P
   return o;
 }
 
-static void __pyx_tp_dealloc_13c_doscar_load___pyx_scope_struct__read_genator(PyObject *o) {
-  struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *p = (struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *)o;
+static void __pyx_tp_dealloc_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator(PyObject *o) {
+  struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *p = (struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *)o;
   PyObject_GC_UnTrack(o);
   Py_CLEAR(p->__pyx_v_DOSCAR);
   Py_CLEAR(p->__pyx_v_f);
@@ -2712,16 +2712,16 @@ static void __pyx_tp_dealloc_13c_doscar_load___pyx_scope_struct__read_genator(Py
   Py_CLEAR(p->__pyx_t_1);
   Py_CLEAR(p->__pyx_t_2);
   Py_CLEAR(p->__pyx_t_3);
-  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_13c_doscar_load___pyx_scope_struct__read_genator < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator)))) {
-    __pyx_freelist_13c_doscar_load___pyx_scope_struct__read_genator[__pyx_freecount_13c_doscar_load___pyx_scope_struct__read_genator++] = ((struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *)o);
+  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator)))) {
+    __pyx_freelist_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator[__pyx_freecount_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator++] = ((struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *)o);
   } else {
     (*Py_TYPE(o)->tp_free)(o);
   }
 }
 
-static int __pyx_tp_traverse_13c_doscar_load___pyx_scope_struct__read_genator(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *p = (struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator *)o;
+  struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *p = (struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator *)o;
   if (p->__pyx_v_f) {
     e = (*v)(p->__pyx_v_f, a); if (e) return e;
   }
@@ -2740,12 +2740,12 @@ static int __pyx_tp_traverse_13c_doscar_load___pyx_scope_struct__read_genator(Py
   return 0;
 }
 
-static PyTypeObject __pyx_type_13c_doscar_load___pyx_scope_struct__read_genator = {
+static PyTypeObject __pyx_type_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator = {
   PyVarObject_HEAD_INIT(0, 0)
-  "c_doscar_load.__pyx_scope_struct__read_genator", /*tp_name*/
-  sizeof(struct __pyx_obj_13c_doscar_load___pyx_scope_struct__read_genator), /*tp_basicsize*/
+  "QVasp.DOS.dosPlot.c_doscar_load.__pyx_scope_struct__read_genator", /*tp_name*/
+  sizeof(struct __pyx_obj_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_13c_doscar_load___pyx_scope_struct__read_genator, /*tp_dealloc*/
+  __pyx_tp_dealloc_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator, /*tp_dealloc*/
   #if PY_VERSION_HEX < 0x030800b4
   0, /*tp_print*/
   #endif
@@ -2772,7 +2772,7 @@ static PyTypeObject __pyx_type_13c_doscar_load___pyx_scope_struct__read_genator 
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_13c_doscar_load___pyx_scope_struct__read_genator, /*tp_traverse*/
+  __pyx_tp_traverse_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator, /*tp_traverse*/
   0, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
@@ -2788,7 +2788,7 @@ static PyTypeObject __pyx_type_13c_doscar_load___pyx_scope_struct__read_genator 
   0, /*tp_dictoffset*/
   0, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_13c_doscar_load___pyx_scope_struct__read_genator, /*tp_new*/
+  __pyx_tp_new_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -2862,11 +2862,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_DOSCAR, __pyx_k_DOSCAR, sizeof(__pyx_k_DOSCAR), 0, 0, 1, 1},
   {&__pyx_n_s_E_Fermi, __pyx_k_E_Fermi, sizeof(__pyx_k_E_Fermi), 0, 0, 1, 1},
   {&__pyx_n_s_NEDOS, __pyx_k_NEDOS, sizeof(__pyx_k_NEDOS), 0, 0, 1, 1},
+  {&__pyx_n_s_QVasp_DOS_dosPlot_c_doscar_load, __pyx_k_QVasp_DOS_dosPlot_c_doscar_load, sizeof(__pyx_k_QVasp_DOS_dosPlot_c_doscar_load), 0, 0, 1, 1},
   {&__pyx_n_s_Total_down, __pyx_k_Total_down, sizeof(__pyx_k_Total_down), 0, 0, 1, 1},
   {&__pyx_n_s_Total_up, __pyx_k_Total_up, sizeof(__pyx_k_Total_up), 0, 0, 1, 1},
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
   {&__pyx_n_s_atom_list, __pyx_k_atom_list, sizeof(__pyx_k_atom_list), 0, 0, 1, 1},
-  {&__pyx_n_s_c_doscar_load, __pyx_k_c_doscar_load, sizeof(__pyx_k_c_doscar_load), 0, 0, 1, 1},
   {&__pyx_kp_s_c_doscar_load_pyx, __pyx_k_c_doscar_load_pyx, sizeof(__pyx_k_c_doscar_load_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_close, __pyx_k_close, sizeof(__pyx_k_close), 0, 0, 1, 1},
@@ -2906,7 +2906,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "c_doscar_load.pyx":9
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":9
  * 
  * def read_genator(unicode DOSCAR):
  * 	with open(DOSCAR) as f:             # <<<<<<<<<<<<<<
@@ -2917,7 +2917,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "c_doscar_load.pyx":31
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":31
  * 		if index>=(6+NEDOS+1) and (index-5)%(NEDOS+1)!=0:
  * 			count+=1
  * 			var=[atof(item)*(-1)**index for index,item in enumerate(line.split()[1:])] #for             # <<<<<<<<<<<<<<
@@ -2928,7 +2928,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__3);
   __Pyx_GIVEREF(__pyx_slice__3);
 
-  /* "c_doscar_load.pyx":8
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":8
  * from libcpp.string cimport string
  * 
  * def read_genator(unicode DOSCAR):             # <<<<<<<<<<<<<<
@@ -2940,7 +2940,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__4);
   __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_c_doscar_load_pyx, __pyx_n_s_read_genator, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 8, __pyx_L1_error)
 
-  /* "c_doscar_load.pyx":12
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":12
  * 		yield from f.readlines()
  * 
  * def doscar_load(unicode DOSCAR):             # <<<<<<<<<<<<<<
@@ -3006,14 +3006,14 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_13c_doscar_load___pyx_scope_struct__read_genator) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_13c_doscar_load___pyx_scope_struct__read_genator.tp_print = 0;
+  __pyx_type_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_13c_doscar_load___pyx_scope_struct__read_genator.tp_dictoffset && __pyx_type_13c_doscar_load___pyx_scope_struct__read_genator.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_13c_doscar_load___pyx_scope_struct__read_genator.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator.tp_dictoffset && __pyx_type_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
-  __pyx_ptype_13c_doscar_load___pyx_scope_struct__read_genator = &__pyx_type_13c_doscar_load___pyx_scope_struct__read_genator;
+  __pyx_ptype_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator = &__pyx_type_5QVasp_3DOS_7dosPlot_13c_doscar_load___pyx_scope_struct__read_genator;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3217,14 +3217,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_c_doscar_load) {
+  if (__pyx_module_is_main_QVasp__DOS__dosPlot__c_doscar_load) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "c_doscar_load")) {
-      if (unlikely(PyDict_SetItemString(modules, "c_doscar_load", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "QVasp.DOS.dosPlot.c_doscar_load")) {
+      if (unlikely(PyDict_SetItemString(modules, "QVasp.DOS.dosPlot.c_doscar_load", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -3245,31 +3245,31 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "c_doscar_load.pyx":8
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":8
  * from libcpp.string cimport string
  * 
  * def read_genator(unicode DOSCAR):             # <<<<<<<<<<<<<<
  * 	with open(DOSCAR) as f:
  * 		yield from f.readlines()
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_13c_doscar_load_1read_genator, NULL, __pyx_n_s_c_doscar_load); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5QVasp_3DOS_7dosPlot_13c_doscar_load_1read_genator, NULL, __pyx_n_s_QVasp_DOS_dosPlot_c_doscar_load); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_read_genator, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "c_doscar_load.pyx":12
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":12
  * 		yield from f.readlines()
  * 
  * def doscar_load(unicode DOSCAR):             # <<<<<<<<<<<<<<
  * 	cdef:
  * 		list atom_list=[],DATA_list=[],line_array,Total_up=[],Total_down=[],energy_list=[]
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_13c_doscar_load_4doscar_load, NULL, __pyx_n_s_c_doscar_load); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5QVasp_3DOS_7dosPlot_13c_doscar_load_4doscar_load, NULL, __pyx_n_s_QVasp_DOS_dosPlot_c_doscar_load); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_doscar_load, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "c_doscar_load.pyx":1
+  /* "QVasp/DOS/dosPlot/c_doscar_load.pyx":1
  * # distutils: language=c++             # <<<<<<<<<<<<<<
  * # cython:c_string_type=unicode, c_string_encoding=utf-8
  * 
@@ -3294,11 +3294,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init c_doscar_load", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init QVasp.DOS.dosPlot.c_doscar_load", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init c_doscar_load");
+    PyErr_SetString(PyExc_ImportError, "init QVasp.DOS.dosPlot.c_doscar_load");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
