@@ -1,6 +1,9 @@
-from file import CHGCAR, CHGBase, CHGCAR_tot
+from file import CHGCAR_tot, CHGCAR_mag
 
-# chgBase = CHGBase("CHGCAR")
 chg_tot = CHGCAR_tot("CHGCAR_tot")
-# chgFile = CHGCAR("CHGCAR")
+chg_tot.load()
+
+chg_mag = CHGCAR_mag("CHGCAR_mag")
+chg_mag.load()
+
 print()

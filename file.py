@@ -2,10 +2,9 @@ import math
 from pathlib import Path
 
 import numpy as np
-
-from CLib import _dos
 from pandas import DataFrame
 
+from CLib import _dos
 from logger import logger
 from structure import Structure
 
@@ -219,6 +218,19 @@ class CHGBase(POSCAR):
     def __init__(self, name):
         super(CHGBase, self).__init__(name=name)
 
+    def load(self):
+        """
+        load Electronic-Density
+
+        @return:
+            self.density:    shape=(NGX, NGY, NGZ)
+        """
+        start = len(self.structure.atoms) + 9
+        self.NGX, self.NGY, self.NGZ = tuple(map(int, self.strings[start].split()))
+        self.density = np.append([], np.char.split(self.strings[start + 1:]).tolist()).astype(float)
+        assert self.density.size == self.NGX * self.NGY * self.NGZ, "Load density failure, size is not consistent"
+        self.density = self.density.reshape((self.NGX, self.NGY, self.NGZ), order="F")
+
 
 class CHGCAR_tot(CHGBase):
     def __init__(self, name):
@@ -233,13 +245,3 @@ class CHGCAR_mag(CHGBase):
 class CHGCAR(POSCAR):
     def __init__(self, name):
         super(CHGCAR, self).__init__(name=name)
-
-
-if __name__ == '__main__':
-    # # cc = VASPFile(name='test')
-    # test = CONTCAR(name='CONTCAR-test')
-    # structure = test.to_structure()
-    # element = [' '] + structure.atoms.formula
-    # test = DOSCAR("DOSCAR-test")
-    # result = test.load()
-    print()
