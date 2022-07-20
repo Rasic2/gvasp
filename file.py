@@ -1,9 +1,12 @@
 import math
+from pathlib import Path
 
 import numpy as np
 
 from CLib import _dos
 from pandas import DataFrame
+
+from logger import logger
 from structure import Structure
 
 
@@ -157,15 +160,21 @@ class DOSCAR(VASPFile):
 class EIGENVAL(VASPFile):
     def __init__(self, name):
         super(EIGENVAL, self).__init__(name=name)
-        self.NKPoint, self.NBand  = tuple(map(int, self.strings[5].split()[1:]))
+        self.NKPoint, self.NBand = tuple(map(int, self.strings[5].split()[1:]))
 
     def load(self):
+        """
+        load Eigenval obtain the band-energy
+
+        @return:
+            self.energy:    shape=(NKPoint, NBand, 2)
+        """
         self.KPoint_coord = []
         self.energy = []
-        energy_flag=False
+        energy_flag = False
         sBand = []
         for index, line in enumerate(self.strings):
-            if index % (self.NBand+2) == 7:
+            if index % (self.NBand + 2) == 7:
                 self.KPoint_coord.append(tuple(map(float, line.split()[0:3])))
                 energy_flag = True
                 continue
@@ -180,6 +189,21 @@ class EIGENVAL(VASPFile):
         self.energy = np.array(self.energy)
 
         return self
+
+    def write(self, dir='band_data'):
+        """
+        Write band-data to file, each band corresponding to one file and named as band_{index}
+
+        @params:
+            dir:    save directory, default: $CWD/band_data
+        """
+        Path(dir).mkdir(exist_ok=True)
+        if getattr(self, "energy", None) is None:
+            self.load()
+        for index in range(self.NBand):
+            np.savetxt(f"{dir}/band_{index + 1}", self.energy[:, index])
+        logger.info(f"Band data has been saved to {dir} directory")
+
 
 if __name__ == '__main__':
     # # cc = VASPFile(name='test')

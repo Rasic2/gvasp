@@ -120,3 +120,4 @@ CONTCAR*
 DOSCAR*
 .idea
 *.svg
+logs/

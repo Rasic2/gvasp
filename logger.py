@@ -4,9 +4,8 @@ import inspect
 import logging
 
 current_dir = os.path.dirname(os.path.abspath(os.path.realpath(inspect.getfile(inspect.currentframe()))))
-parent_dir = os.path.dirname(current_dir)
 root_dir = current_dir
-LOG_DIR = os.path.join(current_dir, "../logs")
+LOG_DIR = os.path.join(current_dir, f"{root_dir}/logs")
 
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
