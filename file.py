@@ -52,7 +52,8 @@ class POSCAR(VASPFile):
     #     else:
     #         raise ArithmeticError(f"{self} and {other} not have the same lattice vector!")
     #
-    def to_structure(self):
+    @property
+    def structure(self):
         return Structure.from_POSCAR(self.name)
 
 
@@ -203,6 +204,35 @@ class EIGENVAL(VASPFile):
         for index in range(self.NBand):
             np.savetxt(f"{dir}/band_{index + 1}", self.energy[:, index])
         logger.info(f"Band data has been saved to {dir} directory")
+
+
+class CHGBase(POSCAR):
+    """
+    Subclass of POSCAR, inherit <structure property>
+    """
+
+    def __new__(cls, *args, **kwargs):
+        if cls is CHGBase:
+            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
+        return super().__new__(cls)
+
+    def __init__(self, name):
+        super(CHGBase, self).__init__(name=name)
+
+
+class CHGCAR_tot(CHGBase):
+    def __init__(self, name):
+        super(CHGCAR_tot, self).__init__(name=name)
+
+
+class CHGCAR_mag(CHGBase):
+    def __init__(self, name):
+        super(CHGCAR_mag, self).__init__(name=name)
+
+
+class CHGCAR(POSCAR):
+    def __init__(self, name):
+        super(CHGCAR, self).__init__(name=name)
 
 
 if __name__ == '__main__':

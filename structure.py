@@ -92,16 +92,18 @@ class Structure(object):
         formula = sum([[formula] * count for (formula, count) in formula], [])
 
         selective = cfg[7].lower()[0] == "s"
-        if selective:
-            coor_type = cfg[8].rstrip()
-            coords = np.array(list([float(item) for item in coor.split()[:3]] for coor in cfg[9:9 + len(formula)]))
+        coor_type_index = 8 if selective else 7
 
-            frac_coord = coords if coor_type.lower()[0] == "d" else None
-            cart_coord = coords if coor_type.lower()[0] == "c" else None
-            selective_matrix = np.array(list([item.split()[3:6] for item in cfg[9:9 + len(formula)]]))
-        else:
-            raise NotImplementedError \
-                ("The POSCAR file which don't have the selective section can't handle in this version.")
+        coor_type = cfg[coor_type_index].rstrip()
+        coords = np.array(
+            [[float(item) for item in coor.split()[:3]] for coor in
+             cfg[coor_type_index + 1:coor_type_index + 1 + len(formula)]])
+
+        frac_coord = coords if coor_type.lower()[0] == "d" else None
+        cart_coord = coords if coor_type.lower()[0] == "c" else None
+        selective_matrix = np.array(
+            list([item.split()[3:6] for item in
+                  cfg[coor_type_index + 1:coor_type_index + 1 + len(formula)]])) if selective else None
 
         atoms = Atoms(formula=formula, frac_coord=frac_coord, cart_coord=cart_coord, selective_matrix=selective_matrix)
         atoms.set_coord(lattice)

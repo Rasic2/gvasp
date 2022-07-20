@@ -204,7 +204,7 @@ class PlotDOS(object):
             element:    elements list, e.g., ['','Be','Be','C']
         """
 
-        structure = CONTCAR(name=name).to_structure()
+        structure = CONTCAR(name=name).structure
         element = [' '] + structure.atoms.formula
         return element
 

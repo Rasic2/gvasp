@@ -1,3 +1,14 @@
+Element H:
+    formula: H
+    number: 1
+    period: 1
+    group: 1
+    color: '#828282'
+    bonds:
+        Element C: 1.540
+        Element O: 1.142
+        Element Ce: 2.480
+
 Element C:
     formula: C
     number: 6
