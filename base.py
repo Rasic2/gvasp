@@ -26,6 +26,17 @@ class Lattice(object):
         return np.power(np.sum(np.power(self.matrix, 2), axis=1), 0.5)
 
     @property
+    def angle(self):
+        alpha = np.arccos(np.dot(self.matrix[1], self.matrix[2]) / (self.length[1] * self.length[2])) * 180 / np.pi
+        beta = np.arccos(np.dot(self.matrix[0], self.matrix[2]) / (self.length[0] * self.length[2])) * 180 / np.pi
+        gamma = np.arccos(np.dot(self.matrix[0], self.matrix[1]) / (self.length[0] * self.length[1])) * 180 / np.pi
+        return np.array([alpha, beta, gamma])
+
+    @property
+    def volume(self):
+        return np.linalg.det(self.matrix)
+
+    @property
     def inverse(self):
         return np.linalg.inv(self.matrix)
 
