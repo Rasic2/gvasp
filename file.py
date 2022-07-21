@@ -1,5 +1,6 @@
 import math
 from pathlib import Path
+from typing import List
 
 import numpy as np
 from pandas import DataFrame
@@ -161,6 +162,8 @@ class EIGENVAL(VASPFile):
     def __init__(self, name):
         super(EIGENVAL, self).__init__(name=name)
         self.NKPoint, self.NBand = tuple(map(int, self.strings[5].split()[1:]))
+        self.KPoint_coord = None
+        self.energy = None
 
     def load(self):
         """
@@ -190,22 +193,22 @@ class EIGENVAL(VASPFile):
 
         return self
 
-    def write(self, dir='band_data'):
+    def write(self, directory='band_data'):
         """
         Write band-data to file, each band corresponding to one file and named as band_{index}
 
         @params:
             dir:    save directory, default: $CWD/band_data
         """
-        Path(dir).mkdir(exist_ok=True)
+        Path(directory).mkdir(exist_ok=True)
         if getattr(self, "energy", None) is None:
             self.load()
         for index in range(self.NBand):
-            np.savetxt(f"{dir}/band_{index + 1}", self.energy[:, index])
-        logger.info(f"Band data has been saved to {dir} directory")
+            np.savetxt(f"{directory}/band_{index + 1}", self.energy[:, index])
+        logger.info(f"Band data has been saved to {directory} directory")
 
 
-class CHGBase(POSCAR):
+class CHGBase(CONTCAR):
     """
     Subclass of POSCAR, inherit <structure property>
     """
@@ -217,6 +220,8 @@ class CHGBase(POSCAR):
 
     def __init__(self, name):
         super(CHGBase, self).__init__(name=name)
+        self.NGX, self.NGY, self.NGZ = None, None, None
+        self.density = None
 
     def load(self):
         """
@@ -231,6 +236,19 @@ class CHGBase(POSCAR):
         assert self.density.size == self.NGX * self.NGY * self.NGZ, "Load density failure, size is not consistent"
         self.density = self.density.reshape((self.NGX, self.NGY, self.NGZ), order="F")
 
+    @classmethod
+    def write_from_string(cls, head: List[str], density: List[str]):
+        """
+        write CHGCAR_* file from string
+
+        @param:
+            head:       structure + NGrid, List[str]
+            density:    density_tot or density_mag, List[str]
+        """
+        with open(cls.__name__, "w") as f:
+            f.writelines(head)
+            f.writelines(density)
+
 
 class CHGCAR_tot(CHGBase):
     def __init__(self, name):
@@ -242,6 +260,47 @@ class CHGCAR_mag(CHGBase):
         super(CHGCAR_mag, self).__init__(name=name)
 
 
-class CHGCAR(POSCAR):
+class CHGCAR(CONTCAR):
     def __init__(self, name):
         super(CHGCAR, self).__init__(name=name)
+        self.NGX, self.NGY, self.NGZ, self.NGrid = None, None, None, None
+        self.density_tot, self.density_mag = None, None
+
+        self._head = None
+        self._density_tot_strings, self._density_mag_strings = None, None
+
+    def load(self):
+        """
+        load Electronic-Density
+
+        @return:
+            self.NGrid:                 NGX * NGY * NGZ
+            self.density:               shape=(NGX, NGY, NGZ)
+            self._density_strings:      density with strings format
+        """
+        start = len(self.structure.atoms) + 9
+        self.NGX, self.NGY, self.NGZ = tuple(map(int, self.strings[start].split()))
+        self._head = self.strings[:start + 1]
+        index = np.where(np.array(self.strings) == self.strings[start])[0]
+        assert len(index) == 2, f"Search indicator failure"
+
+        self.NGrid = self.NGX * self.NGY * self.NGZ
+        count = self.NGrid / 5 if self.NGrid % 5 == 0 else self.NGrid / 5 + 1
+        count = int(count)
+
+        self._density_tot_strings = self.strings[index[0] + 1:index[0] + 1 + count]
+        self._density_mag_strings = self.strings[index[1] + 1:index[1] + 1 + count]
+
+        self.density_tot = np.append([], np.char.split(self._density_tot_strings).tolist()).astype(float)
+        self.density_tot = self.density_tot.reshape((self.NGX, self.NGY, self.NGZ), order="F")
+
+        self.density_mag = np.append([], np.char.split(self._density_mag_strings).tolist()).astype(float)
+        self.density_mag = self.density_mag.reshape((self.NGX, self.NGY, self.NGZ), order="F")
+
+    def split(self):
+        """split CHGCAR to CHGCAR_tot && CHGCAR_mag"""
+        if getattr(self, "_head", None) is None:
+            self.load()
+
+        CHGCAR_tot.write_from_string(head=self._head, density=self._density_tot_strings)
+        CHGCAR_mag.write_from_string(head=self._head, density=self._density_mag_strings)
