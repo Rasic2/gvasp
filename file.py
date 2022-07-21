@@ -1,11 +1,12 @@
 import math
+from multiprocessing import Pool as ProcessPool
 from pathlib import Path
-from typing import List
 
 import numpy as np
 from pandas import DataFrame
 
 from CLib import _dos
+from error import StructureNotEqualError, GridNotEqualError
 from logger import logger
 from structure import Structure
 
@@ -223,6 +224,29 @@ class CHGBase(CONTCAR):
         self.NGX, self.NGY, self.NGZ = None, None, None
         self.density = None
 
+    def __add__(self, other):
+        if self.__class__.__name__.startswith("AECCAR") and other.__class__.__name__.startswith("AECCAR"):
+            if self.density is None and other.density is None:
+                pool = ProcessPool(processes=2)
+                results = [pool.apply_async(self.load), pool.apply_async(other.load)]
+                self, other = [item.get() for item in results]
+                pool.close()
+                pool.join()
+            elif self.density is None:
+                self.load()
+            elif other.density is None:
+                other.load()
+
+            if self.structure != other.structure:
+                raise StructureNotEqualError(f"{self.name}.structure is not equal to {other.name}.structure")
+            if (self.NGX, self.NGY, self.NGZ) != (other.NGX, other.NGY, other.NGZ):
+                raise GridNotEqualError(f"{self.name}.NGrid is not equal to {other.name}.NGrid")
+            density_sum = self.density + other.density
+            return CHGCAR_sum.from_array("CHGCAR_sum", self.structure, (self.NGX, self.NGY, self.NGZ), density_sum)
+        else:
+            raise TypeError(
+                f"unsupported operand type(s) for +: {self.__class__.__name__} and {other.__class__.__name__}")
+
     def load(self):
         """
         load Electronic-Density
@@ -235,19 +259,55 @@ class CHGBase(CONTCAR):
         self.density = np.append([], np.char.split(self.strings[start + 1:]).tolist()).astype(float)
         assert self.density.size == self.NGX * self.NGY * self.NGZ, "Load density failure, size is not consistent"
         self.density = self.density.reshape((self.NGX, self.NGY, self.NGZ), order="F")
+        return self
 
-    @classmethod
-    def write_from_string(cls, head: List[str], density: List[str]):
+    def write(self, system=None, factor=1.0):
         """
-        write CHGCAR_* file from string
+        write CHGCAR_* file from array
 
         @param:
-            head:       structure + NGrid, List[str]
-            density:    density_tot or density_mag, List[str]
+            system:     specify the structure system
+            factor:     coordination factor
         """
-        with open(cls.__name__, "w") as f:
-            f.writelines(head)
-            f.writelines(density)
+        self.structure.write(name=self.__class__.__name__, system=system, factor=factor)
+        density_fortran = self.density.reshape(-1, order="F").reshape(-1, 5)
+        with open(self.__class__.__name__, "a+") as f:
+            f.write(f"{self.NGX:>5}{self.NGY:>5}{self.NGZ:>5}\n")
+            np.savetxt(f, density_fortran, fmt="%18.11E")
+
+
+class AECCAR0(CHGBase):
+    def __init__(self, name):
+        super(AECCAR0, self).__init__(name=name)
+
+
+class AECCAR2(CHGBase):
+    def __init__(self, name):
+        super(AECCAR2, self).__init__(name=name)
+
+
+class CHGCAR_sum(CHGBase):
+    def __init__(self, name):
+        super(CHGCAR_sum, self).__init__(name=name)
+        self._structure = None
+
+    @property
+    def structure(self):
+        if self._structure is None:
+            self._structure = super(CHGCAR_sum, self).structure()
+        return self._structure
+
+    @structure.setter
+    def structure(self, _structure):
+        self._structure = _structure
+
+    @staticmethod
+    def from_array(name: str, structure, NGrid: tuple[int, int, int], density):
+        instance = CHGCAR_sum(name=name)
+        instance.structure = structure
+        instance.NGX, instance.NGY, instance.NGZ = NGrid
+        instance.density = density
+        return instance
 
 
 class CHGCAR_tot(CHGBase):
@@ -302,5 +362,8 @@ class CHGCAR(CONTCAR):
         if getattr(self, "_head", None) is None:
             self.load()
 
-        CHGCAR_tot.write_from_string(head=self._head, density=self._density_tot_strings)
-        CHGCAR_mag.write_from_string(head=self._head, density=self._density_mag_strings)
+        with open("CHGCAR_tot", "w") as tot, open("CHGCAR_mag") as mag:
+            tot.writelines(self._head)
+            tot.writelines(self._density_tot_strings)
+            mag.writelines(self._head)
+            mag.writelines(self._density_mag_strings)

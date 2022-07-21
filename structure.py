@@ -1,3 +1,5 @@
+import itertools
+
 import numpy as np
 
 from base import Atoms, Lattice
@@ -34,6 +36,9 @@ class Structure(object):
     #     diff_frac = np.where(diff_frac<=-0.5, diff_frac+1, diff_frac)
     #     diff_cart = np.dot(diff_frac, self.lattice.matrix)
     #     return diff_cart
+
+    def __eq__(self, other):
+        return self.lattice == other.lattice and self.atoms == other.atoms
 
     # def __repr__(self):
     #     return f"------------------------------------------------------------\n" \
@@ -109,6 +114,7 @@ class Structure(object):
         atoms.set_coord(lattice)
 
         return Structure(atoms=atoms, lattice=lattice)
+
     #
     # @staticmethod
     # def from_adj_matrix(structure, adj_matrix, adj_matrix_tuple, bond_dist3d, known_first_order):
@@ -164,31 +170,32 @@ class Structure(object):
     #
     #     return Structure(atoms=atoms, lattice=structure.lattice)
 
-    # def to_POSCAR(self, fname, system=None, factor=1):
-    #     system = system if system is not None else " ".join(
-    #         [f"{key} {value}" for key, value in self.atoms.size.items()])
-    #     lattice = self.lattice.strings
-    #     elements = [(key, str(len(list(value)))) for key, value in itertools.groupby(self.atoms.formula)]
-    #     element_name, element_count = list(map(list, zip(*elements)))
-    #     element_name, element_count = " ".join(element_name), " ".join(element_count)
-    #     selective = None not in getattr(self.atoms, "selective_matrix")
-    #     coords = "\n".join([" ".join([f"{item:15.12f}" for item in atom.frac_coord]) for atom in self.atoms])
-    #     if selective:
-    #         coords = "".join([coord + "\t" + "   ".join(selective_matrix) + "\n" for coord, selective_matrix in
-    #                           zip(coords.split("\n"), self.atoms.selective_matrix)])
-    #
-    #     with open(fname, "w") as f:
-    #         f.write(f"{system}\n")
-    #         f.write(f"{factor}\n")
-    #         f.write(lattice)
-    #         f.write(f"{element_name}\n")
-    #         f.write(f"{element_count}\n")
-    #         if selective:
-    #             f.write("Selective Dynamics\n")
-    #         f.write("Direct\n")
-    #         f.write(coords)
-    #
-    #     logger.debug(f"{fname} write finished!")
+    def write(self, name, system=None, factor=1.0):
+        system = system if system is not None else " ".join(
+            [f"{key} {value}" for key, value in self.atoms.size.items()])
+        lattice = self.lattice.strings
+        elements = [(key, str(len(list(value)))) for key, value in itertools.groupby(self.atoms.formula)]
+        element_name, element_count = list(map(list, zip(*elements)))
+        element_name, element_count = " ".join(element_name), " ".join(element_count)
+        selective = None not in getattr(self.atoms, "selective_matrix")
+        coords = "\n".join([" ".join([f"{item:15.12f}" for item in atom.frac_coord]) for atom in self.atoms])
+        if selective:
+            coords = "".join([coord + "\t" + "   ".join(selective_matrix) + "\n" for coord, selective_matrix in
+                              zip(coords.split("\n"), self.atoms.selective_matrix)])
+
+        with open(name, "w") as f:
+            f.write(f"{system}\n")
+            f.write(f"{factor}\n")
+            f.write(lattice)
+            f.write(f"{element_name}\n")
+            f.write(f"{element_count}\n")
+            if selective:
+                f.write("Selective Dynamics\n")
+            f.write("Direct\n")
+            f.write(coords)
+            f.write("\n")
+
+        logger.debug(f"{name} write finished!")
 
 # class NeighbourTable(defaultdict):
 #
