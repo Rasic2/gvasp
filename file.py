@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 from pandas import DataFrame
 
-from CLib import _dos
+from CLib import _dos, _file
 from error import StructureNotEqualError, GridNotEqualError
 from logger import logger
 from structure import Structure
@@ -318,6 +318,18 @@ class CHGCAR_tot(CHGBase):
 class CHGCAR_mag(CHGBase):
     def __init__(self, name):
         super(CHGCAR_mag, self).__init__(name=name)
+
+    @staticmethod
+    def to_grd(name="vasp.grd", DenCut=-1):
+        """
+        transform CHGCAR_mag to *.grd file
+
+        @param
+            name:       specify the name of *.grd file
+            DenCut:     density lower than DenCut will be set to zero;
+                        default: -1, disable the DenCut option
+        """
+        _file.to_grd(name, DenCut)
 
 
 class CHGCAR(CONTCAR):

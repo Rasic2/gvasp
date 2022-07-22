@@ -123,3 +123,4 @@ DOSCAR*
 logs/
 CHGCAR*
 AECCAR*
+*.grd

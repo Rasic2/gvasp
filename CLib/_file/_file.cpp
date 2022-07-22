@@ -11,6 +11,10 @@
 #include <cstring>
 #include <cmath>
 
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+namespace py = pybind11;
+
 #define PI 3.14159265358979323846
 
 using namespace std;
@@ -20,13 +24,13 @@ struct Soft_Array // 变长数组
 {
     int len;
     char stub; // 占位作用
-    char str[];
+    char str[1];
 };
 
 vector<string> split_string(const string &s, const char *delimiter)
 {
     char *ptr;
-    int len = s.size();
+    size_t len = s.size();
     vector<string> v;
     Soft_Array *p = (Soft_Array *)malloc(sizeof(Soft_Array) + sizeof(char) * len);
 
@@ -48,18 +52,11 @@ inline double dot_product(array<double, 3> A, array<double, 3> B)
     return A[0] * B[0] + A[1] * B[1] + A[2] * B[2];
 }
 
-void myclock(time_t tNow)
+void to_grd(const char *name, double DenCut)
 {
-    tNow = system_clock::to_time_t(system_clock::now());
-    cout << ctime(&tNow) << endl;
-}
-
-int main()
-{
-    double DenCut;
     FILE *fp;
     ifstream chgfile;
-    ofstream grdfile; 
+    ofstream grdfile;
     stringstream sstream;
     string sline, lstring;
     int lineno = 0;
@@ -70,17 +67,10 @@ int main()
     vector<double> densities;
     int sum_elements = 0;
     int NX, NY, NZ;
-    time_t tNow;
     char tempcs[50];
     const int offset = 100;
     const size_t Maxlen = 100 * 1024;
     char *buffer = new char[Maxlen];
-
-    cout << "The program is convert the CHGCAR_mag to the .grd chgfile format!" << endl;
-    cout << "Please indicate the DenCut to load the charge density!" << endl;
-    cout << "If you don't want to use the DenCut, set the DenCut = -1!" << endl;
-    cout << "DenCut = ";
-    cin >> DenCut;
 
     chgfile.open("CHGCAR_mag", ios::in);
     if (!chgfile.is_open())
@@ -132,7 +122,7 @@ int main()
         }
     }
     chgfile.close();
-    grdfile.open("vasp_cpp.grd", ios::out);
+    grdfile.open(name, ios::out);
     if (!grdfile.is_open())
     {
         cout << "Open the .grd file failure!" << endl;
@@ -156,7 +146,8 @@ int main()
             }
         }
     }
-    fp = fopen("vasp_cpp.grd", "a");
+    fp = fopen(name, "a");
+    strcpy(buffer, "");
     for (int i = 0; i < densities.size(); i++)
     {
         if (abs(densities[i]) > 1e-5)
@@ -177,5 +168,11 @@ int main()
     }
     fwrite(buffer, strlen(buffer), 1, fp);
     fclose(fp);
-    return 0;
+    delete[] buffer;
+}
+
+PYBIND11_MODULE(_file, m)
+{
+    m.doc() = "pybind11 _file module";
+    m.def("to_grd", &to_grd, "A C++ function to transform CHGCAR_mag to *.grd file");
 }
