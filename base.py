@@ -15,11 +15,14 @@ class Lattice(object):
     def __init__(self, matrix: np.ndarray):
         self.matrix = matrix
 
-    def __repr__(self):
-        return f"{self.matrix}"
-
     def __eq__(self, other):
         return np.all(self.matrix == other.matrix)
+
+    def __hash__(self):
+        return hash(self.volume)
+
+    def __repr__(self):
+        return f"{self.matrix}"
 
     @property
     def length(self):
@@ -49,12 +52,12 @@ class Lattice(object):
                                 -3.853732  6.674860  0.000000
                                  0.000000  0.000000 28.319031
         """
-        matrix = np.array([[float(ii) for ii in item.split()] for item in string])
+        matrix = np.array([[float(ii) for ii in item.split()[:3]] for item in string])
         return Lattice(matrix)
 
     @staticmethod
-    def read_from_POSCAR(fname):
-        with open(fname) as f:
+    def from_POSCAR(name):
+        with open(name) as f:
             cfg = f.readlines()
         return Lattice.from_string(cfg[2:5])
 
@@ -213,7 +216,7 @@ class Atoms(Atom):
 
     def __iter__(self):
         self.__index_list.append(0)
-        return self  # deepcopy(instance), otherwise the __index will create count bug
+        return self
 
     def __next__(self):
         current_loop_index = self.__index_list[-1]  # record current-loop-index

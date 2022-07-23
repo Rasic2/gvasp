@@ -1,14 +1,16 @@
 import math
+from collections import namedtuple
 from datetime import datetime
 from multiprocessing import Pool as ProcessPool
 from pathlib import Path
+from typing import List
 
 import numpy as np
 from pandas import DataFrame
 
 from CLib import _dos, _file
 from base import Atoms, Lattice
-from error import StructureNotEqualError, GridNotEqualError
+from error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError
 from logger import logger
 from structure import Structure
 
@@ -42,10 +44,29 @@ class MetaFile(object):
         return self._strings
 
 
-class POSCAR(MetaFile):
+class ARCFile(MetaFile):
+    @staticmethod
+    def write(name: str, structure: List[Structure], lattice: Lattice):
+        a, b, c = lattice.length
+        alpha, beta, gamma = lattice.angle
+        with open(name, "w") as f:
+            f.write("!BIOSYM archive 3\n")
+            f.write("PBC=ON\n")
+            for frame in range(len(structure)):
+                atoms = structure[frame].atoms.set_coord(lattice)
+                f.write("Auto Generated CAR File\n")
+                f.write(f'!DATE {datetime.now().strftime("%a %b %d %H:%M:%S  %Y")}\n')
+                f.write(f"PBC   {a:.5f}  {b:.5f}  {c:.5f}  {alpha:.5f}  {beta:.5f}  {gamma:.5f} (P1)\n")
+                for atom in atoms:
+                    formula, order = atom.formula, atom.order
+                    element = formula + str(order + 1)
+                    x, y, z = atom.cart_coord
+                    f.write(f"{element:5s} {x:14.10f} {y:14.10f} {z:14.10f} XXXX 1       xx     {formula:2s} 0.0000\n")
+                f.write("end\n")
+                f.write("end\n")
 
-    def __init__(self, name):
-        super().__init__(name=name)
+
+class POSCAR(MetaFile):
 
     # def __sub__(self, other):
     #     self.structure = self.to_structure()
@@ -61,8 +82,7 @@ class POSCAR(MetaFile):
 
 
 class CONTCAR(POSCAR):
-    def __init__(self, name):
-        super().__init__(name=name)
+    pass
 
 
 class XDATCAR(POSCAR):
@@ -88,23 +108,7 @@ class XDATCAR(POSCAR):
 
     def to_arc(self, name):
         """Transform the XDATCAR to *.arc file"""
-        a, b, c = self.lattice.length
-        alpha, beta, gamma = self.lattice.angle
-        with open(name, "w") as f:
-            f.write("!BIOSYM archive 3\n")
-            f.write("PBC=ON\n")
-            for frame in range(len(self.frames)):
-                atoms = self.structure[frame].atoms.set_coord(self.lattice)
-                f.write("Auto Generated CAR File\n")
-                f.write(f'!DATE {datetime.now().strftime("%a %b %d %H:%M:%S  %Y")}\n')
-                f.write(f"PBC   {a:.5f}  {b:.5f}  {c:.5f}  {alpha:.5f}  {beta:.5f}  {gamma:.5f} (P1)\n")
-                for atom in atoms:
-                    formula, order = atom.formula, atom.order
-                    element = formula + str(order + 1)
-                    x, y, z = atom.cart_coord
-                    f.write(f"{element:5s} {x:14.10f} {y:14.10f} {z:14.10f} XXXX 1       xx     {formula:2s} 0.0000\n")
-                f.write("end\n")
-                f.write("end\n")
+        ARCFile.write(name=name, structure=self.structure, lattice=self.lattice)
 
 
 #     def __len__(self):
@@ -293,13 +297,11 @@ class CHGBase(CONTCAR):
 
 
 class AECCAR0(CHGBase):
-    def __init__(self, name):
-        super(AECCAR0, self).__init__(name=name)
+    pass
 
 
 class AECCAR2(CHGBase):
-    def __init__(self, name):
-        super(AECCAR2, self).__init__(name=name)
+    pass
 
 
 class CHGCAR_sum(CHGBase):
@@ -327,14 +329,10 @@ class CHGCAR_sum(CHGBase):
 
 
 class CHGCAR_tot(CHGBase):
-    def __init__(self, name):
-        super(CHGCAR_tot, self).__init__(name=name)
+    pass
 
 
 class CHGCAR_mag(CHGBase):
-    def __init__(self, name):
-        super(CHGCAR_mag, self).__init__(name=name)
-
     @staticmethod
     def to_grd(name="vasp.grd", DenCut=-1):
         """
@@ -400,3 +398,81 @@ class CHGCAR(CONTCAR):
 class OUTCAR(MetaFile):
     def __init__(self, name):
         super(OUTCAR, self).__init__(name=name)
+        element_name = [item.split()[3] for item in self.strings if item.find("TITEL") != -1]
+        element_count = [list(map(int, item.split()[4:])) for item in self.strings if item.find("ions per") != -1][0]
+        self.element = sum([[name] * count for name, count in zip(element_name, element_count)], [])
+        self.lattice = {Lattice.from_string(self.strings[index + 1:index + 4]) for index, item in
+                        enumerate(self.strings) if item.find("direct lattice vectors") != -1}
+        self.lattice = list(self.lattice)[0] if len(self.lattice) == 1 else self.lattice
+        self._frequency = [i for i in range(len(self.strings)) if self.strings[i].find("Hz") != -1]
+
+        self.frequency = None
+        if len(self._frequency):
+            self.frequency = namedtuple("Frequency", ("image", "wave_number", "coord", "vibration"))
+            self.parse_freq()
+
+    def parse_freq(self):
+        """
+        Parse frequency information from OUTCAR
+
+        @return:
+            register self.frequency attr (type: namedtuple)
+        """
+        image, wave_number, coord, vibration = [], [], [], []
+        for index in self._frequency:
+            item = self.strings[index].split()
+            image.append(False) if item[1] == "f" else image.append(True)
+            wave_number.append(float(item[-4]))
+            item = list(map(lambda x: [float(i) for i in x],
+                            np.char.split(self.strings[index + 2:index + 2 + len(self.element)])))
+            coord.append(np.array(item)[:, :3])
+            vibration.append(np.array(item)[:, 3:])
+
+        self.frequency.image = image
+        self.frequency.wave_number = np.array(wave_number)
+        self.frequency.coord = np.array(coord)
+        self.frequency.vibration = np.array(vibration)
+
+    def animation_freq(self, freq: [str, int] = "image", frames: int = 30, scale: float = 0.6):
+        """
+        Generate freq.arc file from OUTCAR
+
+        @param:
+            freq:       specify which freq you want to animate, accept [int, str] arguments
+            frames:     specify how many points you want to interpolate along one direction, default = 30
+            scale:      determine the vibration scale, default = 0.6
+        """
+        if self.frequency is None:
+            raise AnimationError(f"{self.name} don't include frequency information")
+
+        if isinstance(freq, int) and freq not in range(len(self._frequency)):
+            raise FrequencyError(f"freq{freq} is not in {self.name}, should be {list(range(len(self._frequency)))}")
+
+        if isinstance(freq, str) and freq != "image":
+            raise FrequencyError(f"`{freq}` is not supported, should be `image`")
+
+        freq = [index for index, item in enumerate(self.frequency.image) if item] if isinstance(freq, str) else freq
+
+        # generate the directions for vibration
+        direction_001 = np.linspace(start=0, stop=scale, num=frames)  # 0-1 direction
+        direction_010 = np.linspace(start=scale, stop=0, num=frames)  # 1-0 direction
+        direction_101 = np.linspace(start=0, stop=-scale, num=frames)  # 0-^1 direction
+        direction_110 = np.linspace(start=-scale, stop=0, num=frames)  # ^1-0 direction
+        direction_all = np.concatenate([direction_001, direction_010, direction_101, direction_110])
+        direction_all = direction_all[:, np.newaxis, np.newaxis]
+
+        # generate multi-frames new coordinates
+        coord_freq = []
+        for freq_index in freq:
+            coord = np.repeat(self.frequency.coord[freq_index][np.newaxis, :], direction_all.shape[0], axis=0)
+            vibration = np.repeat(self.frequency.vibration[freq_index][np.newaxis, :], direction_all.shape[0], axis=0)
+            coord_freq.append(coord + vibration * direction_all)
+
+        # generate the *.arc file
+        if not isinstance(self.lattice, Lattice):
+            raise NotImplementedError("we here only considered the lattice unchangeable for the whole calculation")
+
+        for freq_index, coord_index in zip(freq, coord_freq):
+            structure = [Structure(atoms=Atoms(formula=self.element, cart_coord=cart_coord), lattice=self.lattice)
+                         for cart_coord in coord_index]
+            ARCFile.write(name=f"freq{freq_index + 1}.arc", structure=structure, lattice=self.lattice)

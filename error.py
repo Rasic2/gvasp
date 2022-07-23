@@ -3,3 +3,9 @@ class StructureNotEqualError(ValueError):
 
 class GridNotEqualError(ValueError):
     pass
+
+class AnimationError(RuntimeError):
+    pass
+
+class FrequencyError(IndexError):
+    pass

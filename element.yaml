@@ -52,3 +52,14 @@ Element Ce:
         Element C: 2.480
         Element O: 2.356
         Element Ce: 3.420
+
+Element Au:
+    formula: Au
+    number: 79
+    period: 6
+    group: 11
+    color: '#FFFFC8'
+    bonds:
+        Element C: 2.480
+        Element O: 2.356
+        Element Ce: 3.420
