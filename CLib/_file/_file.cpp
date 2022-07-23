@@ -1,51 +1,24 @@
-#include <iostream>
+#include "_lib.h"
+#define PI 3.14159265358979323846
+
 #include <iomanip>
-#include <string>
-#include <fstream>
 #include <sstream>
-#include <array>
-#include <vector>
 #include <chrono>
 
-#include <ctime>
-#include <cstring>
-#include <cmath>
-
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
-#define PI 3.14159265358979323846
-
-using namespace std;
 using namespace std::chrono;
 
-struct Soft_Array // 变长数组
+struct CHGInfo
 {
-    int len;
-    char stub; // 占位作用
-    char str[1];
+    int NGX;
+    int NGY;
+    int NGZ;
+    py::array_t<double> density;
 };
-
-vector<string> split_string(const string &s, const char *delimiter)
-{
-    char *ptr;
-    size_t len = s.size();
-    vector<string> v;
-    Soft_Array *p = (Soft_Array *)malloc(sizeof(Soft_Array) + sizeof(char) * len);
-
-    strcpy(p->str, s.c_str()); // c_str(): 将string转化为C字符串
-    ptr = strtok(p->str, delimiter);
-    while (ptr != NULL)
-    {
-        v.push_back(ptr);
-        ptr = strtok(NULL, delimiter);
-    }
-    free(p);
-    p = NULL;
-
-    return v;
-}
 
 inline double dot_product(array<double, 3> A, array<double, 3> B)
 {
@@ -83,7 +56,7 @@ void to_grd(const char *name, double DenCut)
         lineno += 1;
         if (lineno >= 3 && lineno <= 5)
         {
-            svector = split_string(sline, " ");
+            split_string(sline, " ", svector);
             for (int j = 0; j < svector.size(); j++)
             {
                 lattice[lineno - 3][j] = atof(svector[j].c_str());
@@ -99,7 +72,7 @@ void to_grd(const char *name, double DenCut)
         }
         else if (lineno == 7)
         {
-            svector = split_string(sline, " ");
+            split_string(sline, " ", svector);
             for (vector<string>::iterator iter = svector.begin(); iter < svector.end(); iter++)
             {
                 sum_elements += (atoi((*iter).c_str()));
@@ -107,14 +80,14 @@ void to_grd(const char *name, double DenCut)
         }
         else if (lineno == sum_elements + 10)
         {
-            svector = split_string(sline, " ");
+            split_string(sline, " ", svector);
             NX = atoi(svector[0].c_str());
             NY = atoi(svector[1].c_str());
             NZ = atoi(svector[2].c_str());
         }
         else if (lineno > sum_elements + 10)
         {
-            svector = split_string(sline, " ");
+            split_string(sline, " ", svector);
             for (int i = 0; i < svector.size(); i++)
             {
                 densities.push_back(atof(svector[i].c_str()));
@@ -171,8 +144,73 @@ void to_grd(const char *name, double DenCut)
     delete[] buffer;
 }
 
+CHGInfo load(string name)
+{
+    ifstream chgfile;
+    string line;
+    int lineno = 0, AtomsNum = -1;
+    int NGX, NGY, NGZ;
+    vector<int> int_v;
+    vector<double> double_v;
+    vector<double> density;
+    CHGInfo info;
+
+    chgfile.open("CHGCAR_mag", ios::in);
+    if (!chgfile.is_open())
+    {
+        throw runtime_error("file open failure");
+    }
+
+    while (getline(chgfile, line))
+    {
+        lineno += 1;
+        if (lineno == 7)
+        {
+            split_string(line, " ", int_v);
+            AtomsNum = accumulate(int_v.begin(), int_v.end(), 0);
+        }
+        else if (AtomsNum != -1 && lineno == AtomsNum + 10)
+        {
+            int_v.clear();
+            split_string(line, " ", int_v);
+            NGX = int_v[0];
+            NGY = int_v[1];
+            NGZ = int_v[2];
+        }
+        else if (AtomsNum != -1 && lineno > AtomsNum + 10)
+        {
+            double_v.clear();
+            split_string(line, " ", double_v);
+            density.insert(density.end(), double_v.begin(), double_v.end());
+        }
+    }
+    chgfile.close();
+
+    info.NGX = NGX;
+    info.NGY = NGY;
+    info.NGZ = NGZ;
+    info.density = py::array_t<double>(NGX * NGY * NGZ);
+
+    py::buffer_info buf_density = info.density.request();
+    double *ptr_density = (double *)buf_density.ptr;
+    for (size_t i = 0; i < density.size(); i++)
+    {
+        ptr_density[i] = density[i];
+    }
+
+    return info;
+}
+
 PYBIND11_MODULE(_file, m)
 {
-    m.doc() = "pybind11 _file module";
+    m.doc() = "pybind11 <file> module";
+
+    py::class_<CHGInfo>(m, "CHGInfo")
+        .def_readwrite("NGX", &CHGInfo::NGX)
+        .def_readwrite("NGY", &CHGInfo::NGY)
+        .def_readwrite("NGZ", &CHGInfo::NGZ)
+        .def_readwrite("density", &CHGInfo::density);
+
     m.def("to_grd", &to_grd, "A C++ function to transform CHGCAR_mag to *.grd file");
+    m.def("load", &load, "A C++ function to load CHGBase file");
 }

@@ -193,7 +193,7 @@ class Structure(object):
                 f.write("Selective Dynamics\n")
             f.write("Direct\n")
             f.write(coords)
-            f.write("\n")
+            f.write("\n\n")
 
         logger.debug(f"{name} write finished!")
 

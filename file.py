@@ -254,9 +254,9 @@ class CHGBase(CONTCAR):
         @return:
             self.density:    shape=(NGX, NGY, NGZ)
         """
-        start = len(self.structure.atoms) + 9
-        self.NGX, self.NGY, self.NGZ = tuple(map(int, self.strings[start].split()))
-        self.density = np.append([], np.char.split(self.strings[start + 1:]).tolist()).astype(float)
+        info = _file.load(self.name)
+        self.NGX, self.NGY, self.NGZ = info.NGX, info.NGY, info.NGZ
+        self.density = info.density
         assert self.density.size == self.NGX * self.NGY * self.NGZ, "Load density failure, size is not consistent"
         self.density = self.density.reshape((self.NGX, self.NGY, self.NGZ), order="F")
         return self
