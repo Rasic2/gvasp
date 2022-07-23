@@ -1,4 +1,5 @@
 import math
+import time
 from multiprocessing import Pool as ProcessPool
 from pathlib import Path
 
@@ -228,7 +229,7 @@ class CHGBase(CONTCAR):
         if self.__class__.__name__.startswith("AECCAR") and other.__class__.__name__.startswith("AECCAR"):
             if self.density is None and other.density is None:
                 pool = ProcessPool(processes=2)
-                results = [pool.apply_async(self.load), pool.apply_async(other.load)]
+                results = [pool.apply_async(self.load), pool.apply_async(other.load)]  # new instance
                 self, other = [item.get() for item in results]
                 pool.close()
                 pool.join()
@@ -236,7 +237,6 @@ class CHGBase(CONTCAR):
                 self.load()
             elif other.density is None:
                 other.load()
-
             if self.structure != other.structure:
                 raise StructureNotEqualError(f"{self.name}.structure is not equal to {other.name}.structure")
             if (self.NGX, self.NGY, self.NGZ) != (other.NGX, other.NGY, other.NGZ):
