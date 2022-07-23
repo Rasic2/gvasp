@@ -1,5 +1,5 @@
 import math
-import time
+from datetime import datetime
 from multiprocessing import Pool as ProcessPool
 from pathlib import Path
 
@@ -7,21 +7,25 @@ import numpy as np
 from pandas import DataFrame
 
 from CLib import _dos, _file
+from base import Atoms, Lattice
 from error import StructureNotEqualError, GridNotEqualError
 from logger import logger
 from structure import Structure
 
 
-class VASPFile(object):
+class MetaFile(object):
 
     def __new__(cls, *args, **kwargs):
         if cls.__base__ is object:
             raise TypeError(f"<{cls.__name__} class> may not be instantiated")
-        return super(VASPFile, cls).__new__(cls)
+        return super(MetaFile, cls).__new__(cls)
 
     def __init__(self, name):
         self.name = name
         self._strings = None
+
+    def __getitem__(self, index):
+        return self.strings[index]
 
     # def __repr__(self):
     #     return f"<{self.ftype} '{self.fname}'>"
@@ -38,13 +42,10 @@ class VASPFile(object):
         return self._strings
 
 
-class POSCAR(VASPFile):
+class POSCAR(MetaFile):
 
     def __init__(self, name):
         super().__init__(name=name)
-
-    def __getitem__(self, index):
-        return self.strings[index]
 
     # def __sub__(self, other):
     #     self.structure = self.to_structure()
@@ -64,39 +65,54 @@ class CONTCAR(POSCAR):
         super().__init__(name=name)
 
 
-#
-#
-# class XDATCAR(VASPFile):
-#     def __init__(self, name, **kargs):
-#         super().__init__(name)
-#
-#         self.kargs = kargs
-#         self.system = self.strings[0].rstrip()
-#         self.factor = self.strings[1].rstrip()
-#         self.lattice = Lattice.from_string(self.strings[2:5])
-#         element_name = self.strings[5].split()
-#         element_count = [int(item) for item in self.strings[6].split()]
-#         self.element = sum([[name] * count for name, count in zip(element_name, element_count)], [])
-#         self.frames = [i for i in range(len(self.strings)) if self.strings[i].find("Direct") != -1]
-#
-#         self._structures = []
-#
+class XDATCAR(POSCAR):
+    def __init__(self, name):
+        super().__init__(name)
+
+        self.lattice = Lattice.from_string(self.strings[2:5])
+        element_name = self.strings[5].split()
+        element_count = [int(item) for item in self.strings[6].split()]
+        self.element = sum([[name] * count for name, count in zip(element_name, element_count)], [])
+        self.frames = [i for i in range(len(self.strings)) if self.strings[i].find("Direct") != -1]
+        self._structure = []
+
+    @property
+    def structure(self):
+        if len(self._structure) == 0:
+            for frame in self.frames:
+                frac_coord = np.array([[float(item) for item in line.split()] for line in
+                                       self.strings[frame + 1:frame + 1 + len(self.element)]])
+                atoms = Atoms(formula=self.element, frac_coord=frac_coord)
+                self._structure.append(Structure(atoms=atoms, lattice=self.lattice))
+        return self._structure
+
+    def to_arc(self, name):
+        """Transform the XDATCAR to *.arc file"""
+        a, b, c = self.lattice.length
+        alpha, beta, gamma = self.lattice.angle
+        with open(name, "w") as f:
+            f.write("!BIOSYM archive 3\n")
+            f.write("PBC=ON\n")
+            for frame in range(len(self.frames)):
+                atoms = self.structure[frame].atoms.set_coord(self.lattice)
+                f.write("Auto Generated CAR File\n")
+                f.write(f'!DATE {datetime.now().strftime("%a %b %d %H:%M:%S  %Y")}\n')
+                f.write(f"PBC   {a:.5f}  {b:.5f}  {c:.5f}  {alpha:.5f}  {beta:.5f}  {gamma:.5f} (P1)\n")
+                for atom in atoms:
+                    formula, order = atom.formula, atom.order
+                    element = formula + str(order + 1)
+                    x, y, z = atom.cart_coord
+                    f.write(f"{element:5s} {x:14.10f} {y:14.10f} {z:14.10f} XXXX 1       xx     {formula:2s} 0.0000\n")
+                f.write("end\n")
+                f.write("end\n")
+
+
 #     def __len__(self):
 #         return len(self.frames)
 #
 #     def __getitem__(self, index):
 #         return self.structures[index]
-#
-#     @property
-#     def structures(self):
-#         if len(self._structures) == 0:
-#             for frame in self.frames:
-#                 frac_coord = np.array([[float(item) for item in line.split()] for line in
-#                                        self.strings[frame + 1:frame + 1 + len(self.element)]])
-#                 atoms = Atoms(formula=self.element, frac_coord=frac_coord)
-#                 self._structures.append(Structure(atoms=atoms, lattice=self.lattice, **self.kargs))
-#         return self._structures
-#
+
 #     def split_file(self, index, fname, system=None, factor=1., num_workers=4):
 #         if isinstance(index, int):
 #             self[index].to_POSCAR(fname=fname, system=system, factor=factor)
@@ -107,7 +123,7 @@ class CONTCAR(POSCAR):
 #             pool.close()
 #             pool.join()
 
-class DOSCAR(VASPFile):
+class DOSCAR(MetaFile):
     def __init__(self, name):
         super(DOSCAR, self).__init__(name=name)
         self.NAtom = int(self.strings[0].split()[0])
@@ -160,7 +176,7 @@ class DOSCAR(VASPFile):
         return merge_dos(*_dos.load(self.strings, self.NDOS, self.fermi))
 
 
-class EIGENVAL(VASPFile):
+class EIGENVAL(MetaFile):
     def __init__(self, name):
         super(EIGENVAL, self).__init__(name=name)
         self.NKPoint, self.NBand = tuple(map(int, self.strings[5].split()[1:]))
@@ -379,3 +395,8 @@ class CHGCAR(CONTCAR):
             tot.writelines(self._density_tot_strings)
             mag.writelines(self._head)
             mag.writelines(self._density_mag_strings)
+
+
+class OUTCAR(MetaFile):
+    def __init__(self, name):
+        super(OUTCAR, self).__init__(name=name)
