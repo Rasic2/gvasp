@@ -1,3 +1,0 @@
-v0.1 (2021-03-19):  initial version by Hui Zhou
-                    Count the number of frames of Molecular dynamics in which the `Pt-Cl bond` exceed the given value
-                    <requirement: python, OUT.ANI file>

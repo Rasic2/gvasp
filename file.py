@@ -476,3 +476,11 @@ class OUTCAR(MetaFile):
             structure = [Structure(atoms=Atoms(formula=self.element, cart_coord=cart_coord), lattice=self.lattice)
                          for cart_coord in coord_index]
             ARCFile.write(name=f"freq{freq_index + 1}.arc", structure=structure, lattice=self.lattice)
+
+
+class MODECAR(MetaFile):
+    @staticmethod
+    def write(freq: int, scale: float, outcar="OUTCAR"):
+        outcar = OUTCAR(name=outcar)
+        frequency = outcar.frequency.vibration[freq]
+        np.savetxt("MODECAR", frequency * scale, fmt="%10.5f")
