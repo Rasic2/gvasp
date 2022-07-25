@@ -4,7 +4,7 @@ Element H:
     period: 1
     group: 1
     color: '#828282'
-    bonds:
+    _default_bonds:
         Element C: 1.540
         Element O: 1.142
         Element Ce: 2.480
@@ -15,7 +15,7 @@ Element C:
     period: 2
     group: 14
     color: '#828282'
-    bonds:
+    _default_bonds:
         Element C: 1.540
         Element O: 1.142
         Element Ce: 2.480
@@ -26,7 +26,7 @@ Element O:
     period: 2
     group: 16
     color: '#FF0000'
-    bonds:
+    _default_bonds:
         Element C: 1.142
         Element O: 1.490
         Element Ce: 2.356
@@ -37,7 +37,7 @@ Element Cu:
     period: 4
     group: 11
     color: '#FFFFC8'
-    bonds:
+    _default_bonds:
         Element C: 2.480
         Element O: 2.356
         Element Ce: 3.420
@@ -48,7 +48,7 @@ Element Ce:
     period: 6
     group: 3
     color: '#FFFFC8'
-    bonds:
+    _default_bonds:
         Element C: 2.480
         Element O: 2.356
         Element Ce: 3.420
@@ -59,7 +59,5 @@ Element Au:
     period: 6
     group: 11
     color: '#FFFFC8'
-    bonds:
-        Element C: 2.480
-        Element O: 2.356
-        Element Ce: 3.420
+    _default_bonds:
+        Element Au: 2.830

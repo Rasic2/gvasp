@@ -79,13 +79,13 @@ class Atom(object):
             order:          atomic order in <Structure class>, default: 0
             frac_coord:     fractional coordinates  
             cart_coord:     cartesian coordinates
-            bonds:          atomic default bond property {atom: bond-length}
+            _default_bonds:          atomic default bond property {atom: bond-length}
         
         @func
             __initialize_attrs:     initialize the attributes from the element.yaml
     """
     _config_file = Path(f"{root_dir}/element.yaml")
-    _attributes_yaml = ['number', 'period', 'group', 'color', 'bonds']
+    _attributes_yaml = ['number', 'period', 'group', 'color', '_default_bonds']
     _load = False
     _attrs = None
 
@@ -101,11 +101,14 @@ class Atom(object):
         self.selective_matrix = np.array(selective_matrix) if selective_matrix is not None else None
 
         # config atom from `element.yaml`
-        self.number, self.period, self.group, self.color, self.bonds = (None, None, None, None, [])
+        self.number, self.period, self.group, self.color, self._default_bonds = (None, None, None, None, [])
         self.__initialize_attrs()
 
         # atom_type property
         self.coordination_number = None
+
+        # bonds information
+        self.bonds = []
 
     def __eq__(self, other):
         return self.number == other.number and self.order == other.order
@@ -174,15 +177,15 @@ class Atoms(Atom):
         `Atoms class represent atom set in periodic solid system`
 
         @property
-            formula:        chemical formula, <list>
-            number:         atomic number, <list>
-            period:         atomic period in element period table, <list>
-            group:          atomic group in element period table, <list>
-            color:          atomic color using RGB, <list>
-            order:          atomic order in <Structure class>, default: <list(range(len(formula)))>
-            frac_coord:     fractional coordinates, <list>
-            cart_coord:     cartesian coordinates, <list>
-            bonds:          atomic default bond property {atom: bond-length}
+            formula:                chemical formula, <list>
+            number:                 atomic number, <list>
+            period:                 atomic period in element period table, <list>
+            group:                  atomic group in element period table, <list>
+            color:                  atomic color using RGB, <list>
+            order:                  atomic order in <Structure class>, default: <list(range(len(formula)))>
+            frac_coord:             fractional coordinates, <list>
+            cart_coord:             cartesian coordinates, <list>
+            _default_bonds:         atomic default bond property {atom: bond-length}
 
             count:          total atom number in atom set
             size:           list atom number according to their formula
@@ -198,7 +201,7 @@ class Atoms(Atom):
     def __init__(self, *args, **kwargs):
         super(Atoms, self).__init__(*args, **kwargs)
 
-        self.order = list(range(len(self.formula))) if isinstance(self.order, int) else self.order
+        self.order = list(range(len(self.formula))) if isinstance(self.order, int) or None in self.order else self.order
         self.frac_coord = [None] * len(self.formula) if self.frac_coord is None else self.frac_coord
         self.cart_coord = [None] * len(self.formula) if self.cart_coord is None else self.cart_coord
         self.selective_matrix = [None] * len(self.formula) if self.selective_matrix is None else self.selective_matrix
@@ -239,8 +242,9 @@ class Atoms(Atom):
                     frac_coord=self.frac_coord[index], cart_coord=self.cart_coord[index],
                     selective_matrix=self.selective_matrix[index])
 
-        # update coordination number
+        # update coordination number && bonds
         atom.coordination_number = self.coordination_number[index] if self.coordination_number is not None else None
+        atom.bonds = self.bonds[index] if len(self.bonds) != 0 else []
         return atom
 
     @property
@@ -276,9 +280,11 @@ class Atoms(Atom):
         cart_coord = [atom.cart_coord for atom in atoms]
         selective_matrix = [atom.selective_matrix for atom in atoms]
         coordination_number = [atom.coordination_number for atom in atoms]
+        bonds = [atom.bonds for atom in atoms]
 
-        # update coordination number
+        # update coordination number && bonds
         new_atoms = Atoms(formula=formula, order=order, frac_coord=frac_coord,
                           cart_coord=cart_coord, selective_matrix=selective_matrix)
         new_atoms.coordination_number = coordination_number
+        new_atoms.bonds = bonds
         return new_atoms

@@ -29,8 +29,8 @@ class MetaFile(object):
     def __getitem__(self, index):
         return self.strings[index]
 
-    # def __repr__(self):
-    #     return f"<{self.ftype} '{self.fname}'>"
+    def __repr__(self):
+        return f"<{self.type} | name='{self.name}'>"
 
     @property
     def type(self):
@@ -42,6 +42,18 @@ class MetaFile(object):
             with open(self.name, "r") as f:
                 self._strings = f.readlines()
         return self._strings
+
+
+class StructInfoFile(MetaFile):
+
+    def __new__(cls, *args, **kwargs):
+        if cls is StructInfoFile:
+            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
+        return super().__new__(cls)
+
+    @property
+    def structure(self):
+        return Structure.from_file(self.name)
 
 
 class ARCFile(MetaFile):
@@ -66,26 +78,54 @@ class ARCFile(MetaFile):
                 f.write("end\n")
 
 
-class POSCAR(MetaFile):
+class POSCAR(StructInfoFile):
+    @staticmethod
+    def dist(pos1: str, pos2: str):
+        """
+        Calculate the distance of two POSCAR, distance = sqrt(sum((i-j)**2))
 
-    # def __sub__(self, other):
-    #     self.structure = self.to_structure()
-    #     other.structure = other.to_structure()
-    #     if np.all(self.structure.lattice.matrix == other.structure.lattice.matrix):
-    #         return self.structure - other.structure
-    #     else:
-    #         raise ArithmeticError(f"{self} and {other} not have the same lattice vector!")
-    #
-    @property
-    def structure(self):
-        return Structure.from_POSCAR(self.name)
+        @param:
+            pos1:   first POSCAR file name
+            pos2:   second POSCAR file name
+        """
+        structure1 = POSCAR(name=pos1).structure
+        structure2 = POSCAR(name=pos2).structure
+        return Structure.dist(structure1, structure2)
+
+    @staticmethod
+    def align(pos1: str, pos2: str):
+        """
+        Tailor the atoms' order to make the distance of pos1 and pos2 minimum
+
+        @param:
+            pos1:   first POSCAR file name
+            pos2:   second POSCAR file name
+        """
+        structure1 = POSCAR(name=pos1).structure
+        structure2 = POSCAR(name=pos2).structure
+        logger.info(f"Align before: dist = {Structure.dist(structure1, structure2)}")
+        structure1_new, structure2_new = Structure.align(structure1, structure2)
+        logger.info(f"Align before: dist = {Structure.dist(structure1_new, structure2_new)}")
+        structure1_new.write(f"{pos1}_sort")
+        structure2_new.write(f"{pos2}_sort")
+        logger.info(f"New structure have been written to *_sort files")
+
+
+# def __sub__(self, other):
+#     self.structure = self.to_structure()
+#     other.structure = other.to_structure()
+#     if np.all(self.structure.lattice.matrix == other.structure.lattice.matrix):
+#         return self.structure - other.structure
+#     else:
+#         raise ArithmeticError(f"{self} and {other} not have the same lattice vector!")
+#
 
 
 class CONTCAR(POSCAR):
     pass
 
 
-class XDATCAR(POSCAR):
+class XDATCAR(StructInfoFile):
     def __init__(self, name):
         super().__init__(name)
 
@@ -230,9 +270,9 @@ class EIGENVAL(MetaFile):
         logger.info(f"Band data has been saved to {directory} directory")
 
 
-class CHGBase(CONTCAR):
+class CHGBase(StructInfoFile):
     """
-    Subclass of POSCAR, inherit <structure property>
+    Subclass of StructInfoFile, inherit <structure property>
     """
 
     def __new__(cls, *args, **kwargs):
@@ -346,7 +386,7 @@ class CHGCAR_mag(CHGBase):
         _file.to_grd(name, DenCut)
 
 
-class CHGCAR(CONTCAR):
+class CHGCAR(StructInfoFile):
     def __init__(self, name):
         super(CHGCAR, self).__init__(name=name)
         self.NGX, self.NGY, self.NGZ, self.NGrid = None, None, None, None
