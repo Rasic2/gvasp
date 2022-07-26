@@ -1,19 +1,16 @@
 from functools import wraps
 
-from matplotlib import pyplot as plt, cycler
+from matplotlib import pyplot as plt
 
 from logger import logger
-
-COLOR = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
 
 def plot_wrapper(func):
     @wraps(func)
-    def wrapper(self, *args, color=None, **kargs):
+    def wrapper(self, *args, **kargs):
         plt.rc('font', family=self.family, weight=self.weight)  # set the font globally
         plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
         plt.rcParams['lines.linewidth'] = 2  # set line-width
-        plt.rcParams['axes.prop_cycle'] = cycler('color', COLOR) if color is None else cycler('color', color)
         func(self, *args, **kargs)
         ax = plt.gca()
         ax.spines['bottom'].set_linewidth(self.bwidth)  # set border
@@ -38,7 +35,7 @@ class Figure(object):
             raise TypeError(f"<{cls.__name__} class> may not be instantiated")
         return super(Figure, cls).__new__(cls)
 
-    def __init__(self, width=16, height=9, family='Arial', weight='bold', fontsize=20, title='', xlim=None,
+    def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None,
                  xticks=None, xlabel=None, ylabel=None, bwidth=1):
         self.width = width
         self.height = height

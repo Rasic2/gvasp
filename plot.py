@@ -21,8 +21,6 @@ COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'p
            'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up', 'f6_down', 'f7_up',
            'f7_down']
 
-COLOR = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
-
 
 def interpolated_wrapper(func):
     @wraps(func)
@@ -51,7 +49,7 @@ def interpolated_wrapper(func):
     return wrapper
 
 
-class PlotDOS(object):
+class PlotDOS(Figure):
     """
     <PlotDOS main class>
 
@@ -64,7 +62,9 @@ class PlotDOS(object):
         doscar_parse:   parse DOSCAR data
     """
 
-    def __init__(self, dos_file, pos_file, max_orbital='f'):
+    def __init__(self, dos_file, pos_file, max_orbital='f', xlabel="Energy (EV)", ylabel="Density of States (a.u.)",
+                 **kargs):
+        super(PlotDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
         self.dos_file = dos_file
         self.pos_file = pos_file
         self.max_orbital = max_orbital  # whether you need to plot the f-orbital, default: True
@@ -72,7 +72,7 @@ class PlotDOS(object):
         self.total_dos, self.atom_list = PlotDOS.doscar_parse(self.dos_file)
 
     @plot_wrapper
-    def plot(self, atoms=None, orbitals=None, color='', method='fill', avgflag=False, **kargs):
+    def plot(self, atoms=None, orbitals=None, color="#000000", method='line', avgflag=False):
         """
         Plot DOS Main Func
 
@@ -204,8 +204,9 @@ class PlotDOS(object):
         return dos_instance.TDOS, dos_instance.LDOS
 
 
-class PlotBand(object):
-    def __init__(self, name):
+class PlotBand(Figure):
+    def __init__(self, name, title='Band Structure', **kargs):
+        super(PlotBand, self).__init__(title=title, **kargs)
         self.name = name
         self.energy = EIGENVAL(self.name).load().energy
 
@@ -217,10 +218,6 @@ class PlotBand(object):
         energy_avg = self.energy.mean(axis=-1)
         for band_index in range(energy_avg.shape[1]):
             plt.plot(energy_avg[:, band_index])
-
-    @staticmethod
-    def show():
-        plt.show()
 
 
 class PESData(object):
@@ -245,10 +242,10 @@ class PESData(object):
 
 class PlotPES(Figure):
 
-    def __init__(self, width=15.6, height=4, xlabel="Reaction coordinates", ylabel="Energy (eV)", xticks=[], bwidth=3,
-                 **kargs):
-        super(PlotPES, self).__init__(width=width, height=height, xlabel=xlabel, ylabel=ylabel, xticks=xticks,
-                                      bwidth=bwidth, **kargs)
+    def __init__(self, width=15.6, height=4, weight='bold', xlabel="Reaction coordinates", ylabel="Energy (eV)",
+                 xticks=[], bwidth=3, **kargs):
+        super(PlotPES, self).__init__(width=width, height=height, weight=weight, xlabel=xlabel, ylabel=ylabel,
+                                      xticks=xticks, bwidth=bwidth, **kargs)
 
         self.texts = defaultdict(list)
 
