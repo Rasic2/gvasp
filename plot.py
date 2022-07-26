@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-import glob
 import time
 from collections import defaultdict
 from functools import wraps
@@ -7,11 +5,13 @@ from itertools import product
 
 import numpy as np
 import pandas as pd
-from file import CONTCAR, DOSCAR, EIGENVAL
-from matplotlib import pyplot as plt, cycler
+from matplotlib import pyplot as plt
 from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
+
+from figure import Figure, SolidLine, DashLine, Text, plot_wrapper
+from file import CONTCAR, DOSCAR, EIGENVAL
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -22,26 +22,6 @@ COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'p
            'f7_down']
 
 COLOR = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
-
-
-def plot_wrapper(func):
-    @wraps(func)
-    def wrapper(self, *args, figsize=(10, 6), family='DejaVu Sans', fontsize=20, xlim=None, xlabel=None, ylabel=None,
-                color=None, title=None, **kargs):
-        plt.figure(figsize=figsize)
-        plt.rc('font', family=family)  # set the font globally
-        plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
-        plt.rcParams['lines.linewidth'] = 2  # set line-width
-        plt.rcParams['axes.prop_cycle'] = cycler('color', COLOR) if color is None else cycler('color', color)
-        func(self, *args, **kargs)
-        plt.xlim() if xlim is None else plt.xlim(xlim)
-        plt.xticks(fontsize=fontsize)
-        plt.yticks(fontsize=fontsize)
-        plt.xlabel(xlabel, fontsize=fontsize + 1)
-        plt.ylabel(ylabel, fontsize=fontsize + 1)
-        plt.title(title, fontsize=fontsize + 2)
-
-    return wrapper
 
 
 def interpolated_wrapper(func):
@@ -243,24 +223,53 @@ class PlotBand(object):
         plt.show()
 
 
-if __name__ == '__main__':
-    plt.figure(figsize=(10, 8))
-    datafiles = glob.glob("datafile*")
+class PESData(object):
+    def __init__(self, data):
+        self.data = data
 
-    name = 'test'
-    DS = [f'DOSCAR-{name}']
-    CS = [f'CONTCAR-{name}']
+    def __call__(self, *args, **kwargs):
+        self.solid_x, self.solid_y, self.dash_x, self.dash_y = self.convert()
+        return self
 
-    print("正在加载文件...")
-    # with futures.ProcessPoolExecutor() as executor:
-    P = map(PlotDOS, DS, CS)
-    P = list(P)
-    print("文件加载完成...")
+    def convert(self):
+        solid_x = [[0.75 + 2 * i, 1.25 + 2 * i] for i in range(len(self.data))]
+        solid_y = [[value, value] for value in self.data]
+        real_index = [index for index, value in enumerate(self.data) if value is not None]
+        dash_x_1 = [2 * index + 1.25 for index in real_index[:-1]]
+        dash_x_2 = [2 * index + 0.75 for index in real_index[1:]]
+        dash_x = [item for item in zip(dash_x_1, dash_x_2)]
+        dash_y = [[self.data[int((index[0] - 1.25) / 2)], self.data[int((index[1] - 2.75) / 2 + 1)]] for index in
+                  dash_x]
+        return solid_x, solid_y, dash_x, dash_y
 
-    P[0].plot(atoms='Ce', orbitals=None, xlim=[-6, 9], color='#123E09', method='line')
 
-    plt.savefig('figure.svg', dpi=300, bbox_inches='tight', format='svg')
+class PlotPES(Figure):
 
-# profile.run('main("")','result')
-# p=pstats.Stats("result")
-# p.strip_dirs().sort_stats("time").print_stats()
+    def __init__(self, width=15.6, height=4, xlabel="Reaction coordinates", ylabel="Energy (eV)", xticks=[], bwidth=3,
+                 **kargs):
+        super(PlotPES, self).__init__(width=width, height=height, xlabel=xlabel, ylabel=ylabel, xticks=xticks,
+                                      bwidth=bwidth, **kargs)
+
+        self.texts = defaultdict(list)
+
+    @staticmethod
+    def add_solid(linewidth, x, y, color):
+        SolidLine(linewidth, x=x, y=y, color=color)()
+
+    @staticmethod
+    def add_dash(linewidth, x, y, color):
+        DashLine(linewidth, x=x, y=y, color=color)()
+
+    def add_text(self, x, y, text, color):
+        self.texts[color].append(Text(self, x, y, text, color))
+
+    @plot_wrapper
+    def plot(self, data, color, option='default'):
+        data = PESData(data)()
+
+        for x, y in zip(data.solid_x, data.solid_y):
+            self.add_solid(5, x, y, color)
+
+        for x, y in zip(data.dash_x, data.dash_y):
+            self.add_dash(1.5, x, y, color)
+            self.add_text(x, y, '{:.2f}'.format(abs(y[1] - y[0])), color) if option == 'default' else 0
