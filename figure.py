@@ -1,6 +1,8 @@
 from functools import wraps
 
+import numpy as np
 from matplotlib import pyplot as plt
+from scipy import interpolate
 
 from logger import logger
 
@@ -30,6 +32,10 @@ def plot_wrapper(func):
 
 
 class Figure(object):
+    """
+    Plot-type class' parent, unify the figure format
+    """
+
     def __new__(cls, *args, **kwargs):
         if cls is Figure:
             raise TypeError(f"<{cls.__name__} class> may not be instantiated")
@@ -60,6 +66,8 @@ class Figure(object):
 
 
 class LineBase(object):
+    """Line-Base-class, cant' instantiated"""
+
     def __new__(cls, *args, **kwargs):
         if cls is LineBase:
             raise TypeError(f"<{cls.__name__} class> may not be instantiated")
@@ -80,16 +88,48 @@ class LineBase(object):
 
 
 class SolidLine(LineBase):
+    """
+    Solid Line class, subclass of LineBase
+    """
+
     def __init__(self, linewidth=5, **kargs):
         super().__init__(linewidth=linewidth, **kargs)
 
 
 class DashLine(LineBase):
+    """Dash Line class, subclass of LineBase"""
+
     def __init__(self, linewidth=2, linestyle='--', **kargs):
         super().__init__(linewidth=linewidth, linestyle=linestyle, **kargs)
 
 
+class PchipLine(LineBase):
+    def __init__(self, linewidth=1, num=100, **kargs):
+        super(PchipLine, self).__init__(linewidth=linewidth, **kargs)
+        self.x_ori = self.x
+        self.y_ori = self.y
+        self.num = num
+        self.x, self.y = PchipLine.interpolate(self.x_ori, self.y_ori, self.num)
+
+    @staticmethod
+    def interpolate(x_ori, y_ori, num):
+        f = interpolate.PchipInterpolator(np.array(x_ori), np.array(y_ori))
+        x_new = np.linspace(x_ori[0], x_ori[-1], num=num)
+        y_new = f(x_new)
+        return x_new, y_new
+
+
 class Text(object):
+    """
+    Add text on the figure, for PlotPES
+
+    @param:
+        figure: Figure instance
+        x:      bi-tuple, specify which x-range to add text
+        y:      bi-tuple, specify which y-range to add text;
+        text:   content
+    """
+
     def __init__(self, figure, x, y, text, color, fontsize=18):
         self.figure = figure
         self.x = x
@@ -103,6 +143,12 @@ class Text(object):
         self.plot_text()
 
     def check_overlap(self):
+        """
+        check the text overlap
+        main idea:
+            1. tailor box along the line
+            2. if not, tailor the box vertically, then loop
+        """
         left_m = -0.3 * (self.fontsize / 18) / (self.figure.width / 15.6) / (self.figure.height / 8)  # left margin
         right_m = 0.3 * (self.fontsize / 18) / (self.figure.width / 15.6) / (self.figure.height / 8)  # right margin
         top_m = 0.07 * (self.fontsize / 18) / (self.figure.width / 15.6) / (self.figure.height / 8)  # top margin

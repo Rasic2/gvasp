@@ -2,6 +2,7 @@ import time
 from collections import defaultdict
 from functools import wraps
 from itertools import product
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -10,7 +11,7 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 
-from figure import Figure, SolidLine, DashLine, Text, plot_wrapper
+from figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
 from file import CONTCAR, DOSCAR, EIGENVAL
 
 pd.set_option('display.max_columns', None)  # show all columns
@@ -85,7 +86,7 @@ class PlotDOS(Figure):
 
         self.atoms = atoms
         self.orbitals = orbitals
-        self.color = color
+        self.color = color  # this argument will transfer to interpolated_wrapper
         self.method = method
         self.avgflag = avgflag
 
@@ -221,14 +222,34 @@ class PlotBand(Figure):
 
 
 class PESData(object):
+    """
+    Generate the data for PlotPES
+
+    @method:
+        convert_sd:    func for converting data to solid_dash type
+        convert_sc:    func for converting data to solid_curve type
+    """
+
     def __init__(self, data):
         self.data = data
 
-    def __call__(self, *args, **kwargs):
-        self.solid_x, self.solid_y, self.dash_x, self.dash_y = self.convert()
+    def __call__(self, style="solid_dash"):
+        if style == "solid_dash":
+            self.solid_x, self.solid_y, self.dash_x, self.dash_y = self.convert_sd()
+        elif style == "solid_curve":
+            self.solid_x_1, self.solid_y_1, self.solid_x_2, self.solid_y_2, self.pchip_x, self.pchip_y = self.convert_sc()
         return self
 
-    def convert(self):
+    def convert_sd(self):
+        """
+        func for converting data to solid_dash type
+
+        @return:
+            solid_x: x position in bi-tuple format of solid-type line (MS/TS-state)
+            solid_y: y position in bi-tuple format of solid-type line (MS/TS-state)
+            dash_x: x position in bi-tuple format of dash-type line (MS/TS)-(MS/TS)
+            dash_y: y position in bi-tuple format of dash-type line (MS/TS)-(MS-TS)
+        """
         solid_x = [[0.75 + 2 * i, 1.25 + 2 * i] for i in range(len(self.data))]
         solid_y = [[value, value] for value in self.data]
         real_index = [index for index, value in enumerate(self.data) if value is not None]
@@ -239,8 +260,47 @@ class PESData(object):
                   dash_x]
         return solid_x, solid_y, dash_x, dash_y
 
+    def convert_sc(self):
+        """
+        func for converting data to solid_curve type
+
+        @return:
+            solid_x_1: x position in bi-tuple format of solid-type line (MS state)
+            solid_y_1: y position in bi-tuple format of solid-type line (MS state)
+            solid_x_2: y position in bi-tuple format of solid-type line (MS-MS)
+            solid_y_2: y position in bi-tuple format of solid-type line (MS-MS)
+            pchip_x: x position in tri-tuple format of pchip-type line (MS-TS-MS)
+            pchip_y: y position in tri-tuple format of pchip-type line (MS-TS-MS)
+        """
+        energies, labels = self.data
+        solid_x_1 = [[0.75 + 2 * i, 1.25 + 2 * i] for i, label in enumerate(labels) if label != "TS"]
+        solid_y_1 = [[energy, energy] for energy, label in zip(energies, labels) if label != "TS"]
+
+        solid_i_2 = [i for i, item in enumerate(energies) if item is not None]  # locate non-None index
+        solid_i_2 = [[i1, i2] for i1, i2 in zip(solid_i_2[:-1], solid_i_2[1:]) if
+                     labels[i1] != "TS" and labels[i2] != "TS"]
+        solid_x_2 = [[1.25 + 2 * i1, 0.75 + 2 * i2] for i1, i2 in solid_i_2]
+        solid_y_2 = [[energies[i1], energies[i2]] for i1, i2 in solid_i_2]
+
+        pchip_i = [i for i, item in enumerate(energies) if item is not None]  # locate non-None index
+        pchip_i = [[i1, i2, i3] for i1, i2, i3 in zip(pchip_i[:-2], pchip_i[1:-1], pchip_i[2:]) if
+                   labels[i1] == "MS" and labels[i2] == "TS" and labels[i3] == "MS"]
+        pchip_x = [[1.25 + 2 * i1, 1 + 2 * i2, 0.75 + 2 * i3] for i1, i2, i3 in pchip_i]
+        pchip_y = [[energies[i1], energies[i2], energies[i3]] for i1, i2, i3 in pchip_i]
+        return solid_x_1, solid_y_1, solid_x_2, solid_y_2, pchip_x, pchip_y
+
 
 class PlotPES(Figure):
+    """
+    Plot potential energy surface (PES)
+
+    @method:
+        plot():     plot main func
+
+        add_solid:  auxiliary func, add solid line
+        add_dash:   auxiliary func, add dash line
+        add_text:   auxiliary func, add text
+    """
 
     def __init__(self, width=15.6, height=4, weight='bold', xlabel="Reaction coordinates", ylabel="Energy (eV)",
                  xticks=[], bwidth=3, **kargs):
@@ -257,16 +317,47 @@ class PlotPES(Figure):
     def add_dash(linewidth, x, y, color):
         DashLine(linewidth, x=x, y=y, color=color)()
 
+    @staticmethod
+    def add_pchip(linewidth, x, y, color, num=100):
+        PchipLine(linewidth, num=num, x=x, y=y, color=color)()
+
     def add_text(self, x, y, text, color):
         self.texts[color].append(Text(self, x, y, text, color))
 
     @plot_wrapper
-    def plot(self, data, color, option='default'):
-        data = PESData(data)()
+    def plot(self, data, color, text_flag=True, style="solid_dash"):
+        """
+        Main plot func of <PlotPES class>
 
+        @param:
+            data:       energy or (energy, label) types data
+            color:      specify which color you want to plot
+            text_flag:  only affect `solid_dash` type
+            style:      specify which style PES you want to plot, default: solid_dash
+        """
+        data = PESData(data)(style=style)
+
+        if style == "solid_dash":
+            self._plot_solid_dash(data, color, text_flag=text_flag)
+        elif style == "solid_curve":
+            self._plot_solid_curve(data, color)
+        else:
+            raise NotImplementedError("style should be `solid_dash` or `solid_curve`")
+
+    def _plot_solid_dash(self, data, color, text_flag):
         for x, y in zip(data.solid_x, data.solid_y):
             self.add_solid(5, x, y, color)
 
         for x, y in zip(data.dash_x, data.dash_y):
             self.add_dash(1.5, x, y, color)
-            self.add_text(x, y, '{:.2f}'.format(abs(y[1] - y[0])), color) if option == 'default' else 0
+            self.add_text(x, y, '{:.2f}'.format(abs(y[1] - y[0])), color) if text_flag else 0
+
+    def _plot_solid_curve(self, data, color):
+        for x, y in zip(data.solid_x_1, data.solid_y_1):
+            self.add_solid(3, x, y, color)
+
+        for x, y in zip(data.solid_x_2, data.solid_y_2):
+            self.add_solid(1, x, y, color)
+
+        for x, y in zip(data.pchip_x, data.pchip_y):
+            self.add_pchip(2, x, y, color)
