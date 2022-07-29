@@ -130,17 +130,22 @@ class Text(object):
         text:   content
     """
 
-    def __init__(self, figure, x, y, text, color, fontsize=18):
+    def __init__(self, figure, x, y, s, color, fontsize=18):
         self.figure = figure
+        self.plt_figure = plt.gca().get_figure()
+        self.renderer = self.plt_figure.canvas.get_renderer()
         self.x = x
         self.y = y
+        self.s = s
         self.x_ave = sum(x) / 2
         self.y_ave = sum(y) / 2
         self.color = color
         self.fontsize = fontsize
-        self.text = text
+        self.text = plt.text(self.x_ave, self.y_ave, self.s, ha='center', va='center', fontsize=self.fontsize,
+                             color=self.color)
+        self.text_box = self.text.get_window_extent(self.renderer)
         self.check_overlap()
-        self.plot_text()
+        self.tailor_text()
 
     def check_overlap(self):
         """
@@ -149,10 +154,10 @@ class Text(object):
             1. tailor box along the line
             2. if not, tailor the box vertically, then loop
         """
-        left_m = -0.3 * (self.fontsize / 18) / (self.figure.width / 15.6) / (self.figure.height / 8)  # left margin
-        right_m = 0.3 * (self.fontsize / 18) / (self.figure.width / 15.6) / (self.figure.height / 8)  # right margin
-        top_m = 0.07 * (self.fontsize / 18) / (self.figure.width / 15.6) / (self.figure.height / 8)  # top margin
-        bottom_m = -0.05 * (self.fontsize / 18) / (self.figure.width / 15.6) / (self.figure.height / 8)  # bottom margin
+        left_m = -0.3 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # left margin
+        right_m = 0.3 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # right margin
+        top_m = 0.07 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # top margin
+        bottom_m = -0.05 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # bottom margin
         color_plotted = list(self.figure.texts.keys())
         index_color = color_plotted.index(self.color)
         if index_color:  # not first line, index_color > 0
@@ -168,10 +173,15 @@ class Text(object):
                         item = self.figure.texts[color_plotted[i]][index_fragment]  # obtain text object from index
                     else:
                         continue
-                    overlap_cond_y = (self.y_ave + bottom_m > item.y_ave + top_m or
-                                      self.y_ave + top_m < item.y_ave + bottom_m)  # check y_direction overlap
-                    overlap_cond_x = (self.x_ave + right_m < item.x_ave + left_m or
-                                      self.x_ave + left_m > item.x_ave + right_m)  # check x_direction overlap
+                    overlap_cond_y = (self.y_ave + bottom_m < item.y_ave + top_m) and \
+                                     (self.y_ave + bottom_m > item.y_ave + bottom_m) or \
+                                     (self.y_ave + top_m > item.y_ave + bottom_m) and \
+                                     (self.y_ave + top_m < item.y_ave + top_m)  # check y_direction overlap
+                    overlap_cond_x = (self.x_ave + right_m > item.x_ave + left_m) and \
+                                     (self.x_ave + right_m < item.x_ave + right_m) or \
+                                     (self.x_ave + left_m < item.x_ave + right_m) and \
+                                     (self.x_ave + left_m < item.x_ave + left_m)  # check x_direction overlap
+
                     cur_overlap = (overlap_cond_y or overlap_cond_x)  # check current line's overlap
                     if cur_overlap:
                         overlap = overlap or cur_overlap  # merge to all lines' overlap
@@ -185,13 +195,15 @@ class Text(object):
                     self.x_ave = self.x_ave + delta_y / k
                     slide_along_k += 1
                     limit_range = (self.x_ave + right_m < self.x[1] and self.x_ave + left_m > self.x[0])  # check range
+
                 if not limit_range:
                     slide_vertical += 1
                     slide_along_k = 1  # pull the text to original x_ave
                     self.x_ave = sum(self.x) / 2
                     self.y_ave = sum(self.y) / 2 + (top_m - bottom_m) / 100 * slide_vertical * (-1) ** slide_vertical
                     limit_range = (self.x_ave + right_m < self.x[1] and self.x_ave + left_m > self.x[0])
-                    logger.info(f"{self.x}: Adjust the intercept {slide_vertical - 1} times")
+                    logger.debug(f"{self.x}: Adjust the intercept {slide_vertical - 1} times")
 
-    def plot_text(self):
-        plt.text(self.x_ave, self.y_ave, self.text, ha='center', va='center', fontsize=self.fontsize, color=self.color)
+    def tailor_text(self):
+        self.text.set_position((self.x_ave, self.y_ave))
+        self.text_box = self.text.get_window_extent(self.renderer)
