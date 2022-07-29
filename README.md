@@ -49,7 +49,12 @@ following command:
 
 * GNU compiler (gcc, gfortran and g++)
 * MSVC compiler
-* Cython (use for dosPlot)
+* Python >= 3.9
+* Cython
+* matplotlib
+* numpy == 1.23.1
+* pymatgen == 2022.7.25
+* pymatgen-diffusion == 2020.10.8
 
 
 

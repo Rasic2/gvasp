@@ -446,14 +446,15 @@ class OUTCAR(MetaFile):
         self.lattice = list(self.lattice)[0] if len(self.lattice) == 1 else self.lattice
         self._frequency = [i for i in range(len(self.strings)) if self.strings[i].find("Hz") != -1]
 
-        self.spin, self.bands, self.kpoints = None, None, None
-        self.steps = namedtuple("Steps", ("index", "ionic", "electronic"))
+        self.spin, self.bands, self.kpoints, self.fermi, self.steps = None, None, None, None, None
         self._parse_base()
 
         self.frequency = None
         if len(self._frequency):
-            self.frequency = namedtuple("Frequency", ("image", "wave_number", "coord", "vibration"))
             self._parse_freq()
+
+        self.kpoint_info, self.band_info = None, None
+        self._parse_band()
 
     def _parse_base(self):
         self.spin = [int(line.split()[2]) for line in self.strings if line.find("ISPIN") != -1][0]
@@ -461,7 +462,8 @@ class OUTCAR(MetaFile):
             [(int(line.split()[-1]), int(line.split()[3])) for line in self.strings if line.find("NBANDS") != -1][0]
         steps = [(index, int(line.split()[2].split("(")[0]), int(line.split()[3].split(")")[0]))
                  for index, line in enumerate(self.strings) if line.find("Iteration") != -1]
-        self.steps.index, self.steps.ionic, self.steps.electronic = list(map(tuple, zip(*steps)))
+        self.steps = namedtuple("Steps", ("index", "ionic", "electronic"))(*list(map(tuple, zip(*steps))))
+        self.fermi = [float(line.split()[2]) for line in self.strings if line.find("E-fermi") != -1][-1]
 
     def _parse_freq(self):
         """
@@ -480,10 +482,66 @@ class OUTCAR(MetaFile):
             coord.append(np.array(item)[:, :3])
             vibration.append(np.array(item)[:, 3:])
 
-        self.frequency.image = image
-        self.frequency.wave_number = np.array(wave_number)
-        self.frequency.coord = np.array(coord)
-        self.frequency.vibration = np.array(vibration)
+        self.frequency = namedtuple("Frequency", ("image", "wave_number", "coord", "vibration"))(image,
+                                                                                                 np.array(wave_number),
+                                                                                                 np.array(coord),
+                                                                                                 np.array(vibration))
+
+    def _parse_band(self):
+        """
+        Parse band information from OUTCAR
+
+        @return:
+            register self.kpoint_info (type: tuple(List[KPoint(coord, value)], List[KPoint(coord, value)]))
+        """
+
+        def spin_obtain(kpoint_group):
+            """
+            According to the index-list of kpoint in OUTCAR, parse the band_info
+
+            @param:
+                kpoint_group:       list, record the index of 'k-point' field occurrence in OUTCAR
+
+            @return:
+                spin:      List[KPoint(coord, value)], record the each k-point info
+            """
+
+            spin = []
+            trans_func = lambda x: [int(x[0]), float(x[1]) - self.fermi, float(x[2])]  # format transform
+            # parse band_info
+            for index in kpoint_group:
+                coord = list(map(float, band_info[index].split()[3:]))
+                value = list(map(trans_func, np.char.split(band_info[index + 2:index + 2 + self.bands])))
+                spin.append(KPoint(coord, np.array(value)))
+
+            return spin
+
+        def transform_band(spin):
+            band = []
+            for kpoint in spin:
+                band.append(kpoint.value[:, 1])
+
+            band = np.array(band)
+            band = band.transpose((1, 0))
+            return band
+
+        content = self.strings[self.steps.index[-1]:]  # calculate bandgap from last step
+        start_index = [index for index, line in enumerate(content) if line.find("E-fermi") != -1][0]
+        end_index = [index for index, line in enumerate(content) if line.find("-----") != -1 and index > start_index][0]
+        band_info = content[start_index:end_index]  # band_info content in last step
+        KPoint = namedtuple("KPoint", ("coord", "value"))  # including `kpoint coord` and `each band energy`
+        if self.spin == 2:
+            kpoint_index = [index for index, line in enumerate(band_info) if line.find("k-point") != -1]
+            half_len = int(len(kpoint_index) / 2)
+            kpoint_up, kpoint_down = kpoint_index[:half_len], kpoint_index[half_len:]  # 'k-point' occurrence index
+
+            spin_up = spin_obtain(kpoint_up)
+            spin_down = spin_obtain(kpoint_down)
+
+            self.kpoint_info = namedtuple("KPoint_info", ("up", "down"))(spin_up, spin_down)
+            self.band_info = namedtuple("Band_info", ("up", "down"))(transform_band(spin_up), transform_band(spin_down))
+        else:
+            raise NotImplementedError("Non-spin polarized calculation has not been implemented")
 
     def bandgap(self, cutoff=0.01):
         """
@@ -497,25 +555,17 @@ class OUTCAR(MetaFile):
             bandgap:    value of bandgap
         """
 
-        def MO_obtain(kpoint_group):
+        def MO_obtain(spin):
             """
-            According to the index-list of kpoint in OUTCAR, parse the band_info, and return the homo and lumo
+            According to the kpoint_info, return the homo and lumo
 
             @param:
-                kpoint_group:       list, record the index of 'k-point' field occurrence in OUTCAR
+                spin:       List[KPoint(coord, value)], record the each k-point info
 
             @return:
                 homo_spin:      KPoint(coord, value), record the homo information
                 lumo_spin:      KPoint(coord, value), record the lumo information
             """
-
-            spin = []
-            trans_func = lambda x: [int(x[0]), float(x[1]), float(x[2])]  # transform string to (int, float, float)
-            # parse band_info
-            for index in kpoint_group:
-                coord = list(map(float, band_info[index].split()[3:]))
-                value = list(map(trans_func, np.char.split(band_info[index + 2:index + 2 + self.bands])))
-                spin.append(KPoint(coord, np.array(value)))
 
             # calculate homo and lumo
             homo_spin, lumo_spin = None, None
@@ -527,18 +577,11 @@ class OUTCAR(MetaFile):
                 lumo_spin = KPoint(item.coord, lumo) if lumo_spin is None or lumo_spin.value[1] > lumo[1] else lumo_spin
             return homo_spin, lumo_spin
 
-        content = self.strings[self.steps.index[-1]:]  # calculate bandgap from last step
-        start_index = [index for index, line in enumerate(content) if line.find("E-fermi") != -1][0]
-        end_index = [index for index, line in enumerate(content) if line.find("-----") != -1 and index > start_index][0]
-        band_info = content[start_index:end_index]  # band_info content in last step
         KPoint = namedtuple("KPoint", ("coord", "value"))  # including `kpoint coord` and `each band energy`
         if self.spin == 2:
-            kpoint_index = [index for index, line in enumerate(band_info) if line.find("k-point") != -1]
-            half_len = int(len(kpoint_index) / 2)
-            kpoint_up, kpoint_down = kpoint_index[:half_len], kpoint_index[half_len:]  # 'k-point' occurrence index
 
-            homo_up, lumo_up = MO_obtain(kpoint_up)
-            homo_down, lumo_down = MO_obtain(kpoint_down)
+            homo_up, lumo_up = MO_obtain(self.kpoint_info[0])
+            homo_down, lumo_down = MO_obtain(self.kpoint_info[1])
 
             homo_real = homo_up if homo_up.value[1] > homo_down.value[1] else homo_down
             lumo_real = lumo_up if lumo_up.value[1] < lumo_down.value[1] else lumo_down

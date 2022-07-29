@@ -11,7 +11,7 @@ from scipy import interpolate
 from scipy.integrate import simps
 
 from figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
-from file import CONTCAR, DOSCAR, EIGENVAL
+from file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -205,10 +205,15 @@ class PlotDOS(Figure):
 
 
 class PlotBand(Figure):
-    def __init__(self, name, title='Band Structure', **kargs):
+    def __init__(self, name, title='Band Structure', type="EIGENVAL", **kargs):
         super(PlotBand, self).__init__(title=title, **kargs)
         self.name = name
-        self.energy = EIGENVAL(self.name).load().energy
+        if type == "EIGENVAL":
+            self.energy = EIGENVAL(self.name).load().energy
+        elif type == "OUTCAR":
+            energy = OUTCAR(self.name).band_info
+            self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
+            self.energy = self.energy.transpose((1, 0, 2))
 
     @plot_wrapper
     def plot(self):
@@ -217,7 +222,7 @@ class PlotBand(Figure):
         """
         energy_avg = self.energy.mean(axis=-1)
         for band_index in range(energy_avg.shape[1]):
-            plt.plot(energy_avg[:, band_index])
+            plt.plot(energy_avg[:, band_index], "-o")
 
 
 class PESData(object):
