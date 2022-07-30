@@ -2,16 +2,20 @@ import copy
 import os
 from pathlib import Path
 
+from matplotlib import pyplot as plt
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
+from figure import Figure, plot_wrapper, PchipLine
 from file import POSCAR, OUTCAR
 from logger import logger
 from structure import Structure
 
 
-class NEBCal(object):
-    def __init__(self, ini_POSCAR, fni_POSCAR, images=4):
+class NEBCal(Figure):
+    def __init__(self, ini_POSCAR=None, fni_POSCAR=None, images=4, xlabel="Distance (Å)", ylabel="Energy (eV)",
+                 width=10):
+        super(NEBCal, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width)
         self.ini_POSCAR = ini_POSCAR
         self.fni_POSCAR = fni_POSCAR
         self.images = images
@@ -111,3 +115,23 @@ class NEBCal(object):
                 ini_energy = outcar.last_energy
             barrier = outcar.last_energy - ini_energy
             print(f" {image.stem} \t {outcar.last_tangent:>10.6f} \t {outcar.last_energy} \t {barrier:.6f}")
+
+    @plot_wrapper
+    def plot(self, color="#ed0345"):
+        neb_dirs = NEBCal._search_neb_dir()
+        dists = []
+        energy = []
+        ini_energy = 0.
+        for image in neb_dirs:
+            posfile = "CONTCAR" if Path(f"{image}/CONTCAR").exists() else "POSCAR"
+            outcar = OUTCAR(f"{image}/OUTCAR")
+            structure = POSCAR(f"{image}/{posfile}").structure
+            if not int(image.stem):
+                ini_energy = outcar.last_energy
+                ini_structure = structure
+
+            dists.append(Structure.dist(structure, ini_structure))
+            energy.append(outcar.last_energy - ini_energy)
+
+        plt.plot(dists, energy, "o")
+        PchipLine(x=dists, y=energy, color=color, linewidth=2)()
