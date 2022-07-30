@@ -111,16 +111,6 @@ class POSCAR(StructInfoFile):
         logger.info(f"New structure have been written to *_sort files")
 
 
-# def __sub__(self, other):
-#     self.structure = self.to_structure()
-#     other.structure = other.to_structure()
-#     if np.all(self.structure.lattice.matrix == other.structure.lattice.matrix):
-#         return self.structure - other.structure
-#     else:
-#         raise ArithmeticError(f"{self} and {other} not have the same lattice vector!")
-#
-
-
 class CONTCAR(POSCAR):
     pass
 
