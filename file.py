@@ -640,7 +640,32 @@ class OUTCAR(MetaFile):
 
 class MODECAR(MetaFile):
     @staticmethod
-    def write(freq: int, scale: float, outcar="OUTCAR"):
+    def write_from_freq(freq: int, scale: float, outcar="OUTCAR"):
+        """
+        Generate MODECAR file from the `image-freq`
+
+        @param:
+            freq:       which freq you want to generate MODECAR
+            scale:      scale factor, may lower than 1.0
+            outcar:     name of the OUTCAR
+        """
         outcar = OUTCAR(name=outcar)
         frequency = outcar.frequency.vibration[freq]
         np.savetxt("MODECAR", frequency * scale, fmt="%10.5f")
+
+    @staticmethod
+    def write_from_POSCAR(pos1: str, pos2: str):
+        """
+        Generate MODECAR file from the two `POSCAR` file
+
+        @param:
+            pos1:      name of first POSCAR file
+            pos2:      name of second POSCAR file
+        """
+        structure1 = POSCAR(pos1).structure
+        structure2 = POSCAR(pos2).structure
+        assert structure1 == structure2, f"{pos1} and {pos2} are not structure match"
+        diff = structure1 - structure2
+        dist = Structure.dist(structure1, structure2)
+        diff_norm = diff / dist
+        np.savetxt("MODECAR", diff_norm, fmt="%20.10E")

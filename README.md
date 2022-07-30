@@ -2,8 +2,16 @@
 
 A quick post-process for resolve or assistant the VASP calculations, `still in development`.
 
-* [**VaspTask**](VaspTask) (mainly to create the `INCAR`, `POSCAR`, `POTCAR`, `KPOINTS` and `job.script` from
+## Directory
+
+* [CLib](Clib) (store the *.pyd files)
+
+* [scripts](scripts) (scripts to resolve some not often encountered problems)
+
+* [VaspTask](VaspTask) (mainly to create the `INCAR`, `POSCAR`, `POTCAR`, `KPOINTS` and `job.script` from
   only `*.xsd` file)
+
+* [tests](tests) (test files for `QVasp`)
 
 * [Temp](Temp) (some temp scripts, mostly of them are useless)
 
