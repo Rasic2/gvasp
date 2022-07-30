@@ -435,8 +435,10 @@ class OUTCAR(MetaFile):
                         enumerate(self.strings) if item.find("direct lattice vectors") != -1}
         self.lattice = list(self.lattice)[0] if len(self.lattice) == 1 else self.lattice
         self._frequency = [i for i in range(len(self.strings)) if self.strings[i].find("Hz") != -1]
-
+        self._neb = [line for line in self.strings if line.find("NEB") != -1]
         self.spin, self.bands, self.kpoints, self.fermi, self.steps = None, None, None, None, None
+        self.energy, self.force = None, None
+        self.last_energy, self.last_force = None, None
         self._parse_base()
 
         self.frequency = None
@@ -446,6 +448,10 @@ class OUTCAR(MetaFile):
         self.kpoint_info, self.band_info = None, None
         self._parse_band()
 
+        self.tangent, self.last_tangent = 0., 0.
+        if len(self._neb):
+            self._parse_neb()
+
     def _parse_base(self):
         self.spin = [int(line.split()[2]) for line in self.strings if line.find("ISPIN") != -1][0]
         self.bands, self.kpoints = \
@@ -454,6 +460,10 @@ class OUTCAR(MetaFile):
                  for index, line in enumerate(self.strings) if line.find("Iteration") != -1]
         self.steps = namedtuple("Steps", ("index", "ionic", "electronic"))(*list(map(tuple, zip(*steps))))
         self.fermi = [float(line.split()[2]) for line in self.strings if line.find("E-fermi") != -1][-1]
+        self.energy = [float(line.split()[3]) for line in self.strings if line.find("energy  without") != -1]
+        self.force = [float(line.split()[5]) for line in self.strings if line.find("FORCES: max atom") != -1]
+        self.last_energy = self.energy[-1] if len(self.energy) else None
+        self.last_force = self.force[-1] if len(self.force) else None
 
     def _parse_freq(self):
         """
@@ -532,6 +542,10 @@ class OUTCAR(MetaFile):
             self.band_info = namedtuple("Band_info", ("up", "down"))(transform_band(spin_up), transform_band(spin_down))
         else:
             raise NotImplementedError("Non-spin polarized calculation has not been implemented")
+
+    def _parse_neb(self):
+        self.tangent = [float(line.split()[-1]) for line in self.strings if line.find("tangent") != -1]
+        self.last_tangent = self.tangent[-1]
 
     def bandgap(self, cutoff=0.01):
         """

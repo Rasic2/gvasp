@@ -5,7 +5,7 @@ from pathlib import Path
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
-from file import POSCAR
+from file import POSCAR, OUTCAR
 from logger import logger
 from structure import Structure
 
@@ -77,13 +77,18 @@ class NEBCal(object):
             image_structure.write(f"{image_dir}/POSCAR")
         logger.info("Linear interpolation of NEB initial guess has been generated.")
 
-    def _check_overlap(self):
-        logger.info("Check structures overlap")
+    @staticmethod
+    def _search_neb_dir():
         neb_dirs = []
 
         for dir in Path(os.getcwd()).iterdir():
             if Path(dir).is_dir() and Path(dir).stem.isdigit():
                 neb_dirs.append(dir)
+        return neb_dirs
+
+    def _check_overlap(self):
+        logger.info("Check structures overlap")
+        neb_dirs = NEBCal._search_neb_dir()
 
         for image in neb_dirs:
             structure = POSCAR(Path(f"{image}/POSCAR")).structure
@@ -91,3 +96,18 @@ class NEBCal(object):
             structure.check_overlap()
 
         logger.info("All structures don't have overlap")
+
+    @staticmethod
+    def monitor():
+        """
+        Monitor tangent, energy and barrier in the NEB-task
+        """
+        neb_dirs = NEBCal._search_neb_dir()
+        ini_energy = 0.
+        print("image   tangent          energy       barrier")
+        for image in neb_dirs:
+            outcar = OUTCAR(f"{image}/OUTCAR")
+            if not int(image.stem):
+                ini_energy = outcar.last_energy
+            barrier = outcar.last_energy - ini_energy
+            print(f" {image.stem} \t {outcar.last_tangent:>10.6f} \t {outcar.last_energy} \t {barrier:.6f}")
