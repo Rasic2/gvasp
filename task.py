@@ -1,4 +1,5 @@
 import copy
+import os
 from pathlib import Path
 
 from pymatgen.core import Structure as pmg_Structure
@@ -15,13 +16,19 @@ class NEBCal(object):
         self.fni_POSCAR = fni_POSCAR
         self.images = images
 
-    def generate(self, method="liner"):
+    def generate(self, method="liner", check_overlap=True):
+        """
+        Generate NEB-task images && check their structure overlap
+        """
         if method == "idpp":
             self._generate_idpp()
         elif method == "liner":
             self._generate_liner()
         else:
             raise NotImplementedError(f"{method} has not been implemented for NEB task")
+
+        if check_overlap:
+            self._check_overlap()
 
     def _generate_idpp(self):
         """
@@ -69,3 +76,18 @@ class NEBCal(object):
             image_structure = Structure(atoms=image_atoms, lattice=ini_structure.lattice)
             image_structure.write(f"{image_dir}/POSCAR")
         logger.info("Linear interpolation of NEB initial guess has been generated.")
+
+    def _check_overlap(self):
+        logger.info("Check structures overlap")
+        neb_dirs = []
+
+        for dir in Path(os.getcwd()).iterdir():
+            if Path(dir).is_dir() and Path(dir).stem.isdigit():
+                neb_dirs.append(dir)
+
+        for image in neb_dirs:
+            structure = POSCAR(Path(f"{image}/POSCAR")).structure
+            logger.info(f"check {image.stem} dir...")
+            structure.check_overlap()
+
+        logger.info("All structures don't have overlap")

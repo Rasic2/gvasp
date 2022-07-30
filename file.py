@@ -8,7 +8,7 @@ from typing import List
 import numpy as np
 from pandas import DataFrame
 
-from CLib import _dos, _file
+from Lib import _dos, _file
 from base import Atoms, Lattice
 from error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError
 from logger import logger

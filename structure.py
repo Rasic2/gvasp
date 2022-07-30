@@ -5,6 +5,7 @@ from collections import defaultdict, Counter
 import numpy as np
 
 from base import Atoms, Lattice, Atom
+from error import StructureOverlapError
 from logger import logger
 
 
@@ -22,8 +23,9 @@ class Structure(object):
         @func:
             find_neighbour_tables(self, neighbour_num: int = 12, adj_matrix=None) --> self.neighbour_table
 
+            dist(structure1, structure2): calculate distance between two structures
+            align(structure1, structure2, tolerance1=0.2, tolerance2=100): tailor atoms' order to align structures
             from_file(name, style=None, mol_index=None, **kargs) --> Structure
-            from_adj_matrix(structure, adj_matrix, adj_matrix_tuple, bond_dist3d, known_first_order) --> Structure
 
             write(self, name, system=None, factor=1): output the structure into `POSCAR/CONTCAR` file
         """
@@ -168,6 +170,14 @@ class Structure(object):
         else:
             setattr(self, "neighbour_table", neighbour_table)
 
+    def check_overlap(self, cutoff=0.1):
+        self.find_neighbour_table(neighbour_num=1)
+        dist = self.neighbour_table.dist.reshape(-1)
+        if dist[np.where(dist <= cutoff)].size:
+            raise StructureOverlapError(f"Exist atoms' distance <= {cutoff}, please check")
+        else:
+            logger.info("No structure overlap occurrence")
+
     @staticmethod
     def from_file(name):
         logger.debug(f"Handle the {name}")
@@ -196,61 +206,6 @@ class Structure(object):
         atoms.set_coord(lattice)
 
         return Structure(atoms=atoms, lattice=lattice)
-
-    #
-    # @staticmethod
-    # def from_adj_matrix(structure, adj_matrix, adj_matrix_tuple, bond_dist3d, known_first_order):
-    #     """
-    #     Construct a new structure from old structure's adj_matrix
-    #
-    #     @parameter
-    #         adj_matrix:         shape: (N, M)
-    #         adj_matrix_tuple:   shape: (N, M, 2)
-    #         bond_dist3d:        shape: (N, M, 3)
-    #     """
-    #
-    #     adj_matrix_tuple_flatten = adj_matrix_tuple.reshape(-1, 2)
-    #     bond_dist3d_flatten = bond_dist3d.reshape(-1, 3)
-    #
-    #     # construct the search-map
-    #     known_order = []  # search-map, shape: (N-1, 2)
-    #     known_index = [known_first_order]  # shape: (N,)
-    #     known_index_matrix = []  # search-map corresponding to the index of adj_matrix_tuple
-    #     for index, item in enumerate(adj_matrix_tuple_flatten):
-    #         if item[0] not in known_index and item[1] in known_index:
-    #             try:
-    #                 real_index = item[1] * adj_matrix.shape[1] + np.where(adj_matrix[item[1]] == item[0])[0][
-    #                     0]  # fix bug: [4]: [1, 2, 8]; [8]: [1, 2, 5]
-    #             except IndexError:
-    #                 continue
-    #             known_index.append(item[0])
-    #             known_order.append((item[1], item[0]))
-    #             known_index_matrix.append(real_index)
-    #         if item[1] not in known_index and item[0] in known_index:
-    #             known_index.append(item[1])
-    #             known_order.append((item[0], item[1]))
-    #             known_index_matrix.append(index)
-    #         if len(known_index) == adj_matrix.shape[0]:
-    #             break
-    #
-    #     # calculate the coord from the search-map
-    #     known_first_atom = structure.atoms[known_first_order]
-    #     known_dist3d = bond_dist3d_flatten[known_index_matrix]  # diff matrix, shape: (N-1, 3)
-    #     known_atoms = [known_first_atom]
-    #     for item, diff_coord in zip(known_order, known_dist3d):
-    #         atom_new = copy.deepcopy(structure.atoms[item[1]])  # unknown atom
-    #         atom_new.frac_coord = None
-    #         for atom_known in known_atoms:
-    #             if atom_known.order == item[0]:
-    #                 atom_new.cart_coord = atom_known.cart_coord + diff_coord
-    #                 known_atoms.append(atom_new)
-    #     assert len(known_atoms) == adj_matrix.shape[0], "Search-map construct failure, please check the code!"
-    #
-    #     sorted_atoms = sorted(known_atoms, key=lambda atom: atom.order)
-    #     sorted_atoms = [atom.set_coord(structure.lattice) for atom in sorted_atoms]
-    #     atoms = Atoms.from_list(sorted_atoms)
-    #
-    #     return Structure(atoms=atoms, lattice=structure.lattice)
 
     def write(self, name, system=None, factor=1.0):
         system = system if system is not None else " ".join(

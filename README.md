@@ -4,7 +4,7 @@ A quick post-process for resolve or assistant the VASP calculations, `still in d
 
 ## Directory
 
-* [CLib](Clib) (store the *.pyd files)
+* [Lib](Lib) (store the *.pyd files)
 
 * [scripts](scripts) (scripts to resolve some not often encountered problems)
 
