@@ -16,3 +16,11 @@ class AnimationError(RuntimeError):
 
 class FrequencyError(IndexError):
     pass
+
+
+class AttributeNotRegisteredError(AttributeError):
+    pass
+
+
+class AttributeNotAssignedError(AttributeError):
+    pass

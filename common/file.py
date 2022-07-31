@@ -10,8 +10,10 @@ from pandas import DataFrame
 
 from Lib import _dos, _file
 from common.base import Atoms, Lattice
-from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError
+from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
+    AttributeNotRegisteredError, AttributeNotAssignedError
 from common.logger import logger
+from common.parameter import Parameter
 from common.structure import Structure
 
 
@@ -86,6 +88,57 @@ class ARCFile(MetaFile):
                     f.write(f"{element:5s} {x:14.10f} {y:14.10f} {z:14.10f} XXXX 1       xx     {formula:2s} 0.0000\n")
                 f.write("end\n")
                 f.write("end\n")
+
+
+class INCAR(MetaFile, Parameter):
+
+    def __init__(self, name):
+        super(INCAR, self).__init__(name=name)
+        self._init_attr()
+        self._check_attr()
+
+    def __getattr__(self, item):
+        if item in self.__dict__.keys():
+            return self.__dict__[item]
+        elif item in self.__class__.__dict__.keys():
+            return self.__class__.__dict__[item]
+
+    def _init_attr(self):
+        """
+        Initialize the attributes, if attribute not found, raise AttributeNotRegisteredError
+        """
+        for line in self.strings:
+            if line.split()[0][0] != "#":
+                real_line = line.split("#")[0]
+                attr_name = real_line.split("=")[0].strip()
+                attr_value = real_line.split("=")[1].strip()
+                for param_type in INCAR._type_trans.keys():
+                    if attr_name in INCAR._type_trans[param_type]['name']:
+                        attr_value = INCAR._type_trans[param_type]['func'](attr_value)
+                        break
+                else:
+                    raise AttributeNotRegisteredError(f"{attr_name} is not registered")
+                setattr(self, attr_name, attr_value)
+
+    def _check_attr(self):
+        """
+        Check baseParameters, if they don't have values, raise AttributeNotAssignedError
+        """
+        for attr in INCAR._baseParam:
+            if getattr(self, attr, None) is None:
+                raise AttributeNotAssignedError(f"{attr} do not have values")
+
+
+class KPOINTS(MetaFile):
+    pass
+
+
+class POTCAR(MetaFile):
+    pass
+
+
+class XSDFile(MetaFile):
+    pass
 
 
 class POSCAR(StructInfoFile):

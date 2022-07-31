@@ -133,3 +133,4 @@ neb-test
 Temp
 *.cell
 OUTCAR*
+INCAR*
