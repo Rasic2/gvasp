@@ -5,7 +5,7 @@ from typing import List, Any
 import numpy as np
 import yaml
 
-from logger import root_dir, logger
+from common.logger import root_dir, logger
 
 yaml.warnings({'YAMLLoadWarning': False})
 

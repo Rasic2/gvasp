@@ -1,4 +1,4 @@
-from file import MODECAR
+from common.file import MODECAR
 
 
 def test_from_freq():

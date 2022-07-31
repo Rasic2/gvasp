@@ -25,6 +25,7 @@ COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'p
 def interpolated_wrapper(func):
     @wraps(func)
     def wrapper(self):
+        x_out, y_out = [], []
         for x, y, number in func(self):
             x_arr = np.array(x)
             y_arr = np.array(y)
@@ -42,9 +43,15 @@ def interpolated_wrapper(func):
             elif self.method == 'dash line':
                 plt.plot(x_new, y_new / number, '--', color=self.color)
             elif self.method == 'output':
-                time_prefix = time.strftime("%H-%M-%S", time.localtime())
-                np.savetxt(f"datafile_x_{time_prefix}", x_new)
-                np.savetxt(f"datafile_y_{time_prefix}", y_new)
+                x_out.append(x_new)
+                y_out.append(y_new)
+
+        if self.method == 'output':
+            x_out = np.array(x_out).transpose((1, 0))  # construct np.array and transpose the (0, 1) axis for plot after
+            y_out = np.array(y_out).transpose((1, 0))
+            time_prefix = time.strftime("%H-%M-%S", time.localtime())
+            np.savetxt(f"datafile_x_{time_prefix}", x_out)
+            np.savetxt(f"datafile_y_{time_prefix}", y_out)
 
     return wrapper
 
@@ -62,14 +69,14 @@ class PlotDOS(Figure):
         doscar_parse:   parse DOSCAR data
     """
 
-    def __init__(self, dos_file, pos_file, max_orbital='f', xlabel="Energy (EV)", ylabel="Density of States (a.u.)",
-                 **kargs):
+    def __init__(self, dos_file, pos_file, xlabel="Energy (EV)", ylabel="Density of States (a.u.)", **kargs):
         super(PlotDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
         self.dos_file = dos_file
         self.pos_file = pos_file
-        self.max_orbital = max_orbital  # whether you need to plot the f-orbital, default: True
-        self.element = PlotDOS.contcar_parse(self.pos_file)
-        self.total_dos, self.atom_list = PlotDOS.doscar_parse(self.dos_file)
+        self.element = PlotDOS.parse_contcar(self.pos_file)
+        self.total_dos, self.atom_list = PlotDOS.parse_doscar(self.dos_file)
+
+        self.atoms, self.orbitals, self.color, self.method, self.avgflag = None, None, None, None, None
 
     @plot_wrapper
     def plot(self, atoms=None, orbitals=None, color="#000000", method='line', avgflag=False):
@@ -143,7 +150,9 @@ class PlotDOS(Figure):
             raise ValueError(f"The format of {self.atoms} is not correct!")
 
     def center(self, atoms=None, orbitals=None, xlim=None):
-        """Calculate Band-Center Value"""
+        """
+        Calculate Band-Center Value (can't put in the <DOSCAR class>, causing it needs CONTCAR information)
+        """
 
         old_atoms = atoms
         if isinstance(old_atoms, str):
@@ -162,18 +171,18 @@ class PlotDOS(Figure):
         elif orbitals is not None:
             for atom in atoms:
                 for orbital in orbitals:
-                    y += self.atom_list[atom].loc[rang, '{}_up'.format(orbital)]
-                    y -= self.atom_list[atom].loc[rang, '{}_down'.format(orbital)]
+                    y += self.atom_list[atom].loc[rang, f'{orbital}_up']
+                    y -= self.atom_list[atom].loc[rang, f'{orbital}_down']
         else:
             for atom in atoms:
                 y += self.atom_list[atom].loc[rang, 'up']
                 y -= self.atom_list[atom].loc[rang, 'down']
         e_count = simps(y.values, y.index.values)  # Simpson Integration method for obtain the electrons' num
         dos = simps([a * b for a, b in zip(y.values, y.index.values)], y.index.values)
-        print("Number of Electrons: {0:.4f}; Center Value: {1:.4f}".format(e_count, dos / e_count))
+        print(f"Number of Electrons: {e_count:.4f}; Center Value: {dos / e_count:.4f}")
 
     @staticmethod
-    def contcar_parse(name):
+    def parse_contcar(name):
         """
         read CONTCAR file, obtain the elements' list.
 
@@ -189,7 +198,7 @@ class PlotDOS(Figure):
         return element
 
     @staticmethod
-    def doscar_parse(name):
+    def parse_doscar(name):
         """
         read DOSCAR file, obtain the TDOS && LDOS.
 

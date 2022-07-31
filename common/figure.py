@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy import interpolate
 
-from logger import logger
+from common.logger import logger
 
 
 def plot_wrapper(func):

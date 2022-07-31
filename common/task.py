@@ -6,10 +6,10 @@ from matplotlib import pyplot as plt
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
-from figure import Figure, plot_wrapper, PchipLine
-from file import POSCAR, OUTCAR
-from logger import logger
-from structure import Structure
+from common.figure import Figure, plot_wrapper, PchipLine
+from common.file import POSCAR, OUTCAR, XDATCAR, ARCFile
+from common.logger import logger
+from common.structure import Structure
 
 
 class NEBCal(Figure):
@@ -135,3 +135,17 @@ class NEBCal(Figure):
 
         plt.plot(dists, energy, "o")
         PchipLine(x=dists, y=energy, color=color, linewidth=2)()
+
+    @staticmethod
+    def movie(name="movie.arc", file="CONTCAR"):
+        """
+        Generate *.arc file from images/[POSCAR|CONTCAR] files
+        """
+        neb_dirs = NEBCal._search_neb_dir()
+        structures = []
+
+        for image in neb_dirs:
+            posfile = "CONTCAR" if file == "CONTCAR" and Path(f"{image}/CONTCAR").exists() else "POSCAR"
+            structures.append(POSCAR(f"{image}/{posfile}").structure)
+
+        ARCFile.write(name=name, structure=structures, lattice=structures[0].lattice)

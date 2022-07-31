@@ -1,4 +1,4 @@
-from file import POSCAR
+from common.file import POSCAR
 
 POSCAR.align("POSCAR_IS", "POSCAR_FS")
 # structure = POSCAR("POSCAR_IS").structure

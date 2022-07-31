@@ -9,10 +9,10 @@ import numpy as np
 from pandas import DataFrame
 
 from Lib import _dos, _file
-from base import Atoms, Lattice
-from error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError
-from logger import logger
-from structure import Structure
+from common.base import Atoms, Lattice
+from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError
+from common.logger import logger
+from common.structure import Structure
 
 
 class MetaFile(object):
@@ -136,7 +136,7 @@ class XDATCAR(StructInfoFile):
                 self._structure.append(Structure(atoms=atoms, lattice=self.lattice))
         return self._structure
 
-    def to_arc(self, name):
+    def movie(self, name):
         """Transform the XDATCAR to *.arc file"""
         ARCFile.write(name=name, structure=self.structure, lattice=self.lattice)
 

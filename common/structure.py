@@ -4,9 +4,9 @@ from collections import defaultdict, Counter
 
 import numpy as np
 
-from base import Atoms, Lattice, Atom
-from error import StructureOverlapError
-from logger import logger
+from common.base import Atoms, Lattice, Atom
+from common.error import StructureOverlapError
+from common.logger import logger
 
 
 class Structure(object):
