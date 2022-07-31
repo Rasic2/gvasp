@@ -21,6 +21,7 @@ def plot_wrapper(func):
         ax.spines['top'].set_linewidth(self.bwidth)
         ax.spines['right'].set_linewidth(self.bwidth)
 
+        plt.ticklabel_format(useOffset=False, style="plain")
         plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
         plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
                    fontsize=self.fontsize)

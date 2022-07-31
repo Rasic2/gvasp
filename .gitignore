@@ -132,3 +132,4 @@ _file/
 neb-test
 Temp
 *.cell
+OUTCAR*
