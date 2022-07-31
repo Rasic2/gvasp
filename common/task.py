@@ -62,12 +62,12 @@ class NEBCal(Figure):
         # write ini-structure
         ini_dir = f"{00:02d}"
         Path(ini_dir).mkdir(exist_ok=True)
-        ini_structure.write(f"{ini_dir}/POSCAR")
+        ini_structure.write_POSCAR(f"{ini_dir}/POSCAR")
 
         # write fni-structure
         fni_dir = f"{self.images + 1:02d}"
         Path(fni_dir).mkdir(exist_ok=True)
-        fni_structure.write(f"{fni_dir}/POSCAR")
+        fni_structure.write_POSCAR(f"{fni_dir}/POSCAR")
 
         # resolve and write image-structures
         for image in range(self.images):
@@ -78,7 +78,7 @@ class NEBCal(Figure):
             image_atoms.cart_coord = ini_structure.atoms.cart_coord + diff_image * (image + 1)
             image_atoms.set_coord(ini_structure.lattice)
             image_structure = Structure(atoms=image_atoms, lattice=ini_structure.lattice)
-            image_structure.write(f"{image_dir}/POSCAR")
+            image_structure.write_POSCAR(f"{image_dir}/POSCAR")
         logger.info("Linear interpolation of NEB initial guess has been generated.")
 
     @staticmethod

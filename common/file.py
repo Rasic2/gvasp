@@ -53,7 +53,17 @@ class StructInfoFile(MetaFile):
 
     @property
     def structure(self):
-        return Structure.from_file(self.name)
+        return Structure.from_POSCAR(self.name)
+
+
+class CellFile(StructInfoFile):
+
+    @property
+    def structure(self):  # overwrite <structure method>
+        return Structure.from_cell(self.name)
+
+    def to_POSCAR(self):
+        self.structure.write_POSCAR(name="POSCAR")
 
 
 class ARCFile(MetaFile):
@@ -106,8 +116,8 @@ class POSCAR(StructInfoFile):
         logger.info(f"Align before: dist = {Structure.dist(structure1, structure2)}")
         structure1_new, structure2_new = Structure.align(structure1, structure2)
         logger.info(f"Align before: dist = {Structure.dist(structure1_new, structure2_new)}")
-        structure1_new.write(f"{pos1}_sort")
-        structure2_new.write(f"{pos2}_sort")
+        structure1_new.write_POSCAR(f"{pos1}_sort")
+        structure2_new.write_POSCAR(f"{pos2}_sort")
         logger.info(f"New structure have been written to *_sort files")
 
 
@@ -127,7 +137,7 @@ class XDATCAR(StructInfoFile):
         self._structure = []
 
     @property
-    def structure(self):
+    def structure(self):  # overwrite <structure method>
         if len(self._structure) == 0:
             for frame in self.frames:
                 frac_coord = np.array([[float(item) for item in line.split()] for line in
@@ -319,7 +329,7 @@ class CHGBase(StructInfoFile):
             system:     specify the structure system
             factor:     coordination factor
         """
-        self.structure.write(name=self.__class__.__name__, system=system, factor=factor)
+        self.structure.write_POSCAR(name=self.__class__.__name__, system=system, factor=factor)
         density_fortran = self.density.reshape(-1, order="F").reshape(-1, 5)
         with open(self.__class__.__name__, "a+") as f:
             f.write(f"{self.NGX:>5}{self.NGY:>5}{self.NGZ:>5}\n")

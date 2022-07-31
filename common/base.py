@@ -263,7 +263,7 @@ class Atoms(Atom):
     def atom_type(self):  # override this property
         return [f"{atom.formula}{atom.coordination_number}c" for atom in self]
 
-    def set_coord(self, lattice: Lattice):  # override this method
+    def set_coord(self, lattice: Lattice):  # overwrite this method
         assert lattice is not None
         if None not in self.cart_coord and None in self.frac_coord:
             self.frac_coord = np.dot(self.cart_coord, lattice.inverse)

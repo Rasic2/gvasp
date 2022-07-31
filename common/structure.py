@@ -179,7 +179,7 @@ class Structure(object):
             logger.info("No structure overlap occurrence")
 
     @staticmethod
-    def from_file(name):
+    def from_POSCAR(name):
         logger.debug(f"Handle the {name}")
         with open(name) as f:
             cfg = f.readlines()
@@ -207,7 +207,23 @@ class Structure(object):
 
         return Structure(atoms=atoms, lattice=lattice)
 
-    def write(self, name, system=None, factor=1.0):
+    @staticmethod
+    def from_cell(name):
+        logger.debug(f"Handle the {name}")
+        with open(name, "r") as f:
+            strings = f.readlines()
+
+        lattice_index = [index for index, line in enumerate(strings) if line.find("LATTICE_CART") != -1]
+        atom_index = [index for index, line in enumerate(strings) if line.find("POSITIONS_FRAC") != -1]
+        lattice = Lattice.from_string(strings[lattice_index[0] + 1:lattice_index[1]])
+        atom = [(line.split()[0], line.split()[1:]) for line in strings[atom_index[0] + 1:atom_index[1]]]
+        formula, frac_coord = list(map(list, zip(*atom)))
+        frac_coord = list(map(lambda x: [float(x[0]), float(x[1]), float(x[2])], frac_coord))
+        atoms = Atoms(formula=formula, frac_coord=frac_coord)
+
+        return Structure(atoms=atoms, lattice=lattice)
+
+    def write_POSCAR(self, name, system=None, factor=1.0):
         system = system if system is not None else " ".join(
             [f"{key} {value}" for key, value in self.atoms.size.items()])
         lattice = self.lattice.strings
