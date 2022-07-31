@@ -10,8 +10,8 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 
-from figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
-from file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR
+from common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
+from common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -211,6 +211,29 @@ class PlotDOS(Figure):
         """
         dos_instance = DOSCAR(name=name).load()
         return dos_instance.TDOS, dos_instance.LDOS
+
+
+class PlotOpt(Figure):
+    def __init__(self, name, width=16, title="Structure Optimization", xlabel="Steps", **kargs):
+        super(PlotOpt, self).__init__(width=width, title=title, xlabel=xlabel, **kargs)
+        self.name = name
+        outcar = OUTCAR(name=self.name)
+        self.energy = outcar.energy
+        self.force = outcar.force
+
+    @plot_wrapper
+    def _plot_energy(self, color):
+        plt.subplot(121)
+        plt.plot(self.energy, "-o", color=color)
+
+    @plot_wrapper
+    def _plot_force(self, color):
+        plt.subplot(122)
+        plt.plot(self.force, "-o", color=color)
+
+    def plot(self, color=["#ed0345", "#009734"]):
+        self._plot_energy(color=color[0])
+        self._plot_force(color=color[1])
 
 
 class PlotBand(Figure):

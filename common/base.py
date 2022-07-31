@@ -272,6 +272,53 @@ class Atoms(Atom):
 
         return self
 
+    def perturb(self, lattice: Lattice, threshold=0.1, groups=9):
+        """
+        Perturb the atoms' coords
+
+        @params:
+            lattice:        Lattice type
+            threshold:      max offset of atom
+            groups:         how many groups you want to get
+        """
+        if None in self.cart_coord:
+            self.set_coord(lattice=lattice)
+
+        # group from z_value
+        z_max, z_min = np.max(self.cart_coord[:, 2]), np.min(self.cart_coord[:, 2])
+        group_np = np.linspace(z_min, z_max, groups + 1)
+        group_index = []
+        for index in range(groups):
+            group_index.append(np.where((self.cart_coord[:, 2] >= group_np[index]) &
+                                        (self.cart_coord[:, 2] <= group_np[index + 1])))
+
+        # exponential decay
+        decay = -np.linspace(0., (z_max - z_min) / 2, int(groups / 2))
+        exp_decay = np.exp(decay) * threshold
+
+        # construct perturb vector
+        perturb_vector = np.empty(groups)
+        perturb_vector[:int(groups / 2)] = exp_decay
+        perturb_vector[-int(groups / 2):] = exp_decay[::-1]
+
+        # construct perturb matrix
+        perturb_matrix = np.empty((self.count, 3))
+        for index, group in enumerate(group_index):
+            perturb_matrix[group] = perturb_vector[index]
+
+        random_normal = np.random.normal(loc=0., scale=0.01, size=(self.count, 3))
+        perturb_item = perturb_matrix + random_normal
+
+        # resolve fix_atom
+        fix_item = np.where(self.selective_matrix == "F", 0, 1)
+        perturb_item = perturb_item * fix_item
+
+        self.cart_coord = self.cart_coord + perturb_item
+        self.frac_coord = [None] * self.count
+        self.set_coord(lattice=lattice)
+
+        return self
+
     @staticmethod
     def from_list(atoms: list):
         formula = [atom.formula for atom in atoms]

@@ -6,13 +6,11 @@ from pathlib import Path
 from typing import List
 
 import numpy as np
-from matplotlib import pyplot as plt
 from pandas import DataFrame
 
 from Lib import _dos, _file
 from common.base import Atoms, Lattice
 from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError
-from common.figure import Figure, plot_wrapper
 from common.logger import logger
 from common.structure import Structure
 
@@ -437,10 +435,9 @@ class CHGCAR(StructInfoFile):
             mag.writelines(self._density_mag_strings)
 
 
-class OUTCAR(MetaFile, Figure):
-    def __init__(self, name, width=16, title="Structure Optimization", xlabel="Steps", **kargs):
-        MetaFile.__init__(self, name=name)
-        Figure.__init__(self, width=width, title=title, xlabel=xlabel, **kargs)
+class OUTCAR(MetaFile):
+    def __init__(self, name):
+        super(OUTCAR, self).__init__(name=name)
 
         element_name = [item.split()[3] for item in self.strings if item.find("TITEL") != -1]
         element_count = [list(map(int, item.split()[4:])) for item in self.strings if item.find("ions per") != -1][0]
@@ -654,23 +651,6 @@ class OUTCAR(MetaFile, Figure):
             structure = [Structure(atoms=Atoms(formula=self.element, cart_coord=cart_coord), lattice=self.lattice)
                          for cart_coord in coord_index]
             ARCFile.write(name=f"freq{freq_index + 1}.arc", structure=structure, lattice=self.lattice)
-
-    @plot_wrapper
-    def _plot_energy(self, color):
-        plt.subplot(121)
-        plt.plot(self.energy, "-o", color=color)
-
-    @plot_wrapper
-    def _plot_force(self, color):
-        plt.subplot(122)
-        plt.plot(self.force, "-o", color=color)
-
-    def plot(self, color=["#ed0345", "#009734"]):
-        self._plot_energy(color=color[0])
-        self._plot_force(color=color[1])
-        #
-
-        # plt.ticklabel_format(style="plain")
 
 
 class MODECAR(MetaFile):
