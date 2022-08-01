@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import List
 
 import numpy as np
+from lxml import etree
+
 from pandas import DataFrame
 
 from Lib import _dos, _file
@@ -130,15 +132,69 @@ class INCAR(MetaFile, Parameter):
 
 
 class KPOINTS(MetaFile):
-    pass
+    def __init__(self, name, task='opt'):
+        super(KPOINTS, self).__init__(name=name)
+        self.task = task
+        self.title, self.strategy, self.center, self.number, self.weight = None, None, None, None, None
+
+        self._parse()
+
+    def _parse(self):
+        if self.task in ['opt']:
+            self.title = self.strings[0].strip()
+            self.strategy = self.strings[1].strip()
+            self.center = self.strings[2].strip()
+            self.number = list(map(int, self.strings[3].split()))
+            self.weight = list(map(float, self.strings[4].split()))
 
 
 class POTCAR(MetaFile):
-    pass
+    def __init__(self, name):
+        super(POTCAR, self).__init__(name=name)
+        self.potential, self.element = None, None
+
+        self._parse()
+
+    def _parse(self):
+        self.potential = [line.split()[2] for line in self.strings if line.find("TITEL") != -1]
+        self.element = [line.split()[3] for line in self.strings if line.find("TITEL") != -1]
 
 
 class XSDFile(MetaFile):
-    pass
+    def __init__(self, name):
+        super(XSDFile, self).__init__(name=name)
+
+        self._xml = None
+        self.element, self.spin, self.frac_coord, self.selective_dynamics, self.lattice = None, None, None, None, None
+        self._parse()
+
+    @property
+    def strings(self):
+        if self._strings is None:
+            with open(self.name, "r") as f:
+                self._strings = f.read()
+        return self._strings
+
+    def _parse(self):
+        self._xml = etree.XML(self.strings.encode("utf-8"))
+        Atom3d = self._xml.xpath("//Atom3d[@Components]")
+        Components = self._xml.xpath("//Atom3d//@Components")
+        Name = [atom.attrib.get('Name', atom.attrib['Components']) for atom in Atom3d]
+        FormalSpin = [int(atom.attrib.get('FormalSpin', '0')) for atom in Atom3d]
+        XYZ = [list(map(float, item.split(","))) for item in self._xml.xpath("//Atom3d//@XYZ")]
+        RestrictedProperties = [atom.attrib.get('RestrictedProperties', 'T T T') for atom in Atom3d]
+        TF = [item.replace("FractionalXYZ", "F F F").split() for item in RestrictedProperties]
+        assert len(XYZ) == len(Components) == len(Name) == len(FormalSpin) == len(
+            TF), "Size of atom's information is not match"
+
+        SpaceGroup = self._xml.xpath("//SpaceGroup")[0]
+        Vector = [list(map(float, SpaceGroup.attrib[key].split(","))) for key in SpaceGroup.keys() if "Vector" in key]
+
+        self.element = Components
+        self.spin = FormalSpin
+        self.frac_coord = XYZ
+        self.selective_dynamics = TF
+        self.lattice = Vector
 
 
 class POSCAR(StructInfoFile):
@@ -280,7 +336,9 @@ class EIGENVAL(MetaFile):
         self.KPoint_coord = None
         self.energy = None
 
-    def load(self):
+        self._parse()
+
+    def _parse(self):
         """
         load Eigenval obtain the band-energy
 
@@ -316,8 +374,6 @@ class EIGENVAL(MetaFile):
             dir:    save directory, default: $CWD/band_data
         """
         Path(directory).mkdir(exist_ok=True)
-        if getattr(self, "energy", None) is None:
-            self.load()
         for index in range(self.NBand):
             np.savetxt(f"{directory}/band_{index + 1}", self.energy[:, index])
         logger.info(f"Band data has been saved to {directory} directory")

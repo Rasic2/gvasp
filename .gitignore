@@ -134,3 +134,5 @@ Temp
 *.cell
 OUTCAR*
 INCAR*
+xsd_test
+*.xsd

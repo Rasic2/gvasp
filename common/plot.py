@@ -241,7 +241,7 @@ class PlotBand(Figure):
         super(PlotBand, self).__init__(title=title, **kargs)
         self.name = name
         if type == "EIGENVAL":
-            self.energy = EIGENVAL(self.name).load().energy
+            self.energy = EIGENVAL(self.name).energy
         elif type == "OUTCAR":
             energy = OUTCAR(self.name).band_info
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
