@@ -1,7 +1,8 @@
+import itertools
 import math
 from collections import namedtuple
 from datetime import datetime
-from functools import wraps
+from functools import wraps, reduce
 from multiprocessing import Pool as ProcessPool
 from pathlib import Path
 from typing import List
@@ -13,8 +14,8 @@ from pandas import DataFrame
 from Lib import _dos, _file
 from common.base import Atoms, Lattice
 from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
-    AttributeNotRegisteredError
-from common.logger import logger
+    AttributeNotRegisteredError, ParameterError
+from common.logger import logger, root_dir
 from common.parameter import Parameter
 from common.structure import Structure
 
@@ -234,17 +235,71 @@ class KPOINTS(MetaFile):
             self.number = list(map(int, self.strings[3].split()))
             self.weight = list(map(float, self.strings[4].split()))
 
+    def write(self, name):
+        with open(name) as f:
+            f.write(self.title)
+            f.write(self.strategy)
+            f.write(self.center)
+            f.write(self.number)
+            f.write(self.weight)
+
+    @staticmethod
+    def min_number(lattice: Lattice, length=20.0):
+        return np.ceil(length / lattice.length).astype(int)
+
 
 class POTCAR(MetaFile):
     def __init__(self, name):
         super(POTCAR, self).__init__(name=name)
         self.potential, self.element = None, None
 
-        self._parse()
+        if Path(self.name).exists():
+            self._parse()
+
+    def __add__(self, other):
+        potential = self.potential if isinstance(self.potential, list) else [self.potential]
+        element = self.element if isinstance(self.element, list) else [self.element]
+        strings = self._strings
+
+        potential += other.potential
+        element += other.element
+        strings += other._strings
+
+        potcar = POTCAR("POTCAR")
+        potcar.potential = potential
+        potcar.element = element
+        potcar._strings = strings
+        return potcar
 
     def _parse(self):
         self.potential = [line.split()[2] for line in self.strings if line.find("TITEL") != -1]
         self.element = [line.split()[3] for line in self.strings if line.find("TITEL") != -1]
+
+    @staticmethod
+    def cat(potentials, elements: List[str], potdir=f"{root_dir}/pot"):
+
+        def add(a, b):
+            return a + b
+
+        POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
+        if (isinstance(potentials, str) and potentials not in POTENTIAL) or \
+                (isinstance(potentials, list) and len(set(potentials).difference(set(POTENTIAL)))):
+            raise TypeError(f"potentials should be {POTENTIAL}")
+
+        if isinstance(potentials, str):
+            potdir = Path(potdir) / potentials
+            potcar = reduce(add, [POTCAR(name=(potdir / Path(element) / "POTCAR")) for element in elements])
+        elif isinstance(potentials, list) and len(potentials) == len(elements):
+            potcar = reduce(add, [POTCAR(name=Path(potdir) / potential / Path(element) / "POTCAR")
+                                  for potential, element in zip(potentials, elements)])
+        else:
+            raise ParameterError(f"{potentials} and {elements} is not match")
+
+        return potcar
+
+    def write(self, name):
+        with open(name, "w") as f:
+            f.writelines(self.strings)
 
 
 class XSDFile(MetaFile):
@@ -282,6 +337,15 @@ class XSDFile(MetaFile):
         self.frac_coord = XYZ
         self.selective_dynamics = TF
         self.lattice = Vector
+
+    @property
+    def structure(self):
+        results = sorted(zip(range(len(self.element)), self.element, self.frac_coord), key=lambda x: (x[1], x[2][2]))
+        sorted_order, sorted_element, sorted_frac_coord = list(zip(*results))
+        sorted_selective_dynamics = np.array(self.selective_dynamics)[list(sorted_order)]
+        atoms = Atoms(formula=sorted_element, frac_coord=sorted_frac_coord, selective_matrix=sorted_selective_dynamics)
+        lattice = Lattice(np.array(self.lattice))
+        return Structure(atoms=atoms, lattice=lattice)
 
 
 class POSCAR(StructInfoFile):
@@ -517,7 +581,7 @@ class CHGBase(StructInfoFile):
         self.density = self.density.reshape((self.NGX, self.NGY, self.NGZ), order="F")
         return self
 
-    def write(self, system=None, factor=1.0):
+    def write(self, title=None, factor=1.0):
         """
         write CHGCAR_* file from array
 
@@ -525,7 +589,7 @@ class CHGBase(StructInfoFile):
             system:     specify the structure system
             factor:     coordination factor
         """
-        self.structure.write_POSCAR(name=self.__class__.__name__, system=system, factor=factor)
+        self.structure.write_POSCAR(name=self.__class__.__name__, title=title, factor=factor)
         density_fortran = self.density.reshape(-1, order="F").reshape(-1, 5)
         with open(self.__class__.__name__, "a+") as f:
             f.write(f"{self.NGX:>5}{self.NGY:>5}{self.NGZ:>5}\n")

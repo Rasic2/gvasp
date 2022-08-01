@@ -1,0 +1,5 @@
+{
+  "INCAR": "INCAR",
+  "potdir": "pot",
+  "potential": "PAW_PBE"
+}

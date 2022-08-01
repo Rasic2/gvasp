@@ -136,3 +136,5 @@ OUTCAR*
 INCAR*
 xsd_test
 *.xsd
+KPOINTS
+POTCAR
