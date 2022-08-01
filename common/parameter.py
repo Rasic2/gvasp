@@ -139,24 +139,25 @@ class Parameter(object):
                         }
                    }
 
-    _baseParam = ('SYSTEM', 'PREC', 'ISTART', 'IBRION', 'NSW', 'ISIF', 'ENCUT', 'NELM', 'NELMIN', 'EDIFF', 'EDIFFG',
-                  'GGA', 'ISPIN', 'LWAVE', 'LCHARG', 'LREAL', 'ALGO', 'ISMEAR', 'SIGMA', 'LDAU', 'LDAUTYPE', 'LDAUL',
-                  'LDAUU', 'LDAUJ', 'LDAUPRINT', 'LMAXMIX')
+    _baseParam = ('SYSTEM', 'PREC', 'ISTART', 'ENCUT', 'NELM', 'NELMIN', 'EDIFF', 'EDIFFG', 'GGA', 'ISPIN', 'LWAVE',
+                  'NPAR', 'ISYM')
 
-    _jobParam = ('NPAR', 'AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG')
+    _scfParam = ('AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG')
 
-    _chgParam = ('LAECHG')
-
-    _optParam = ('POTIM')
-
-    _dimerParam = ('ISYM', 'ICHAIN', 'DdR', 'DRotMax', 'DFNMin', 'DFNMax', 'IOPT')
-
-    _dosParam = ('ICHARG', 'LORBIT', 'NEDOS')
-
-    _freqParam = ('NFREE')
+    _optParam = ('IBRION', 'NSW', 'POTIM', 'ISIF',)
 
     _mdParam = ('SMASS', 'MDALGO', 'TEBEG', 'TEEND')
 
-    _nebParam = ('SPRING', 'LCLIMB', 'MAXMOVE', 'IMAGES')
+    _chgParam = ('LAECHG', 'LCHARG', 'LREAL', 'ALGO', 'ISMEAR', 'SIGMA',)
+
+    _dosParam = ('ICHARG', 'LORBIT', 'NEDOS')
+
+    _freqParam = ('NFREE',)
 
     _stmParam = ('LPARD', 'NBMOD', 'EINT', 'LSEPB', 'LSEPK')
+
+    _nebParam = ('SPRING', 'LCLIMB', 'MAXMOVE', 'IMAGES')
+
+    _dimerParam = ('ICHAIN', 'IOPT', 'DdR', 'DRotMax', 'DFNMin', 'DFNMax')
+
+    _plusUParam = ('LDAU', 'LDAUTYPE', 'LDAUL', 'LDAUU', 'LDAUJ', 'LDAUPRINT', 'LMAXMIX')

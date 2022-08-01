@@ -1,19 +1,19 @@
 import math
 from collections import namedtuple
 from datetime import datetime
+from functools import wraps
 from multiprocessing import Pool as ProcessPool
 from pathlib import Path
 from typing import List
 
 import numpy as np
 from lxml import etree
-
 from pandas import DataFrame
 
 from Lib import _dos, _file
 from common.base import Atoms, Lattice
 from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
-    AttributeNotRegisteredError, AttributeNotAssignedError
+    AttributeNotRegisteredError
 from common.logger import logger
 from common.parameter import Parameter
 from common.structure import Structure
@@ -92,12 +92,47 @@ class ARCFile(MetaFile):
                 f.write("end\n")
 
 
+def formatter(parameters):
+    """
+    formatter wrapper: format the INCAR parameters
+
+    @params:
+        parameters:     which type of INCAR parameters
+        func:           write* func in INCAR class
+    """
+
+    def func_wrapper(func):
+        @wraps(func)
+        def wrapper(self):
+
+            # check if exist this type parameter
+            for param in parameters:
+                if param in self.__dict__.keys():
+                    func(self)
+                    break
+            else:
+                return
+
+            # print parameter
+            for param in parameters:
+                if param in self.__dict__.keys():
+                    if isinstance(self.__dict__[param], bool):
+                        print(f"  {param} = .{str(self.__dict__[param]).upper()}.")
+                    elif param in ['LDAUL', 'LDAUU', 'LDAUJ']:
+                        print(f"  {param} = {'  '.join(list(map(str, self.__dict__[param])))}")
+                    else:
+                        print(f"  {param} = {self.__dict__[param]}")
+
+        return wrapper
+
+    return func_wrapper
+
+
 class INCAR(MetaFile, Parameter):
 
     def __init__(self, name):
         super(INCAR, self).__init__(name=name)
         self._init_attr()
-        self._check_attr()
 
     def __getattr__(self, item):
         if item in self.__dict__.keys():
@@ -122,13 +157,65 @@ class INCAR(MetaFile, Parameter):
                     raise AttributeNotRegisteredError(f"{attr_name} is not registered")
                 setattr(self, attr_name, attr_value)
 
-    def _check_attr(self):
+    def write(self):
         """
-        Check baseParameters, if they don't have values, raise AttributeNotAssignedError
+        Write interface, callback every _write* func
         """
-        for attr in INCAR._baseParam:
-            if getattr(self, attr, None) is None:
-                raise AttributeNotAssignedError(f"{attr} do not have values")
+        self._write_base()
+        self._write_scf()
+        self._write_opt()
+        self._write_md()
+        self._write_charge()
+        self._write_density()
+        self._write_freq()
+        self._write_stm()
+        self._write_neb()
+        self._write_dimer()
+        self._write_plusU()
+
+    @formatter(Parameter._baseParam)
+    def _write_base(self):
+        print(f"#----------/Base Parameter/----------#")
+
+    @formatter(Parameter._scfParam)
+    def _write_scf(self):
+        print(f"#----------/SCF Parameter/----------#")
+
+    @formatter(Parameter._optParam)
+    def _write_opt(self):
+        print(f"#----------/Optimize Parameter/----------#")
+
+    @formatter(Parameter._mdParam)
+    def _write_md(self):
+        print(f"#----------/MD Parameter/----------#")
+
+    @formatter(Parameter._chgParam)
+    def _write_charge(self):
+        print(f"#----------/Charge Parameter/----------#")
+
+    @formatter(Parameter._dosParam)
+    def _write_density(self):
+        print(f"#----------/DOS Parameter/----------#")
+
+    @formatter(Parameter._freqParam)
+    def _write_freq(self):
+        print(f"#----------/Frequency Parameter/----------#")
+
+    @formatter(Parameter._stmParam)
+    def _write_stm(self):
+        print(f"#----------/STM Parameter/----------#")
+
+    @formatter(Parameter._nebParam)
+    def _write_neb(self):
+        print(f"#----------/NEB Parameter/----------#")
+
+    @formatter(Parameter._dimerParam)
+    def _write_dimer(self):
+        print(f"#----------/Dimer Parameter/----------#")
+
+    @formatter(Parameter._plusUParam)
+    def _write_plusU(self):
+        print(f"#----------/+U Parameter/----------#")
 
 
 class KPOINTS(MetaFile):

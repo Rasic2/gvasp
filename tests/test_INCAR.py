@@ -1,4 +1,5 @@
 from common.file import INCAR
 
-incar = INCAR("INCAR_TS")
+incar = INCAR("INCAR")
+incar.write()
 print()

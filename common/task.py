@@ -1,3 +1,4 @@
+import abc
 import copy
 import os
 from pathlib import Path
@@ -10,12 +11,20 @@ from common.logger import logger
 from common.structure import Structure
 
 
-class BaseTask():
-    pass
+class BaseTask(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod
+    def generate(self):
+        pass
 
 
-class OptTask():
-    pass
+class OptTask(BaseTask):
+
+    def generate(self):
+        self._generate_INCAR()
+
+    def _generate_INCAR(self):
+        pass
 
 
 class ChargeTask():
