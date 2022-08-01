@@ -2,8 +2,10 @@ import abc
 import copy
 import json
 import os
+from functools import wraps
 from pathlib import Path
 
+import yaml
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
@@ -13,17 +15,32 @@ from common.logger import logger, root_dir
 from common.structure import Structure
 
 
+def write_wrapper(func):
+    @wraps(func)
+    def wrapper(self):
+        func(self)
+        self.incar.write(name="INCAR")
+
+    return wrapper
+
+
 class BaseTask(metaclass=abc.ABCMeta):
-    with open(f"{root_dir}/config.json", "r") as f:
+    with open(f"{root_dir}/config.json", "r") as f:  # TODO: can modify
         CONFIG = json.load(f)
 
-    incar_template = INCAR(CONFIG['INCAR'])
-    potdir = CONFIG['potdir']
-    potential = CONFIG['potential']
     workdir = Path.cwd()
+    config_dir = Path(CONFIG['config_dir'])  # directory of some necessary files (e.g., INCAR, pot, UValue.yaml)
+    incar_template = INCAR(config_dir / CONFIG['INCAR'])
+    potdir = config_dir / CONFIG['potdir']
+    potential = CONFIG['potential']
+
+    with open(config_dir / CONFIG['UValue']) as f:
+        UValue = yaml.safe_load(f.read())
 
     def __init__(self):
         self.structure = None
+        self.elements = None
+        self.incar = self.incar_template
 
     @abc.abstractmethod
     def generate(self):
@@ -33,7 +50,14 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_INCAR()
 
     def _generate_INCAR(self):
-        pass
+        if self.incar.LDAU:
+            LDAUL, LDAUU, LDAUJ = list(zip(*[(self.UValue[f'Element {element}']['orbital'],
+                                              self.UValue[f'Element {element}']['U'],
+                                              self.UValue[f'Element {element}']['J']) for element in self.elements]))
+            self.incar.LDAUL = LDAUL
+            self.incar.LDAUU = LDAUU
+            self.incar.LDAUJ = LDAUJ
+            self.incar.LMAXMIX = 6 if 3 in self.incar.LDAUL else 4
 
     def _generate_KPOINTS(self):
         with open("KPOINTS", "w") as f:
@@ -52,11 +76,11 @@ class BaseTask(metaclass=abc.ABCMeta):
 
         xsdfile = XSDFile(xsdFiles[0])
         self.structure = xsdfile.structure
+        self.elements = list(self.structure.atoms.size.keys())
         self.structure.write_POSCAR(name="POSCAR")
 
     def _generate_POTCAR(self):
-        elements = list(self.structure.atoms.size.keys())
-        potcar = POTCAR.cat(potentials=self.potential, elements=elements, potdir=Path(root_dir) / self.potdir)
+        potcar = POTCAR.cat(potentials=self.potential, elements=self.elements, potdir=self.potdir)
         potcar.write(name="POTCAR")
 
 
@@ -64,33 +88,93 @@ class OptTask(BaseTask):
     def generate(self):
         super(OptTask, self).generate()
 
-
-class ChargeTask():
-    pass
-
-
-class DOSTask():
-    pass
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(OptTask, self)._generate_INCAR()
 
 
-class FreqTask():
-    pass
+class ChargeTask(BaseTask):
+    def generate(self):
+        super(ChargeTask, self).generate()
+
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(ChargeTask, self)._generate_INCAR()
+        self.incar.IBRION = 1
+        self.incar.LAECHG = True
+        self.incar.LCHARG = True
 
 
-class MDTask():
-    pass
+class DOSTask(BaseTask):
+    def generate(self):
+        super(DOSTask, self).generate()
+
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(DOSTask, self)._generate_INCAR()
+        self.incar.ISTART = 1
+        self.incar.ICHARG = 11
+        self.incar.IBRION = -1
+        self.incar.NSW = 1
+        self.incar.LORBIT = 12
+        self.incar.NEDOS = 2000
 
 
-class DimerTask():
-    pass
+class FreqTask(BaseTask):
+    def generate(self):
+        super(FreqTask, self).generate()
+
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(FreqTask, self)._generate_INCAR()
+        self.incar.IBRION = 5
+        self.incar.ISYM = 0
+        self.incar.NSW = 1
+        self.incar.NFREE = 2
+        self.incar.POTIM = 0.015
 
 
-class STMTask():
-    pass
+class MDTask(BaseTask):
+    def generate(self):
+        super(MDTask, self).generate()
+
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(MDTask, self)._generate_INCAR()
+        self.incar.IBRION = 0
+        self.incar.NSW = 100000
+        self.incar.POTIM = 0.5
+        self.incar.SMASS = 2.
+        self.incar.MDALGO = 2
+        self.incar.TEBEG = 300.
+        self.incar.TEEND = 300.
 
 
-class ConTSTask():
-    pass
+class STMTask(BaseTask):
+    def generate(self):
+        super(STMTask, self).generate()
+
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(STMTask, self)._generate_INCAR()
+        self.incar.ISTART = 1
+        self.incar.IBRION = -1
+        self.incar.NSW = 0
+        self.incar.LPARD = True
+        self.incar.NBMOD = -3
+        self.incar.EINT = 5.
+        self.incar.LSEPB = False
+        self.incar.LSEPK = False
+
+
+class ConTSTask(BaseTask):
+    def generate(self):
+        super(ConTSTask, self).generate()
+
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(ConTSTask, self)._generate_INCAR()
+        self.incar.IBRION = 1
 
 
 class NEBTask():
@@ -112,7 +196,7 @@ class NEBTask():
             raise NotImplementedError(f"{method} has not been implemented for NEB task")
 
         if check_overlap:
-            self._check_overlap()
+            NEBTask._check_overlap()
 
     def _generate_idpp(self):
         """
@@ -170,7 +254,8 @@ class NEBTask():
                 neb_dirs.append(dir)
         return neb_dirs
 
-    def _check_overlap(self):
+    @staticmethod
+    def _check_overlap():
         logger.info("Check structures overlap")
         neb_dirs = NEBTask._search_neb_dir()
 
@@ -209,3 +294,21 @@ class NEBTask():
             structures.append(POSCAR(f"{image}/{posfile}").structure)
 
         ARCFile.write(name=name, structure=structures, lattice=structures[0].lattice)
+
+
+class DimerTask(BaseTask):
+    def generate(self):
+        super(DimerTask, self).generate()
+
+    @write_wrapper
+    def _generate_INCAR(self):
+        super(DimerTask, self)._generate_INCAR()
+        self.incar.IBRION = 3
+        self.incar.POTIM = 0.
+        self.incar.ISYM = 0
+        self.incar.ICHAIN = 2
+        self.incar.DdR = 0.005
+        self.incar.DRotMax = 10
+        self.incar.DFNMax = 1.
+        self.incar.DFNMin = 0.01
+        self.incar.IOPT = 2

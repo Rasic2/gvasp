@@ -1,5 +1,7 @@
 {
+  "config_dir": "C:\\Users\\hui_zhou\\Desktop\\packages\\QVasp\\",
   "INCAR": "INCAR",
   "potdir": "pot",
-  "potential": "PAW_PBE"
+  "potential": "PAW_PBE",
+  "UValue": "UValue.yaml"
 }

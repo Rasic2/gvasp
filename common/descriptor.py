@@ -95,7 +95,8 @@ class IntegerLeftRealRightDescriptor(IntegerLeftDescriptor):
         if (isinstance(value, int) and value >= self.value and value <= 0) or (isinstance(value, float) and value >= 0):
             instance.__dict__[self.name] = value
         else:
-            raise ValueError(f"{self.name}'s value should be integer and >= {self.value}")
+            raise ValueError(f"{self.name}'s value should be integer and {self.value} <= value < 0 or "
+                             f"{self.name}'s value should be real and > 0")
 
 
 class TypeValueDescriptor(TypeDescriptor, ValueDescriptor):

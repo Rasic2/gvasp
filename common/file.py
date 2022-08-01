@@ -1,4 +1,3 @@
-import itertools
 import math
 from collections import namedtuple
 from datetime import datetime
@@ -104,25 +103,28 @@ def formatter(parameters):
 
     def func_wrapper(func):
         @wraps(func)
-        def wrapper(self):
+        def wrapper(self, name):
 
             # check if exist this type parameter
             for param in parameters:
                 if param in self.__dict__.keys():
-                    func(self)
+                    func(self, name)
                     break
             else:
                 return
 
-            # print parameter
+            # write parameter
             for param in parameters:
                 if param in self.__dict__.keys():
                     if isinstance(self.__dict__[param], bool):
-                        print(f"  {param} = .{str(self.__dict__[param]).upper()}.")
+                        with open(name, "a+") as f:
+                            f.write(f"  {param} = .{str(self.__dict__[param]).upper()}. \n")
                     elif param in ['LDAUL', 'LDAUU', 'LDAUJ']:
-                        print(f"  {param} = {'  '.join(list(map(str, self.__dict__[param])))}")
+                        with open(name, "a+") as f:
+                            f.write(f"  {param} = {'  '.join(list(map(str, self.__dict__[param])))} \n")
                     else:
-                        print(f"  {param} = {self.__dict__[param]}")
+                        with open(name, "a+") as f:
+                            f.write(f"  {param} = {self.__dict__[param]} \n")
 
         return wrapper
 
@@ -158,65 +160,76 @@ class INCAR(MetaFile, Parameter):
                     raise AttributeNotRegisteredError(f"{attr_name} is not registered")
                 setattr(self, attr_name, attr_value)
 
-    def write(self):
+    def write(self, name):
         """
         Write interface, callback every _write* func
         """
-        self._write_base()
-        self._write_scf()
-        self._write_opt()
-        self._write_md()
-        self._write_charge()
-        self._write_density()
-        self._write_freq()
-        self._write_stm()
-        self._write_neb()
-        self._write_dimer()
-        self._write_plusU()
+        self._write_base(name)
+        self._write_scf(name)
+        self._write_opt(name)
+        self._write_md(name)
+        self._write_charge(name)
+        self._write_density(name)
+        self._write_freq(name)
+        self._write_stm(name)
+        self._write_neb(name)
+        self._write_dimer(name)
+        self._write_plusU(name)
 
     @formatter(Parameter._baseParam)
-    def _write_base(self):
-        print(f"#----------/Base Parameter/----------#")
+    def _write_base(self, name):
+        with open(name, "w") as f:
+            f.write(f"#----------/Base Parameter/----------# \n")
 
     @formatter(Parameter._scfParam)
-    def _write_scf(self):
-        print(f"#----------/SCF Parameter/----------#")
+    def _write_scf(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/SCF Parameter/----------# \n")
 
     @formatter(Parameter._optParam)
-    def _write_opt(self):
-        print(f"#----------/Optimize Parameter/----------#")
+    def _write_opt(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/Optimize Parameter/----------# \n")
 
     @formatter(Parameter._mdParam)
-    def _write_md(self):
-        print(f"#----------/MD Parameter/----------#")
+    def _write_md(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/MD Parameter/----------# \n")
 
     @formatter(Parameter._chgParam)
-    def _write_charge(self):
-        print(f"#----------/Charge Parameter/----------#")
+    def _write_charge(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/Charge Parameter/----------# \n")
 
     @formatter(Parameter._dosParam)
-    def _write_density(self):
-        print(f"#----------/DOS Parameter/----------#")
+    def _write_density(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/DOS Parameter/----------# \n")
 
     @formatter(Parameter._freqParam)
-    def _write_freq(self):
-        print(f"#----------/Frequency Parameter/----------#")
+    def _write_freq(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/Frequency Parameter/----------# \n")
 
     @formatter(Parameter._stmParam)
-    def _write_stm(self):
-        print(f"#----------/STM Parameter/----------#")
+    def _write_stm(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/STM Parameter/----------# \n")
 
     @formatter(Parameter._nebParam)
-    def _write_neb(self):
-        print(f"#----------/NEB Parameter/----------#")
+    def _write_neb(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/NEB Parameter/----------# \n")
 
     @formatter(Parameter._dimerParam)
-    def _write_dimer(self):
-        print(f"#----------/Dimer Parameter/----------#")
+    def _write_dimer(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/Dimer Parameter/----------# \n")
 
     @formatter(Parameter._plusUParam)
-    def _write_plusU(self):
-        print(f"#----------/+U Parameter/----------#")
+    def _write_plusU(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/+U Parameter/----------# \n")
 
 
 class KPOINTS(MetaFile):

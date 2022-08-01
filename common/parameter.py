@@ -139,8 +139,8 @@ class Parameter(object):
                         }
                    }
 
-    _baseParam = ('SYSTEM', 'PREC', 'ISTART', 'ENCUT', 'NELM', 'NELMIN', 'EDIFF', 'EDIFFG', 'GGA', 'ISPIN', 'LWAVE',
-                  'NPAR', 'ISYM')
+    _baseParam = ('SYSTEM', 'PREC', 'ISTART', 'ISYM', 'ENCUT', 'NELM', 'NELMIN', 'EDIFF', 'EDIFFG', 'GGA', 'ISPIN',
+                  'LWAVE', 'NPAR',)
 
     _scfParam = ('AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG')
 
