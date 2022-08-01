@@ -2,20 +2,53 @@ import copy
 import os
 from pathlib import Path
 
-from matplotlib import pyplot as plt
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
-from common.figure import Figure, plot_wrapper, PchipLine
-from common.file import POSCAR, OUTCAR, XDATCAR, ARCFile
+from common.file import POSCAR, OUTCAR, ARCFile
 from common.logger import logger
 from common.structure import Structure
 
 
-class NEBCal(Figure):
-    def __init__(self, ini_POSCAR=None, fni_POSCAR=None, images=4, xlabel="Distance (Å)", ylabel="Energy (eV)",
-                 width=10):
-        super(NEBCal, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width)
+class BaseTask():
+    pass
+
+
+class OptTask():
+    pass
+
+
+class ChargeTask():
+    pass
+
+
+class DOSTask():
+    pass
+
+
+class FreqTask():
+    pass
+
+
+class MDTask():
+    pass
+
+
+class DimerTask():
+    pass
+
+
+class STMTask():
+    pass
+
+
+class ConTSTask():
+    pass
+
+
+class NEBTask():
+    def __init__(self, ini_POSCAR=None, fni_POSCAR=None, images=4):
+
         self.ini_POSCAR = ini_POSCAR
         self.fni_POSCAR = fni_POSCAR
         self.images = images
@@ -92,7 +125,7 @@ class NEBCal(Figure):
 
     def _check_overlap(self):
         logger.info("Check structures overlap")
-        neb_dirs = NEBCal._search_neb_dir()
+        neb_dirs = NEBTask._search_neb_dir()
 
         for image in neb_dirs:
             structure = POSCAR(Path(f"{image}/POSCAR")).structure
@@ -106,7 +139,7 @@ class NEBCal(Figure):
         """
         Monitor tangent, energy and barrier in the NEB-task
         """
-        neb_dirs = NEBCal._search_neb_dir()
+        neb_dirs = NEBTask._search_neb_dir()
         ini_energy = 0.
         print("image   tangent          energy       barrier")
         for image in neb_dirs:
@@ -116,32 +149,12 @@ class NEBCal(Figure):
             barrier = outcar.last_energy - ini_energy
             print(f" {image.stem} \t {outcar.last_tangent:>10.6f} \t {outcar.last_energy} \t {barrier:.6f}")
 
-    @plot_wrapper
-    def plot(self, color="#ed0345"):
-        neb_dirs = NEBCal._search_neb_dir()
-        dists = []
-        energy = []
-        ini_energy = 0.
-        for image in neb_dirs:
-            posfile = "CONTCAR" if Path(f"{image}/CONTCAR").exists() else "POSCAR"
-            outcar = OUTCAR(f"{image}/OUTCAR")
-            structure = POSCAR(f"{image}/{posfile}").structure
-            if not int(image.stem):
-                ini_energy = outcar.last_energy
-                ini_structure = structure
-
-            dists.append(Structure.dist(structure, ini_structure))
-            energy.append(outcar.last_energy - ini_energy)
-
-        plt.plot(dists, energy, "o")
-        PchipLine(x=dists, y=energy, color=color, linewidth=2)()
-
     @staticmethod
     def movie(name="movie.arc", file="CONTCAR"):
         """
         Generate *.arc file from images/[POSCAR|CONTCAR] files
         """
-        neb_dirs = NEBCal._search_neb_dir()
+        neb_dirs = NEBTask._search_neb_dir()
         structures = []
 
         for image in neb_dirs:

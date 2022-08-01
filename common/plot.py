@@ -2,6 +2,7 @@ import time
 from collections import defaultdict
 from functools import wraps
 from itertools import product
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -11,7 +12,9 @@ from scipy import interpolate
 from scipy.integrate import simps
 
 from common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
-from common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR
+from common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR
+from common.structure import Structure
+from common.task import NEBTask
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -397,3 +400,29 @@ class PlotPES(Figure):
 
         for x, y in zip(data.pchip_x, data.pchip_y):
             self.add_pchip(2, x, y, color)
+
+
+class PlotNEB(Figure):
+
+    def __init__(self, xlabel="Distance (Å)", ylabel="Energy (eV)", width=10):
+        super(PlotNEB, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width)
+
+    @plot_wrapper
+    def plot(self, color="#ed0345"):
+        neb_dirs = NEBTask._search_neb_dir()
+        dists = []
+        energy = []
+        ini_energy = 0.
+        for image in neb_dirs:
+            posfile = "CONTCAR" if Path(f"{image}/CONTCAR").exists() else "POSCAR"
+            outcar = OUTCAR(f"{image}/OUTCAR")
+            structure = POSCAR(f"{image}/{posfile}").structure
+            if not int(image.stem):
+                ini_energy = outcar.last_energy
+                ini_structure = structure
+
+            dists.append(Structure.dist(structure, ini_structure))
+            energy.append(outcar.last_energy - ini_energy)
+
+        plt.plot(dists, energy, "o")
+        PchipLine(x=dists, y=energy, color=color, linewidth=2)()
