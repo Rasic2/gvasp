@@ -1,17 +1,16 @@
 import abc
 import copy
-import json
 from functools import wraps
 from pathlib import Path
 
-import yaml
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
 from common.error import XSDFileNotFoundError, TooManyXSDFileError
-from common.file import POSCAR, OUTCAR, ARCFile, INCAR, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
-    CHGCAR_mag
-from common.logger import logger, root_dir
+from common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
+    CHGCAR_mag, INCAR
+from common.logger import logger
+from common.setting import INCARTemplate, UValue, WorkDir, PotDir
 from common.structure import Structure
 
 
@@ -29,31 +28,20 @@ class BaseTask(metaclass=abc.ABCMeta):
     Task Base class, load config.json, generate INCAR, KPOINTS, POSCAR and POTCAR
     Note: subclass should have `generate` method
     """
-    with open(f"{root_dir}/config.json", "r") as f:  # TODO: can modify
-        CONFIG = json.load(f)
-
-    workdir = Path.cwd()
-    config_dir = Path(CONFIG['config_dir'])  # directory of some necessary files (e.g., INCAR, pot, UValue.yaml)
-    incar_template = INCAR(config_dir / CONFIG['INCAR'])  # location of incar_template
-    potdir = config_dir / CONFIG['potdir']  # location of potdir
-    potential = CONFIG['potential']  # potential option: ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
-
-    with open(config_dir / CONFIG['UValue']) as f:
-        UValue = yaml.safe_load(f.read())
 
     def __init__(self):
         self.structure = None
         self.elements = None
-        self.incar = self.incar_template
+        self.incar = INCAR(INCARTemplate)
 
     @abc.abstractmethod
-    def generate(self):
+    def generate(self, potential):
         """
         generate main method, subclass should inherit or overwrite
         """
         self._generate_POSCAR()
         self._generate_KPOINTS()
-        self._generate_POTCAR()
+        self._generate_POTCAR(potential=potential)
         self._generate_INCAR()
 
     def _generate_INCAR(self):
@@ -63,10 +51,10 @@ class BaseTask(metaclass=abc.ABCMeta):
         if self.incar.LDAU:
             LDAUL, LDAUU, LDAUJ = [], [], []
             for element in self.elements:
-                if self.UValue.get(f'Element {element}', None) is not None:
-                    LDAUL.append(self.UValue[f'Element {element}']['orbital'])
-                    LDAUU.append(self.UValue[f'Element {element}']['U'])
-                    LDAUJ.append(self.UValue[f'Element {element}']['J'])
+                if UValue.get(f'Element {element}', None) is not None:
+                    LDAUL.append(UValue[f'Element {element}']['orbital'])
+                    LDAUU.append(UValue[f'Element {element}']['U'])
+                    LDAUJ.append(UValue[f'Element {element}']['J'])
                 else:
                     LDAUL.append(-1)
                     LDAUU.append(0.0)
@@ -95,7 +83,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
         generate POSCAR from only one *.xsd file, and register `self.structure` and `self.elements`
         """
-        xsdFiles = list(self.workdir.glob("*.xsd"))
+        xsdFiles = list(WorkDir.glob("*.xsd"))
         if not len(xsdFiles):
             raise XSDFileNotFoundError("*.xsd file is not found, please check workdir")
         elif len(xsdFiles) > 1:
@@ -106,11 +94,11 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.elements = list(self.structure.atoms.size.keys())
         self.structure.write_POSCAR(name="POSCAR")
 
-    def _generate_POTCAR(self):
+    def _generate_POTCAR(self, potential):
         """
          generate POTCAR automatically, call the `cat` method of POTCAR
          """
-        potcar = POTCAR.cat(potentials=self.potential, elements=self.elements, potdir=self.potdir)
+        potcar = POTCAR.cat(potentials=potential, elements=self.elements, potdir=PotDir)
         potcar.write(name="POTCAR")
 
 
@@ -130,11 +118,11 @@ class OptTask(BaseTask, Animatable):
     Optimization task manager, subclass of BaseTask
     """
 
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(OptTask, self).generate()
+        super(OptTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -153,11 +141,11 @@ class ChargeTask(BaseTask):
     Charge calculation task manager, subclass of BaseTask
     """
 
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(ChargeTask, self).generate()
+        super(ChargeTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -203,11 +191,11 @@ class DOSTask(BaseTask):
     Density of States (DOS) calculation task manager, subclass of BaseTask
     """
 
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(DOSTask, self).generate()
+        super(DOSTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -235,11 +223,11 @@ class FreqTask(BaseTask, Animatable):
     Frequency calculation task manager, subclass of BaseTask
     """
 
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(FreqTask, self).generate()
+        super(FreqTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -273,11 +261,11 @@ class MDTask(BaseTask):
      ab-initio molecular dynamics (AIMD) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(MDTask, self).generate()
+        super(MDTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -307,11 +295,11 @@ class STMTask(BaseTask):
      Scanning Tunneling Microscope (STM) image modelling calculation task manager, subclass of BaseTask
      """
 
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(STMTask, self).generate()
+        super(STMTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -343,11 +331,11 @@ class ConTSTask(BaseTask, Animatable):
      Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(ConTSTask, self).generate()
+        super(ConTSTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -369,23 +357,23 @@ class NEBTask(BaseTask, Animatable):
      Nudged Elastic Band (NEB) calculation (no-climbing) task manager, subclass of BaseTask
      """
 
-    def __init__(self, ini_POSCAR=None, fni_POSCAR=None, images=4):
+    def __init__(self, ini_poscar=None, fni_poscar=None, images=4):
         super(NEBTask, self).__init__()
 
-        self.ini_POSCAR = ini_POSCAR
-        self.fni_POSCAR = fni_POSCAR
+        self.ini_poscar = ini_poscar
+        self.fni_poscar = fni_poscar
         self.images = images
 
-        self.structure = POSCAR(self.ini_POSCAR).structure
+        self.structure = POSCAR(self.ini_poscar).structure
         self.elements = list(self.structure.atoms.size.keys())
 
-    def generate(self, method="linear", check_overlap=True):
+    def generate(self, method="linear", check_overlap=True, potential="PAW_PBE"):
         """
         Overwrite BaseTask's generate, add `method` and `check_overlap` parameters
         """
         self._generate_POSCAR(method=method, check_overlap=check_overlap)
         self._generate_KPOINTS()
-        self._generate_POTCAR()
+        self._generate_POTCAR(potential=potential)
         self._generate_INCAR()
 
     @write_wrapper
@@ -430,25 +418,25 @@ class NEBTask(BaseTask, Animatable):
         """
         Generate NEB-task images by idpp method (J. Chem. Phys. 140, 214106 (2014))
         """
-        ini_structure = pmg_Structure.from_file(self.ini_POSCAR, False)
-        fni_structure = pmg_Structure.from_file(self.fni_POSCAR, False)
+        ini_structure = pmg_Structure.from_file(self.ini_poscar, False)
+        fni_structure = pmg_Structure.from_file(self.fni_poscar, False)
         obj = IDPPSolver.from_endpoints(endpoints=[ini_structure, fni_structure], nimages=self.images, sort_tol=1.0)
         path = obj.run(maxiter=5000, tol=1e-5, gtol=1e-3, step_size=0.05, max_disp=0.05, spring_const=5.0)
 
         for image in range(len(path)):
             image_dir = f"{image:02d}"
             Path(f"{image_dir}").mkdir(exist_ok=True)
-            POSCAR_file = f"{image_dir}/POSCAR"
-            path[image].to(fmt="poscar", filename=POSCAR_file)
+            poscar_file = f"{image_dir}/POSCAR"
+            path[image].to(fmt="poscar", filename=poscar_file)
         logger.info("Improved interpolation of NEB initial guess has been generated.")
 
     def _generate_liner(self):
         """
         Generate NEB-task images by linear interpolation method
         """
-        ini_structure = POSCAR(self.ini_POSCAR).structure
-        fni_structure = POSCAR(self.fni_POSCAR).structure
-        assert ini_structure == fni_structure, f"{self.ini_POSCAR} and {self.fni_POSCAR} are not structure match"
+        ini_structure = POSCAR(self.ini_poscar).structure
+        fni_structure = POSCAR(self.fni_poscar).structure
+        assert ini_structure == fni_structure, f"{self.ini_poscar} and {self.fni_poscar} are not structure match"
         diff_image = (fni_structure - ini_structure) / (self.images + 1)
 
         # write ini-structure
@@ -480,7 +468,7 @@ class NEBTask(BaseTask, Animatable):
         """
         neb_dirs = []
 
-        for dir in NEBTask.workdir.iterdir():
+        for dir in WorkDir.iterdir():
             if Path(dir).is_dir() and Path(dir).stem.isdigit():
                 neb_dirs.append(dir)
         return neb_dirs
@@ -531,11 +519,11 @@ class NEBTask(BaseTask, Animatable):
 
 
 class DimerTask(BaseTask):
-    def generate(self):
+    def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
         """
-        super(DimerTask, self).generate()
+        super(DimerTask, self).generate(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):

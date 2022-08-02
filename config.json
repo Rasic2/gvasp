@@ -2,6 +2,6 @@
   "config_dir": "C:\\Users\\hui_zhou\\Desktop\\packages\\QVasp\\",
   "INCAR": "INCAR",
   "potdir": "pot",
-  "potential": "PAW_PBE",
+  "logdir": "logs",
   "UValue": "UValue.yaml"
 }

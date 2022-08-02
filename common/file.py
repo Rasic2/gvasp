@@ -14,9 +14,17 @@ from Lib import _dos, _file
 from common.base import Atoms, Lattice
 from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError
-from common.logger import logger, root_dir
+from common.logger import logger
 from common.parameter import Parameter
+from common.setting import RootDir
 from common.structure import Structure
+
+POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
+ORBITALS = ['s', 'p', 'd', 'f']
+COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'px_down', 'dxy_up', 'dxy_down',
+           'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
+           'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
+           'f6_down', 'f7_up', 'f7_down']
 
 
 class MetaFile(object):
@@ -295,12 +303,11 @@ class POTCAR(MetaFile):
         self.element = [line.split()[3] for line in self.strings if line.find("TITEL") != -1]
 
     @staticmethod
-    def cat(potentials, elements: List[str], potdir=f"{root_dir}/pot"):
+    def cat(potentials, elements: List[str], potdir=f"{RootDir}/pot"):
 
         def add(a, b):
             return a + b
 
-        POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
         if (isinstance(potentials, str) and potentials not in POTENTIAL) or \
                 (isinstance(potentials, list) and len(set(potentials).difference(set(POTENTIAL)))):
             raise TypeError(f"potentials should be {POTENTIAL}")
@@ -438,12 +445,6 @@ class DOSCAR(MetaFile):
         self.NDOS = int(self.NDOS)
 
     def load(self):
-        ORBITALS = ['s', 'p', 'd', 'f']
-        COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'px_down', 'dxy_up', 'dxy_down',
-                   'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
-                   'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
-                   'f6_down', 'f7_up', 'f7_down']
-
         def merge_dos(energy_list, Total_up, Total_down, atom_list, length):
             """TODO:  need  optimize, deprecate DataFrame"""
             atom_data = [energy_list]

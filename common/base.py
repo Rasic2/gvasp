@@ -5,7 +5,8 @@ from typing import List, Any
 import numpy as np
 import yaml
 
-from common.logger import root_dir, logger
+from common.logger import logger
+from common.setting import RootDir
 
 yaml.warnings({'YAMLLoadWarning': False})
 
@@ -84,7 +85,7 @@ class Atom(object):
         @func
             __initialize_attrs:     initialize the attributes from the element.yaml
     """
-    _config_file = Path(f"{root_dir}/element.yaml")
+    _config_file = Path(f"{RootDir}/element.yaml")
     _attributes_yaml = ['number', 'period', 'group', 'color', '_default_bonds']
     _load = False
     _attrs = None

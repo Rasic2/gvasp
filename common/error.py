@@ -25,11 +25,14 @@ class AttributeNotRegisteredError(AttributeError):
 class AttributeNotAssignedError(AttributeError):
     pass
 
+
 class XSDFileNotFoundError(FileNotFoundError):
     pass
 
+
 class TooManyXSDFileError(FileExistsError):
     pass
+
 
 class ParameterError(TypeError):
     pass

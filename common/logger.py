@@ -1,14 +1,10 @@
-import os
-import time
-import inspect
 import logging
+import time
+from pathlib import Path
 
-current_dir = os.path.dirname(os.path.abspath(os.path.realpath(inspect.getfile(inspect.currentframe()))))
-root_dir = os.path.dirname(current_dir)
-LOG_DIR = os.path.join(current_dir, f"{root_dir}/logs")
+from common.setting import LogDir
 
-if not os.path.exists(LOG_DIR):
-    os.mkdir(LOG_DIR)
+Path.mkdir(LogDir, exist_ok=True)
 
 date = time.strftime("%Y-%m-%d", time.localtime())
 BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
@@ -61,7 +57,7 @@ class ColoredLogger(logging.Logger):
         file_formatter = ColoredFormatter(self.FILE_FORMAT, False)
         color_formatter = ColoredFormatter(self.COLOR_FORMAT, True)
 
-        fh = logging.FileHandler(f"{LOG_DIR}/{date}.txt")
+        fh = logging.FileHandler(f"{LogDir}/{date}.txt")
         fh.setFormatter(file_formatter)
 
         ch = logging.StreamHandler()
