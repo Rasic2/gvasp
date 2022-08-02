@@ -156,8 +156,10 @@ class Parameter(object):
 
     _stmParam = ('LPARD', 'NBMOD', 'EINT', 'LSEPB', 'LSEPK')
 
+    _vtstParam = ('ICHAIN', 'IOPT',)
+
     _nebParam = ('SPRING', 'LCLIMB', 'MAXMOVE', 'IMAGES')
 
-    _dimerParam = ('ICHAIN', 'IOPT', 'DdR', 'DRotMax', 'DFNMin', 'DFNMax')
+    _dimerParam = ('DdR', 'DRotMax', 'DFNMin', 'DFNMax')
 
     _plusUParam = ('LDAU', 'LDAUTYPE', 'LDAUL', 'LDAUU', 'LDAUJ', 'LDAUPRINT', 'LMAXMIX')

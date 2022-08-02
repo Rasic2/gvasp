@@ -172,6 +172,7 @@ class INCAR(MetaFile, Parameter):
         self._write_density(name)
         self._write_freq(name)
         self._write_stm(name)
+        self._write_vtst(name)
         self._write_neb(name)
         self._write_dimer(name)
         self._write_plusU(name)
@@ -215,6 +216,11 @@ class INCAR(MetaFile, Parameter):
     def _write_stm(self, name):
         with open(name, "a+") as f:
             f.write(f"#----------/STM Parameter/----------# \n")
+
+    @formatter(Parameter._vtstParam)
+    def _write_vtst(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/VTST optimizer Parameter/----------# \n")
 
     @formatter(Parameter._nebParam)
     def _write_neb(self, name):
