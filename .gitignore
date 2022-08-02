@@ -119,7 +119,7 @@ CONTCAR*
 DOSCAR*
 .idea
 *.svg
-logs/
+QVasp/logs/
 CHGCAR*
 AECCAR*
 *.grd

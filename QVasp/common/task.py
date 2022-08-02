@@ -3,6 +3,7 @@ import copy
 from functools import wraps
 from pathlib import Path
 
+import yaml
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen.analysis.diffusion.neb.pathfinder import IDPPSolver
 
@@ -10,10 +11,13 @@ from QVasp.common.error import XSDFileNotFoundError, TooManyXSDFileError
 from QVasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
     CHGCAR_mag, INCAR
 from QVasp.common.logger import logger
-from QVasp.common.setting import WorkDir, config
+from QVasp.common.setting import WorkDir, Config
 from QVasp.common.structure import Structure
 
-Template, PotDir, UValue = config().Template, config().PotDir, config().UValue
+Template, PotDir = Config.template, Config.potdir
+
+with open(Config.UValue) as f:
+    UValue = yaml.safe_load(f.read())
 
 
 def write_wrapper(func):

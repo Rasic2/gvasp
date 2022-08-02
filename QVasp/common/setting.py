@@ -1,32 +1,60 @@
 import inspect
 import json
 import os
-from collections import namedtuple
+import platform
 from pathlib import Path
 
-import yaml
+Version = "0.0.1"
+Platform = platform.platform()
 
 ComDir = os.path.dirname(os.path.abspath(os.path.realpath(inspect.getfile(inspect.currentframe()))))
 RootDir = os.path.dirname(ComDir)
 WorkDir = Path.cwd()
 
 
-def config():
-    with open(f"{RootDir}/config.json", "r") as f:  # TODO: can modify
-        CONFIG = json.load(f)
+class ConfigManager(object):
 
-    try:
-        ConfigDir = Path(CONFIG['config_dir'])  # directory of some necessary files (e.g., INCAR, pot, UValue.yaml)
-    except KeyError:
-        ConfigDir = Path(RootDir)
-        
-    Template = ConfigDir / CONFIG['INCAR']  # location of incar_template
-    PotDir = ConfigDir / CONFIG['potdir']  # location of potdir
-    LogDir = ConfigDir / CONFIG['logdir']
+    def __init__(self):
+        self.config_dir = None
+        self.template = None
+        self.potdir = None
+        self.logdir = None
+        self.UValue = None
 
-    with open(ConfigDir / CONFIG['UValue']) as f:
-        UValue = yaml.safe_load(f.read())
+    def __repr__(self):
+        return f"------------------------------------Configure Information--------------------------------- \n" \
+               f"! ConfigDir:      {self.config_dir} \n" \
+               f"! INCAR-template: {self.template} \n" \
+               f"! UValue:         {self.UValue} \n" \
+               f"! PotDir:         {self.potdir} \n" \
+               f"! LogDir:         {self.logdir} \n" \
+               f"------------------------------------------------------------------------------------------"
 
-    Config = namedtuple("Config", ("Template", "PotDir", "UValue", "LogDir"))(Template, PotDir, UValue, LogDir)
+    def load(self):
+        with open(f"{RootDir}/config.json", "r") as f:  # TODO: can modify
+            config = json.load(f)
 
-    return Config
+        try:
+            self.config_dir = Path(config['config_dir'])  # config directory
+        except KeyError:
+            self.config_dir = Path(RootDir)
+
+        self.template = self.config_dir / config['INCAR']  # location of template
+        self.potdir = self.config_dir / config['potdir']  # location of potdir
+        self.logdir = self.config_dir / config['logdir']  # location of logdir
+        self.UValue = self.config_dir / config['UValue']  # location of UValue
+        return self
+
+    @property
+    def dict(self):
+        return {'config_dir': self.config_dir, 'INCAR': self.template.name, 'potdir': self.potdir.name,
+                'logdir': self.logdir, 'UValue': self.UValue}
+
+    def write(self):
+        with open(f"{RootDir}/config.json", "w") as f:
+            json.dump(self.dict, f)
+
+        return self.load()
+
+
+Config = ConfigManager().load()

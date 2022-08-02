@@ -3,6 +3,7 @@ from collections import namedtuple
 from datetime import datetime
 from functools import wraps, reduce
 from multiprocessing import Pool as ProcessPool
+from operator import add
 from pathlib import Path
 from typing import List
 
@@ -304,9 +305,6 @@ class POTCAR(MetaFile):
 
     @staticmethod
     def cat(potentials, elements: List[str], potdir=f"{RootDir}/pot"):
-
-        def add(a, b):
-            return a + b
 
         if (isinstance(potentials, str) and potentials not in POTENTIAL) or \
                 (isinstance(potentials, list) and len(set(potentials).difference(set(POTENTIAL)))):
