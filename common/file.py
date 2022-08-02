@@ -430,22 +430,6 @@ class XDATCAR(StructInfoFile):
         ARCFile.write(name=name, structure=self.structure, lattice=self.lattice)
 
 
-#     def __len__(self):
-#         return len(self.frames)
-#
-#     def __getitem__(self, index):
-#         return self.structures[index]
-
-#     def split_file(self, index, fname, system=None, factor=1., num_workers=4):
-#         if isinstance(index, int):
-#             self[index].to_POSCAR(fname=fname, system=system, factor=factor)
-#         elif isinstance(index, (Iterable, slice)):
-#             pool = ProcessPool(processes=num_workers)
-#             for index_i, fname_i in zip(index, fname):
-#                 pool.apply_async(self[index_i].to_POSCAR, args=(fname_i, system, factor))
-#             pool.close()
-#             pool.join()
-
 class DOSCAR(MetaFile):
     def __init__(self, name):
         super(DOSCAR, self).__init__(name=name)
@@ -907,6 +891,9 @@ class OUTCAR(MetaFile):
 
         freq = [index for index, item in enumerate(self.frequency.image) if item] if isinstance(freq, str) else freq
 
+        if len(freq) == 0:
+            raise FrequencyError(f"`{freq}` frequency is not found")
+
         # generate the directions for vibration
         direction_001 = np.linspace(start=0, stop=scale, num=frames)  # 0-1 direction
         direction_010 = np.linspace(start=scale, stop=0, num=frames)  # 1-0 direction
@@ -918,6 +905,7 @@ class OUTCAR(MetaFile):
         # generate multi-frames new coordinates
         coord_freq = []
         for freq_index in freq:
+            logger.info(f"Processing freq{freq_index + 1} file ...")
             coord = np.repeat(self.frequency.coord[freq_index][np.newaxis, :], direction_all.shape[0], axis=0)
             vibration = np.repeat(self.frequency.vibration[freq_index][np.newaxis, :], direction_all.shape[0], axis=0)
             coord_freq.append(coord + vibration * direction_all)
@@ -930,6 +918,8 @@ class OUTCAR(MetaFile):
             structure = [Structure(atoms=Atoms(formula=self.element, cart_coord=cart_coord), lattice=self.lattice)
                          for cart_coord in coord_index]
             ARCFile.write(name=f"freq{freq_index + 1}.arc", structure=structure, lattice=self.lattice)
+
+        logger.info(f"All freq transform to corresponding *.arc files")
 
 
 class MODECAR(MetaFile):

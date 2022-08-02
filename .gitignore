@@ -138,3 +138,4 @@ xsd_test
 *.xsd
 KPOINTS
 POTCAR
+*.arc

@@ -1,7 +1,6 @@
 import abc
 import copy
 import json
-import os
 from functools import wraps
 from pathlib import Path
 
@@ -10,7 +9,8 @@ from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
 from common.error import XSDFileNotFoundError, TooManyXSDFileError
-from common.file import POSCAR, OUTCAR, ARCFile, INCAR, XSDFile, KPOINTS, POTCAR
+from common.file import POSCAR, OUTCAR, ARCFile, INCAR, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
+    CHGCAR_mag
 from common.logger import logger, root_dir
 from common.structure import Structure
 
@@ -114,7 +114,18 @@ class BaseTask(metaclass=abc.ABCMeta):
         potcar.write(name="POTCAR")
 
 
-class OptTask(BaseTask):
+class Animatable(metaclass=abc.ABCMeta):
+
+    @staticmethod
+    @abc.abstractmethod
+    def movie(name):
+        """
+        make *.arc file to visualize the optimization steps
+        """
+        XDATCAR("XDATCAR").movie(name=name)
+
+
+class OptTask(BaseTask, Animatable):
     """
     Optimization task manager, subclass of BaseTask
     """
@@ -131,6 +142,10 @@ class OptTask(BaseTask):
         Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
         """
         super(OptTask, self)._generate_INCAR()
+
+    @staticmethod
+    def movie(name="movie.arc"):
+        super().movie(name=name)
 
 
 class ChargeTask(BaseTask):
@@ -157,6 +172,30 @@ class ChargeTask(BaseTask):
         self.incar.IBRION = 1
         self.incar.LAECHG = True
         self.incar.LCHARG = True
+
+    @staticmethod
+    def split():
+        """
+        split CHGCAR to CHGCAR_tot && CHGCAR_mag
+        """
+        CHGCAR("CHGCAR").split()
+
+    @staticmethod
+    def sum():
+        """
+        sum AECCAR0 and AECCAR2 to CHGCAR_sum
+        """
+        aeccar0 = AECCAR0("AECCAR0")
+        aeccar2 = AECCAR2("AECCAR2")
+        chgcar_sum = aeccar0 + aeccar2
+        chgcar_sum.write()
+
+    @staticmethod
+    def to_grd(name="vasp.grd", Dencut=250):
+        """
+        transform CHGCAR_mag to *.grd file
+        """
+        CHGCAR_mag("CHGCAR_mag").to_grd(name=name, DenCut=Dencut)
 
 
 class DOSTask(BaseTask):
@@ -191,7 +230,7 @@ class DOSTask(BaseTask):
         self.incar.NEDOS = 2000
 
 
-class FreqTask(BaseTask):
+class FreqTask(BaseTask, Animatable):
     """
     Frequency calculation task manager, subclass of BaseTask
     """
@@ -219,6 +258,14 @@ class FreqTask(BaseTask):
         self.incar.NSW = 1
         self.incar.NFREE = 2
         self.incar.POTIM = 0.015
+
+    @staticmethod
+    def movie(freq="image"):
+        """
+        visualize the frequency vibration, default: image
+        """
+        outcar = OUTCAR("OUTCAR")
+        outcar.animation_freq(freq=freq)
 
 
 class MDTask(BaseTask):
@@ -291,7 +338,7 @@ class STMTask(BaseTask):
         self.incar.LSEPK = False
 
 
-class ConTSTask(BaseTask):
+class ConTSTask(BaseTask, Animatable):
     """
      Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
      """
@@ -312,8 +359,12 @@ class ConTSTask(BaseTask):
         super(ConTSTask, self)._generate_INCAR()
         self.incar.IBRION = 1
 
+    @staticmethod
+    def movie(name="movie.arc"):
+        super().movie(name=name)
 
-class NEBTask(BaseTask):
+
+class NEBTask(BaseTask, Animatable):
     """
      Nudged Elastic Band (NEB) calculation (no-climbing) task manager, subclass of BaseTask
      """

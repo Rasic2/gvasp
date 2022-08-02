@@ -1,6 +1,6 @@
 import time
 
-from file import CHGCAR_tot, CHGCAR_mag, CHGCAR, AECCAR0, AECCAR2
+from common.file import CHGCAR_tot, CHGCAR_mag, CHGCAR, AECCAR0, AECCAR2
 
 # chg_tot = CHGCAR_tot("CHGCAR_tot")
 # chg_tot.load()

@@ -41,5 +41,9 @@ def dimer():
     task.generate()
 
 
+def freq_movie():
+    FreqTask.movie()
+
+
 if __name__ == '__main__':
-    neb()
+    freq_movie()
