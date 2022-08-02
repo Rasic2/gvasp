@@ -133,9 +133,10 @@ neb-test
 Temp
 *.cell
 OUTCAR*
-INCAR*
+INCAR
 xsd_test
 *.xsd
 KPOINTS
 POTCAR
 *.arc
+INCAR*

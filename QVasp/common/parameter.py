@@ -1,4 +1,4 @@
-from common.descriptor import TypeDescriptor, ValueDescriptor, IntegerLeftDescriptor, TypeListDescriptor, \
+from QVasp.common.descriptor import TypeDescriptor, ValueDescriptor, IntegerLeftDescriptor, TypeListDescriptor, \
     IntegerLeftRealRightDescriptor
 
 

@@ -2,8 +2,9 @@ import logging
 import time
 from pathlib import Path
 
-from common.setting import LogDir
+from QVasp.common.setting import config
 
+LogDir = config().LogDir
 Path.mkdir(LogDir, exist_ok=True)
 
 date = time.strftime("%Y-%m-%d", time.localtime())

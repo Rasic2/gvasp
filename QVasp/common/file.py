@@ -11,13 +11,13 @@ from lxml import etree
 from pandas import DataFrame
 
 from Lib import _dos, _file
-from common.base import Atoms, Lattice
-from common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
+from QVasp.common.base import Atoms, Lattice
+from QVasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError
-from common.logger import logger
-from common.parameter import Parameter
-from common.setting import RootDir
-from common.structure import Structure
+from QVasp.common.logger import logger
+from QVasp.common.parameter import Parameter
+from QVasp.common.setting import RootDir
+from QVasp.common.structure import Structure
 
 POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
 ORBITALS = ['s', 'p', 'd', 'f']

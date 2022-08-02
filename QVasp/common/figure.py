@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy import interpolate
 
-from common.logger import logger
+from QVasp.common.logger import logger
 
 
 def plot_wrapper(func):

@@ -5,7 +5,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Qvasp: A quick post-processing process for VASP jobs")
     parser.add_argument("--task", metavar="TASK", choices=["DOS", "GRD"], type=str, help='specify the task type',
                         required=True)
-    parser.add_argument("--input", metavar='dir', type=str, default=Path("."), help="input directory")
+    parser.add_argument("--input", metavar='dir', type=str, default=Path(".."), help="input directory")
 
     dos_parser = parser.add_argument_group(title='DOS calculation')
     dos_parser.add_argument("--dos-json", metavar="NAME", type=str, help="json file name")

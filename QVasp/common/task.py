@@ -6,12 +6,14 @@ from pathlib import Path
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen_diffusion.neb.pathfinder import IDPPSolver
 
-from common.error import XSDFileNotFoundError, TooManyXSDFileError
-from common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
+from QVasp.common.error import XSDFileNotFoundError, TooManyXSDFileError
+from QVasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
     CHGCAR_mag, INCAR
-from common.logger import logger
-from common.setting import INCARTemplate, UValue, WorkDir, PotDir
-from common.structure import Structure
+from QVasp.common.logger import logger
+from QVasp.common.setting import WorkDir, config
+from QVasp.common.structure import Structure
+
+Template, PotDir, UValue = config().Template, config().PotDir, config().UValue
 
 
 def write_wrapper(func):
@@ -32,7 +34,7 @@ class BaseTask(metaclass=abc.ABCMeta):
     def __init__(self):
         self.structure = None
         self.elements = None
-        self.incar = INCAR(INCARTemplate)
+        self.incar = INCAR(Template)
 
     @abc.abstractmethod
     def generate(self, potential):

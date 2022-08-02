@@ -8,12 +8,12 @@ A quick post-process for resolve or assistant the VASP calculations, `still in d
 
 * [Lib](Lib) (store the *.pyd files)
 
-* [scripts](scripts) (scripts may not use very often, which is not packaged in QVasp)
+* [scripts](../scripts) (scripts may not use very often, which is not packaged in QVasp)
 
-* [VaspTask](VaspTask) (mainly to create the `INCAR`, `POSCAR`, `POTCAR`, `KPOINTS` and `job.script` from
+* [VaspTask](../VaspTask) (mainly to create the `INCAR`, `POSCAR`, `POTCAR`, `KPOINTS` and `job.script` from
   only `*.xsd` file)
 
-* [tests](tests) (test files for `QVasp`)
+* [tests](../tests) (test files for `QVasp`)
 
 ## Notes
 

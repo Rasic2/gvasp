@@ -1,6 +1,4 @@
-import time
-
-from common.file import CHGCAR_tot, CHGCAR_mag, CHGCAR, AECCAR0, AECCAR2
+from QVasp.common.file import CHGCAR_mag
 
 # chg_tot = CHGCAR_tot("CHGCAR_tot")
 # chg_tot.load()
