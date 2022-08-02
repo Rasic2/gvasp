@@ -4,7 +4,7 @@ from functools import wraps
 from pathlib import Path
 
 from pymatgen.core import Structure as pmg_Structure
-from pymatgen_diffusion.neb.pathfinder import IDPPSolver
+from pymatgen.analysis.diffusion.neb.pathfinder import IDPPSolver
 
 from QVasp.common.error import XSDFileNotFoundError, TooManyXSDFileError
 from QVasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \

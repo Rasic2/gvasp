@@ -15,7 +15,11 @@ def config():
     with open(f"{RootDir}/config.json", "r") as f:  # TODO: can modify
         CONFIG = json.load(f)
 
-    ConfigDir = Path(CONFIG['config_dir'])  # directory of some necessary files (e.g., INCAR, pot, UValue.yaml)
+    try:
+        ConfigDir = Path(CONFIG['config_dir'])  # directory of some necessary files (e.g., INCAR, pot, UValue.yaml)
+    except KeyError:
+        ConfigDir = Path(RootDir)
+        
     Template = ConfigDir / CONFIG['INCAR']  # location of incar_template
     PotDir = ConfigDir / CONFIG['potdir']  # location of potdir
     LogDir = ConfigDir / CONFIG['logdir']

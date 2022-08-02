@@ -1,4 +1,4 @@
-from QVasp.common import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask
+from QVasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask
 
 
 def optTask():

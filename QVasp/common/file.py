@@ -10,7 +10,7 @@ import numpy as np
 from lxml import etree
 from pandas import DataFrame
 
-from Lib import _dos, _file
+from QVasp.lib import _dos, _file
 from QVasp.common.base import Atoms, Lattice
 from QVasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError

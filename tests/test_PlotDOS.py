@@ -1,4 +1,4 @@
-from common.plot import PlotDOS
+from QVasp.common.plot import PlotDOS
 
 plotter = PlotDOS(dos_file='DOSCAR-test', pos_file='CONTCAR-test')
 plotter.plot(color='#ed0345')

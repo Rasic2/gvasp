@@ -1,0 +1,1 @@
+recursive-include QVasp/pot POTCAR *.bindat

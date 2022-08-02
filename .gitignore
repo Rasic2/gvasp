@@ -110,7 +110,7 @@ CONTCAR
 chgcar2grd
 .vscode
 example
-pot
+QVasp/pot
 Uvalue
 test
 OUT.ANI
@@ -133,10 +133,11 @@ neb-test
 Temp
 *.cell
 OUTCAR*
-INCAR
+QVasp/INCAR
 xsd_test
 *.xsd
 KPOINTS
 POTCAR
 *.arc
-INCAR*
+QVasp/INCAR
+tests/INCAR*
