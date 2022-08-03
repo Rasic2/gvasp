@@ -7,6 +7,7 @@ from pathlib import Path
 from QVasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask
 from common.file import POTENTIAL
 from common.logger import logger
+from common.plot import PlotOpt, PlotBand, PlotNEB
 from common.setting import Config, RootDir, Version, Platform
 
 
@@ -26,9 +27,9 @@ def main_parser() -> argparse.ArgumentParser:
     submit_parser = subparsers.add_parser(name="submit", help="generate inputs for special job-task")
     submit_parser.add_argument("task", choices=["opt", "con-TS", "chg", "dos", "freq", "md", "stm", "neb", "dimer"],
                                type=str, help='specify job type for submit')
-    submit_parser.add_argument("-p", "--potential", nargs="+", choices=POTENTIAL, type=str, help='specify potential')
-    neb_submit_group = submit_parser.add_argument_group(title='neb-task',
-                                                        description='these arguments only valid for neb task')
+    submit_parser.add_argument("-p", "--potential", metavar="POTENTIAL", default="PAW_PBE", nargs="+",
+                               choices=POTENTIAL, type=str, help='specify potential')
+    neb_submit_group = submit_parser.add_argument_group(title='neb-task')
     neb_submit_group.add_argument("--ini_poscar", type=str, help='specify ini poscar for neb task')
     neb_submit_group.add_argument("--fni_poscar", type=str, help='specify fni poscar for neb task')
     neb_submit_group.add_argument("-i", "--images", type=int, help='specify the neb images')
@@ -42,7 +43,11 @@ def main_parser() -> argparse.ArgumentParser:
     movie_parser = subparsers.add_parser(name="movie", help="visualize the trajectory")
     movie_parser.add_argument("task", choices=["opt", "con-TS", "freq", "md", "neb", "dimer"], type=str,
                               help='specify job type for movie')
-    movie_parser.add_argument("-f", "--freq", help='specify freq index')
+    movie_parser.add_argument("-n", "--name", default="movie.arc", type=str, help='specify name of *.arc')
+    freq_movie_group = movie_parser.add_argument_group(title='freq-task')
+    freq_movie_group.add_argument("-f", "--freq", default='image', help='specify freq index')
+    neb_movie_group = movie_parser.add_argument_group(title='neb-task')
+    neb_movie_group.add_argument("-p", "--pos", default='CONTCAR', help='which type of file to generate neb movie')
     movie_parser.set_defaults(which="movie")
 
     # sort parser
@@ -53,8 +58,17 @@ def main_parser() -> argparse.ArgumentParser:
 
     # plot parser
     plot_parser = subparsers.add_parser(name='plot', help="plot DOS, BandStructure, PES and so on")
-    plot_parser.add_argument("task", choices=['opt', 'band', 'dos', 'PES', 'NEB'], type=str,
+    plot_parser.add_argument("task", choices=['opt', 'band', 'dos', 'PES', 'neb'], type=str,
                              help='specify job type for plot')
+    plot_parser.add_argument("-n", "--name", type=str, help='specify file to load')
+    plot_parser.add_argument("-w", "--width", type=float, help='specify the width of figure')
+    plot_parser.add_argument("-t", "--title", type=str, help='specify the title of figure')
+    plot_parser.add_argument("--xlabel", type=str, help='specify the xlabel of figure')
+    plot_parser.add_argument("--ylabel", type=str, help='specify the ylabel of figure')
+    plot_parser.add_argument("-c", "--color", default='#000000', nargs='+', help='specify the color')
+    display_plot_group = plot_parser.add_mutually_exclusive_group(title='figure display')
+    display_plot_group.add_argument("--show", action='store_true', help='show figure')
+    display_plot_group.add_argument("--save", action='store_true', help='save figure as figure.svg')
     plot_parser.set_defaults(which='plot')
 
     # sum parser
@@ -67,6 +81,8 @@ def main_parser() -> argparse.ArgumentParser:
 
     # grd parser
     grd_parser = subparsers.add_parser(name="grd", help="transform CHGCAR_mag to *.grd file")
+    grd_parser.add_argument("-n", "--name", default="vasp.grd", type=str, help="specify the name of *.grd")
+    grd_parser.add_argument("-d", "--DenCut", default=250, type=int, help="specify the cutoff density")
     grd_parser.set_defaults(which="grd")
 
     return parser
@@ -102,8 +118,7 @@ def main():
             print(f"5. Reset Done")
 
         elif args.which == 'submit':  # submit task
-            args.potential = "PAW_PBE" if args.potential is None else args.potential
-            generate = {"opt": OptTask().generate,
+            ordinary = {"opt": OptTask().generate,
                         "con-TS": ConTSTask().generate,
                         "chg": ChargeTask().generate,
                         "dos": DOSTask().generate,
@@ -112,9 +127,9 @@ def main():
                         "stm": STMTask().generate,
                         "dimer": DimerTask().generate}
 
-            if args.task in generate.keys():
+            if args.task in ordinary.keys():
                 logger.info(f"generate `{args.task}` task")
-                generate[args.task](potential=args.potential)
+                ordinary[args.task](potential=args.potential)
             elif args.task == "neb":
                 if args.ini_poscar is None or args.fni_poscar is None:
                     raise AttributeError(None, "ini_poscar and fni_poscar arguments must be set!")
@@ -137,23 +152,62 @@ def main():
                     print(f"Cancel neb task")
 
         elif args.which == 'movie':  # movie task
-            if args.task != 'freq' and args.freq is not None:  # check `freq` argument
-                raise ArgumentError(None, "freq argument is only valid for movie::freq task")
+            ordinary = {"opt": OptTask.movie,
+                        "con-TS": ConTSTask.movie,
+                        "md": MDTask.movie,
+                        "dimer": DimerTask.movie
+                        }
+            if args.task in ordinary.keys():
+                logger.info(f"`{args.task}` task movie")
+                ordinary[args.task](name=args.name)
+
+            if args.task == 'freq':
+                FreqTask.movie(freq=args.freq)
+
+            if args.task == 'neb':
+                NEBTask.movie(name=args.name, file=args.file)
 
         elif args.which == 'sort':  # sort task
-            pass
+            if args.ini_poscar is None or args.fni_poscar is None:
+                raise AttributeError(None, "ini_poscar and fni_poscar arguments must be set!")
+            NEBTask.sort(ini_poscar=args.ini_poscar, fni_poscar=args.fni_poscar)
 
         elif args.which == 'plot':  # plot task
-            pass
+            if args.task == 'opt':
+                arguments = {'name': args.name, 'width': args.width, 'title': args.title, 'xlabel': args.xlabel, }
+                arguments = {key: value for key, value in arguments.items() if value is not None}
+                plotter = PlotOpt(**arguments)
+                plotter.plot(color=args.color)
+            elif args.task == 'band':
+                arguments = {'name': args.name, 'title': args.title}
+                arguments = {key: value for key, value in arguments.items() if value is not None}
+                plotter = PlotBand(**arguments)
+                plotter.plot()
+            elif args.task == 'dos':
+                pass
+            elif args.task == 'PES':
+                pass
+            elif args.task == 'neb':
+                arguments = {'width': args.width, 'xlabel': args.xlabel, 'ylabel': args.ylabel}
+                arguments = {key: value for key, value in arguments.items() if value is not None}
+                plotter = PlotNEB(**arguments)
+                plotter.plot(color=args.color)
+            else:
+                raise AttributeError(None, f"{args.task} is not supported")
+
+            if args.show:
+                plotter.show()
+            if args.save:
+                plotter.save()
 
         elif args.which == 'sum':  # sum task
-            pass
+            ChargeTask.sum()
 
         elif args.which == 'split':  # split task
-            pass
+            ChargeTask.split()
 
         elif args.which == 'grd':  # grd task
-            pass
+            ChargeTask.to_grd(name=args.name, Dencut=args.DenCut)
 
 
 if __name__ == "__main__":

@@ -217,12 +217,16 @@ class PlotDOS(Figure):
 
 
 class PlotOpt(Figure):
-    def __init__(self, name, width=16, title="Structure Optimization", xlabel="Steps", **kargs):
+    def __init__(self, name="OUTCAR", width=16, title="Structure Optimization", xlabel="Steps", **kargs):
         super(PlotOpt, self).__init__(width=width, title=title, xlabel=xlabel, **kargs)
         self.name = name
         outcar = OUTCAR(name=self.name)
         self.energy = outcar.energy
         self.force = outcar.force
+
+    def plot(self, color=("#ed0345", "#009734")):
+        self._plot_energy(color=color[0])
+        self._plot_force(color=color[1])
 
     @plot_wrapper
     def _plot_energy(self, color):
@@ -234,18 +238,14 @@ class PlotOpt(Figure):
         plt.subplot(122)
         plt.plot(self.force, "-o", color=color)
 
-    def plot(self, color=["#ed0345", "#009734"]):
-        self._plot_energy(color=color[0])
-        self._plot_force(color=color[1])
-
 
 class PlotBand(Figure):
-    def __init__(self, name, title='Band Structure', type="EIGENVAL", **kargs):
+    def __init__(self, name="EIGENVAL", title='Band Structure', **kargs):
         super(PlotBand, self).__init__(title=title, **kargs)
         self.name = name
-        if type == "EIGENVAL":
+        if self.name.startswith("EIGENVAL"):
             self.energy = EIGENVAL(self.name).energy
-        elif type == "OUTCAR":
+        elif self.name.startswith("OUTCAR"):
             energy = OUTCAR(self.name).band_info
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
             self.energy = self.energy.transpose((1, 0, 2))

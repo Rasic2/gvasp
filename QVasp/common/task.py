@@ -42,7 +42,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.incar = INCAR(Template)
 
     @abc.abstractmethod
-    def generate(self, potential):
+    def generate(self, potential: (str, list)):
         """
         generate main method, subclass should inherit or overwrite
         """
@@ -282,7 +282,7 @@ class FreqTask(BaseTask, Animatable):
         outcar.animation_freq(freq=freq)
 
 
-class MDTask(BaseTask):
+class MDTask(BaseTask, Animatable):
     """
      ab-initio molecular dynamics (AIMD) calculation task manager, subclass of BaseTask
      """
@@ -314,6 +314,10 @@ class MDTask(BaseTask):
         self.incar.MDALGO = 2
         self.incar.TEBEG = 300.
         self.incar.TEEND = 300.
+
+    @staticmethod
+    def movie(name="movie.arc"):
+        super().movie(name=name)
 
 
 class STMTask(BaseTask):
@@ -392,6 +396,17 @@ class NEBTask(BaseTask, Animatable):
 
         self.structure = POSCAR(self.ini_poscar).structure
         self.elements = list(self.structure.atoms.size.keys())
+
+    @staticmethod
+    def sort(ini_poscar, fni_poscar):
+        """
+        Tailor the atoms' order for neb task
+
+        @param:
+            ini_poscar:   initial POSCAR file name
+            fni_poscar:   final POSCAR file name
+        """
+        POSCAR.align(ini_poscar, fni_poscar)
 
     def generate(self, method="linear", check_overlap=True, potential="PAW_PBE"):
         """
@@ -544,7 +559,7 @@ class NEBTask(BaseTask, Animatable):
         ARCFile.write(name=name, structure=structures, lattice=structures[0].lattice)
 
 
-class DimerTask(BaseTask):
+class DimerTask(BaseTask, Animatable):
     def generate(self, potential="PAW_PBE"):
         """
         fully inherit BaseTask's generate
@@ -576,3 +591,7 @@ class DimerTask(BaseTask):
         self.incar.DFNMax = 1.
         self.incar.DFNMin = 0.01
         self.incar.IOPT = 2
+
+    @staticmethod
+    def movie(name="movie.arc"):
+        super().movie(name=name)
