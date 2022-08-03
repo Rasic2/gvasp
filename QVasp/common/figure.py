@@ -20,8 +20,10 @@ def plot_wrapper(func):
         ax.spines['left'].set_linewidth(self.bwidth)
         ax.spines['top'].set_linewidth(self.bwidth)
         ax.spines['right'].set_linewidth(self.bwidth)
-
-        plt.ticklabel_format(useOffset=False, style="plain")
+        try:
+            plt.ticklabel_format(useOffset=False, style="plain")
+        except:
+            pass
         plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
         plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
                    fontsize=self.fontsize)
@@ -44,7 +46,7 @@ class Figure(object):
         return super(Figure, cls).__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None,
-                 xticks=None, xlabel=None, ylabel=None, bwidth=1):
+                 xticks=None, xlabel=None, ylabel=None, bwidth=1, **kargs):
         self.width = width
         self.height = height
         self.fig = plt.figure(figsize=(width, height))

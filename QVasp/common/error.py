@@ -36,3 +36,7 @@ class TooManyXSDFileError(FileExistsError):
 
 class ParameterError(TypeError):
     pass
+
+
+class JsonFileNotFoundError(FileNotFoundError):
+    pass

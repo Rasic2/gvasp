@@ -127,8 +127,6 @@ OUTCAR
 XDATCAR
 MODECAR
 POSCAR*
-_dos/
-_file/
 neb-test
 Temp
 *.cell

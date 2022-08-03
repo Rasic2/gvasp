@@ -3,12 +3,16 @@ import json
 import sys
 from argparse import ArgumentError
 from pathlib import Path
+from typing import Iterable
 
 from QVasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask
+from common.error import JsonFileNotFoundError
+from common.figure import Figure
 from common.file import POTENTIAL
 from common.logger import logger
-from common.plot import PlotOpt, PlotBand, PlotNEB
-from common.setting import Config, RootDir, Version, Platform
+from common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
+from common.setting import Config, RootDir, Version, Platform, WorkDir
+from common.utils import colors_generator
 
 
 def main_parser() -> argparse.ArgumentParser:
@@ -60,13 +64,8 @@ def main_parser() -> argparse.ArgumentParser:
     plot_parser = subparsers.add_parser(name='plot', help="plot DOS, BandStructure, PES and so on")
     plot_parser.add_argument("task", choices=['opt', 'band', 'dos', 'PES', 'neb'], type=str,
                              help='specify job type for plot')
-    plot_parser.add_argument("-n", "--name", type=str, help='specify file to load')
-    plot_parser.add_argument("-w", "--width", type=float, help='specify the width of figure')
-    plot_parser.add_argument("-t", "--title", type=str, help='specify the title of figure')
-    plot_parser.add_argument("--xlabel", type=str, help='specify the xlabel of figure')
-    plot_parser.add_argument("--ylabel", type=str, help='specify the ylabel of figure')
-    plot_parser.add_argument("-c", "--color", default='#000000', nargs='+', help='specify the color')
-    display_plot_group = plot_parser.add_mutually_exclusive_group(title='figure display')
+    plot_parser.add_argument("-j", "--json", type=str, help='*.json file to quick setting', required=True)
+    display_plot_group = plot_parser.add_mutually_exclusive_group()
     display_plot_group.add_argument("--show", action='store_true', help='show figure')
     display_plot_group.add_argument("--save", action='store_true', help='save figure as figure.svg')
     plot_parser.set_defaults(which='plot')
@@ -173,32 +172,81 @@ def main():
             NEBTask.sort(ini_poscar=args.ini_poscar, fni_poscar=args.fni_poscar)
 
         elif args.which == 'plot':  # plot task
+
+            # load json file to read setting and data
+            with open(args.json, "r") as f:
+                arguments = json.load(f)
+
+            # record color lack
+            color_lack = False
+            if args.task != "dos" and 'color' not in arguments:
+                arguments['color'] = '#000000'
+                logger.warning(f"color argument is not exist in {args.json}, use default value")
+                color_lack = True
+
+            colors = arguments['color']
+            del arguments['color']
+
             if args.task == 'opt':
-                arguments = {'name': args.name, 'width': args.width, 'title': args.title, 'xlabel': args.xlabel, }
-                arguments = {key: value for key, value in arguments.items() if value is not None}
                 plotter = PlotOpt(**arguments)
-                plotter.plot(color=args.color)
+                if color_lack:
+                    colors = ("#ed0345", "#009734")
+                plotter.plot(color=colors)
             elif args.task == 'band':
-                arguments = {'name': args.name, 'title': args.title}
-                arguments = {key: value for key, value in arguments.items() if value is not None}
                 plotter = PlotBand(**arguments)
                 plotter.plot()
             elif args.task == 'dos':
-                pass
+                if not isinstance(arguments['dos_file'], list) or not isinstance(arguments['pos_file'], list):
+                    raise TypeError("`dos_file` and `pos_file` arguments should be a list")
+
+                assert len(arguments['dos_file']) == len(arguments['pos_file']), \
+                    "The length of `dos_file` and `pos_file` is not match"
+
+                if 'data' not in arguments:
+                    raise AttributeError(None, f"`data` arguments should exist")
+
+                dos_files, pos_files = arguments['dos_file'], arguments['pos_file']
+                data = arguments['data']
+                del arguments['dos_file']
+                del arguments['pos_file']
+                del arguments['data']
+
+                plotters = [PlotDOS(dos_file, pos_file, **arguments) for dos_file, pos_file in
+                            zip(dos_files, pos_files)]
+                for key in data.keys():
+                    for line_argument in data[key]:
+                        plotters[int(key)].plot(**line_argument)
+
             elif args.task == 'PES':
-                pass
+
+                if not isinstance(arguments['data'][0], Iterable):
+                    raise AttributeError(None, "`data` arguments should be a list of lines")
+
+                if 'text_flag' not in arguments:
+                    arguments['text_flag'] = True
+                    logger.warning(f"text_flag argument is not exist in {args.json}, use default value")
+
+                if 'style' not in arguments:
+                    arguments['style'] = "solid_dash"
+                    logger.warning(f"style argument is not exist in {args.json}, use default value")
+
+                if color_lack:
+                    colors = colors_generator()
+
+                plotter = PlotPES(**arguments)
+                for data, color in zip(arguments['data'], colors):
+                    plotter.plot(data=data, color=color, text_flag=arguments['text_flag'], style=arguments['style'])
             elif args.task == 'neb':
-                arguments = {'width': args.width, 'xlabel': args.xlabel, 'ylabel': args.ylabel}
-                arguments = {key: value for key, value in arguments.items() if value is not None}
                 plotter = PlotNEB(**arguments)
-                plotter.plot(color=args.color)
-            else:
-                raise AttributeError(None, f"{args.task} is not supported")
+                plotter.plot(color=colors)
 
             if args.show:
-                plotter.show()
+                if "linux" in Platform.lower():
+                    logger.warning(f"Linux platform may not support figure `show`, if fail, use `save` substitute")
+                Figure.show()
             if args.save:
-                plotter.save()
+                Figure.save()
+                logger.info(f"Figure has been saved as figure.svg, please check")
 
         elif args.which == 'sum':  # sum task
             ChargeTask.sum()

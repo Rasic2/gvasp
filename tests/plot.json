@@ -1,0 +1,19 @@
+{
+  "dos_file": [
+    "DOSCAR-test"
+  ],
+  "pos_file": [
+    "CONTCAR-test"
+  ],
+  "data": {
+    "0": [
+      {
+        "color": "#ed0345"
+      },
+      {
+        "atoms": "Ce",
+        "color": "#000000"
+      }
+    ]
+  }
+}
