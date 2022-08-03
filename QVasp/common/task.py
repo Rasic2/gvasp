@@ -3,6 +3,7 @@ import copy
 from functools import wraps
 from pathlib import Path
 
+import numpy as np
 import yaml
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen.analysis.diffusion.neb.pathfinder import IDPPSolver
@@ -49,6 +50,25 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR()
+
+        print(f"-----------------short info---------------------------")
+        print(f"Elements    Total  Relax   potential orbital UValue")
+        potential = [potential] * len(self.elements) if isinstance(potential, str) else potential
+        index = 0
+        for element, p in zip(self.elements, potential):
+            element_index = [index for index, formula in enumerate(self.structure.atoms.formula) if formula == element]
+            element_tf = np.sum(
+                np.sum(self.structure.atoms.selective_matrix[element_index] == ["T", "T", "T"], axis=1) == 3)
+            print(f"{element:^10s}"
+                  f"{self.structure.atoms.size[element]:>6d}"
+                  f"{element_tf:>6d}(T)   "
+                  f"{p}    "
+                  f"{self.incar.LDAUL[index]}     "
+                  f"{self.incar.LDAUU[index] - self.incar.LDAUJ[index]}")
+            index += 1
+        print()
+        print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
+        print(f"------------------------------------------------------")
 
     def _generate_INCAR(self):
         """

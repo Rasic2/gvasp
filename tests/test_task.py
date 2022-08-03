@@ -46,4 +46,4 @@ def freq_movie():
 
 
 if __name__ == '__main__':
-    dimer()
+    optTask()
