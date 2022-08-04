@@ -5,7 +5,7 @@ Setting Environment
    :maxdepth: 2
    :caption: Contents:
 
-1. Display Default Environment
+Display Default Environment
 -------------------------------------
 
 Default environment can display by following command:
@@ -55,7 +55,7 @@ The structure of :file:`pot` is like this:
 
 
 
-2. Modify Default Environment
+Modify Default Environment
 ------------------------------------
 
 If you don't like the default environment setting, you can modify the environment by writing a config.json, the format of config.json is like this:

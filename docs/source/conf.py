@@ -9,6 +9,7 @@
 project = 'QVasp'
 copyright = '2022, hui_zhou'
 author = 'hui_zhou'
+version = '0.0.1'
 release = '0.0.1'
 
 # -- General configuration ---------------------------------------------------

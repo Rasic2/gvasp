@@ -184,8 +184,9 @@ def main():
                 logger.warning(f"color argument is not exist in {args.json}, use default value")
                 color_lack = True
 
-            colors = arguments['color']
-            del arguments['color']
+            if args.task != "dos":
+                colors = arguments['color']
+                del arguments['color']
 
             if args.task == 'opt':
                 plotter = PlotOpt(**arguments)

@@ -1,4 +1,8 @@
 {
+  "width":6,
+  "height": 4,
+  "fontsize": 10,
+  "xlim": [-35, 10],
   "dos_file": [
     "DOSCAR-test"
   ],
@@ -8,12 +12,11 @@
   "data": {
     "0": [
       {
+        "atoms":"O",
+        "orbitals": ["p"],
         "color": "#ed0345"
       },
-      {
-        "atoms": "Ce",
-        "color": "#000000"
-      }
+      {"atoms":"O", "orbitals": ["s"], "color": "#098760"}
     ]
   }
 }

@@ -72,7 +72,7 @@ class PlotDOS(Figure):
         doscar_parse:   parse DOSCAR data
     """
 
-    def __init__(self, dos_file, pos_file, xlabel="Energy (EV)", ylabel="Density of States (a.u.)", **kargs):
+    def __init__(self, dos_file, pos_file, xlabel="Energy (eV)", ylabel="Density of States (a.u.)", **kargs):
         super(PlotDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
         self.dos_file = dos_file
         self.pos_file = pos_file
@@ -404,8 +404,8 @@ class PlotPES(Figure):
 
 class PlotNEB(Figure):
 
-    def __init__(self, xlabel="Distance (Å)", ylabel="Energy (eV)", width=10):
-        super(PlotNEB, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width)
+    def __init__(self, xlabel="Distance (Å)", ylabel="Energy (eV)", width=10, **kargs):
+        super(PlotNEB, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width, **kargs)
 
     @plot_wrapper
     def plot(self, color="#ed0345"):
