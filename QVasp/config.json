@@ -1,6 +1,3 @@
 {
-  "INCAR": "INCAR",
-  "potdir": "pot",
-  "logdir": "logs",
-  "UValue": "UValue.yaml"
+  "logdir": "logs"
 }

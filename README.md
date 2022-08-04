@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/qvasp/badge/?version=latest)](https://qvasp.readthedocs.io/en/latest/?badge=latest)
+
 ## QVasp
 
 A quick post-process for resolve or assistant the VASP calculations, `still in development`.

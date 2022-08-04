@@ -1,0 +1,5 @@
+show_channel_urls: true
+default_channels:
+- http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+- http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+- http://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2

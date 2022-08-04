@@ -10,6 +10,7 @@ Welcome to QVasp's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   preparation
    install
    config-setting
    functions/submit

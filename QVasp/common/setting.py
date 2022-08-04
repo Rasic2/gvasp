@@ -39,16 +39,21 @@ class ConfigManager(object):
         except KeyError:
             self.config_dir = Path(RootDir)
 
-        self.template = self.config_dir / config['INCAR']  # location of template
-        self.potdir = self.config_dir / config['potdir']  # location of potdir
-        self.logdir = self.config_dir / config['logdir']  # location of logdir
-        self.UValue = self.config_dir / config['UValue']  # location of UValue
+        self.template = self.config_dir / 'INCAR'  # location of template
+        self.potdir = self.config_dir / 'pot'  # location of potdir
+        self.UValue = self.config_dir / 'UValue.yaml'  # location of UValue
+
+        if Path(config['logdir']).exists():
+            self.logdir = Path(config['logdir'])  # location of logdir
+        else:
+            self.logdir = Path(RootDir) / "logs"
+
         return self
 
     @property
     def dict(self):
-        return {'config_dir': self.config_dir, 'INCAR': self.template.name, 'potdir': self.potdir.name,
-                'logdir': self.logdir, 'UValue': self.UValue}
+        return {'config_dir': self.config_dir, 'INCAR': self.template, 'potdir': self.potdir, 'logdir': self.logdir,
+                'UValue': self.UValue}
 
     def write(self):
         with open(f"{RootDir}/config.json", "w") as f:
