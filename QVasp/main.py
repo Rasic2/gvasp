@@ -1,18 +1,16 @@
 import argparse
 import json
 import sys
-from argparse import ArgumentError
 from pathlib import Path
 from typing import Iterable
 
+from QVasp.common.figure import Figure
+from QVasp.common.file import POTENTIAL
+from QVasp.common.logger import Logger
+from QVasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
+from QVasp.common.setting import ConfigManager, RootDir, Version, Platform
 from QVasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask
-from common.error import JsonFileNotFoundError
-from common.figure import Figure
-from common.file import POTENTIAL
-from common.logger import Logger
-from common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
-from common.setting import ConfigManager, RootDir, Version, Platform, WorkDir
-from common.utils import colors_generator
+from QVasp.common.utils import colors_generator
 
 
 def main_parser() -> argparse.ArgumentParser:
