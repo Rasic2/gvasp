@@ -31,8 +31,11 @@ class ConfigManager(object):
                f"------------------------------------------------------------------------------------------"
 
     def load(self):
-        with open(f"{RootDir}/config.json", "r") as f:  # TODO: can modify
-            config = json.load(f)
+        try:
+            with open(f"{RootDir}/config.json", "r") as f:
+                config = json.load(f)
+        except NotADirectoryError:
+            config = {}
 
         try:
             self.config_dir = Path(config['config_dir'])  # config directory
