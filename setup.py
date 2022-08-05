@@ -8,13 +8,13 @@ setup(
     python_requires='>=3.9',
     platforms="manylinux_x86_64",
     packages=find_packages(),
-    # install_requires=[
-    #     'Cython==0.29.31',
-    #     'matplotlib',
-    #     'numpy==1.23.1',
-    #     'pymatgen==2022.7.25',
-    #     'lxml==4.9.1',
-    # ],
+    install_requires=[
+        'Cython',
+        'matplotlib',
+        'numpy',
+        'pymatgen',
+        'lxml',
+    ],
     include_package_data=True,
     package_data={"QVasp": ["lib/*.so", "*.json", "*.yaml", "INCAR"]},
 )
