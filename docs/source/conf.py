@@ -18,7 +18,7 @@ release = '0.0.1'
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../QVasp'))
+sys.path.insert(0, os.path.abspath('../../../QVasp'))
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 
