@@ -51,7 +51,10 @@ class ColoredLogger(logging.Logger):
     FILE_FORMAT = formatter_message(FORMAT, False)
 
     LogDir = ConfigManager().logdir
-    Path.mkdir(LogDir, exist_ok=True)
+    try:
+        Path.mkdir(LogDir, exist_ok=True)
+    except:
+        NotADirectoryError()
 
     def __init__(self, name):
         logging.Logger.__init__(self, name)
