@@ -3,9 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
-*.so
-
 # Distribution / packaging
 .Python
 build/
@@ -137,6 +134,6 @@ xsd_test
 KPOINTS
 POTCAR
 *.arc
-QVasp/INCAR
 tests/INCAR*
 !docs/*.svg
+extension/*.so
