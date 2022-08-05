@@ -431,7 +431,7 @@ class XDATCAR(StructInfoFile):
         return self._structure
 
     def movie(self, name):
-        """Transform the XDATCAR to *.arc file"""
+        """Transform the XDATCAR to arc file"""
         ARCFile.write(name=name, structure=self.structure, lattice=self.lattice)
 
 
@@ -638,12 +638,11 @@ class CHGCAR_mag(CHGBase):
     @staticmethod
     def to_grd(name="vasp.grd", DenCut=-1):
         """
-        transform CHGCAR_mag to *.grd file
+        transform CHGCAR_mag to grd file
 
-        @param
-            name:       specify the name of *.grd file
-            DenCut:     density lower than DenCut will be set to zero;
-                        default: -1, disable the DenCut option
+        param:
+            name:       specify the name of grd file
+            DenCut:     density lower than DenCut will be set to zero (default: -1: disable the DenCut option)
         """
         _file.to_grd(name, DenCut)
 

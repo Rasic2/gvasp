@@ -8,7 +8,7 @@ Welcome to QVasp's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
    preparation
    install
@@ -19,10 +19,8 @@ Welcome to QVasp's documentation!
    functions/sort
    functions/charge
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Module
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   modules

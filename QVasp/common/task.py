@@ -134,7 +134,7 @@ class Animatable(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def movie(name):
         """
-        make *.arc file to visualize the optimization steps
+        make arc file to visualize the optimization steps
         """
         XDATCAR("XDATCAR").movie(name=name)
 
@@ -159,6 +159,9 @@ class OptTask(BaseTask, Animatable):
 
     @staticmethod
     def movie(name="movie.arc"):
+        """
+        fully inherit BaseTask's movie
+        """
         super().movie(name=name)
 
 
@@ -207,7 +210,7 @@ class ChargeTask(BaseTask):
     @staticmethod
     def to_grd(name="vasp.grd", Dencut=250):
         """
-        transform CHGCAR_mag to *.grd file
+        transform CHGCAR_mag to grd file
         """
         CHGCAR_mag("CHGCAR_mag").to_grd(name=name, DenCut=Dencut)
 
@@ -317,6 +320,9 @@ class MDTask(BaseTask, Animatable):
 
     @staticmethod
     def movie(name="movie.arc"):
+        """
+        fully inherit BaseTask's movie
+        """
         super().movie(name=name)
 
 
@@ -379,6 +385,9 @@ class ConTSTask(BaseTask, Animatable):
 
     @staticmethod
     def movie(name="movie.arc"):
+        """
+        fully inherit BaseTask's movie
+        """
         super().movie(name=name)
 
 
@@ -547,7 +556,7 @@ class NEBTask(BaseTask, Animatable):
     @staticmethod
     def movie(name="movie.arc", file="CONTCAR"):
         """
-        Generate *.arc file from images/[POSCAR|CONTCAR] files
+        Generate arc file from images/[POSCAR|CONTCAR] files
         """
         neb_dirs = NEBTask._search_neb_dir()
         structures = []

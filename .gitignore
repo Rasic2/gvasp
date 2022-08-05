@@ -139,3 +139,4 @@ POTCAR
 *.arc
 QVasp/INCAR
 tests/INCAR*
+!docs/*.svg

@@ -125,9 +125,9 @@ class PchipLine(LineBase):
 
 class Text(object):
     """
-    Add text on the figure, for PlotPES
+    Add text on the figure, for PlotPES.
 
-    @param:
+    param:
         figure: Figure instance
         x:      bi-tuple, specify which x-range to add text
         y:      bi-tuple, specify which y-range to add text;
@@ -154,6 +154,7 @@ class Text(object):
     def check_overlap(self):
         """
         check the text overlap
+
         main idea:
             1. tailor box along the line
             2. if not, tailor the box vertically, then loop
