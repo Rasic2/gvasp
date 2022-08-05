@@ -1,71 +1,148 @@
+# QVasp Manual
+
+![GitHub](https://img.shields.io/github/license/Rasic2/QVasp)
 [![Documentation Status](https://readthedocs.org/projects/qvasp/badge/?version=latest)](https://qvasp.readthedocs.io/en/latest/?badge=latest)
 
-## QVasp
+## Table of contents
 
-A quick post-process for resolve or assistant the VASP calculations, `still in development`.
+- [About QVasp](#about-qvasp)
+- [Install](#install)
+    - [Create Environment](#create-environment)
+    - [Install QVasp](#install-qvasp)
+- [Setting Environment](#setting-environment)
+    - [Default Environment](#default-environment)
+    - [Modify Environment](#modify-environment)
+- [Code Structure](#code-structure)
+- [Requirements](#requirements)
 
-## Directory
+## About QVasp
 
-* [common](QVasp/common) (main module of the QVasp)
+A quick post-process for resolve or assistant the VASP calculations, which can involve in four kinds of tasks as below:
 
-* [Lib](QVasp/lib) (store the *.pyd files)
+* generate inputs
+* visualize trajectory
+* plot interface
+* charge related work
 
-* [scripts](scripts) (scripts may not use very often, which is not packaged in QVasp)
+More detailed information can see [here](https://qvasp.readthedocs.io/en/latest/).
 
-* [VaspTask](VaspTask) (mainly to create the `INCAR`, `POSCAR`, `POTCAR`, `KPOINTS` and `job.script` from
-  only `*.xsd` file)
+## Install
 
-* [tests](tests) (test files for `QVasp`)
+### Create Environment
 
-## Notes
+Before install the `QVasp`, we strongly recommend you to install [conda](https://anaconda.org/) before.
 
-Mostly scripts can be run in a single *.py or *.sh file, but still some process need first to be compiled, for
-example, [**chgcar2grd**](ChargeDensity/grd/chgcar2grd).
-
-Therefore, if you want to use them, you may compile them by yourself. Of course, I also
-provide [Makefile](ChargeDensity/grd/Makefile) to help the compilation.
-
-For example, you can compile the chgcar2grd like this:
+After install conda, create a new environment, e.g. `QVasp`, and install a `python (version=3.9)`, using following
+command:
 
 ```
-cd ChargeDensity/grd;
-make;
+conda create -n QVasp python=3.9
+```
+
+### Install QVasp
+
+You can install the `QVasp` using the following command:
+
+```
+python3 setup.py install
 ```
 
 or
 
 ```
-g++ -g -O3 chgcar2grd -c chgcar2grd.cpp
+pip3 install .
 ```
 
-While for the `*.pyx` file, operation above may not work, you need to write the `setup.py` firstly, and then run the
-following command:
+If you run the `QVasp -v` and print version information, then you install the `QVasp` successful ~~
 
-- MACOS/Linux System
-    ```
-    python setup.py build_ext --inplace
-    ```
-  and the `*.so` file can be created and imported by the python.
+```
+QVasp version 0.0.1 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
+```
 
+## Setting Environment
 
-- Windows System
-    ```
-    1. Run "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars64.bat" in CMD
-    2. python.exe setup.py build_ext --inplace --compiler=msvc
-    ```
-  and thr `*.pyd` file can be created and imported by the python.
+### Default Environment
+
+Default environment can display by following command:
+
+```
+QVasp -l/--list
+```
+
+Initial environment is like this:
+
+```
+------------------------------------Configure Information---------------------------------
+! ConfigDir:      /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp
+! INCAR-template: /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/INCAR
+! UValue:         /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/UValue.yaml
+! PotDir:         /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/pot
+! LogDir:         /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/logs
+------------------------------------------------------------------------------------------
+```
+
+- ConfigDir: represents the directory of `INCAR (template)`, `UValue.yaml` and `pot`
+
+- LogDir: represents the directory of `logs`
+
+- INCAR: `INCAR template` file of all `QVasp` submit tasks
+
+- UValue.yaml: define the `UValue` for elements
+
+- pot: directory of the elements' `POTCAR`
+
+The structure of pot is like this:
+
+```
+pot
+├── PAW_LDA
+├── PAW_PBE
+├── PAW_PW91
+├── USPP_LDA
+├── USPP_PW91
+└── vdw_kernel.bindat
+```
+
+### Modify Environment
+
+If you don’t like the [default environment](#default-environment), you can modify the environment by
+writing a `config.json`, the format
+of config.json is like this:
+
+```
+{
+  "config_dir": "/your_directory_to_three_mentioned_files",
+  "logdir": "/your_logs_directory",
+}
+```
+
+and run command:
+
+```
+QVasp config -f config.json
+```
+
+Then the environment will be reset, `QVasp` will auto search the `INCAR`, `UValue.yaml`, `pot` under the `config_dir`.
+
+## Code Structure
+
+* [QVasp](QVasp) source code directory of `QVasp`
+
+* [QVasp/common](QVasp/common) (main module of `QVasp`)
+
+* [QVasp/lib](QVasp/lib) (store the *.pyd files)
+
+* [extension](extension) (`C++`/`Cython` extensions for `QVasp`)
+
+* [docs](docs) (document description)
+
+* [tests](tests) (test files of `QVasp`)
 
 ## Requirements
 
-* GNU compiler (gcc, gfortran and g++)
-* MSVC compiler
 * Python >= 3.9
 * Cython
 * matplotlib
-* numpy == 1.23.1
+* numpy == 1.23.1 (other version may conflict with pymatgen, not test)
 * pymatgen == 2022.7.25
 * pymatgen-diffusion == 2020.10.8
-
-
-
-
