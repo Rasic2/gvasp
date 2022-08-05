@@ -107,7 +107,7 @@ CONTCAR
 chgcar2grd
 .vscode
 example
-QVasp/pot
+pot
 Uvalue
 test
 OUT.ANI
@@ -139,3 +139,4 @@ tests/INCAR*
 extension/*.so
 EIGENVAL
 tests/*.json
+pot.tgz
