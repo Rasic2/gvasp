@@ -46,9 +46,12 @@ class ConfigManager(object):
         self.potdir = self.config_dir / 'pot'  # location of potdir
         self.UValue = self.config_dir / 'UValue.yaml'  # location of UValue
 
-        if Path(config['logdir']).exists():
-            self.logdir = Path(config['logdir'])  # location of logdir
-        else:
+        try:
+            if Path(config['logdir']).exists():
+                self.logdir = Path(config['logdir'])  # location of logdir
+            else:
+                self.logdir = Path(RootDir) / "logs"
+        except KeyError:
             self.logdir = Path(RootDir) / "logs"
 
         return self
