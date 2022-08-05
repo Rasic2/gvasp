@@ -692,7 +692,7 @@ class CHGCAR(StructInfoFile):
         if getattr(self, "_head", None) is None:
             self.load()
 
-        with open("CHGCAR_tot", "w") as tot, open("CHGCAR_mag") as mag:
+        with open("CHGCAR_tot", "w") as tot, open("CHGCAR_mag", "w") as mag:
             tot.writelines(self._head)
             tot.writelines(self._density_tot_strings)
             mag.writelines(self._head)

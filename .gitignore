@@ -137,3 +137,5 @@ POTCAR
 tests/INCAR*
 !docs/*.svg
 extension/*.so
+EIGENVAL
+tests/*.json

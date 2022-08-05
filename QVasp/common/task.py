@@ -162,7 +162,7 @@ class OptTask(BaseTask, Animatable):
         """
         fully inherit BaseTask's movie
         """
-        super().movie(name=name)
+        Animatable.movie(name=name)
 
 
 class ChargeTask(BaseTask):
@@ -514,13 +514,16 @@ class NEBTask(BaseTask, Animatable):
         logger.info("Linear interpolation of NEB initial guess has been generated.")
 
     @staticmethod
-    def _search_neb_dir():
+    def _search_neb_dir(workdir=None):
         """
         Search neb task directories from workdir
         """
+        if workdir is None:
+            workdir = WorkDir
+
         neb_dirs = []
 
-        for dir in WorkDir.iterdir():
+        for dir in workdir.iterdir():
             if Path(dir).is_dir() and Path(dir).stem.isdigit():
                 neb_dirs.append(dir)
         return neb_dirs
@@ -557,11 +560,11 @@ class NEBTask(BaseTask, Animatable):
             print(f" {image.stem} \t {outcar.last_tangent:>10.6f} \t {outcar.last_energy} \t {barrier:.6f}")
 
     @staticmethod
-    def movie(name="movie.arc", file="CONTCAR"):
+    def movie(name="movie.arc", file="CONTCAR", workdir=None):
         """
         Generate arc file from images/[POSCAR|CONTCAR] files
         """
-        neb_dirs = NEBTask._search_neb_dir()
+        neb_dirs = NEBTask._search_neb_dir(workdir)
         structures = []
 
         for image in neb_dirs:

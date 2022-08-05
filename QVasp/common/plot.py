@@ -408,8 +408,8 @@ class PlotNEB(Figure):
         super(PlotNEB, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width, **kargs)
 
     @plot_wrapper
-    def plot(self, color="#ed0345"):
-        neb_dirs = NEBTask._search_neb_dir()
+    def plot(self, color="#ed0345", workdir=None):
+        neb_dirs = NEBTask._search_neb_dir(workdir)
         dists = []
         energy = []
         ini_energy = 0.

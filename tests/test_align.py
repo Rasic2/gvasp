@@ -1,8 +1,16 @@
+import os
+import unittest
+from pathlib import Path
+
 from common.file import POSCAR
 
-POSCAR.align("POSCAR_IS", "POSCAR_FS")
-# structure = POSCAR("POSCAR_IS").structure
-# structure.find_neighbour_table()
-# atoms = POSCAR("IS").structure.atoms
-# image = atoms.search_image(atoms, atoms)
-print()
+
+class TestAlign(unittest.TestCase):
+    def test_align(self):
+        POSCAR.align("POSCAR_IS", "POSCAR_FS")
+        for file in Path(".").glob("POSCAR_*_sort"):
+            os.remove(file)
+
+
+if __name__ == '__main__':
+    unittest.main()
