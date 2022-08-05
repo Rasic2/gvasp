@@ -15,7 +15,7 @@ from QVasp.lib import _dos, _file
 from QVasp.common.base import Atoms, Lattice
 from QVasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError
-from QVasp.common.logger import logger
+from QVasp.common.logger import Logger
 from QVasp.common.parameter import Parameter
 from QVasp.common.setting import RootDir
 from QVasp.common.structure import Structure
@@ -395,6 +395,8 @@ class POSCAR(StructInfoFile):
             pos1:   first POSCAR file name
             pos2:   second POSCAR file name
         """
+        logger = Logger().logger
+
         structure1 = POSCAR(name=pos1).structure
         structure2 = POSCAR(name=pos2).structure
         logger.info(f"Align before: dist = {Structure.dist(structure1, structure2)}")
@@ -526,6 +528,7 @@ class EIGENVAL(MetaFile):
         @params:
             dir:    save directory, default: $CWD/band_data
         """
+        logger = Logger().logger
         Path(directory).mkdir(exist_ok=True)
         for index in range(self.NBand):
             np.savetxt(f"{directory}/band_{index + 1}", self.energy[:, index])
@@ -878,6 +881,8 @@ class OUTCAR(MetaFile):
             frames:     specify how many points you want to interpolate along one direction, default = 30
             scale:      determine the vibration scale, default = 0.6
         """
+        logger = Logger().logger
+
         if self.frequency is None:
             raise AnimationError(f"{self.name} don't include frequency information")
 

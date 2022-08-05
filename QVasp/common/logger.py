@@ -2,10 +2,7 @@ import logging
 import time
 from pathlib import Path
 
-from QVasp.common.setting import Config
-
-LogDir = Config.logdir
-Path.mkdir(LogDir, exist_ok=True)
+from QVasp.common.setting import ConfigManager
 
 date = time.strftime("%Y-%m-%d", time.localtime())
 BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
@@ -53,12 +50,15 @@ class ColoredLogger(logging.Logger):
     COLOR_FORMAT = formatter_message(FORMAT, True)
     FILE_FORMAT = formatter_message(FORMAT, False)
 
+    LogDir = ConfigManager().logdir
+    Path.mkdir(LogDir, exist_ok=True)
+
     def __init__(self, name):
         logging.Logger.__init__(self, name)
         file_formatter = ColoredFormatter(self.FILE_FORMAT, False)
         color_formatter = ColoredFormatter(self.COLOR_FORMAT, True)
 
-        fh = logging.FileHandler(f"{LogDir}/{date}.txt")
+        fh = logging.FileHandler(f"{self.LogDir}/{date}.txt")
         fh.setFormatter(file_formatter)
 
         ch = logging.StreamHandler()
@@ -68,6 +68,15 @@ class ColoredLogger(logging.Logger):
         self.addHandler(ch)
 
 
-logging.setLoggerClass(ColoredLogger)
-logger = logging.getLogger("__main__")
-logger.setLevel(logging.INFO)
+class Logger(object):
+    _logger = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._logger is None:
+            cls._logger = super().__new__(cls)
+        return cls._logger
+
+    def __init__(self):
+        logging.setLoggerClass(ColoredLogger)
+        self.logger = logging.getLogger("__main__")
+        self.logger.setLevel(logging.INFO)

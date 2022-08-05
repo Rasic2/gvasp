@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy import interpolate
 
-from QVasp.common.logger import logger
+from QVasp.common.logger import Logger
 
 
 def plot_wrapper(func):
@@ -159,6 +159,8 @@ class Text(object):
             1. tailor box along the line
             2. if not, tailor the box vertically, then loop
         """
+        logger = Logger().logger
+
         left_m = -0.3 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # left margin
         right_m = 0.3 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # right margin
         top_m = 0.07 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # top margin

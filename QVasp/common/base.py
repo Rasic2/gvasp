@@ -5,7 +5,7 @@ from typing import List, Any
 import numpy as np
 import yaml
 
-from QVasp.common.logger import logger
+from QVasp.common.logger import Logger
 from QVasp.common.setting import RootDir
 
 yaml.warnings({'YAMLLoadWarning': False})
@@ -157,6 +157,8 @@ class Atom(object):
 
     @staticmethod
     def search_image(atom_i, atom_j) -> np.ndarray:
+        logger = Logger().logger
+
         if not isinstance(atom_i, Atom) or not isinstance(atom_j, Atom):
             SystemError("The parameters should be <class Atom>!")
         logger.debug(

@@ -21,6 +21,8 @@ class ConfigManager(object):
         self.logdir = None
         self.UValue = None
 
+        self.load()
+
     def __repr__(self):
         return f"------------------------------------Configure Information--------------------------------- \n" \
                f"! ConfigDir:      {self.config_dir} \n" \
@@ -45,7 +47,6 @@ class ConfigManager(object):
         self.template = self.config_dir / 'INCAR'  # location of template
         self.potdir = self.config_dir / 'pot'  # location of potdir
         self.UValue = self.config_dir / 'UValue.yaml'  # location of UValue
-
         try:
             if Path(config['logdir']).exists():
                 self.logdir = Path(config['logdir'])  # location of logdir
@@ -53,8 +54,6 @@ class ConfigManager(object):
                 self.logdir = Path(RootDir) / "logs"
         except KeyError:
             self.logdir = Path(RootDir) / "logs"
-
-        return self
 
     @property
     def dict(self):
@@ -64,8 +63,3 @@ class ConfigManager(object):
     def write(self):
         with open(f"{RootDir}/config.json", "w") as f:
             json.dump(self.dict, f)
-
-        return self.load()
-
-
-Config = ConfigManager().load()

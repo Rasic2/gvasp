@@ -11,14 +11,9 @@ from pymatgen.analysis.diffusion.neb.pathfinder import IDPPSolver
 from QVasp.common.error import XSDFileNotFoundError, TooManyXSDFileError
 from QVasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
     CHGCAR_mag, INCAR
-from QVasp.common.logger import logger
-from QVasp.common.setting import WorkDir, Config
+from QVasp.common.logger import Logger
+from QVasp.common.setting import WorkDir, ConfigManager
 from QVasp.common.structure import Structure
-
-Template, PotDir = Config.template, Config.potdir
-
-with open(Config.UValue) as f:
-    UValue = yaml.safe_load(f.read())
 
 
 def write_wrapper(func):
@@ -35,11 +30,15 @@ class BaseTask(metaclass=abc.ABCMeta):
     Task Base class, load config.json, generate INCAR, KPOINTS, POSCAR and POTCAR
     Note: subclass should have `generate` method
     """
+    Template, PotDir = ConfigManager().template, ConfigManager().potdir
+    with open(ConfigManager().UValue) as f:
+        UValue = yaml.safe_load(f.read())
 
     def __init__(self):
         self.structure = None
         self.elements = None
-        self.incar = INCAR(Template)
+
+        self.incar = INCAR(self.Template)
 
     @abc.abstractmethod
     def generate(self, potential: (str, list)):
@@ -74,13 +73,14 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
         generate by copy incar_template, modify the +U parameters
         """
+        logger = Logger().logger
         if self.incar.LDAU:
             LDAUL, LDAUU, LDAUJ = [], [], []
             for element in self.elements:
-                if UValue.get(f'Element {element}', None) is not None:
-                    LDAUL.append(UValue[f'Element {element}']['orbital'])
-                    LDAUU.append(UValue[f'Element {element}']['U'])
-                    LDAUJ.append(UValue[f'Element {element}']['J'])
+                if self.UValue.get(f'Element {element}', None) is not None:
+                    LDAUL.append(self.UValue[f'Element {element}']['orbital'])
+                    LDAUU.append(self.UValue[f'Element {element}']['U'])
+                    LDAUJ.append(self.UValue[f'Element {element}']['J'])
                 else:
                     LDAUL.append(-1)
                     LDAUU.append(0.0)
@@ -124,7 +124,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
          generate POTCAR automatically, call the `cat` method of POTCAR
          """
-        potcar = POTCAR.cat(potentials=potential, elements=self.elements, potdir=PotDir)
+        potcar = POTCAR.cat(potentials=potential, elements=self.elements, potdir=self.PotDir)
         potcar.write(name="POTCAR")
 
 
@@ -468,6 +468,7 @@ class NEBTask(BaseTask, Animatable):
         """
         Generate NEB-task images by idpp method (J. Chem. Phys. 140, 214106 (2014))
         """
+        logger = Logger().logger
         ini_structure = pmg_Structure.from_file(self.ini_poscar, False)
         fni_structure = pmg_Structure.from_file(self.fni_poscar, False)
         obj = IDPPSolver.from_endpoints(endpoints=[ini_structure, fni_structure], nimages=self.images, sort_tol=1.0)
@@ -484,6 +485,7 @@ class NEBTask(BaseTask, Animatable):
         """
         Generate NEB-task images by linear interpolation method
         """
+        logger = Logger().logger
         ini_structure = POSCAR(self.ini_poscar).structure
         fni_structure = POSCAR(self.fni_poscar).structure
         assert ini_structure == fni_structure, f"{self.ini_poscar} and {self.fni_poscar} are not structure match"
@@ -528,6 +530,7 @@ class NEBTask(BaseTask, Animatable):
         """
         Check if two atoms' distance is too small, (following may add method to tailor their distances)
         """
+        logger = Logger().logger
         logger.info("Check structures overlap")
         neb_dirs = NEBTask._search_neb_dir()
 

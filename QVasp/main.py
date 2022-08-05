@@ -9,9 +9,9 @@ from QVasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask,
 from common.error import JsonFileNotFoundError
 from common.figure import Figure
 from common.file import POTENTIAL
-from common.logger import logger
+from common.logger import Logger
 from common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
-from common.setting import Config, RootDir, Version, Platform, WorkDir
+from common.setting import ConfigManager, RootDir, Version, Platform, WorkDir
 from common.utils import colors_generator
 
 
@@ -88,6 +88,8 @@ def main_parser() -> argparse.ArgumentParser:
 
 
 def main():
+    Config = ConfigManager()
+    logger = Logger().logger
     parser = main_parser()
     args = parser.parse_args()
 
@@ -111,7 +113,8 @@ def main():
             print(f"3. Substitute {RootDir}/config.json with {Path(args.file)}")
             for key in Config.dict.keys():
                 if getattr(new_config, key, None) is not None:
-                    Config[key] = new_config[key]
+                    setattr(Config, key, new_config[key])
+            Config.write()
             print(f"4. Print the new configure information")
             print(Config)
             print(f"5. Reset Done")
