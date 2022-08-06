@@ -2,6 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/Rasic2/QVasp)
 [![Documentation Status](https://readthedocs.org/projects/qvasp/badge/?version=latest)](https://qvasp.readthedocs.io/en/latest/?badge=latest)
+[![Anaconda-Server Badge](https://anaconda.org/hui_zhou/qvasp/badges/installer/conda.svg)](https://conda.anaconda.org/hui_zhou)
 
 ## Table of contents
 
@@ -56,12 +57,22 @@ conda create -n QVasp python=3.9
     ```
 2. Use PyPi
 
-   We have made the wheel and upload to the [pypi](https://pypi.org/project/QVasp/), you can also install from it:
+   We have made the wheel (production process can see [here]) and upload to the [pypi](https://pypi.org/project/QVasp/),
+   you can also install from it:
 
     ```
     pip3 install Qvasp
     ```
    If the download speed is too slow, we suggest you change the pip mirror by modifying the `~/.pip/pip.conf` file.
+
+3. Use conda
+
+   We now also made a conda package (production process can see [here]) and uploaded to
+   the [Anaconda](https://anaconda.org/hui_zhou/qvasp), so you can also install `QVasp` from it:
+
+    ```
+    conda install -c hui_zhou -c conda-forge qvasp
+    ```
 
 If you run the `QVasp -v` and print version information, then you install the `QVasp` successful ~~
 

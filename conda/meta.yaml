@@ -1,0 +1,32 @@
+package:
+  name: qvasp
+  version: 0.0.1
+
+source:
+  path: .
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+
+  host:
+    - python
+    - Cython
+    - setuptools
+
+  run:
+    - python
+    - numpy
+    - Cython
+    - lxml
+    - matplotlib
+    - pandas
+    - pymatgen
+    - pymatgen-analysis-diffusion
+    - pyyaml
+    - scipy
+
+about:
+  home: https://github.com/Rasic2/QVasp
+  license: GPL-3.0
