@@ -140,3 +140,4 @@ extension/*.so
 EIGENVAL
 tests/*.json
 pot.tgz
+wheelhouse

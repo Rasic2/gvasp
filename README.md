@@ -41,17 +41,27 @@ conda create -n QVasp python=3.9
 
 ### Install QVasp
 
-You can install the `QVasp` using the following command:
+1. From sourcecode
 
-```
-python3 setup.py install
-```
+   You can install the `QVasp` using the following command (under the root directory):
 
-or
+    ```
+    python3 setup.py install
+    ```
 
-```
-pip3 install .
-```
+   or
+
+    ```
+    pip3 install .
+    ```
+2. Use PyPi
+
+   We have made the wheel and upload to the [pypi](https://pypi.org/project/QVasp/), you can also install from it:
+
+    ```
+    pip3 install Qvasp
+    ```
+   If the download speed is too slow, we suggest you change the pip mirror by modifying the `~/.pip/pip.conf` file.
 
 If you run the `QVasp -v` and print version information, then you install the `QVasp` successful ~~
 
