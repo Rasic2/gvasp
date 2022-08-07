@@ -5,28 +5,35 @@ package:
 source:
   path: .
 
+build:
+  entry_points:
+    - gvasp = gvasp.main:main
+
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - 'vs2019_win-64'        # [win]
+    - {{ compiler('c') }}    # [linux]
+    - {{ compiler('cxx') }}  # [linux]
 
   host:
     - python
+    - pybind11
     - Cython
     - setuptools
 
   run:
     - python
     - numpy
+    - pybind11
     - Cython
     - lxml
     - matplotlib
     - pandas
-    - pymatgen
-    - pymatgen-analysis-diffusion
     - pyyaml
     - scipy
+    - "pymatgen"
+    - "pymatgen-analysis-diffusion"
 
 about:
   home: https://github.com/Rasic2/gvasp
-  license: GPL-3.0
+  license: GPL3

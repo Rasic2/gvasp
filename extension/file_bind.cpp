@@ -190,7 +190,7 @@ PyCHGInfo load(string name)
     return pyinfo;
 }
 
-PYBIND11_MODULE(_file, m)
+PYBIND11_MODULE(file_bind, m)
 {
     m.doc() = "pybind11 <file> module";
 

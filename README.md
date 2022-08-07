@@ -57,11 +57,11 @@ conda create -n GVasp python=3.9
     ```
 2. Use PyPi
 
-   We have made the wheel (production process can see [here]) and upload to the [pypi](https://pypi.org/project/QVasp/),
+   We have made the wheel (production process can see [here]) and upload to the [pypi](https://pypi.org/project/gvasp/),
    you can also install from it:
 
     ```
-    pip3 install QVasp
+    pip3 install gvasp
     ```
    If the download speed is too slow, we suggest you change the pip mirror by modifying the `~/.pip/pip.conf` file.
 
@@ -71,7 +71,7 @@ conda create -n GVasp python=3.9
    the [Anaconda](https://anaconda.org/hui_zhou/gvasp), so you can also install `GVasp` from it:
 
     ```
-    conda install -c hui_zhou -c conda-forge qvasp
+    conda install -c hui_zhou -c conda-forge gvasp
     ```
 
 If you run the `gvasp -v` and print version information, then you install the `GVasp` successful ~~
