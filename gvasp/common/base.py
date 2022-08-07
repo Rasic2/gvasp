@@ -5,8 +5,8 @@ from typing import List, Any
 import numpy as np
 import yaml
 
-from QVasp.common.logger import Logger
-from QVasp.common.setting import RootDir
+from gvasp.common.logger import Logger
+from gvasp.common.setting import RootDir
 
 yaml.warnings({'YAMLLoadWarning': False})
 

@@ -2,7 +2,7 @@ import os
 import unittest
 from pathlib import Path
 
-from QVasp.common.task import OptTask, FreqTask, NEBTask
+from gvasp.common.task import OptTask, FreqTask, NEBTask
 
 
 def file_cleaner(func):

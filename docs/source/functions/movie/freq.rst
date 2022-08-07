@@ -7,16 +7,16 @@ Frequency Vibration
    :maxdepth: 2
    :caption: Contents:
 
-One can use :program:`QVasp` to visualize the frequency vibration, only need run the command below:
+One can use :program:`GVasp` to visualize the frequency vibration, only need run the command below:
 
 .. code-block:: bash
 
-    QVasp movie freq
+    gvasp movie freq
 
 and the :file:`freq*.arc` will output in the workdir.
 
 .. note::
-    The default behavior of :program:`QVasp` will search the *image frequency* and visualize its or their vibration.
+    The default behavior of :program:`GVasp` will search the *image frequency* and visualize its or their vibration.
 
 specify freq
 --------------

@@ -11,10 +11,10 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 
-from QVasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
-from QVasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR
-from QVasp.common.structure import Structure
-from QVasp.common.task import NEBTask
+from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
+from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR
+from gvasp.common.structure import Structure
+from gvasp.common.task import NEBTask
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows

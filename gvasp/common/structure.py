@@ -4,9 +4,9 @@ from collections import defaultdict, Counter
 
 import numpy as np
 
-from QVasp.common.base import Atoms, Lattice, Atom
-from QVasp.common.error import StructureOverlapError
-from QVasp.common.logger import Logger
+from gvasp.common.base import Atoms, Lattice, Atom
+from gvasp.common.error import StructureOverlapError
+from gvasp.common.logger import Logger
 
 
 class Structure(object):

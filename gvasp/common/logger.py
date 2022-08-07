@@ -2,7 +2,7 @@ import logging
 import time
 from pathlib import Path
 
-from QVasp.common.setting import ConfigManager
+from gvasp.common.setting import ConfigManager
 
 date = time.strftime("%Y-%m-%d", time.localtime())
 BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)

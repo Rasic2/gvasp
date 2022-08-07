@@ -7,11 +7,11 @@ Dimer Method
    :maxdepth: 2
    :caption: Contents:
 
-One can use :program:`QVasp` to visualize the optimization trajectory in TS-search process (currently is **dimer**), only need run the command below:
+One can use :program:`GVasp` to visualize the optimization trajectory in TS-search process (currently is **dimer**), only need run the command below:
 
 .. code-block:: bash
 
-    QVasp movie dimer
+    gvasp movie dimer
 
 and the :file:`movie.arc` will output in the workdir.
 

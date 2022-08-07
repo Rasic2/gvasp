@@ -3,7 +3,7 @@ import shutil
 import sys
 import unittest
 
-from QVasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask
+from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask
 
 
 def file_cleaner(func):

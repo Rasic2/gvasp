@@ -4,18 +4,18 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-from QVasp.common.figure import Figure
-from QVasp.common.file import POTENTIAL
-from QVasp.common.logger import Logger
-from QVasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
-from QVasp.common.setting import ConfigManager, RootDir, Version, Platform
-from QVasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask
-from QVasp.common.utils import colors_generator
+from gvasp.common.figure import Figure
+from gvasp.common.file import POTENTIAL
+from gvasp.common.logger import Logger
+from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
+from gvasp.common.setting import ConfigManager, RootDir, Version, Platform
+from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask
+from gvasp.common.utils import colors_generator
 
 
 def main_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="QVasp: A quick post-process for resolve or assistant the VASP calculations")
+        description="GVasp: A quick post-process for resolve or assistant the VASP calculations")
     parser.add_argument("-v", "--version", help="version information", action="store_true")
     parser.add_argument("-l", "--list", help="list environment setting", action="store_true")
     subparsers = parser.add_subparsers()
@@ -96,7 +96,7 @@ def main():
 
     # version output
     if args.version:
-        print(f"QVasp version {Version} ({Platform})")
+        print(f"GVasp version {Version} ({Platform})")
 
     # print configure information
     if args.list:

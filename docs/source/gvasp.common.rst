@@ -1,98 +1,98 @@
-QVasp.common package
+gvasp.common package
 ====================
 
-QVasp.common.base module
+gvasp.common.base module
 ------------------------
 
-.. automodule:: QVasp.common.base
+.. automodule:: gvasp.common.base
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.descriptor module
+gvasp.common.descriptor module
 ------------------------------
 
-.. automodule:: QVasp.common.descriptor
+.. automodule:: gvasp.common.descriptor
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.error module
+gvasp.common.error module
 -------------------------
 
-.. automodule:: QVasp.common.error
+.. automodule:: gvasp.common.error
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.figure module
+gvasp.common.figure module
 --------------------------
 
-.. automodule:: QVasp.common.figure
+.. automodule:: gvasp.common.figure
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.file module
+gvasp.common.file module
 ------------------------
 
-.. automodule:: QVasp.common.file
+.. automodule:: gvasp.common.file
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.logger module
+gvasp.common.logger module
 --------------------------
 
-.. automodule:: QVasp.common.logger
+.. automodule:: gvasp.common.logger
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.parameter module
+gvasp.common.parameter module
 -----------------------------
 
-.. automodule:: QVasp.common.parameter
+.. automodule:: gvasp.common.parameter
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.plot module
+gvasp.common.plot module
 ------------------------
 
-.. automodule:: QVasp.common.plot
+.. automodule:: gvasp.common.plot
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.setting module
+gvasp.common.setting module
 ---------------------------
 
-.. automodule:: QVasp.common.setting
+.. automodule:: gvasp.common.setting
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.structure module
+gvasp.common.structure module
 -----------------------------
 
-.. automodule:: QVasp.common.structure
+.. automodule:: gvasp.common.structure
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.task module
+gvasp.common.task module
 ------------------------
 
-.. automodule:: QVasp.common.task
+.. automodule:: gvasp.common.task
    :members:
    :undoc-members:
    :show-inheritance:
 
-QVasp.common.utils module
+gvasp.common.utils module
 -------------------------
 
-.. automodule:: QVasp.common.utils
+.. automodule:: gvasp.common.utils
    :members:
    :undoc-members:
    :show-inheritance:

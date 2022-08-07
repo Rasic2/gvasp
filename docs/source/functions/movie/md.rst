@@ -7,11 +7,11 @@ Ab-initio Molecule Dynamics Visualize
    :maxdepth: 2
    :caption: Contents:
 
-One can use :program:`QVasp` to visualize the molecule dynamics (MD) trajectory, only need run the command below:
+One can use :program:`GVasp` to visualize the molecule dynamics (MD) trajectory, only need run the command below:
 
 .. code-block:: bash
 
-    QVasp movie md
+    gvasp movie md
 
 and the :file:`movie.arc` will output in the workdir.
 

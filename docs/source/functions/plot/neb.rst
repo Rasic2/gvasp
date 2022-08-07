@@ -5,11 +5,11 @@ NEB images Plot
    :maxdepth: 2
    :caption: Contents:
 
-For the transition state using the NEB method, one can use :program:`QVasp` to plot the energy difference of all images, just run the command:
+For the transition state using the NEB method, one can use :program:`GVasp` to plot the energy difference of all images, just run the command:
 
 .. code-block:: bash
 
-    QVasp plot neb -j plot.json --save
+    gvasp plot neb -j plot.json --save
 
 then, one may obtain the :file:`figure.svg` like this
 

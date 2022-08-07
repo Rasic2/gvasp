@@ -11,14 +11,14 @@ import numpy as np
 from lxml import etree
 from pandas import DataFrame
 
-from QVasp.lib import _dos, _file
-from QVasp.common.base import Atoms, Lattice
-from QVasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
-    AttributeNotRegisteredError, ParameterError
-from QVasp.common.logger import Logger
-from QVasp.common.parameter import Parameter
-from QVasp.common.setting import RootDir
-from QVasp.common.structure import Structure
+from gvasp.lib import _dos, _file
+from gvasp.common.base import Atoms, Lattice
+from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
+    AttributeNotRegisteredError, ParameterError, PotDirNotExistError
+from gvasp.common.logger import Logger
+from gvasp.common.parameter import Parameter
+from gvasp.common.setting import RootDir
+from gvasp.common.structure import Structure
 
 POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
 ORBITALS = ['s', 'p', 'd', 'f']
@@ -305,6 +305,9 @@ class POTCAR(MetaFile):
 
     @staticmethod
     def cat(potentials, elements: List[str], potdir=f"{RootDir}/pot"):
+
+        if potdir is None or not Path(potdir).exists():
+            raise PotDirNotExistError(f"potdir = {potdir} is not exist, please check")
 
         if (isinstance(potentials, str) and potentials not in POTENTIAL) or \
                 (isinstance(potentials, list) and len(set(potentials).difference(set(POTENTIAL)))):

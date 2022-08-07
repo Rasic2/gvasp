@@ -33,11 +33,11 @@ setup(
         'pymatgen-analysis-diffusion',
         'pyyaml',
         'scipy'],
-    ext_modules=cythonize([Extension(name='QVasp.lib._dos', sources=['extension/_dos/_dos.pyx']),
-                           Extension(name='QVasp.lib._file', sources=['extension/_file/_file.cpp',
+    ext_modules=cythonize([Extension(name='gvasp.lib._dos', sources=['extension/_dos/_dos.pyx']),
+                           Extension(name='gvasp.lib._file', sources=['extension/_file/_file.cpp',
                                                                       'extension/_file/_lib.cpp'])], language_level=3),
     include_dirs=[sysconfig.get_config_var("INCLUDE"), pybind11.get_include()],
     include_package_data=True,
-    package_data={"QVasp": ["*.json", "*.yaml", "INCAR", "pot.tgz"]},
-    entry_points={'console_scripts': ['QVasp = QVasp.main:main']}
+    package_data={"gvasp": ["*.json", "*.yaml", "INCAR"]},
+    entry_points={'console_scripts': ['gvasp = gvasp.main:main']}
 )

@@ -5,7 +5,7 @@ Potential Energy Surface Plot
    :maxdepth: 2
    :caption: Contents:
 
-Potential Energy Surface (PES) plot is important in reaction mechanism research, and our :program:`QVasp` certainly support to plot PES with *various* data.
+Potential Energy Surface (PES) plot is important in reaction mechanism research, and our :program:`GVasp` certainly support to plot PES with *various* data.
 
 simple case
 ------------
@@ -20,7 +20,7 @@ We can plot it by run the command like before:
 
 .. code-block:: bash
 
-    QVasp plot PES -j plot.json --save
+    gvasp plot PES -j plot.json --save
 
 And the figure like this:
 
@@ -59,7 +59,7 @@ By add a :code:`style="solid_curve"`, the figure can be changed like this:
 None value
 -----------
 
-If your data have :code:`None`, the :program:`QVasp` can work well.
+If your data have :code:`None`, the :program:`GVasp` can work well.
 
 for example,
 
@@ -112,5 +112,5 @@ The plot.json is like this:
 
 And we close the `text` by add :code:`text_flag = false`.
 
-Here, you may known how to plot the PES with :program:`QVasp`, of course, it can do better in the future.
+Here, you may known how to plot the PES with :program:`GVasp`, of course, it can do better in the future.
 

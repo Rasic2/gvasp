@@ -1,5 +1,5 @@
 package:
-  name: qvasp
+  name: gvasp
   version: 0.0.1
 
 source:
@@ -28,5 +28,5 @@ requirements:
     - scipy
 
 about:
-  home: https://github.com/Rasic2/QVasp
+  home: https://github.com/Rasic2/gvasp
   license: GPL-3.0

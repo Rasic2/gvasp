@@ -5,7 +5,7 @@ Density of States Plot
    :maxdepth: 2
    :caption: Contents:
 
-Density of States (DOS) is vary important to understand the electronic structure of the solid, and our :program:`QVasp` also support its plot.
+Density of States (DOS) is vary important to understand the electronic structure of the solid, and our :program:`GVasp` also support its plot.
 
 simple case
 ------------
@@ -14,7 +14,7 @@ Firstly, we start from the Total DOS plot, the files user need to prepare is :fi
 
 .. code-block:: bash
 
-    QVasp plot dos -j plot.json --save
+    gvasp plot dos -j plot.json --save
 
 The figure is like this:
 

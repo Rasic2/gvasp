@@ -8,12 +8,12 @@ import yaml
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen.analysis.diffusion.neb.pathfinder import IDPPSolver
 
-from QVasp.common.error import XSDFileNotFoundError, TooManyXSDFileError
-from QVasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
+from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError
+from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
     CHGCAR_mag, INCAR
-from QVasp.common.logger import Logger
-from QVasp.common.setting import WorkDir, ConfigManager
-from QVasp.common.structure import Structure
+from gvasp.common.logger import Logger
+from gvasp.common.setting import WorkDir, ConfigManager
+from gvasp.common.structure import Structure
 
 
 def write_wrapper(func):

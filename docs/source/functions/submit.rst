@@ -3,7 +3,7 @@
 Generate Vasp Inputs
 =================================
 
-QVasp can help user quick generate VASP inputs (|inputs|), just need only run :file:`QVasp submit TASK [arguments]`.
+:program:`GVasp` can help user quick generate VASP inputs (|inputs|), just need only run :file:`gvasp submit TASK [arguments]`.
 
 All tasks accept optional [-p/-\-potential] to specify the :ref:`potential <potential>`, other arguments will describe in corresponding sub-topic.
 

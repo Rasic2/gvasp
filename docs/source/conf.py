@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'QVasp'
+project = 'GVasp'
 copyright = '2022, hui_zhou'
 author = 'hui_zhou'
 version = '0.0.1'
@@ -18,7 +18,7 @@ release = '0.0.1'
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../QVasp'))
+sys.path.insert(0, os.path.abspath('../../gvasp'))
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 

@@ -9,13 +9,13 @@ Optimization
    :maxdepth: 2
    :caption: Contents:
 
-Optimization is the most common task in the daily calculation work, and we now can quickly generate the inputs for optimization task with the help of :program:`QVasp`, the only need file is the :file:`*.xsd`.
+Optimization is the most common task in the daily calculation work, and we now can quickly generate the inputs for optimization task with the help of :program:`GVasp`, the only need file is the :file:`*.xsd`.
 
 When prepared the :file:`*.xsd` (from `Material Studio <https://www.3ds.com/products-services/biovia/products/molecular-modeling-simulation/biovia-materials-studio/>`_ Software) in workdir, run the command:
 
 .. code-block:: bash
 
-    QVasp submit opt
+    gvasp submit opt
 
 and the inputs (|inputs|) will be generated.
 
@@ -31,7 +31,7 @@ Certainly, if you don't like the default potential (**"PAW_PBE"**), you can also
 
 .. code-block:: bash
 
-    QVasp submit opt -p/--potential PAW_PW91
+    gvasp submit opt -p/--potential PAW_PW91
 
 .. note::
     The potential can only specify to the member of the [**'PAW_LDA'**, **'PAW_PBE'**, **'PAW_PW91'**, **'USPP_LDA'**, **'USPP_PW91'**]

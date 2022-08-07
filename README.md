@@ -74,10 +74,10 @@ conda create -n GVasp python=3.9
     conda install -c hui_zhou -c conda-forge qvasp
     ```
 
-If you run the `QVasp -v` and print version information, then you install the `GVasp` successful ~~
+If you run the `gvasp -v` and print version information, then you install the `GVasp` successful ~~
 
 ```
-QVasp version 0.0.1 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
+GVasp version 0.0.1 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
 ```
 
 ## Setting Environment
@@ -87,18 +87,18 @@ QVasp version 0.0.1 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.
 Default environment can display by following command:
 
 ```
-QVasp -l/--list
+gvasp -l/--list
 ```
 
 Initial environment is like this:
 
 ```
 ------------------------------------Configure Information---------------------------------
-! ConfigDir:      /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp
-! INCAR-template: /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/INCAR
-! UValue:         /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/UValue.yaml
-! PotDir:         /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/pot
-! LogDir:         /mnt/c/Users/hui_zhou/Desktop/packages/QVasp/QVasp/logs
+! ConfigDir:      /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp
+! INCAR-template: /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/INCAR
+! UValue:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/UValue.yaml
+! PotDir:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/pot
+! LogDir:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/logs
 ------------------------------------------------------------------------------------------
 ```
 
@@ -140,18 +140,18 @@ of config.json is like this:
 and run command:
 
 ```
-QVasp config -f config.json
+gvasp config -f config.json
 ```
 
 Then the environment will be reset, `GVasp` will auto search the `INCAR`, `UValue.yaml`, `pot` under the `config_dir`.
 
 ## Code Structure
 
-* [QVasp](QVasp) source code directory of `GVasp`
-
-* [QVasp/common](QVasp/common) (main module of `Gasp`)
-
-* [QVasp/lib](QVasp/lib) (store the *.pyd files)
+* [gvasp](gvasp) source code directory of `GVasp`
+   gvasp
+* [gvasp/common](gvasp/common) (main module of `GVasp`)
+   gvasp
+* [gvasp/lib](gvasp/lib) (store the *.pyd files)
 
 * [extension](extension) (`C++`/`Cython` extensions for `GVasp`)
 

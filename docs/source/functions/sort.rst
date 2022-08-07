@@ -7,15 +7,15 @@ Align Structures
    :maxdepth: 2
    :caption: Contents:
 
-If you use the :program:`QVasp` to generate the :ref:`NEB <neb_topic>` inputs, the first thing is align the structure, because the atoms in initial and final structures may not one-to-one.
+If you use the :program:`GVasp` to generate the :ref:`NEB <neb_topic>` inputs, the first thing is align the structure, because the atoms in initial and final structures may not one-to-one.
 
 The command is simple, like this:
 
 .. code-block:: bash
 
-    QVasp sort --ini_poscar INI_POSCAR --fni_poscar FNI_POSCAR
+    gvasp sort --ini_poscar INI_POSCAR --fni_poscar FNI_POSCAR
 
-Then :program:`QVasp` will generate two POSCAR files which suffix is :file:`_sort`.
+Then :program:`GVasp` will generate two POSCAR files which suffix is :file:`_sort`.
 
 .. note::
     To check if the align success, you can visualize the NEB (set the :code:`-p/-\-pos=POSCAR`), detailed information can see :ref:`here <neb_movie>`.

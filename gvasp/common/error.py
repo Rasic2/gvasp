@@ -40,3 +40,7 @@ class ParameterError(TypeError):
 
 class JsonFileNotFoundError(FileNotFoundError):
     pass
+
+
+class PotDirNotExistError(FileExistsError):
+    pass

@@ -1,7 +1,7 @@
-QVasp.main module
+gvasp.main module
 ==================
 
-.. automodule:: QVasp.main
+.. automodule:: gvasp.main
    :members:
    :undoc-members:
    :show-inheritance:

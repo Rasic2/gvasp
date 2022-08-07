@@ -1,7 +1,7 @@
-QVasp.lib package
+gvasp.lib package
 =================
 
-.. automodule:: QVasp.lib
+.. automodule:: gvasp.lib
    :members:
    :undoc-members:
    :show-inheritance:

@@ -23,7 +23,7 @@ It can be seen that, whether or not write the `correct` :file:`setup.py` will de
     from setuptools import setup, find_packages
 
     setup(
-        name='QVasp',
+        name='gvasp',
         description='A quick post-process for resolve or assistant the VASP calculations',
         author='hui_zhou',
         long_description=Path("./README.md").read_text(),
@@ -42,14 +42,14 @@ It can be seen that, whether or not write the `correct` :file:`setup.py` will de
             'pymatgen-analysis-diffusion',
             'pyyaml',
             'scipy'],
-        ext_modules=cythonize([Extension(name='QVasp.lib._dos', sources=['extension/_dos/_dos.pyx']),
-                               Extension(name='QVasp.lib._file', sources=['extension/_file/_file.cpp',
+        ext_modules=cythonize([Extension(name='gvasp.lib._dos', sources=['extension/_dos/_dos.pyx']),
+                               Extension(name='gvasp.lib._file', sources=['extension/_file/_file.cpp',
                                                                           'extension/_file/_lib.cpp'])], language_level=3),
         include_dirs=['/usr/lib/gcc/x86_64-linux-gnu/11/include', '/home/hzhou/anaconda3/include',
                       '/home/hzhou/anaconda3/Library/include'],
         include_package_data=True,
-        package_data={"QVasp": ["*.json", "*.yaml", "INCAR", "pot.tgz"]},
-        entry_points={'console_scripts': ['QVasp = QVasp.main:main']}
+        package_data={"gvasp": ["*.json", "*.yaml", "INCAR", "pot.tgz"]},
+        entry_points={'console_scripts': ['gvasp = gvasp.main:main']}
     )
 
 where
@@ -66,7 +66,7 @@ where
 
     - *package_data* is the data you want to including (which under the module); for other data (not in module), can write :file:`MANIFEST.in` to including them, like :download:`this <./MANIFEST.in>`
 
-    - *entry_points* specify a alias **QVasp** to represent the :code:`python3 QVasp/main.py`
+    - *entry_points* specify a alias **gvasp** to represent the :code:`python3 gvasp/main.py`
 
 In fact, generate the :file:`*.whl` is the first step for :code:`Linux` platform, because `PyPi <https://pypi.org/>`_ will check the :code:`tag` of :file:`*.whl` file, only \*manylinux_* field in name can be accept according to `PEP rules <https://github.com/pypa/manylinux>`_ (:code:`PEP 513 (manylinux1)`, :code:`PEP 571 (manylinux2010)`, :code:`PEP 599 (manylinux2014)` and :code:`PEP 600 (manylinux_x_y)`). So one want to upload the package to PyPi should *repair* the wheel to have the `manylinux` field.
 
@@ -122,7 +122,7 @@ Although, the conda package actually only need write :file:`meta.yaml` and :file
 .. code-block:: yaml
 
     package:
-      name: qvasp
+      name: gvasp
       version: 0.0.1
 
     source:
@@ -151,7 +151,7 @@ Although, the conda package actually only need write :file:`meta.yaml` and :file
         - scipy
 
     about:
-      home: https://github.com/Rasic2/QVasp
+      home: https://github.com/Rasic2/gvasp
       license: GPL-3.0
 
 and this:

@@ -11,7 +11,7 @@ For NEB method, we actually support to visualize the reaction path by concentrat
 
 .. code-block:: bash
 
-    QVasp movie neb
+    gvasp movie neb
 
 and the :file:`movie.arc` will output in the workdir.
 

@@ -7,11 +7,11 @@ Optimization Visualize
    :maxdepth: 2
    :caption: Contents:
 
-One can use :program:`QVasp` to visualize the optimization trajectory, only need run the command below:
+One can use :program:`GVasp` to visualize the optimization trajectory, only need run the command below:
 
 .. code-block:: bash
 
-    QVasp movie opt
+    gvasp movie opt
 
 and the :file:`movie.arc` will output in the workdir.
 
@@ -24,6 +24,6 @@ Certainly, if you don't like the prefix (`"movie"`), you can also specify anothe
 
 .. code-block:: bash
 
-    QVasp movie opt -n/--name opt.arc
+    gvasp movie opt -n/--name opt.arc
 
 then the opt.arc will output.

@@ -5,11 +5,11 @@ Band Structure Plot
    :maxdepth: 2
    :caption: Contents:
 
-For the band structure, one can use :program:`QVasp` to plot it, just run the command:
+For the band structure, one can use :program:`GVasp` to plot it, just run the command:
 
 .. code-block:: bash
 
-    QVasp plot band -j plot.json --save
+    gvasp plot band -j plot.json --save
 
 then, one may obtain the :file:`figure.svg` which plot the band structure.
 

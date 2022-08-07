@@ -11,4 +11,4 @@ The command is:
 
 .. code-block:: bash
 
-    QVasp split
+    gvasp split

@@ -1,4 +1,4 @@
-QVasp package
+GVasp package
 =============
 
 Subpackages
@@ -7,8 +7,8 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   QVasp.common
-   QVasp.lib
+   gvasp.common
+   gvasp.lib
 
 Submodules
 ----------
@@ -16,6 +16,6 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   QVasp.main
+   gvasp.main
 
 

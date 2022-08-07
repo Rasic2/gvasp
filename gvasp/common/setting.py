@@ -2,7 +2,6 @@ import inspect
 import json
 import os
 import platform
-import tarfile
 from pathlib import Path
 
 Version = "0.0.1"
@@ -46,16 +45,9 @@ class ConfigManager(object):
             self.config_dir = Path(RootDir)
 
         self.template = self.config_dir / 'INCAR'  # location of template
-
-        pot_dirs = [file.name for file in Path(self.config_dir).glob("pot*")]
-        if "pot" in pot_dirs:
-            pass
-        elif "pot.tgz" in pot_dirs:
-            pot_tgz = tarfile.open(self.config_dir / "pot.tgz")
-            pot_tgz.extractall(self.config_dir)
-        self.potdir = self.config_dir / "pot"
-
         self.UValue = self.config_dir / 'UValue.yaml'  # location of UValue
+        self.potdir = Path(config['potdir']) if 'potdir' in config else None
+
         try:
             if Path(config['logdir']).exists():
                 self.logdir = Path(config['logdir'])  # location of logdir

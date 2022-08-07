@@ -1,4 +1,4 @@
-Welcome to QVasp's documentation!
+Welcome to GVasp's documentation!
 =================================
 
 .. toctree::

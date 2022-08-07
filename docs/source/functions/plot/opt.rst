@@ -5,13 +5,13 @@ Optimization trajectory Plot
    :maxdepth: 2
    :caption: Contents:
 
-For the optimization, one may not only care about the structural evolution (which can be visualized :ref:`here <opt_movie>`), but also the **energy/force** change with the **optimization steps**, which can also be analyzed by :program:`QVasp`.
+For the optimization, one may not only care about the structural evolution (which can be visualized :ref:`here <opt_movie>`), but also the **energy/force** change with the **optimization steps**, which can also be analyzed by :program:`GVasp`.
 
 A simple code need to be typed for this work:
 
 .. code-block:: bash
 
-    QVasp plot opt -j plot.json --save
+    gvasp plot opt -j plot.json --save
 
 then, one may obtain the :file:`figure.svg` which plot the energy and force change with the steps increment.
 

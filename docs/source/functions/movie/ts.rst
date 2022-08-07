@@ -1,7 +1,7 @@
 Transition State Search Visualize
 =================================
 
-:program:`QVasp` support visualize optimization trajectory of below three TS-search method.
+:program:`GVasp` support visualize optimization trajectory of below three TS-search method.
 
 .. toctree::
    :maxdepth: 1
