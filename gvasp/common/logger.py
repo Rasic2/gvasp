@@ -53,8 +53,8 @@ class ColoredLogger(logging.Logger):
     LogDir = ConfigManager().logdir
     try:
         Path.mkdir(LogDir, exist_ok=True)
-    except:
-        NotADirectoryError()
+    except NotADirectoryError:
+        print("Create logdir error, because it is not a directory")
 
     def __init__(self, name):
         logging.Logger.__init__(self, name)

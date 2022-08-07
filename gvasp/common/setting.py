@@ -2,7 +2,11 @@ import inspect
 import json
 import os
 import platform
+import shutil
 from pathlib import Path
+
+from common.encoder import PathJSONEncoder
+from common.utils import get_HOME
 
 Version = "0.0.1"
 Platform = platform.platform()
@@ -10,6 +14,7 @@ Platform = platform.platform()
 ComDir = os.path.dirname(os.path.abspath(os.path.realpath(inspect.getfile(inspect.currentframe()))))
 RootDir = os.path.dirname(ComDir)
 WorkDir = Path.cwd()
+HomeDir = get_HOME()
 
 
 class ConfigManager(object):
@@ -46,15 +51,15 @@ class ConfigManager(object):
 
         self.template = self.config_dir / 'INCAR'  # location of template
         self.UValue = self.config_dir / 'UValue.yaml'  # location of UValue
-        self.potdir = Path(config['potdir']) if 'potdir' in config else None
+        self.potdir = Path(config['potdir']) if 'potdir' in config and config['potdir'] is not None else None
 
         try:
             if Path(config['logdir']).exists():
                 self.logdir = Path(config['logdir'])  # location of logdir
             else:
-                self.logdir = Path(RootDir) / "logs"
+                self.logdir = HomeDir / "logs"
         except KeyError:
-            self.logdir = Path(RootDir) / "logs"
+            self.logdir = HomeDir / "logs"
 
     @property
     def dict(self):
@@ -62,5 +67,13 @@ class ConfigManager(object):
                 'UValue': self.UValue}
 
     def write(self):
-        with open(f"{RootDir}/config.json", "w") as f:
-            json.dump(self.dict, f)
+        shutil.copyfile(f"{RootDir}/config.json", f"{RootDir}/config_ori.json")
+        try:
+            with open(f"{RootDir}/config.json", "w") as f:  # dangerous, write to a temp file and substitute the origin
+                json.dump(self.dict, f, cls=PathJSONEncoder, indent=2)
+        except:
+            shutil.copyfile(f"{RootDir}/config_ori.json", f"{RootDir}/config.json")
+            print("Warning: error happen, use original environment setting")
+            raise
+        else:
+            print("Successfully update the config.json")
