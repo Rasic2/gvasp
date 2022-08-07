@@ -141,3 +141,4 @@ EIGENVAL
 tests/*.json
 pot.tgz
 wheelhouse
+_dos.cpp
