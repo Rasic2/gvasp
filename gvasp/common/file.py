@@ -11,7 +11,7 @@ import numpy as np
 from lxml import etree
 from pandas import DataFrame
 
-from gvasp.lib import _dos, _file
+from gvasp.lib import dos_cython, file_bind
 from gvasp.common.base import Atoms, Lattice
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
@@ -307,7 +307,7 @@ class POTCAR(MetaFile):
     def cat(potentials, elements: List[str], potdir=f"{RootDir}/pot"):
 
         if potdir is None or not Path(potdir).exists():
-            raise PotDirNotExistError(f"potdir = {potdir} is not exist, please check")
+            raise PotDirNotExistError(f"potdir = {potdir} is not exist (should named as `pot`), please check")
 
         if (isinstance(potentials, str) and potentials not in POTENTIAL) or \
                 (isinstance(potentials, list) and len(set(potentials).difference(set(POTENTIAL)))):
@@ -484,7 +484,7 @@ class DOSCAR(MetaFile):
             self.LDOS = atom_data  # energy + List(NAtom, NDOS, NOrbital+8)
             return self
 
-        return merge_dos(*_dos.load(self.strings, self.NDOS, self.fermi))
+        return merge_dos(*dos_cython.load(self.strings, self.NDOS, self.fermi))
 
 
 class EIGENVAL(MetaFile):
@@ -582,7 +582,7 @@ class CHGBase(StructInfoFile):
         @return:
             self.density:    shape=(NGX, NGY, NGZ)
         """
-        info = _file.load(self.name)
+        info = file_bind.load(self.name)
         self.NGX, self.NGY, self.NGZ = info.NGX, info.NGY, info.NGZ
         self.density = info.density
         assert self.density.size == self.NGX * self.NGY * self.NGZ, "Load density failure, size is not consistent"
@@ -650,7 +650,7 @@ class CHGCAR_mag(CHGBase):
             name:       specify the name of grd file
             DenCut:     density lower than DenCut will be set to zero (default: -1: disable the DenCut option)
         """
-        _file.to_grd(name, DenCut)
+        file_bind.to_grd(name, DenCut)
 
 
 class CHGCAR(StructInfoFile):

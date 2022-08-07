@@ -128,7 +128,6 @@ neb-test
 Temp
 *.cell
 OUTCAR*
-gvasp/INCAR
 xsd_test
 *.xsd
 KPOINTS

@@ -1,4 +1,4 @@
-#include "_lib.h"
+#include "file_lib.h"
 #define PI 3.14159265358979323846
 
 #include <iomanip>
@@ -22,6 +22,7 @@ struct CHGInfo
     vector<double> density;
 };
 
+#pragma GCC visibility push(hidden)
 struct PyCHGInfo
 {
     int NGX;
@@ -29,13 +30,14 @@ struct PyCHGInfo
     int NGZ;
     py::array_t<double> density;
 };
+#pragma GCC visibility pop
 
 inline double dot_product(array<double, 3> A, array<double, 3> B)
 {
     return A[0] * B[0] + A[1] * B[1] + A[2] * B[2];
 }
 
-void read_chg(string name, CHGInfo & info)
+void read_chg(string name, CHGInfo &info)
 {
     ifstream chgfile;
     string line;
@@ -46,7 +48,7 @@ void read_chg(string name, CHGInfo & info)
     array<double, 3> length = {0};
     array<double, 3> angle = {0};
     int sum_elements = 0;
-    int NGX, NGY, NGZ;
+    int NGX = -1, NGY = -1, NGZ = -1;
     vector<double> density;
 
     chgfile.open(name, ios::in);
@@ -62,7 +64,7 @@ void read_chg(string name, CHGInfo & info)
         {
             double_v.clear();
             split_string(line, " ", double_v);
-            for (int j = 0; j < double_v.size(); j++)
+            for (size_t j = 0; j < double_v.size(); j++)
             {
                 lattice[lineno - 3][j] = double_v[j];
                 length[lineno - 3] += pow(lattice[lineno - 3][j], 2);
@@ -135,7 +137,7 @@ void to_grd(const char *name, double DenCut)
     grdfile.close();
     if (DenCut != -1)
     {
-        for (int i = 0; i < density.size(); i++)
+        for (size_t i = 0; i < density.size(); i++)
         {
             if (abs(density[i]) < DenCut - offset)
             {
@@ -145,7 +147,7 @@ void to_grd(const char *name, double DenCut)
     }
     fp = fopen(name, "a");
     strcpy(buffer, "");
-    for (int i = 0; i < density.size(); i++)
+    for (size_t i = 0; i < density.size(); i++)
     {
         if (abs(density[i]) > 1e-5)
         {
