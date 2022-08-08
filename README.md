@@ -2,7 +2,8 @@
 
 ![GitHub](https://img.shields.io/github/license/Rasic2/gvasp)
 [![Documentation Status](https://readthedocs.org/projects/qvasp/badge/?version=latest)](https://qvasp.readthedocs.io/en/latest/?badge=latest)
-[![Anaconda-Server Badge](https://anaconda.org/hui_zhou/qvasp/badges/installer/conda.svg)](https://conda.anaconda.org/hui_zhou)
+[![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/installer/conda.svg)](https://conda.anaconda.org/hui_zhou)
+[![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/platforms.svg)](https://anaconda.org/hui_zhou/gvasp)
 
 ## Table of contents
 
@@ -31,13 +32,14 @@ More detailed information can see [here](https://qvasp.readthedocs.io/en/latest/
 
 ### Create Environment
 
-Before install the `GVasp`, we strongly recommend you to install [conda](https://anaconda.org/) before.
+Before install the `GVasp`, we strongly recommend you to install [conda](https://www.anaconda.com/products/distribution)
+before.
 
-After install conda, create a new environment, e.g. `GVasp`, and install a `python (version=3.9)`, using following
+After install conda, create a new environment, e.g. `gvasp`, and install a `python (version=3.9)`, using following
 command:
 
 ```
-conda create -n GVasp python=3.9
+conda create -n gvasp python=3.9
 ```
 
 ### Install GVasp
@@ -57,7 +59,9 @@ conda create -n GVasp python=3.9
     ```
 2. Use PyPi
 
-   We have made the wheel (production process can see [here]) and upload to the [pypi](https://pypi.org/project/gvasp/),
+   We have made the wheel (production process can
+   see [here](https://qvasp.readthedocs.io/en/latest/package.html#pypi-wheel)) and upload to
+   the [pypi](https://pypi.org/project/gvasp/),
    you can also install from it:
 
     ```
@@ -67,7 +71,8 @@ conda create -n GVasp python=3.9
 
 3. Use conda
 
-   We now also made a conda package (production process can see [here]) and uploaded to
+   We now also made a conda package (production process can
+   see [here](https://qvasp.readthedocs.io/en/latest/package.html#conda-package)) and uploaded to
    the [Anaconda](https://anaconda.org/hui_zhou/gvasp), so you can also install `GVasp` from it:
 
     ```
@@ -106,13 +111,13 @@ Initial environment is like this:
 
 - LogDir: represents the directory of `logs`
 
-- INCAR: `INCAR template` file of all `GVasp` submit tasks
+- INCAR: `INCAR template` file for all `GVasp` submit tasks
 
 - UValue.yaml: define the `UValue` for elements
 
 - pot: directory of the elements' `POTCAR`
 
-The structure of pot is like this:
+The structure of `pot` like this:
 
 ```
 pot
@@ -127,13 +132,14 @@ pot
 ### Modify Environment
 
 If you don’t like the [default environment](#default-environment), you can modify the environment by
-writing a `config.json`, the format
-of config.json is like this:
+writing a `config.json` (or other name, but `json` format), the structure
+of `config.json` like this:
 
 ```
 {
   "config_dir": "/your_directory_to_three_mentioned_files",
-  "logdir": "/your_logs_directory",
+  "potdir": "/your_pot_directory",
+  "logdir": "/your_logs_directory"
 }
 ```
 
@@ -143,25 +149,26 @@ and run command:
 gvasp config -f config.json
 ```
 
-Then the environment will be reset, `GVasp` will auto search the `INCAR`, `UValue.yaml`, `pot` under the `config_dir`.
+Then the environment will be reset, `GVasp` will auto search the `INCAR`and `UValue.yaml` under the `config_dir`.
 
 ## Code Structure
 
-* [gvasp](gvasp) source code directory of `GVasp`
-   gvasp
-* [gvasp/common](gvasp/common) (main module of `GVasp`)
-   gvasp
-* [gvasp/lib](gvasp/lib) (store the *.pyd files)
+* [gvasp](gvasp): source code directory
+  gvasp
+* [gvasp/common](gvasp/common): main module
+  gvasp
+* [gvasp/lib](gvasp/lib): store the dynamic library (*.so and *.pyd)
 
-* [extension](extension) (`C++`/`Cython` extensions for `GVasp`)
+* [extension](extension): `C++`/`Cython` extensions (source code)
 
-* [docs](docs) (document description)
+* [docs](docs): documents file (*.rst format)
 
-* [tests](tests) (test files of `GVasp`)
+* [tests](tests): test files
 
 ## Requirements
 
 * Python >= 3.9
+* pybind11
 * Cython
 * matplotlib
 * numpy == 1.23.1 (other version may conflict with pymatgen, not test)

@@ -7,7 +7,7 @@ import pybind11
 from Cython.Build import cythonize
 
 if "win" in sysconfig.get_platform():
-    # fix the Win error LNK2001 PyInit_*
+    # fix the Win error: LNK2001 PyInit_*
     from distutils.command.build_ext import build_ext
 
 
@@ -29,10 +29,6 @@ setup(
     long_description_content_type='text/markdown',
     python_requires='>=3.9',
     packages=find_packages(),
-    setup_requires=[
-        'pybind11',
-        'Cython'
-    ],
     install_requires=[
         'pybind11',
         'Cython',

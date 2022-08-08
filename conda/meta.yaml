@@ -11,7 +11,7 @@ build:
 
 requirements:
   build:
-    - 'vs2019_win-64'        # [win]
+    - vs2019_win-64          # [win]
     - {{ compiler('c') }}    # [linux]
     - {{ compiler('cxx') }}  # [linux]
 
@@ -31,8 +31,8 @@ requirements:
     - pandas
     - pyyaml
     - scipy
-    - "pymatgen"
-    - "pymatgen-analysis-diffusion"
+    - pymatgen
+    - pymatgen-analysis-diffusion
 
 about:
   home: https://github.com/Rasic2/gvasp

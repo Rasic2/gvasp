@@ -14,6 +14,11 @@ yaml.warnings({'YAMLLoadWarning': False})
 class Lattice(object):
 
     def __init__(self, matrix: np.ndarray):
+        """
+        
+        Args:
+            matrix (np.ndarray): use a (3x3) np.ndarray matrix to initialize the Lattice
+        """
         self.matrix = matrix
 
     def __eq__(self, other):
@@ -26,44 +31,92 @@ class Lattice(object):
         return f"{self.matrix}"
 
     @property
-    def length(self):
+    def length(self) -> np.ndarray:
+        """
+        Calculate the lattice length
+
+        Returns:
+            length (np.ndarray): store the length, shape = (3x1)
+        """
         return np.power(np.sum(np.power(self.matrix, 2), axis=1), 0.5)
 
     @property
-    def angle(self):
+    def angle(self) -> np.ndarray:
+        """
+        Calculate the lattice angle
+
+        Returns:
+            angle (np.ndarray): store the angle, shape = (3x1)
+        """
         alpha = np.arccos(np.dot(self.matrix[1], self.matrix[2]) / (self.length[1] * self.length[2])) * 180 / np.pi
         beta = np.arccos(np.dot(self.matrix[0], self.matrix[2]) / (self.length[0] * self.length[2])) * 180 / np.pi
         gamma = np.arccos(np.dot(self.matrix[0], self.matrix[1]) / (self.length[0] * self.length[1])) * 180 / np.pi
         return np.array([alpha, beta, gamma])
 
     @property
-    def volume(self):
+    def volume(self) -> float:
+        """
+        Calculate the lattice volume
+
+        Returns:
+            volume (float): store the volume
+        """
         return np.linalg.det(self.matrix)
 
     @property
-    def inverse(self):
+    def inverse(self) -> np.ndarray:
+        """
+        Calculate the inverse matrix of lattice
+
+        Returns:
+            inverse (np.ndarray): store the inverse matrix
+        """
         return np.linalg.inv(self.matrix)
 
     @staticmethod
-    def from_string(string):
+    def from_string(string) -> object:
         """
-        @parameter
-            string:     three-line <string>,
-                        e.g.,    7.707464  0.000000  0.000000
-                                -3.853732  6.674860  0.000000
-                                 0.000000  0.000000 28.319031
+        Construct a Lattice instance from string
+
+        Args:
+            string (List[str]): three-line <string>
+
+                Examples
+                ---------
+                >>> string
+                array([[  7.707464,  0.000000,  0.000000],
+                         -3.853732,  6.674860,  0.000000],
+                          0.000000,  0.000000, 28.319031]])
+
+        Returns:
+            lattice (Lattice): Lattice instance
         """
         matrix = np.array([[float(ii) for ii in item.split()[:3]] for item in string])
         return Lattice(matrix)
 
     @staticmethod
-    def from_POSCAR(name):
+    def from_POSCAR(name) -> object:
+        """
+        Construct a Lattice instance from POSCAR file
+
+        Args:
+            name ([str, Path]): path of POSCAR
+
+        Returns:
+            lattice (Lattice): Lattice instance
+        """
         with open(name) as f:
             cfg = f.readlines()
         return Lattice.from_string(cfg[2:5])
 
     @property
-    def strings(self):
+    def strings(self) -> str:
+        """
+        Transform a Lattice instance to string
+
+        Returns:
+            strings (str): Lattice instance in string format
+        """
         return "".join([" ".join([f"{ii:>9.6f}" for ii in item]) + "\n" for item in self.matrix])
 
 
