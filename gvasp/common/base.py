@@ -15,7 +15,8 @@ class Lattice(object):
 
     def __init__(self, matrix: np.ndarray):
         """
-        
+        Initialize of Lattice class
+
         Args:
             matrix (np.ndarray): use a (3x3) np.ndarray matrix to initialize the Lattice
         """
@@ -122,22 +123,30 @@ class Lattice(object):
 
 class Atom(object):
     """
-        `Atom class represent one atom in periodic solid system`
+    Atom class represent one atom in periodic solid system
 
-        @property
-            formula:        chemical formula
-            number:         atomic number
-            period:         atomic period in element period table
-            group:          atomic group in element period table
-            color:          atomic color using RGB
-            order:          atomic order in <Structure class>, default: 0
-            frac_coord:     fractional coordinates  
-            cart_coord:     cartesian coordinates
-            _default_bonds:          atomic default bond property {atom: bond-length}
-        
-        @func
-            __initialize_attrs:     initialize the attributes from the element.yaml
+    Attributes:
+        formula (str): chemical formula
+        number (int): atomic number
+        period (int): atomic period in element period table
+        group (int): atomic group in element period table
+        color (str): atomic color using RGB
+        order (int): atomic order in <Structure class>, default: 0
+        frac_coord (np.ndarray): fractional coordinates
+        cart_coord (np.ndarray): cartesian coordinates
+        _default_bonds: atomic default bond property {atom: bond-length}
+
+    Methods:
+        atom_type(self) -> property: register atom_type property
+        set_coord(self, lattice: Lattice) -> object: recalculate frac_coord from cart_coord / recalculate cart_coord
+                                                     from frac_coord
+        search_image(atom_i, atom_j) -> np.ndarray: search the nearest image in which have minimum distance between
+                                                    two atoms
+
+        __load_config(cls): load element.yaml file
+        __initialize_attrs(self): initialize the attributes from the element.yaml
     """
+
     _config_file = Path(f"{RootDir}/element.yaml")
     _attributes_yaml = ['number', 'period', 'group', 'color', '_default_bonds']
     _load = False
@@ -180,14 +189,16 @@ class Atom(object):
         return f"(Atom {self.order} : {self.formula} : {self.cart_coord})"
 
     @classmethod
-    def __load_config(cls):  # private classmethod
+    def __load_config(cls):
+        """load element.yaml file (private classmethod)"""
         if not cls._load:
             with open(cls._config_file) as f:
                 cfg = f.read()
             cls._attrs = yaml.safe_load(cfg)
             cls._load = True
 
-    def __initialize_attrs(self):  # private method
+    def __initialize_attrs(self):
+        """initialize the attributes from the element.yaml (private method)"""
         if isinstance(self.formula, str):  # <class Atom>
             for key, value in self._attrs[f'Element {self.formula}'].items():
                 setattr(self, key, value)
@@ -197,9 +208,16 @@ class Atom(object):
 
     @property
     def atom_type(self):
+        """register atom_type property"""
         return f"{self.formula}{self.coordination_number}c"
 
-    def set_coord(self, lattice: Lattice):
+    def set_coord(self, lattice: Lattice) -> object:
+        """
+        recalculate frac_coord from cart_coord / recalculate cart_coord from frac_coord
+
+        Args:
+            lattice (Lattice): Lattice instance
+        """
         assert lattice is not None
         if self.cart_coord is not None and self.frac_coord is None:
             self.frac_coord = np.dot(self.cart_coord, lattice.inverse)
@@ -210,6 +228,16 @@ class Atom(object):
 
     @staticmethod
     def search_image(atom_i, atom_j) -> np.ndarray:
+        """
+        search the nearest image in which have minimum distance between two atoms
+
+        Args:
+            atom_i (Atom): Atom instance
+            atom_j (Atom): Atom instance
+
+        Returns:
+            image (np.ndarray): record the transform direction
+        """
         logger = Logger().logger
 
         if not isinstance(atom_i, Atom) or not isinstance(atom_j, Atom):
