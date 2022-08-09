@@ -1,3 +1,4 @@
+import copy
 from collections import Counter
 from pathlib import Path
 from typing import List, Any
@@ -156,12 +157,14 @@ class Atom(object):
         cls.__load_config()
         return super(Atom, cls).__new__(cls)
 
-    def __init__(self, formula, order: (int, list) = 0, frac_coord=None, cart_coord=None, selective_matrix=None):
+    def __init__(self, formula, order: (int, list) = 0, frac_coord=None, cart_coord=None, selective_matrix=None,
+                 constrain=False):
         self.formula = formula
         self.order = order
         self.frac_coord = np.array(frac_coord) if frac_coord is not None else None
         self.cart_coord = np.array(cart_coord) if cart_coord is not None else None
         self.selective_matrix = np.array(selective_matrix) if selective_matrix is not None else None
+        self.constrain = constrain
 
         # config atom from `element.yaml`
         self.number, self.period, self.group, self.color, self._default_bonds = (None, None, None, None, [])
@@ -255,6 +258,21 @@ class Atom(object):
 
         return image
 
+    @staticmethod
+    def distance(atom_i, atom_j, lattice: Lattice):
+        if not isinstance(atom_i, Atom) or not isinstance(atom_j, Atom):
+            raise TypeError(f"{atom_i} and {atom_j} should be <class Atom>")
+
+        image = Atom.search_image(atom_i, atom_j)
+        atom_j_image = copy.deepcopy(atom_j)
+        atom_j_image.frac_coord += image
+
+        atom_i.cart_coord, atom_j_image.cart_coord = None, None
+        atom_i.set_coord(lattice)
+        atom_j_image.set_coord(lattice)
+
+        return np.sum((atom_i.cart_coord - atom_j_image.cart_coord) ** 2) ** 0.5
+
 
 class Atoms(Atom):
     """
@@ -289,6 +307,7 @@ class Atoms(Atom):
         self.frac_coord = [None] * len(self.formula) if self.frac_coord is None else self.frac_coord
         self.cart_coord = [None] * len(self.formula) if self.cart_coord is None else self.cart_coord
         self.selective_matrix = [None] * len(self.formula) if self.selective_matrix is None else self.selective_matrix
+        self.constrain = [False] * len(self.formula) if self.constrain is False else self.constrain
 
         self.__index_list = []  # inner index-list
 
@@ -324,7 +343,7 @@ class Atoms(Atom):
     def __getitem__(self, index):
         atom = Atom(formula=self.formula[index], order=self.order[index],
                     frac_coord=self.frac_coord[index], cart_coord=self.cart_coord[index],
-                    selective_matrix=self.selective_matrix[index])
+                    selective_matrix=self.selective_matrix[index], constrain=self.constrain[index])
 
         # update coordination number && bonds
         atom.coordination_number = self.coordination_number[index] if self.coordination_number is not None else None
@@ -410,12 +429,13 @@ class Atoms(Atom):
         frac_coord = [atom.frac_coord for atom in atoms]
         cart_coord = [atom.cart_coord for atom in atoms]
         selective_matrix = [atom.selective_matrix for atom in atoms]
+        constrain = [atom.constrain for atom in atoms]
         coordination_number = [atom.coordination_number for atom in atoms]
         bonds = [atom.bonds for atom in atoms]
 
         # update coordination number && bonds
-        new_atoms = Atoms(formula=formula, order=order, frac_coord=frac_coord,
-                          cart_coord=cart_coord, selective_matrix=selective_matrix)
+        new_atoms = Atoms(formula=formula, order=order, frac_coord=frac_coord, cart_coord=cart_coord,
+                          selective_matrix=selective_matrix, constrain=constrain)
         new_atoms.coordination_number = coordination_number
         new_atoms.bonds = bonds
         return new_atoms

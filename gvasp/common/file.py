@@ -335,6 +335,7 @@ class XSDFile(MetaFile):
 
         self._xml = None
         self.element, self.spin, self.frac_coord, self.selective_dynamics, self.lattice = None, None, None, None, None
+        self.constrain = None
         self._parse()
 
     @property
@@ -349,6 +350,7 @@ class XSDFile(MetaFile):
         Atom3d = self._xml.xpath("//Atom3d[@Components]")
         Components = self._xml.xpath("//Atom3d//@Components")
         Name = [atom.attrib.get('Name', atom.attrib['Components']) for atom in Atom3d]
+        constrain = [index for index, name in enumerate(Name) if name.endswith("_c")]
         FormalSpin = [int(atom.attrib.get('FormalSpin', '0')) for atom in Atom3d]
         XYZ = [list(map(float, item.split(","))) for item in self._xml.xpath("//Atom3d//@XYZ")]
         RestrictedProperties = [atom.attrib.get('RestrictedProperties', 'T T T') for atom in Atom3d]
@@ -360,6 +362,7 @@ class XSDFile(MetaFile):
         Vector = [list(map(float, SpaceGroup.attrib[key].split(","))) for key in SpaceGroup.keys() if "Vector" in key]
 
         self.element = Components
+        self.constrain = constrain
         self.spin = FormalSpin
         self.frac_coord = XYZ
         self.selective_dynamics = TF
@@ -369,8 +372,10 @@ class XSDFile(MetaFile):
     def structure(self):
         results = sorted(zip(range(len(self.element)), self.element, self.frac_coord), key=lambda x: (x[1], x[2][2]))
         sorted_order, sorted_element, sorted_frac_coord = list(zip(*results))
+        sorted_constrain = list(map(lambda x: True if x in self.constrain else False, sorted_order))
         sorted_selective_dynamics = np.array(self.selective_dynamics)[list(sorted_order)]
-        atoms = Atoms(formula=sorted_element, frac_coord=sorted_frac_coord, selective_matrix=sorted_selective_dynamics)
+        atoms = Atoms(formula=sorted_element, frac_coord=sorted_frac_coord, selective_matrix=sorted_selective_dynamics,
+                      constrain=sorted_constrain)
         lattice = Lattice(np.array(self.lattice))
         return Structure(atoms=atoms, lattice=lattice)
 

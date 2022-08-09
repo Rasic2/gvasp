@@ -5,8 +5,8 @@ import platform
 import shutil
 from pathlib import Path
 
-from common.encoder import PathJSONEncoder
-from common.utils import get_HOME
+from gvasp.common.encoder import PathJSONEncoder
+from gvasp.common.utils import get_HOME
 
 Version = "0.0.1"
 Platform = platform.platform()

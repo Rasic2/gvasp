@@ -141,3 +141,4 @@ tests/*.json
 pot.tgz
 wheelhouse
 _dos.cpp
+tests/con-TS

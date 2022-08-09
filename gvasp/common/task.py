@@ -8,7 +8,8 @@ import yaml
 from pymatgen.core import Structure as pmg_Structure
 from pymatgen.analysis.diffusion.neb.pathfinder import IDPPSolver
 
-from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError
+from gvasp.common.base import Atom
+from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
 from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
     CHGCAR_mag, INCAR
 from gvasp.common.logger import Logger
@@ -50,7 +51,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR()
 
-        print(f"-----------------short info---------------------------")
+        print(f"---------------general info (#{self.__class__.__name__})-----------------------")
         print(f"Elements    Total  Relax   potential orbital UValue")
         potential = [potential] * len(self.elements) if isinstance(potential, str) else potential
         index = 0
@@ -67,7 +68,7 @@ class BaseTask(metaclass=abc.ABCMeta):
             index += 1
         print()
         print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
-        print(f"------------------------------------------------------")
+        print(f"------------------------------------------------------------------")
 
     def _generate_INCAR(self):
         """
@@ -372,6 +373,8 @@ class ConTSTask(BaseTask, Animatable):
         fully inherit BaseTask's generate
         """
         super(ConTSTask, self).generate(potential=potential)
+        self._generate_fort()
+
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -382,6 +385,24 @@ class ConTSTask(BaseTask, Animatable):
         """
         super(ConTSTask, self)._generate_INCAR()
         self.incar.IBRION = 1
+
+    def _generate_fort(self):
+        constrain_atom = [atom for atom in self.structure.atoms if atom.constrain]
+        if len(constrain_atom) != 2:
+            raise ConstrainError("Number of constrain atoms should equal to 2")
+
+        distance = Atom.distance(constrain_atom[0], constrain_atom[1], lattice=self.structure.lattice)
+        with open("fort.188", "w") as f:
+            f.write("1 \n")
+            f.write("3 \n")
+            f.write("6 \n")
+            f.write("3 \n")
+            f.write("0.03 \n")
+            f.write(f"{constrain_atom[0].order + 1} {constrain_atom[1].order + 1} {distance:.4f}\n")
+            f.write("0 \n")
+
+        print(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
+              f"distance = {distance:.4f}")
 
     @staticmethod
     def movie(name="movie.arc"):
