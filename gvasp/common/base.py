@@ -76,7 +76,7 @@ class Lattice(object):
         return np.linalg.inv(self.matrix)
 
     @staticmethod
-    def from_string(string) -> object:
+    def from_string(string):
         """
         Construct a Lattice instance from string
 
@@ -97,7 +97,7 @@ class Lattice(object):
         return Lattice(matrix)
 
     @staticmethod
-    def from_POSCAR(name) -> object:
+    def from_POSCAR(name):
         """
         Construct a Lattice instance from POSCAR file
 
@@ -214,7 +214,7 @@ class Atom(object):
         """register atom_type property"""
         return f"{self.formula}{self.coordination_number}c"
 
-    def set_coord(self, lattice: Lattice) -> object:
+    def set_coord(self, lattice: Lattice):
         """
         recalculate frac_coord from cart_coord / recalculate cart_coord from frac_coord
 

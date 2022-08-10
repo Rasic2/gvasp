@@ -71,9 +71,9 @@ class ConfigManager(object):
         try:
             with open(f"{RootDir}/config.json", "w") as f:  # dangerous, write to a temp file and substitute the origin
                 json.dump(self.dict, f, cls=PathJSONEncoder, indent=2)
-        except:
+        except Exception as error:
             shutil.copyfile(f"{RootDir}/config_ori.json", f"{RootDir}/config.json")
             print("Warning: error happen, use original environment setting")
-            raise
+            raise error
         else:
             print("Successfully update the config.json")

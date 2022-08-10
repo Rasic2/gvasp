@@ -1,12 +1,9 @@
 import abc
-import copy
 from functools import wraps
 from pathlib import Path
 
 import numpy as np
 import yaml
-from pymatgen.core import Structure as pmg_Structure
-from pymatgen.analysis.diffusion.neb.pathfinder import IDPPSolver
 
 from gvasp.common.base import Atom
 from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
@@ -14,7 +11,7 @@ from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR,
     CHGCAR_mag, INCAR
 from gvasp.common.logger import Logger
 from gvasp.common.setting import WorkDir, ConfigManager
-from gvasp.common.structure import Structure
+from gvasp.neb.path import IdppPath, LinearPath
 
 
 def write_wrapper(func):
@@ -110,14 +107,14 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
         generate POSCAR from only one *.xsd file, and register `self.structure` and `self.elements`
         """
-        xsdFiles = list(WorkDir.glob("*.xsd"))
-        if not len(xsdFiles):
+        xsd_files = list(WorkDir.glob("*.xsd"))
+        if not len(xsd_files):
             raise XSDFileNotFoundError("*.xsd file is not found, please check workdir")
-        elif len(xsdFiles) > 1:
+        elif len(xsd_files) > 1:
             raise TooManyXSDFileError("exist more than one *.xsd file, please check workdir")
 
-        xsdfile = XSDFile(xsdFiles[0])
-        self.structure = xsdfile.structure
+        xsd_file = XSDFile(xsd_files[0])
+        self.structure = xsd_file.structure
         self.elements = list(self.structure.atoms.size.keys())
         self.structure.write_POSCAR(name="POSCAR")
 
@@ -375,7 +372,6 @@ class ConTSTask(BaseTask, Animatable):
         super(ConTSTask, self).generate(potential=potential)
         self._generate_fort()
 
-
     @write_wrapper
     def _generate_INCAR(self):
         """
@@ -490,16 +486,11 @@ class NEBTask(BaseTask, Animatable):
         Generate NEB-task images by idpp method (J. Chem. Phys. 140, 214106 (2014))
         """
         logger = Logger().logger
-        ini_structure = pmg_Structure.from_file(self.ini_poscar, False)
-        fni_structure = pmg_Structure.from_file(self.fni_poscar, False)
-        obj = IDPPSolver.from_endpoints(endpoints=[ini_structure, fni_structure], nimages=self.images, sort_tol=1.0)
-        path = obj.run(maxiter=5000, tol=1e-5, gtol=1e-3, step_size=0.05, max_disp=0.05, spring_const=5.0)
 
-        for image in range(len(path)):
-            image_dir = f"{image:02d}"
-            Path(f"{image_dir}").mkdir(exist_ok=True)
-            poscar_file = f"{image_dir}/POSCAR"
-            path[image].to(fmt="poscar", filename=poscar_file)
+        idpp_path = IdppPath.from_linear(self.ini_poscar, self.fni_poscar, self.images)
+        idpp_path.run()
+        idpp_path.write()
+
         logger.info("Improved interpolation of NEB initial guess has been generated.")
 
     def _generate_liner(self):
@@ -507,31 +498,11 @@ class NEBTask(BaseTask, Animatable):
         Generate NEB-task images by linear interpolation method
         """
         logger = Logger().logger
-        ini_structure = POSCAR(self.ini_poscar).structure
-        fni_structure = POSCAR(self.fni_poscar).structure
-        assert ini_structure == fni_structure, f"{self.ini_poscar} and {self.fni_poscar} are not structure match"
-        diff_image = (fni_structure - ini_structure) / (self.images + 1)
 
-        # write ini-structure
-        ini_dir = f"{00:02d}"
-        Path(ini_dir).mkdir(exist_ok=True)
-        ini_structure.write_POSCAR(f"{ini_dir}/POSCAR")
+        linear_path = LinearPath(self.ini_poscar, self.fni_poscar, self.images)
+        linear_path.run()
+        linear_path.write()
 
-        # write fni-structure
-        fni_dir = f"{self.images + 1:02d}"
-        Path(fni_dir).mkdir(exist_ok=True)
-        fni_structure.write_POSCAR(f"{fni_dir}/POSCAR")
-
-        # resolve and write image-structures
-        for image in range(self.images):
-            image_dir = f"{image + 1:02d}"
-            Path(image_dir).mkdir(exist_ok=True)
-            image_atoms = copy.deepcopy(ini_structure.atoms)
-            image_atoms.frac_coord = [None] * len(image_atoms)
-            image_atoms.cart_coord = ini_structure.atoms.cart_coord + diff_image * (image + 1)
-            image_atoms.set_coord(ini_structure.lattice)
-            image_structure = Structure(atoms=image_atoms, lattice=ini_structure.lattice)
-            image_structure.write_POSCAR(f"{image_dir}/POSCAR")
         logger.info("Linear interpolation of NEB initial guess has been generated.")
 
     @staticmethod
@@ -544,9 +515,9 @@ class NEBTask(BaseTask, Animatable):
 
         neb_dirs = []
 
-        for dir in workdir.iterdir():
-            if Path(dir).is_dir() and Path(dir).stem.isdigit():
-                neb_dirs.append(dir)
+        for directory in workdir.iterdir():
+            if Path(directory).is_dir() and Path(directory).stem.isdigit():
+                neb_dirs.append(directory)
         return neb_dirs
 
     @staticmethod

@@ -133,7 +133,9 @@ class Structure(object):
         structure2_new = Structure(atoms=atoms2_new, lattice=structure2.lattice)
         return structure1_new, structure2_new
 
-    def find_neighbour_table(self, neighbour_num: int = 12, adj_matrix=None):  # TODO: need optimization
+        # TODO: performance optimization
+
+    def find_neighbour_table(self, neighbour_num: int = 12, adj_matrix=None, sort=True, including_self=False):
         logger = Logger().logger
         new_atoms = []
         neighbour_table = NeighbourTable(list)
@@ -142,19 +144,21 @@ class Structure(object):
             atom_j_list = self.atoms if adj_matrix is None else [self.atoms[atom_j_order] for atom_j_order in
                                                                  adj_matrix[atom_i.order]]
             for atom_j in atom_j_list:
-                if atom_i != atom_j:
-                    image = Atom.search_image(atom_i, atom_j)
-                    atom_j_image = Atom(formula=atom_j.formula, frac_coord=atom_j.frac_coord + image).set_coord(
-                        lattice=self.lattice)
-                    distance = np.linalg.norm(atom_j_image.cart_coord - atom_i.cart_coord)
-                    logger.debug(f"distance={distance}")
-                    if f'Element {atom_j.formula}' in atom_i._default_bonds.keys() \
-                            and distance <= atom_i._default_bonds[f'Element {atom_j.formula}'] * 1.1:
-                        neighbour_table_i.append((atom_j, distance, (atom_j_image.cart_coord - atom_i.cart_coord), 1))
-                    else:
-                        neighbour_table_i.append((atom_j, distance, (atom_j_image.cart_coord - atom_i.cart_coord), 0))
+                if not including_self and atom_i == atom_j:
+                    continue
+                image = Atom.search_image(atom_i, atom_j)
+                atom_j_image = Atom(formula=atom_j.formula, frac_coord=atom_j.frac_coord + image).set_coord(
+                    lattice=self.lattice)
+                distance = np.linalg.norm(atom_j_image.cart_coord - atom_i.cart_coord)
+                logger.debug(f"distance={distance}")
+                if f'Element {atom_j.formula}' in atom_i._default_bonds.keys() \
+                        and distance <= atom_i._default_bonds[f'Element {atom_j.formula}'] * 1.1:
+                    neighbour_table_i.append((atom_j, distance, (atom_j_image.cart_coord - atom_i.cart_coord), 1))
+                else:
+                    neighbour_table_i.append((atom_j, distance, (atom_j_image.cart_coord - atom_i.cart_coord), 0))
+
             neighbour_table_i = sorted(neighbour_table_i,
-                                       key=lambda x: x[1]) if adj_matrix is None else neighbour_table_i
+                                       key=lambda x: x[1]) if adj_matrix is None and sort else neighbour_table_i
             neighbour_table[atom_i] = neighbour_table_i[:neighbour_num]
 
             # update bonds && coordination number
@@ -163,14 +167,9 @@ class Structure(object):
             new_atoms.append(atom_i)
 
         self.atoms = Atoms.from_list(new_atoms)
+        setattr(self, "neighbour_table", neighbour_table)
 
-        if adj_matrix is None:
-            sorted_neighbour_table = NeighbourTable(list)
-            for key, value in neighbour_table.items():
-                sorted_neighbour_table[key] = sorted(value, key=lambda x: x[1])
-            setattr(self, "neighbour_table", sorted_neighbour_table)
-        else:
-            setattr(self, "neighbour_table", neighbour_table)
+        return self
 
     def check_overlap(self, cutoff=0.1):
         logger = Logger().logger
@@ -227,6 +226,31 @@ class Structure(object):
         atoms = Atoms(formula=formula, frac_coord=frac_coord)
 
         return Structure(atoms=atoms, lattice=lattice)
+
+    @staticmethod
+    def from_structure(structure, coord, type="cart"):
+        """
+        Generate the Structure instance from original structure with changing its atoms' coord
+
+        Args:
+            structure: which structure you want to base
+            coord: coord for new structure, <frac or cart>
+            type: which type of new coord, should be one of ["frac", "cart"], default: "cart"
+
+        Returns: new Structure instance
+
+        """
+        atoms = copy.deepcopy(structure.atoms)
+        if type == "cart":
+            atoms.frac_coord = [None] * len(atoms)
+            atoms.cart_coord = coord
+        elif type == "frac":
+            atoms.cart_coord = [None] * len(atoms)
+            atoms.frac_coord = coord
+        else:
+            raise TypeError(f"{type} not supported, should be `cart` or `frac`")
+        atoms.set_coord(structure.lattice)
+        return Structure(atoms=atoms, lattice=structure.lattice)
 
     def write_POSCAR(self, name, title=None, factor=1.0):
         logger = Logger().logger

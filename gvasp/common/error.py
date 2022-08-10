@@ -45,5 +45,10 @@ class JsonFileNotFoundError(FileNotFoundError):
 class PotDirNotExistError(FileExistsError):
     pass
 
+
 class ConstrainError(TypeError):
+    pass
+
+
+class PathNotExistError(TypeError):
     pass
