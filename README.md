@@ -154,9 +154,11 @@ Then the environment will be reset, `GVasp` will auto search the `INCAR`and `UVa
 ## Code Structure
 
 * [gvasp](gvasp): source code directory
-  gvasp
+
 * [gvasp/common](gvasp/common): main module
-  gvasp
+
+* [gvasp/neb](gvasp/neb): neb-related path module
+
 * [gvasp/lib](gvasp/lib): store the dynamic library (*.so and *.pyd)
 
 * [extension](extension): `C++`/`Cython` extensions (source code)
@@ -168,9 +170,8 @@ Then the environment will be reset, `GVasp` will auto search the `INCAR`and `UVa
 ## Requirements
 
 * Python >= 3.9
-* pybind11
 * Cython
+* pybind11
+* numpy
 * matplotlib
-* numpy == 1.23.1 (other version may conflict with pymatgen, not test)
-* pymatgen == 2022.7.25
-* pymatgen-diffusion == 2020.10.8
+

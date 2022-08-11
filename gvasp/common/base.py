@@ -8,6 +8,7 @@ import yaml
 
 from gvasp.common.logger import Logger
 from gvasp.common.setting import RootDir
+from gvasp.lib.base_bind import search_image as search_image_bind
 
 yaml.warnings({'YAMLLoadWarning': False})
 
@@ -155,7 +156,7 @@ class Atom(object):
 
     def __new__(cls, *args, **kwargs):
         cls.__load_config()
-        return super(Atom, cls).__new__(cls)
+        return object.__new__(cls)
 
     def __init__(self, formula, order: (int, list) = 0, frac_coord=None, cart_coord=None, selective_matrix=None,
                  constrain=False):
@@ -247,13 +248,7 @@ class Atom(object):
             SystemError("The parameters should be <class Atom>!")
         logger.debug(
             f"Start search the {atom_i.formula}{atom_i.order}-{atom_j.formula}{atom_j.order} neighbour in all images!")
-        image_pos = np.where(atom_j.frac_coord - atom_i.frac_coord <= 0.5, 0, -1)
-        image_neg = np.where(atom_j.frac_coord - atom_i.frac_coord >= -0.5, 0, 1)
-        image = image_pos + image_neg
-        cod_frac = np.all(atom_j.frac_coord + image - atom_i.frac_coord <= 0.5) and np.all(
-            atom_j.frac_coord + image - atom_i.frac_coord >= -0.5)
-        if not cod_frac:
-            SystemExit(f"Transform Error, exit!")
+        image = search_image_bind(atom_i.frac_coord, atom_j.frac_coord)
         logger.debug(f"Search the image {image} successfully!")
 
         return image
@@ -297,9 +292,6 @@ class Atoms(Atom):
             from_list:              construct the <class Atoms> from an Atom list, i.e., [Atom, Atom, Atom] --> Atoms
     """
 
-    def __new__(cls, *args, **kwargs):
-        return super(Atoms, cls).__new__(cls)
-
     def __init__(self, *args, **kwargs):
         super(Atoms, self).__init__(*args, **kwargs)
 
@@ -310,6 +302,7 @@ class Atoms(Atom):
         self.constrain = [False] * len(self.formula) if self.constrain is False else self.constrain
 
         self.__index_list = []  # inner index-list
+        self._atom_list = []  # static atoms-list
 
     def __len__(self) -> int:
         return len(self.formula)
@@ -341,14 +334,15 @@ class Atoms(Atom):
             return False
 
     def __getitem__(self, index):
-        atom = Atom(formula=self.formula[index], order=self.order[index],
-                    frac_coord=self.frac_coord[index], cart_coord=self.cart_coord[index],
-                    selective_matrix=self.selective_matrix[index], constrain=self.constrain[index])
+        return self.atom_list[index]
 
-        # update coordination number && bonds
-        atom.coordination_number = self.coordination_number[index] if self.coordination_number is not None else None
-        atom.bonds = self.bonds[index] if len(self.bonds) != 0 else []
-        return atom
+    def __deepcopy__(self, memo=None):
+        atoms = Atoms(formula=self.formula, order=self.order, frac_coord=self.frac_coord, cart_coord=self.cart_coord,
+                      selective_matrix=self.selective_matrix, constrain=self.constrain)
+        atoms.coordination_number = self.coordination_number
+        atoms.bonds = self.bonds
+        atoms._atom_list = []
+        return atoms
 
     @property
     def count(self) -> int:
@@ -360,7 +354,19 @@ class Atoms(Atom):
 
     @property
     def atom_list(self):  # atom may update, so we don't use a static list
-        return [atom for atom in self]
+        if not len(self._atom_list):
+            for index in range(len(self.formula)):
+                atom = Atom(formula=self.formula[index], order=self.order[index],
+                            frac_coord=self.frac_coord[index], cart_coord=self.cart_coord[index],
+                            selective_matrix=self.selective_matrix[index], constrain=self.constrain[index])
+
+                # update coordination number && bonds
+                atom.coordination_number = self.coordination_number[
+                    index] if self.coordination_number is not None else None
+                atom.bonds = self.bonds[index] if len(self.bonds) != 0 else []
+                self._atom_list.append(atom)
+
+        return self._atom_list
 
     @property
     def atom_type(self):  # override this property
@@ -372,6 +378,11 @@ class Atoms(Atom):
             self.frac_coord = np.dot(self.cart_coord, lattice.inverse)
         elif None not in self.frac_coord and None in self.cart_coord:
             self.cart_coord = np.dot(self.frac_coord, lattice.matrix)
+
+        # update __atoms_list
+        for index in range(len(self)):
+            self.atom_list[index].frac_coord = self.frac_coord[index]
+            self.atom_list[index].cart_coord = self.cart_coord[index]
 
         return self
 

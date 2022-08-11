@@ -1,4 +1,3 @@
-import copy
 import itertools
 import warnings
 from multiprocessing import Pool as ProcessPool, cpu_count
@@ -6,9 +5,9 @@ from pathlib import Path
 
 import numpy as np
 
+from gvasp.common.base import Atom
 from gvasp.common.error import PathNotExistError
 from gvasp.common.structure import Structure
-from gvasp.common.base import Atom
 
 
 class BasePath(object):
@@ -169,12 +168,8 @@ class IdppPath(BasePath):
             image_structure = self.structures[ni + 1]
             cart_coords = coords[ni + 1]
 
-            image_atoms = copy.deepcopy(image_structure.atoms)
-            image_atoms.frac_coord = [None] * len(image_atoms)
-            image_atoms.cart_coord = cart_coords
-            image_atoms.set_coord(image_structure.lattice)
-            image_structure = Structure(atoms=image_atoms, lattice=image_structure.lattice)
-            idpp_structures.append(image_structure)
+            new_image_structure = Structure.from_structure(image_structure, cart_coords)
+            idpp_structures.append(new_image_structure)
 
         idpp_structures.append(self.structures[-1])
         self.path = idpp_structures
