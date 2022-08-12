@@ -179,14 +179,11 @@ class IdppPath(BasePath):
         """
         Calculate the set of objective functions as well as their gradients, i.e. "effective true forces"
         """
-        # funcs = []
-        # funcs_prime = []
         trans = self.translations
-        atoms_num = trans.shape[1]
         weights = self.weights
         target_dists = self.target_dists
 
-        funcs, funcs_prime = _get_funcs_and_forces_cython(x, trans, atoms_num, weights, target_dists)
+        funcs, funcs_prime = _get_funcs_and_forces_cython(x, trans, weights, target_dists)
 
         return 0.5 * np.array(funcs), -2 * np.array(funcs_prime)
 

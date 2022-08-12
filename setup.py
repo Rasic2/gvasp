@@ -1,11 +1,10 @@
 import sysconfig
 
-import numpy as np
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 from pathlib import Path
 
-import numpy
+import numpy as np
 import pybind11
 from Cython.Build import cythonize
 

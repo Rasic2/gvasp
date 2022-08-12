@@ -1,13 +1,24 @@
 import numpy as np
-cimport numpy as np
+cimport numpy as cnp
+cimport cython
 
-def _get_funcs_and_forces(x, trans, int atoms_num, weights, target_dists):
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+def _get_funcs_and_forces(cnp.ndarray[double, ndim=3] x, 
+                          cnp.ndarray[double, ndim=4] trans, 
+                          cnp.ndarray[double, ndim=3] weights, 
+                          cnp.ndarray[double, ndim=3] target_dists):
 
     cdef:
-        list funcs=[], funcs_prime=[] 
-       # np.ndarray[np.float, ndim=1] func, grad 
+        int images = x.shape[0] - 2;
+        int atoms_num = x.shape[1];
+        list funcs=[], funcs_prime=[]
 
-    for ni in range(len(x) - 2):
+        int ni=0;
+        int i=0; 
+
+    for ni from 0<=ni<images:
         vec = [x[ni + 1, i] - x[ni + 1] - trans[ni, i] for i in range(atoms_num)]
 
         trial_dist = np.linalg.norm(vec, axis=2)
