@@ -242,16 +242,11 @@ class Atom(object):
         Returns:
             image (np.ndarray): record the transform direction
         """
-        logger = Logger().logger
 
         if not isinstance(atom_i, Atom) or not isinstance(atom_j, Atom):
             SystemError("The parameters should be <class Atom>!")
-        logger.debug(
-            f"Start search the {atom_i.formula}{atom_i.order}-{atom_j.formula}{atom_j.order} neighbour in all images!")
-        image = search_image_bind(atom_i.frac_coord, atom_j.frac_coord)
-        logger.debug(f"Search the image {image} successfully!")
 
-        return image
+        return search_image_bind(atom_i.frac_coord, atom_j.frac_coord)
 
     @staticmethod
     def distance(atom_i, atom_j, lattice: Lattice):

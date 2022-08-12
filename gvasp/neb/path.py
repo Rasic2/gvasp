@@ -8,6 +8,7 @@ import numpy as np
 from gvasp.common.base import Atom
 from gvasp.common.error import PathNotExistError
 from gvasp.common.structure import Structure
+from gvasp.lib.path_cython import _get_funcs_and_forces as _get_funcs_and_forces_cython
 
 
 class BasePath(object):
@@ -178,27 +179,14 @@ class IdppPath(BasePath):
         """
         Calculate the set of objective functions as well as their gradients, i.e. "effective true forces"
         """
-        funcs = []
-        funcs_prime = []
+        # funcs = []
+        # funcs_prime = []
         trans = self.translations
         atoms_num = trans.shape[1]
         weights = self.weights
         target_dists = self.target_dists
 
-        for ni in range(len(x) - 2):
-            vec = [x[ni + 1, i] - x[ni + 1] - trans[ni, i] for i in range(atoms_num)]
-
-            trial_dist = np.linalg.norm(vec, axis=2)
-            aux = (trial_dist - target_dists[ni]) * weights[ni] / (trial_dist + np.eye(atoms_num, dtype=np.float64))
-
-            # Objective function
-            func = np.sum((trial_dist - target_dists[ni]) ** 2 * weights[ni])
-
-            # "True force" derived from the objective function.
-            grad = np.sum(aux[:, :, None] * vec, axis=1)
-
-            funcs.append(func)
-            funcs_prime.append(grad)
+        funcs, funcs_prime = _get_funcs_and_forces_cython(x, trans, atoms_num, weights, target_dists)
 
         return 0.5 * np.array(funcs), -2 * np.array(funcs_prime)
 
