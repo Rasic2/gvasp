@@ -165,7 +165,7 @@ def main():
                 FreqTask.movie(freq=args.freq)
 
             if args.task == 'neb':
-                NEBTask.movie(name=args.name, file=args.file)
+                NEBTask.movie(name=args.name, file=args.pos)
 
         elif args.which == 'sort':  # sort task
             if args.ini_poscar is None or args.fni_poscar is None:
