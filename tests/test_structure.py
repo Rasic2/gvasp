@@ -11,10 +11,11 @@ def main():
 
 
 if __name__ == '__main__':
-    profile = line_profiler.LineProfiler()
-    profile.add_function(Atom.set_coord)
-    profile.add_function(Structure.find_neighbour_table)
-    profile.add_function(Atom.search_image)
-    profile_wrapper = profile(main)
-    profile_wrapper()
-    profile.print_stats()
+    # profile = line_profiler.LineProfiler()
+    # profile.add_function(Atom.set_coord)
+    # profile.add_function(Structure.find_neighbour_table)
+    # profile.add_function(Atom.search_image)
+    # profile_wrapper = profile(main)
+    # profile_wrapper()
+    # profile.print_stats()
+    main()

@@ -3,22 +3,48 @@ Element H:
     number: 1
     period: 1
     group: 1
-    color: '#828282'
+    color: '#FFFFFF'
     _default_bonds:
-        Element C: 1.540
-        Element O: 1.142
-        Element Ce: 2.480
+        Element N: 1.200
+        Element O: 2.100
+        Element F: 1.100
+        Element P: 1.420
+        Element S: 1.340
+        Element Cl: 1.500
+        Element I: 1.610
 
 Element C:
     formula: C
     number: 6
     period: 2
     group: 14
-    color: '#828282'
+    color: '#00FF00'
     _default_bonds:
-        Element C: 1.540
-        Element O: 1.142
-        Element Ce: 2.480
+        Element H: 1.200
+        Element C: 1.890
+        Element N: 1.792
+        Element O: 1.972
+        Element F: 1.760
+        Element P: 1.939
+        Element S: 2.150
+        Element Cl: 2.110
+        Element Se: 2.019
+        Element Br: 2.260
+        Element Te: 2.259
+        Element I: 2.169
+
+Element N:
+    formula: N
+    number: 7
+    period: 2
+    group: 15
+    color: '#0000FF'
+    _default_bonds:
+        Element N: 1.882
+        Element O: 1.817
+        Element F: 1.826
+        Element Cl: 2.206
+        Element Fe: 2.790
 
 Element O:
     formula: O
@@ -27,20 +53,171 @@ Element O:
     group: 16
     color: '#FF0000'
     _default_bonds:
+        Element O: 1.700
+        Element P: 1.610
+        Element S: 1.430
+
+Element F:
+    formula: F
+    number: 9
+    period: 2
+    group: 17
+    color: '#B3FFFF'
+    _default_bonds:
+        Element H: 0.920
+        Element N: 1.360
+        Element O: 1.420
+        Element F: 1.420
+        Element P: 1.540
+        Element S: 1.590
+
+Element P:
+    formula: P
+    number: 15
+    period: 3
+    group: 15
+    color: '#E99CFF'
+    _default_bonds:
+        Element H: 1.459
+        Element N: 1.971
+        Element O: 2.086
+        Element F: 2.010
+        Element P: 2.483
+        Element S: 2.576
+        Element Cl: 2.287
+        Element As: 2.299
+        Element Se: 2.696
+        Element Br: 2.442
+        Element I: 2.449
+
+Element S:
+    formula: S
+    number: 16
+    period: 3
+    group: 16
+    color: '#FFEB00'
+    _default_bonds:
+        Element H: 1.429
+        Element N: 2.288
+        Element O: 1.800
+        Element F: 1.950
+        Element S: 2.200
+        Element Cl: 2.370
+        Element Br: 2.219
+        Element I: 2.409
+
+Element Cl:
+    formula: Cl
+    number: 17
+    period: 3
+    group: 17
+    color: '#B3FFAD'
+    _default_bonds:
+        Element H: 1.080
+        Element N: 1.790
+        Element O: 2.166
+        Element F: 2.146
+        Element P: 2.040
+        Element S: 1.990
+        Element Cl: 2.142
+
+Element Cr:
+    formula: Cr
+    number: 24
+    period: 4
+    group: 6
+    color: '#8B99C6'
+    _default_bonds:
+        Element H: 1.676
         Element C: 1.142
-        Element O: 1.490
-        Element Ce: 2.356
+        Element N: 2.515
+        Element O: 2.442
+        Element F: 2.452
+        Element P: 2.426
+        Element S: 2.724
+        Element Cl: 2.802
+        Element As: 2.496
+        Element Se: 2.446
+        Element Br: 2.972
+        Element Te: 2.676
+        Element I: 3.192
 
 Element Cu:
     formula: Cu
     number: 29
     period: 4
     group: 11
-    color: '#FFFFC8'
+    color: '#FF7B62'
     _default_bonds:
-        Element C: 2.480
+        Element H: 1.816
+        Element C: 2.326
+        Element N: 2.492
+        Element O: 2.472
+        Element F: 2.462
+        Element P: 2.656
+        Element S: 2.760
+        Element Cl: 2.752
+        Element As: 2.718
+        Element Se: 2.762
+        Element Br: 2.892
+        Element Te: 2.876
+        Element I: 3.017
+
+Element Zn:
+    formula: Zn
+    number: 30
+    period: 4
+    group: 12
+    color: '#7C81AF'
+    _default_bonds:
+        Element H: 2.132
+        Element N: 2.432
+        Element O: 2.416
+        Element F: 2.382
+        Element P: 2.862
+        Element S: 2.802
+        Element Cl: 2.722
+        Element As: 2.952
+        Element Se: 2.932
+        Element Br: 2.862
+        Element Te: 3.162
+        Element I: 3.072
+
+Element Ga:
+    formula: Ga
+    number: 31
+    period: 4
+    group: 13
+    color: '#C39291'
+    _default_bonds:
+        Element H: 1.559
+        Element N: 1.960
+        Element O: 2.186
+        Element F: 2.146
+        Element P: 2.469
+        Element S: 2.619
+        Element Cl: 2.526
+        Element As: 2.389
+        Element Br: 2.642
+        Element Te: 2.589
+        Element I: 2.916
+
+Element Br:
+    formula: Br
+    number: 35
+    period: 4
+    group: 17
+    color: '#D34F45'
+    _default_bonds:
+        Element H: 1.420
+        Element C: 1.940
+        Element N: 2.140
         Element O: 2.356
-        Element Ce: 3.420
+        Element F: 2.206
+        Element P: 2.180
+        Element S: 2.270
+        Element Cl: 2.332
+        Element Br: 2.290
 
 Element Ce:
     formula: Ce
@@ -49,15 +226,35 @@ Element Ce:
     group: 3
     color: '#FFFFC8'
     _default_bonds:
-        Element C: 2.480
-        Element O: 2.356
-        Element Ce: 3.420
+        Element H: 2.346
+        Element N: 2.785
+        Element O: 2.863
+        Element F: 2.754
+        Element P: 3.006
+        Element S: 3.362
+        Element Cl: 3.252
+        Element As: 3.086
+        Element Se: 3.046
+        Element Br: 3.404
+        Element Te: 3.226
+        Element I: 3.624
 
 Element Au:
     formula: Au
     number: 79
     period: 6
     group: 11
-    color: '#FFFFC8'
+    color: '#FFD124'
     _default_bonds:
-        Element Au: 2.830
+        Element H: 1.419
+        Element N: 2.382
+        Element O: 2.346
+        Element F: 2.346
+        Element P: 2.189
+        Element S: 2.832
+        Element Cl: 2.882
+        Element As: 2.269
+        Element Se: 2.229
+        Element Br: 2.776
+        Element Te: 2.459
+        Element I: 3.212
