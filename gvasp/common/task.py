@@ -421,7 +421,7 @@ class NEBTask(BaseTask, Animatable):
         self.images = images
 
         self.structure = POSCAR(self.ini_poscar).structure
-        self.elements = list(self.structure.atoms.size.keys())
+        self.elements = list(zip(*self.structure.atoms.elements))[0]
 
     @staticmethod
     def sort(ini_poscar, fni_poscar):

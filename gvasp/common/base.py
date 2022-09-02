@@ -1,5 +1,6 @@
 import copy
 from collections import Counter
+from itertools import groupby
 from pathlib import Path
 from typing import List, Any
 
@@ -342,6 +343,10 @@ class Atoms(Atom):
     @property
     def count(self) -> int:
         return len(self)
+
+    @property
+    def elements(self):
+        return [(key, len(list(group))) for key, group in groupby(self.formula)]
 
     @property
     def size(self):
