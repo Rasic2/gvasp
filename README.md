@@ -76,13 +76,13 @@ conda create -n gvasp python=3.9
    the [Anaconda](https://anaconda.org/hui_zhou/gvasp), so you can also install `GVasp` from it:
 
     ```
-    conda install -c hui_zhou -c conda-forge gvasp
+    conda install -c hui_zhou gvasp
     ```
 
 If you run the `gvasp -v` and print version information, then you install the `GVasp` successful ~~
 
 ```
-GVasp version 0.0.1 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
+GVasp version 0.0.2 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
 ```
 
 ## Setting Environment
@@ -115,7 +115,7 @@ Initial environment is like this:
 
 - UValue.yaml: define the `UValue` for elements
 
-- pot: directory of the elements' `POTCAR`
+- pot: directory of the elements' `POTCAR` (please prepare it by yourself)
 
 The structure of `pot` like this:
 
