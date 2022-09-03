@@ -21,5 +21,5 @@ If you run the :code:`gvasp -v` and print version information, then you install 
 
 .. code-block:: bash
 
-    GVasp version 0.0.1 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
+    GVasp version 0.0.2 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
 

@@ -15,9 +15,6 @@ Constrained-TS Method
 
     gvasp submit con-TS
 
-.. attention::
-    Current version of **GVasp** don't generate `fort.188` file, which will process in subsequent version
-
 specify potential
 -------------------
 

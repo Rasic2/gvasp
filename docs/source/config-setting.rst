@@ -34,7 +34,7 @@ Initial environment is like this:
 
 * :file:`UValue.yaml`: define the UValue for elements, for example, :download:`UValue.yaml <./UValue.yaml>`
 
-* :file:`pot`: directory of the elements' POTCAR
+* :file:`pot`: directory of the elements' POTCAR (please prepare it by yourself)
 
 The structure of :file:`pot` is like this:
 
@@ -63,8 +63,9 @@ If you don't like the default environment setting, you can modify the environmen
 .. code-block:: json
 
     {
-        "config_dir": "/your_directory_to_three_mentioned_files",
-        "logdir": "/your_logs_directory",
+      "config_dir": "/your_directory_to_three_mentioned_files",
+      "potdir": "/your_pot_directory",
+      "logdir": "/your_logs_directory"
     }
 
 
@@ -74,4 +75,4 @@ and run command:
 
     gvasp config -f config.json
 
-Then the environment will be reset, :program:`GVasp` will auto search the :file:`INCAR`, :file:`UValue.yaml`, :file:`pot` under the config_dir.
+Then the environment will be reset, :program:`GVasp` will auto search the :file:`INCAR` and :file:`UValue.yaml` under the config_dir.
