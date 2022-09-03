@@ -110,7 +110,7 @@ def main():
                 new_config = json.load(f)
             print(f"3. Substitute {RootDir}/config.json with {Path(args.file)}")
             for key in Config.dict.keys():
-                if getattr(new_config, key, None) is not None:
+                if new_config.get(key, None) is not None:
                     setattr(Config, key, new_config[key])
             Config.write()
             print(f"4. Print the new configure information")

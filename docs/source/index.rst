@@ -21,6 +21,11 @@ Welcome to GVasp's documentation!
 
    package
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Environment Migration
+
+   environment
 
 .. toctree::
    :maxdepth: 1

@@ -143,3 +143,4 @@ wheelhouse
 _dos.cpp
 tests/con-TS
 /tests/idpp/
+*.tar.gz
