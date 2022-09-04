@@ -13,6 +13,14 @@ from gvasp.common.logger import Logger
 from gvasp.common.setting import WorkDir, ConfigManager
 from gvasp.neb.path import IdppPath, LinearPath
 
+Red = "\033[1;31m"
+Green = "\033[1;32m"
+Yellow = "\033[1;33m"
+Blue = "\033[1;34m"
+Purple = "\033[1;35m"
+Cyan = "\033[1;36m"
+Reset = "\033[0m"
+
 
 def write_wrapper(func):
     @wraps(func)
@@ -36,7 +44,31 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.structure = None
         self.elements = None
 
-        self.incar = INCAR(self.Template)
+        # set INCAR template
+        self._incar = self.Template if self._search_suffix(".incar") is None else self._search_suffix(".incar")
+        self.incar = INCAR(self._incar)
+
+        # set submit template
+        self.submit = None if self._search_suffix(".submit") is None else self._search_suffix(".submit")
+
+    def get_all_parents(self):
+        def get_parent(path: Path):
+            parent = path.parent
+            if path != parent:
+                yield path
+                yield from get_parent(parent)
+            else:
+                yield path
+
+        return [path for path in get_parent(WorkDir.absolute())]
+
+    def _search_suffix(self, suffix):
+        for directory in self.get_all_parents():
+            for file in directory.iterdir():
+                if file.is_file() and file.name.endswith(f"{suffix}"):
+                    return file
+        else:
+            return
 
     @abc.abstractmethod
     def generate(self, potential: (str, list)):
@@ -65,6 +97,7 @@ class BaseTask(metaclass=abc.ABCMeta):
             index += 1
         print()
         print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
+        print(f"{Yellow}INCAR template: {self._incar}{Reset}")
         print(f"------------------------------------------------------------------")
 
     def _generate_INCAR(self):
@@ -124,6 +157,12 @@ class BaseTask(metaclass=abc.ABCMeta):
          """
         potcar = POTCAR.cat(potentials=potential, elements=self.elements, potdir=self.PotDir)
         potcar.write(name="POTCAR")
+
+    def _generate_submit(self):
+        """
+         generate job.submit automatically
+         """
+        pass
 
 
 class Animatable(metaclass=abc.ABCMeta):
