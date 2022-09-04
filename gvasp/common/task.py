@@ -518,7 +518,7 @@ class NEBTask(BaseTask, Animatable):
         for directory in workdir.iterdir():
             if Path(directory).is_dir() and Path(directory).stem.isdigit():
                 neb_dirs.append(directory)
-        return neb_dirs
+        return sorted(neb_dirs)
 
     @staticmethod
     def _check_overlap():
