@@ -36,11 +36,12 @@ class BaseTask(metaclass=abc.ABCMeta):
     Task Base class, load config.json, generate INCAR, KPOINTS, POSCAR and POTCAR
     Note: subclass should have `generate` method
     """
-    Template, PotDir = ConfigManager().template, ConfigManager().potdir
+    Template, PotDir, Scheduler = ConfigManager().template, ConfigManager().potdir, ConfigManager().scheduler
     with open(ConfigManager().UValue) as f:
         UValue = yaml.safe_load(f.read())
 
     def __init__(self):
+        self.title = None
         self.structure = None
         self.elements = None
 
@@ -49,7 +50,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.incar = INCAR(self._incar)
 
         # set submit template
-        self.submit = None if self._search_suffix(".submit") is None else self._search_suffix(".submit")
+        self.submit = self.Scheduler if self._search_suffix(".submit") is None else self._search_suffix(".submit")
 
     def get_all_parents(self):
         def get_parent(path: Path):
@@ -79,6 +80,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR()
+        self._generate_submit()
 
         print(f"---------------general info (#{self.__class__.__name__})-----------------------")
         print(f"Elements    Total  Relax   potential orbital UValue")
@@ -97,7 +99,10 @@ class BaseTask(metaclass=abc.ABCMeta):
             index += 1
         print()
         print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
+        print()
+        print(f"{Red}Job Name: {self.title}{Reset}")
         print(f"{Yellow}INCAR template: {self._incar}{Reset}")
+        print(f"{Cyan}Submit template: {self.submit}{Reset}")
         print(f"------------------------------------------------------------------")
 
     def _generate_INCAR(self):
@@ -147,6 +152,7 @@ class BaseTask(metaclass=abc.ABCMeta):
             raise TooManyXSDFileError("exist more than one *.xsd file, please check workdir")
 
         xsd_file = XSDFile(xsd_files[0])
+        self.title = xsd_file.name.stem
         self.structure = xsd_file.structure
         self.elements = list(self.structure.atoms.size.keys())
         self.structure.write_POSCAR(name="POSCAR")
@@ -162,7 +168,15 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
          generate job.submit automatically
          """
-        pass
+        with open(self.submit, "r") as f:
+            content = f.readlines()
+
+        with open("submit.script", "w") as g:
+            for line in content:
+                if line.startswith("#SBATCH -J"):
+                    g.write(f"#SBATCH -J {self.title} \n")
+                else:
+                    g.write(line)
 
 
 class Animatable(metaclass=abc.ABCMeta):

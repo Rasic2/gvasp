@@ -25,6 +25,7 @@ class ConfigManager(object):
         self.potdir = None
         self.logdir = None
         self.UValue = None
+        self.scheduler = None
 
         self.load()
 
@@ -61,10 +62,22 @@ class ConfigManager(object):
         except KeyError:
             self.logdir = HomeDir / "logs"
 
+        self.scheduler = config.get("scheduler", "slurm")
+
+    def __setattr__(self, key, value):
+        if key == "scheduler" and self.config_dir is not None:
+            scheduler_path = self.config_dir / f'{value}.submit'
+            if not scheduler_path.exists():
+                raise ValueError(f"{value}.submit is not exist, please check")
+            else:
+                self.__dict__[key] = scheduler_path
+        else:
+            self.__dict__[key] = value
+
     @property
     def dict(self):
         return {'config_dir': self.config_dir, 'INCAR': self.template, 'potdir': self.potdir, 'logdir': self.logdir,
-                'UValue': self.UValue}
+                'UValue': self.UValue, 'scheduler': self.scheduler.stem}
 
     def write(self):
         shutil.copyfile(f"{RootDir}/config.json", f"{RootDir}/config_ori.json")
@@ -77,3 +90,8 @@ class ConfigManager(object):
             raise error
         else:
             print("Successfully update the config.json")
+
+
+if __name__ == '__main__':
+    config = ConfigManager()
+    print()
