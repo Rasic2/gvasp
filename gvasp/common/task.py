@@ -24,8 +24,8 @@ Reset = "\033[0m"
 
 def write_wrapper(func):
     @wraps(func)
-    def wrapper(self):
-        func(self)
+    def wrapper(self, *args, **kargs):
+        func(self, *args, **kargs)
         self.incar.write(name="INCAR")
 
     return wrapper
@@ -52,7 +52,8 @@ class BaseTask(metaclass=abc.ABCMeta):
         # set submit template
         self.submit = self.Scheduler if self._search_suffix(".submit") is None else self._search_suffix(".submit")
 
-    def get_all_parents(self):
+    @staticmethod
+    def get_all_parents():
         def get_parent(path: Path):
             parent = path.parent
             if path != parent:
@@ -63,8 +64,9 @@ class BaseTask(metaclass=abc.ABCMeta):
 
         return [path for path in get_parent(WorkDir.absolute())]
 
-    def _search_suffix(self, suffix):
-        for directory in self.get_all_parents():
+    @staticmethod
+    def _search_suffix(suffix):
+        for directory in BaseTask.get_all_parents():
             for file in directory.iterdir():
                 if file.is_file() and file.name.endswith(f"{suffix}"):
                     return file
@@ -81,7 +83,12 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR()
         self._generate_submit()
+        self._generate_info(potential=potential)
 
+    def _generate_info(self, potential):
+        """
+        generate short information
+        """
         print(f"---------------general info (#{self.__class__.__name__})-----------------------")
         print(f"Elements    Total  Relax   potential orbital UValue")
         potential = [potential] * len(self.elements) if isinstance(potential, str) else potential
@@ -195,18 +202,52 @@ class OptTask(BaseTask, Animatable):
     Optimization task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE"):
+    def generate(self, potential="PAW_PBE", low=False):
         """
-        fully inherit BaseTask's generate
+        rewrite BaseTask's generate
         """
-        super(OptTask, self).generate(potential=potential)
+        self._generate_POSCAR()
+        self._generate_KPOINTS()
+        self._generate_POTCAR(potential=potential)
+        self._generate_INCAR(low=low)
+        self._generate_submit(low=low)
+        self._generate_info(potential=potential)
 
     @write_wrapper
-    def _generate_INCAR(self):
+    def _generate_INCAR(self, low):
         """
         Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
         """
         super(OptTask, self)._generate_INCAR()
+        self.incar._ENCUT = self.incar.ENCUT
+        if low:
+            self.incar.ENCUT = 300.
+
+    def _generate_submit(self, low):
+        """
+         generate job.submit automatically
+         """
+        with open(self.submit, "r") as f:
+            content = f.readlines()
+
+        run_command = None
+        with open("submit.script", "w") as g:
+            for line in content:
+                if line.startswith("#SBATCH -J"):
+                    g.write(f"#SBATCH -J {self.title} \n")
+                else:
+                    if "mpirun" in line:
+                        run_command = line
+                    g.write(line)
+            if low:
+                g.write("\n"
+                        "cp POSCAR POSCAR_300 \n"
+                        "cp CONTCAR POSCAR \n"
+                        "cp OUTCAR OUTCAR_300 \n"
+                        "mv CONTCAR CONTCAR_300 \n"
+                        f"sed -i 's/ENCUT = 300/ENCUT = {self.incar._ENCUT}/' INCAR\n"
+                        f"\n"
+                        f"{run_command}")
 
     @staticmethod
     def movie(name="movie.arc"):
