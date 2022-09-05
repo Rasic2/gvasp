@@ -31,6 +31,15 @@ def write_wrapper(func):
     return wrapper
 
 
+def end_symbol(func):
+    @wraps(func)
+    def wrapper(self, *args, **kargs):
+        func(self, *args, **kargs)
+        print(f"------------------------------------------------------------------")
+
+    return wrapper
+
+
 class BaseTask(metaclass=abc.ABCMeta):
     """
     Task Base class, load config.json, generate INCAR, KPOINTS, POSCAR and POTCAR
@@ -73,6 +82,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         else:
             return
 
+    @end_symbol
     @abc.abstractmethod
     def generate(self, potential: (str, list)):
         """
@@ -109,8 +119,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         print()
         print(f"{Green}Job Name: {self.title}{Reset}")
         print(f"{Yellow}INCAR template: {self._incar}{Reset}")
-        print(f"{Cyan}Submit template: {self.submit}{Reset}")
-        print(f"------------------------------------------------------------------")
+        print(f"{Yellow}Submit template: {self.submit}{Reset}")
 
     def _generate_INCAR(self):
         """
@@ -254,11 +263,17 @@ class ChargeTask(BaseTask):
     Charge calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE"):
+    @end_symbol
+    def generate(self, potential="PAW_PBE", analysis=False):
         """
-        fully inherit BaseTask's generate
+        rewrite BaseTask's generate
         """
-        super(ChargeTask, self).generate(potential=potential)
+        self._generate_POSCAR()
+        self._generate_KPOINTS()
+        self._generate_POTCAR(potential=potential)
+        self._generate_INCAR()
+        self._generate_submit(analysis=analysis)
+        self._generate_info(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -273,6 +288,26 @@ class ChargeTask(BaseTask):
         self.incar.IBRION = 1
         self.incar.LAECHG = True
         self.incar.LCHARG = True
+
+    def _generate_submit(self, analysis):
+        """
+         generate job.submit automatically
+         """
+        super(ChargeTask, self)._generate_submit()
+
+        if analysis:
+            ChargeTask.apply_analysis()
+
+    @staticmethod
+    def apply_analysis():
+        with open("submit.script", "a+") as g:
+            g.write("\n"
+                    "#----------/Charge Analysis Option/----------#\n"
+                    "gvasp sum \n"
+                    "bader CHGCAR -ref CHGCAR_sum \n"
+                    "\n"
+                    "gvasp split \n"
+                    "gvasp grd -d -1 \n")
 
     @staticmethod
     def split():
@@ -520,6 +555,7 @@ class NEBTask(BaseTask, Animatable):
         """
         POSCAR.align(ini_poscar, fni_poscar)
 
+    @end_symbol
     def generate(self, method="linear", check_overlap=True, potential="PAW_PBE"):
         """
         Overwrite BaseTask's generate, add `method` and `check_overlap` parameters
@@ -528,6 +564,7 @@ class NEBTask(BaseTask, Animatable):
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR()
+        self._generate_info(potential=potential)
 
     @write_wrapper
     def _generate_INCAR(self):
@@ -702,12 +739,15 @@ class SequentialTask(object):
         """
         self.end = end
 
-    def generate(self, potential="PAW_PBE", low=False):
+    @end_symbol
+    def generate(self, potential="PAW_PBE", low=False, analysis=False):
         task = OptTask()
         task.generate(potential=potential, low=low)
 
         if self.end == "chg" or self.end == "dos":
-            print(f"{Red}Sequential Task: opt => {self.end}{Reset}")
+            low_string = "low first, " if low else ""
+            analysis_string = "apply analysis" if analysis else ""
+            print(f"{Red}Sequential Task: opt => {self.end}, " + low_string + analysis_string + Reset)
             run_command = SubmitFile("submit.script").run_command
             with open("submit.script", "a+") as g:
                 g.write("\n"
@@ -722,6 +762,8 @@ class SequentialTask(object):
                         f"cd chg_cal || return \n"
                         f"\n"
                         f"{run_command}")
+            if analysis:
+                ChargeTask.apply_analysis()
 
         if self.end == "dos":
             run_command = SubmitFile("submit.script").run_command
