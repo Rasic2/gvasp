@@ -8,7 +8,7 @@ import yaml
 from gvasp.common.base import Atom
 from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
 from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
-    CHGCAR_mag, INCAR
+    CHGCAR_mag, INCAR, SubmitFile
 from gvasp.common.logger import Logger
 from gvasp.common.setting import WorkDir, ConfigManager
 from gvasp.neb.path import IdppPath, LinearPath
@@ -107,7 +107,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         print()
         print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
         print()
-        print(f"{Red}Job Name: {self.title}{Reset}")
+        print(f"{Green}Job Name: {self.title}{Reset}")
         print(f"{Yellow}INCAR template: {self._incar}{Reset}")
         print(f"{Cyan}Submit template: {self.submit}{Reset}")
         print(f"------------------------------------------------------------------")
@@ -175,8 +175,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
          generate job.submit automatically
          """
-        with open(self.submit, "r") as f:
-            content = f.readlines()
+        content = SubmitFile(self.submit).strings
 
         with open("submit.script", "w") as g:
             for line in content:
@@ -227,20 +226,13 @@ class OptTask(BaseTask, Animatable):
         """
          generate job.submit automatically
          """
-        with open(self.submit, "r") as f:
-            content = f.readlines()
+        super(OptTask, self)._generate_submit()
 
-        run_command = None
-        with open("submit.script", "w") as g:
-            for line in content:
-                if line.startswith("#SBATCH -J"):
-                    g.write(f"#SBATCH -J {self.title} \n")
-                else:
-                    if "mpirun" in line:
-                        run_command = line
-                    g.write(line)
+        run_command = SubmitFile(self.submit).run_command
+        with open("submit.script", "a+") as g:
             if low:
                 g.write("\n"
+                        "#----------/Low Option/----------#\n"
                         "cp POSCAR POSCAR_300 \n"
                         "cp CONTCAR POSCAR \n"
                         "cp OUTCAR OUTCAR_300 \n"
@@ -696,3 +688,61 @@ class DimerTask(BaseTask, Animatable):
     @staticmethod
     def movie(name="movie.arc"):
         super().movie(name=name)
+
+
+class SequentialTask(object):
+    """
+    Apply Sequential Task from `opt => chg` or `opt => dos`
+    """
+
+    def __init__(self, end):
+        """
+        Args:
+            end: specify the end task, optional: [opt, chg, dos]
+        """
+        self.end = end
+
+    def generate(self, potential="PAW_PBE", low=False):
+        task = OptTask()
+        task.generate(potential=potential, low=low)
+
+        if self.end == "chg" or self.end == "dos":
+            print(f"{Red}Sequential Task: opt => {self.end}{Reset}")
+            run_command = SubmitFile("submit.script").run_command
+            with open("submit.script", "a+") as g:
+                g.write("\n"
+                        "#----------/Charge Option/----------#\n"
+                        "mkdir chg_cal \n"
+                        "cp OUTCAR OUTCAR_backup \n"
+                        "cp INCAR KPOINTS POTCAR chg_cal \n"
+                        "cp CONTCAR chg_cal/POSCAR \n"
+                        f"sed -i '/IBRION/c\  IBRION = 1' chg_cal/INCAR \n"
+                        f"sed -i '/LCHARG/c\  LCHARG = .TRUE.' chg_cal/INCAR \n"
+                        f"sed -i '/LCHARG/a\  LAECHG = .TRUE.' chg_cal/INCAR \n"
+                        f"cd chg_cal || return \n"
+                        f"\n"
+                        f"{run_command}")
+
+        if self.end == "dos":
+            run_command = SubmitFile("submit.script").run_command
+            with open("submit.script", "a+") as g:
+                g.write("\n"
+                        "#----------/DOS Option/----------#\n"
+                        "mkdir dos_cal \n"
+                        "cp OUTCAR OUTCAR_backup \n"
+                        "cp INCAR KPOINTS POTCAR CHGCAR dos_cal \n"
+                        "cp CONTCAR dos_cal/POSCAR \n"
+                        f"sed -i '/ISTART/c\  ISTART = 1' dos_cal/INCAR \n"
+                        f"sed -i '/NSW/c\  NSW = 1' dos_cal/INCAR \n"
+                        f"sed -i '/IBRION/c\  IBRION = -1' dos_cal/INCAR \n"
+                        f"sed -i '/LCHARG/c\  LCHARG = .FALSE.' dos_cal/INCAR \n"
+                        f"sed -i '/LCHARG/a\  LAECHG = .FALSE.' dos_cal/INCAR \n"
+                        f"sed -i '/+U/i\  ICHARG = 11' dos_cal/INCAR \n"
+                        f"sed -i '/ICHARG/a\  LORBIT = 12' dos_cal/INCAR \n"
+                        f"sed -i '/ICHARG/a\  NEDOS = 2000' dos_cal/INCAR \n"
+                        f"cd dos_cal || return \n"
+                        f"\n"
+                        f"{run_command}")
+
+        if self.end not in ['opt', 'chg', 'dos']:
+            raise TypeError(f"Unsupported Sequential Task to {self.end}, should be [opt, chg, dos]")

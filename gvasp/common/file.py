@@ -101,6 +101,16 @@ class ARCFile(MetaFile):
                 f.write("end\n")
 
 
+class SubmitFile(MetaFile):
+
+    @property
+    def run_command(self):
+        for line in self.strings:
+            if "mpirun" in line:
+                return line
+        return
+
+
 def formatter(parameters):
     """
     formatter wrapper: format the INCAR parameters
@@ -330,6 +340,7 @@ class POTCAR(MetaFile):
 
 
 class XSDFile(MetaFile):
+    # TODO: output -> xsd
     def __init__(self, name):
         super(XSDFile, self).__init__(name=name)
 
