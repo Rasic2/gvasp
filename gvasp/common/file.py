@@ -1,4 +1,3 @@
-import copy
 import math
 from collections import namedtuple
 from datetime import datetime
@@ -8,14 +7,12 @@ from operator import add
 from pathlib import Path
 from typing import List, Union
 from xml.dom import minidom
-from xml.dom.minidom import DocumentType, parse, parseString
-from xml.etree import ElementTree
+from xml.dom.minidom import DocumentType, parseString
 
 import numpy as np
 from lxml import etree
 from pandas import DataFrame
 
-from gvasp.lib import dos_cython, file_bind
 from gvasp.common.base import Atoms, Lattice
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
@@ -23,6 +20,7 @@ from gvasp.common.logger import Logger
 from gvasp.common.parameter import Parameter
 from gvasp.common.setting import RootDir
 from gvasp.common.structure import Structure
+from gvasp.lib import dos_cython, file_bind
 
 POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
 ORBITALS = ['s', 'p', 'd', 'f']
@@ -395,7 +393,7 @@ class XSDFile(MetaFile):
         return Structure(atoms=atoms, lattice=lattice)
 
     @staticmethod
-    def write(contcar: Union[str, Path], outcar: Union[str, Path]):
+    def write(contcar: Union[str, Path], outcar: Union[str, Path], name='output.xsd'):
         structure = CONTCAR(contcar).structure
         outcar = OUTCAR(outcar)
 
@@ -550,7 +548,7 @@ class XSDFile(MetaFile):
         SpaceGroup.setAttribute("AVector", f"{matrix[0, 0]:.10f},{matrix[0, 1]:.10f},{matrix[0, 2]:.10f}")
         SpaceGroup.setAttribute("BVector", f"{matrix[1, 0]:.10f},{matrix[1, 1]:.10f},{matrix[1, 2]:.10f}")
         SpaceGroup.setAttribute("CVector", f"{matrix[2, 0]:.10f},{matrix[2, 1]:.10f},{matrix[2, 2]:.10f}")
-        SpaceGroup.setAttribute("Color", "255,255,255,255")
+        SpaceGroup.setAttribute("Color", "136,0,204,255")
         SpaceGroup.setAttribute("OrientationBase", "C along Z, A in XZ plane")
         SpaceGroup.setAttribute("Centering", "3D Primitive-Centered")
         SpaceGroup.setAttribute("Lattice", "3D Triclinic")
@@ -566,8 +564,8 @@ class XSDFile(MetaFile):
         SpaceGroup.setAttribute("SchoenfliesName", "C1-1")
         SpaceGroup.setAttribute("System", "Triclinic")
         SpaceGroup.setAttribute("Class", "1")
-        SpaceGroup.setAttribute("DisplayStyle", "Solid")
-        SpaceGroup.setAttribute("LineThickness", "2")
+        SpaceGroup.setAttribute("DisplayStyle", "Dashed")
+        SpaceGroup.setAttribute("LineThickness", "4")
 
         ReciprocalLattice3D = doc.createElement("ReciprocalLattice3D")
         ReciprocalLattice3D.setAttribute("ID", f"{atoms_num + 9}")
@@ -607,7 +605,7 @@ class XSDFile(MetaFile):
         XSD.appendChild(AtomisticTreeRoot)
         doc.appendChild(doctype)
         doc.appendChild(XSD)
-        with open("output.xsd", "w") as f:
+        with open(name, "w") as f:
             doc.writexml(f, indent='\t', addindent='\t', newl='\n', encoding="latin1")
 
 
