@@ -1,3 +1,4 @@
+import copy
 import math
 from collections import namedtuple
 from datetime import datetime
@@ -5,7 +6,10 @@ from functools import wraps, reduce
 from multiprocessing import Pool as ProcessPool
 from operator import add
 from pathlib import Path
-from typing import List
+from typing import List, Union
+from xml.dom import minidom
+from xml.dom.minidom import DocumentType, parse, parseString
+from xml.etree import ElementTree
 
 import numpy as np
 from lxml import etree
@@ -340,7 +344,7 @@ class POTCAR(MetaFile):
 
 
 class XSDFile(MetaFile):
-    # TODO: output -> xsd
+
     def __init__(self, name):
         super(XSDFile, self).__init__(name=name)
 
@@ -389,6 +393,222 @@ class XSDFile(MetaFile):
                       constrain=sorted_constrain)
         lattice = Lattice(np.array(self.lattice))
         return Structure(atoms=atoms, lattice=lattice)
+
+    @staticmethod
+    def write(contcar: Union[str, Path], outcar: Union[str, Path]):
+        structure = CONTCAR(contcar).structure
+        outcar = OUTCAR(outcar)
+
+        doc = minidom.Document()
+        doctype = DocumentType(qualifiedName="XSD []")
+
+        XSD = doc.createElement('XSD')
+        XSD.setAttribute('Version', "5.0")
+        XSD.setAttribute('WrittenBy', "Materials Studio 5.0")
+
+        AtomisticTreeRoot = doc.createElement('AtomisticTreeRoot')
+        AtomisticTreeRoot.setAttribute('ID', "1")
+        AtomisticTreeRoot.setAttribute('NumProperties', "58")
+        AtomisticTreeRoot.setAttribute('NumChildren', "1")
+
+        PropertyString = '<root>' \
+                         '<Property Name="AngleAxisType" DefinedOn="AngleBetweenPlanesBender" Type="Enumerated"/>' \
+                         '<Property Name="AngleEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="BeadDocumentID" DefinedOn="MesoMoleculeSet" Type="String"/>' \
+                         '<Property Name="BendBendEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="BendTorsionBendEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="BondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="EFGAsymmetry" DefinedOn="Atom" Type="Double"/>' \
+                         '<Property Name="EFGQuadrupolarCoupling" DefinedOn="Atom" Type="Double"/>' \
+                         '<Property Name="ElectrostaticEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="FaceMillerIndex" DefinedOn="GrowthFace" Type="MillerIndex"/>' \
+                         '<Property Name="FacetTransparency" DefinedOn="GrowthFace" Type="Float"/>' \
+                         '<Property Name="FermiLevel" DefinedOn="ScalarFieldBase" Type="Double"/>' \
+                         '<Property Name="Force" DefinedOn="Matter" Type="CoDirection"/>' \
+                         '<Property Name="FrameFilter" DefinedOn="Trajectory" Type="String"/>' \
+                         '<Property Name="HarmonicForceConstant" DefinedOn="HarmonicRestraint" Type="Double"/>' \
+                         '<Property Name="HarmonicMinimum" DefinedOn="HarmonicRestraint" Type="Double"/>' \
+                         '<Property Name="HydrogenBondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="ImportOrder" DefinedOn="Bondable" Type="UnsignedInteger"/>' \
+                         '<Property Name="InversionEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="IsBackboneAtom" DefinedOn="Atom" Type="Boolean"/>' \
+                         '<Property Name="IsChiralCenter" DefinedOn="Atom" Type="Boolean"/>' \
+                         '<Property Name="IsOutOfPlane" DefinedOn="Atom" Type="Boolean"/>' \
+                         '<Property Name="IsRepeatArrowVisible" DefinedOn="ElectrodeWire" Type="Boolean"/>' \
+                         '<Property Name="KineticEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="LineExtentPadding" DefinedOn="BestFitLineMonitor" Type="Double"/>' \
+                         '<Property Name="LinkageGroupName" DefinedOn="Linkage" Type="String"/>' \
+                         '<Property Name="ListIdentifier" DefinedOn="PropertyList" Type="String"/>' \
+                         '<Property Name="NMRShielding" DefinedOn="Atom" Type="Double"/>' \
+                         '<Property Name="NonBondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="NormalMode" DefinedOn="Bondable" Type="Direction"/>' \
+                         '<Property Name="NormalModeFrequency" DefinedOn="Bondable" Type="Double"/>' \
+                         '<Property Name="NumScanSteps" DefinedOn="LinearScan" Type="UnsignedInteger"/>' \
+                         '<Property Name="OrbitalCutoffRadius" DefinedOn="Bondable" Type="Double"/>' \
+                         '<Property Name="PlaneExtentPadding" DefinedOn="BestFitPlaneMonitor" Type="Double"/>' \
+                         '<Property Name="PotentialEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="QuantizationValue" DefinedOn="ScalarFieldBase" Type="Double"/>' \
+                         '<Property Name="RelativeVelocity" DefinedOn="Matter" Type="Direction"/>' \
+                         '<Property Name="RepeatArrowScale" DefinedOn="ElectrodeWire" Type="Float"/>' \
+                         '<Property Name="RestraintEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="ScanEnd" DefinedOn="LinearScan" Type="Double"/>' \
+                         '<Property Name="ScanStart" DefinedOn="LinearScan" Type="Double"/>' \
+                         '<Property Name="SeparatedStretchStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="SimulationStep" DefinedOn="Trajectory" Type="Integer"/>' \
+                         '<Property Name="StretchBendStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="StretchStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="StretchTorsionStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="Temperature" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="ThreeBodyNonBondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="TorsionBendBendEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="TorsionEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="TorsionStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="TotalEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="Units" DefinedOn="ScalarFieldBase" Type="String"/>' \
+                         '<Property Name="ValenceCrossTermEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="ValenceDiagonalEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="VanDerWaalsEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>' \
+                         '<Property Name="_Stress" DefinedOn="MatterSymmetrySystem" Type="Matrix"/>' \
+                         '<Property Name="_TrajectoryStress" DefinedOn="MatterSymmetrySystem" Type="Matrix"/>' \
+                         '</root>'
+
+        Propertys = parseString(PropertyString).getElementsByTagName("Property")
+        for Property in Propertys:
+            AtomisticTreeRoot.appendChild(Property)
+
+        atoms_num = structure.atoms.count
+        energy = outcar.last_energy
+        force = outcar.last_force
+        mag = outcar.last_mag
+        SymmetrySystem = doc.createElement("SymmetrySystem")
+        SymmetrySystem.setAttribute("ID", "2")
+        SymmetrySystem.setAttribute("Mapping", "3")
+        SymmetrySystem.setAttribute("Children", f"ci({atoms_num + 2}):{atoms_num + 2}+4")
+        SymmetrySystem.setAttribute("Normalized", "1")
+        SymmetrySystem.setAttribute("Name", f"E:{energy:.3f} F:{force:.3f} M:{mag:.2f}")
+        SymmetrySystem.setAttribute("XYZ", "0,0,0")
+        SymmetrySystem.setAttribute("OverspecificationTolerance", "0.05")
+        SymmetrySystem.setAttribute("PeriodicDisplayType", "Original")
+        SymmetrySystem.setAttribute("HasSymmetryHistory", "1")
+
+        MappingSet = doc.createElement("MappingSet")
+        MappingSet.setAttribute("ID", f"{atoms_num + 6}")
+        MappingSet.setAttribute("SymmetryDefinition", f"{atoms_num + 4}")
+        MappingSet.setAttribute("ActiveSystem", "2")
+        MappingSet.setAttribute("NumFamilies", "1")
+        MappingSet.setAttribute("OwnsTotalConstraintMapping", "1")
+        MappingSet.setAttribute("TotalConstraintMapping", "3")
+
+        MappingFamily = doc.createElement("MappingFamily")
+        MappingFamily.setAttribute("ID", f"{atoms_num + 7}")
+        MappingFamily.setAttribute("NumImageMappings", "0")
+
+        IdentityMapping = doc.createElement("IdentityMapping")
+        IdentityMapping.setAttribute("ID", f"{atoms_num + 8}")
+        IdentityMapping.setAttribute("Element", "1,0,0,0,0,1,0,0,0,0,1,0")
+        IdentityMapping.setAttribute("Constraint", "1,0,0,0,0,1,0,0,0,0,1,0")
+        IdentityMapping.setAttribute("MappedObjects", f"ci({atoms_num + 1}):{atoms_num}+4,{atoms_num + 5}")
+        IdentityMapping.setAttribute("DefectObjects", f"{atoms_num + 4},{atoms_num + 9}")
+        IdentityMapping.setAttribute("NumImages", f"{atoms_num + 1}")
+        IdentityMapping.setAttribute("NumDefects", "2")
+
+        for atom in structure.atoms:
+            Atom3d = doc.createElement("Atom3d")
+            Atom3d.setAttribute("ID", f"{atom.order + 4}")
+            Atom3d.setAttribute("Mapping", f"{atoms_num + 8}")
+            Atom3d.setAttribute("Parent", "2")
+            if (atom.selective_matrix == ['F', 'F', 'F']).all():
+                Atom3d.setAttribute("RestrictedBy", f"{atoms_num + 5}")
+                Atom3d.setAttribute("RestrictedProperties", "FractionalXYZ")
+            Atom3d.setAttribute("Parent", "2")
+            Atom3d.setAttribute("Name", f"{atom.formula}{atom.order + 1}")
+            Atom3d.setAttribute("XYZ", f"{atom.frac_coord[0]:.12f},{atom.frac_coord[1]:.12f},{atom.frac_coord[2]:.12f}")
+            Atom3d.setAttribute("Charge", "0")
+            Atom3d.setAttribute("Components", f"{atom.formula}")
+            Atom3d.setAttribute("FormalSpin", "0")
+            IdentityMapping.appendChild(Atom3d)
+
+        CompleteRestriction = doc.createElement("CompleteRestriction")
+        CompleteRestriction.setAttribute("ID", f"{atoms_num + 5}")
+        CompleteRestriction.setAttribute("Mapping", f"{atoms_num + 8}")
+        CompleteRestriction.setAttribute("Parent", "2")
+        fix_atoms = [atom.order + 4 for atom in structure.atoms if (atom.selective_matrix == ['F', 'F', 'F']).all()]
+        if len(fix_atoms):
+            CompleteRestriction.setAttribute("RestrictsObjects",
+                                             f"ci({len(fix_atoms)}):{','.join([str(item) for item in fix_atoms])}")
+            CompleteRestriction.setAttribute("RestrictsProperties",
+                                             f"{','.join(['FractionalXYZ'] * (len(fix_atoms) - 1))}")
+        else:
+            CompleteRestriction.setAttribute("Visible", "0")
+
+        matrix = structure.lattice.matrix
+        SpaceGroup = doc.createElement("SpaceGroup")
+        SpaceGroup.setAttribute("ID", f"{atoms_num + 4}")
+        SpaceGroup.setAttribute("Parent", "2")
+        SpaceGroup.setAttribute("Children", f"{atoms_num + 9}")
+        SpaceGroup.setAttribute("Name", "P1")
+        SpaceGroup.setAttribute("AVector", f"{matrix[0, 0]:.10f},{matrix[0, 1]:.10f},{matrix[0, 2]:.10f}")
+        SpaceGroup.setAttribute("BVector", f"{matrix[1, 0]:.10f},{matrix[1, 1]:.10f},{matrix[1, 2]:.10f}")
+        SpaceGroup.setAttribute("CVector", f"{matrix[2, 0]:.10f},{matrix[2, 1]:.10f},{matrix[2, 2]:.10f}")
+        SpaceGroup.setAttribute("Color", "255,255,255,255")
+        SpaceGroup.setAttribute("OrientationBase", "C along Z, A in XZ plane")
+        SpaceGroup.setAttribute("Centering", "3D Primitive-Centered")
+        SpaceGroup.setAttribute("Lattice", "3D Triclinic")
+        SpaceGroup.setAttribute("GroupName", "P1")
+        SpaceGroup.setAttribute("Operators", "1,0,0,0,0,1,0,0,0,0,1,0")
+        SpaceGroup.setAttribute("DisplayRange", "0,1,0,1,0,1")
+        SpaceGroup.setAttribute("CylinderRadius", "0.2")
+        SpaceGroup.setAttribute("LabelAxes", "1")
+        SpaceGroup.setAttribute("ActiveSystem", "2")
+        SpaceGroup.setAttribute("ITNumber", "1")
+        SpaceGroup.setAttribute("LongName", "P 1")
+        SpaceGroup.setAttribute("Qualifier", "Origin-1")
+        SpaceGroup.setAttribute("SchoenfliesName", "C1-1")
+        SpaceGroup.setAttribute("System", "Triclinic")
+        SpaceGroup.setAttribute("Class", "1")
+        SpaceGroup.setAttribute("DisplayStyle", "Solid")
+        SpaceGroup.setAttribute("LineThickness", "2")
+
+        ReciprocalLattice3D = doc.createElement("ReciprocalLattice3D")
+        ReciprocalLattice3D.setAttribute("ID", f"{atoms_num + 9}")
+        ReciprocalLattice3D.setAttribute("Parent", f"{atoms_num + 4}")
+        ReciprocalLattice3D.setAttribute("Visible", "0")
+
+        IdentityMapping.appendChild(CompleteRestriction)
+        IdentityMapping.appendChild(SpaceGroup)
+        IdentityMapping.appendChild(ReciprocalLattice3D)
+
+        MappingRepairs = doc.createElement("MappingRepairs")
+        MappingRepairs.setAttribute("NumRepairs", "0")
+
+        MappingFamily.appendChild(IdentityMapping)
+        MappingFamily.appendChild(MappingRepairs)
+
+        InfiniteMapping = doc.createElement("InfiniteMapping")
+        InfiniteMapping.setAttribute("ID", "3")
+        InfiniteMapping.setAttribute("Element", "1,0,0,0,0,1,0,0,0,0,1,0")
+        InfiniteMapping.setAttribute("MappedObjects", "2")
+
+        MappingSet.appendChild(MappingFamily)
+        MappingSet.appendChild(InfiniteMapping)
+
+        OriginalObjects = doc.createElement("OriginalObjects")
+        OriginalObjects.setAttribute("ID", f"{atoms_num + 10}")
+
+        SetCollection = doc.createElement("SetCollection")
+        SetCollection.setAttribute("Objects", f"ci({atoms_num}):{atoms_num}+4")
+        OriginalObjects.appendChild(SetCollection)
+
+        SymmetrySystem.appendChild(MappingSet)
+        SymmetrySystem.appendChild(OriginalObjects)
+
+        AtomisticTreeRoot.appendChild(SymmetrySystem)
+
+        XSD.appendChild(AtomisticTreeRoot)
+        doc.appendChild(doctype)
+        doc.appendChild(XSD)
+        with open("output.xsd", "w") as f:
+            doc.writexml(f, indent='\t', addindent='\t', newl='\n', encoding="latin1")
 
 
 class POSCAR(StructInfoFile):
@@ -722,17 +942,17 @@ class OUTCAR(MetaFile):
     def __init__(self, name):
         super(OUTCAR, self).__init__(name=name)
 
-        element_name = [item.split()[3] for item in self.strings if item.find("TITEL") != -1]
-        element_count = [list(map(int, item.split()[4:])) for item in self.strings if item.find("ions per") != -1][0]
+        element_name = [line.split()[3] for line in self.strings if line.find("TITEL") != -1]
+        element_count = [list(map(int, line.split()[4:])) for line in self.strings if line.find("ions per") != -1][0]
         self.element = sum([[name] * count for name, count in zip(element_name, element_count)], [])
-        self.lattice = {Lattice.from_string(self.strings[index + 1:index + 4]) for index, item in
-                        enumerate(self.strings) if item.find("direct lattice vectors") != -1}
+        self.lattice = {Lattice.from_string(self.strings[index + 1:index + 4]) for index, line in
+                        enumerate(self.strings) if line.find("direct lattice vectors") != -1}
         self.lattice = list(self.lattice)[0] if len(self.lattice) == 1 else self.lattice
         self._frequency = [i for i in range(len(self.strings)) if self.strings[i].find("Hz") != -1]
         self._neb = [line for line in self.strings if line.find("NEB:") != -1]
         self.spin, self.bands, self.kpoints, self.fermi, self.steps = None, None, None, None, None
-        self.energy, self.force = None, None
-        self.last_energy, self.last_force = None, None
+        self.energy, self.force, self.mag = None, None, None
+        self.last_energy, self.last_force, self.last_mag = None, None, None
         self._parse_base()
 
         self.frequency = None
@@ -756,8 +976,10 @@ class OUTCAR(MetaFile):
         self.fermi = [float(line.split()[2]) for line in self.strings if line.find("E-fermi") != -1][-1]
         self.energy = [float(line.split()[3]) for line in self.strings if line.find("energy  without") != -1]
         self.force = [float(line.split()[5]) for line in self.strings if line.find("FORCES: max atom") != -1]
+        self.mag = [float(line.split()[5]) for line in self.strings if line.find("number of electron ") != -1]
         self.last_energy = self.energy[-1] if len(self.energy) else None
         self.last_force = self.force[-1] if len(self.force) else None
+        self.last_mag = self.mag[-1] if len(self.mag) else None
 
     def _parse_freq(self):
         """
