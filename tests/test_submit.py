@@ -2,7 +2,9 @@ import os
 import shutil
 import sys
 import unittest
+from pathlib import Path
 
+from common.setting import RootDir
 from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask, \
     SequentialTask
 
@@ -74,7 +76,8 @@ class TestSubmitTask(unittest.TestCase):
     @block_print
     @file_cleaner
     def test_neb(self):
-        task = NEBTask(ini_poscar="POSCAR_IS_sort", fni_poscar="POSCAR_FS_sort", images=4)
+        task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
+                       fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
         task.generate(method="linear")
 
         for dir in NEBTask._search_neb_dir():

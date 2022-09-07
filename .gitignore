@@ -128,7 +128,6 @@ Temp
 *.cell
 OUTCAR*
 xsd_test
-*.xsd
 KPOINTS
 POTCAR
 *.arc
@@ -144,3 +143,4 @@ tests/con-TS
 /tests/idpp/
 *.tar.gz
 *.so
+xsd/
