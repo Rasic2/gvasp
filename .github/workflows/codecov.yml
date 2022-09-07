@@ -12,6 +12,10 @@ jobs:
           python-version: '3.9'
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: generate lib files
+        run: | 
+          python setup.py build
+          find ./build -iname '*.so' -exec cp {} ./gvasp/lib \;
       - name: Run tests and collect coverage
         run: |
           pip install pytest
