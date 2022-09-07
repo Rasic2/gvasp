@@ -940,14 +940,14 @@ class OUTCAR(MetaFile):
     def __init__(self, name):
         super(OUTCAR, self).__init__(name=name)
 
-        element_name = [line.split()[3] for line in self.strings if line.find("TITEL") != -1]
-        element_count = [list(map(int, line.split()[4:])) for line in self.strings if line.find("ions per") != -1][0]
+        element_name = [line.split()[3] for line in self.strings if "TITEL" in line]
+        element_count = [list(map(int, line.split()[4:])) for line in self.strings if "ions per" in line][0]
         self.element = sum([[name] * count for name, count in zip(element_name, element_count)], [])
         self.lattice = {Lattice.from_string(self.strings[index + 1:index + 4]) for index, line in
-                        enumerate(self.strings) if line.find("direct lattice vectors") != -1}
+                        enumerate(self.strings) if "direct lattice vectors" in line}
         self.lattice = list(self.lattice)[0] if len(self.lattice) == 1 else self.lattice
-        self._frequency = [i for i in range(len(self.strings)) if self.strings[i].find("Hz") != -1]
-        self._neb = [line for line in self.strings if line.find("NEB:") != -1]
+        self._frequency = [i for i in range(len(self.strings)) if "Hz" in self.strings[i]]
+        self._neb = [line for line in self.strings if "NEB:" in line]
         self.spin, self.bands, self.kpoints, self.fermi, self.steps = None, None, None, None, None
         self.energy, self.force, self.mag = None, None, None
         self.last_energy, self.last_force, self.last_mag = None, None, None
@@ -965,16 +965,16 @@ class OUTCAR(MetaFile):
             self._parse_neb()
 
     def _parse_base(self):
-        self.spin = [int(line.split()[2]) for line in self.strings if line.find("ISPIN") != -1][0]
+        self.spin = [int(line.split()[2]) for line in self.strings if "ISPIN" in line][0]
         self.bands, self.kpoints = \
-            [(int(line.split()[-1]), int(line.split()[3])) for line in self.strings if line.find("NBANDS") != -1][0]
+            [(int(line.split()[-1]), int(line.split()[3])) for line in self.strings if "NBANDS" in line][0]
         steps = [(index, int(line.split()[2].split("(")[0]), int(line.split()[3].split(")")[0]))
-                 for index, line in enumerate(self.strings) if line.find("Iteration") != -1]
+                 for index, line in enumerate(self.strings) if "Iteration" in line]
         self.steps = namedtuple("Steps", ("index", "ionic", "electronic"))(*list(map(tuple, zip(*steps))))
-        self.fermi = [float(line.split()[2]) for line in self.strings if line.find("E-fermi") != -1][-1]
-        self.energy = [float(line.split()[3]) for line in self.strings if line.find("energy  without") != -1]
-        self.force = [float(line.split()[5]) for line in self.strings if line.find("FORCES: max atom") != -1]
-        self.mag = [float(line.split()[5]) for line in self.strings if line.find("number of electron ") != -1]
+        self.fermi = [float(line.split()[2]) for line in self.strings if "E-fermi" in line][-1]
+        self.energy = [float(line.split()[3]) for line in self.strings if "energy  without" in line]
+        self.force = [float(line.split()[5]) for line in self.strings if "FORCES: max atom" in line]
+        self.mag = [float(line.split()[5]) for line in self.strings if "number of electron " in line]
         self.last_energy = self.energy[-1] if len(self.energy) else None
         self.last_force = self.force[-1] if len(self.force) else None
         self.last_mag = self.mag[-1] if len(self.mag) else None
@@ -1040,12 +1040,12 @@ class OUTCAR(MetaFile):
             return band
 
         content = self.strings[self.steps.index[-1]:]  # calculate bandgap from last step
-        start_index = [index for index, line in enumerate(content) if line.find("E-fermi") != -1][0]
-        end_index = [index for index, line in enumerate(content) if line.find("-----") != -1 and index > start_index][0]
+        start_index = [index for index, line in enumerate(content) if "E-fermi" in line][0]
+        end_index = [index for index, line in enumerate(content) if "-----" in line and index > start_index][0]
         band_info = content[start_index:end_index]  # band_info content in last step
         KPoint = namedtuple("KPoint", ("coord", "value"))  # including `kpoint coord` and `each band energy`
         if self.spin == 2:
-            kpoint_index = [index for index, line in enumerate(band_info) if line.find("k-point") != -1]
+            kpoint_index = [index for index, line in enumerate(band_info) if "k-point" in line]
             half_len = int(len(kpoint_index) / 2)
             kpoint_up, kpoint_down = kpoint_index[:half_len], kpoint_index[half_len:]  # 'k-point' occurrence index
 
