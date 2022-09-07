@@ -4,7 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 
-from common.setting import RootDir
+from gvasp.common.setting import RootDir
 from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask, \
     SequentialTask
 
