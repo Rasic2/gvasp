@@ -4,6 +4,7 @@
 [![Documentation Status](https://readthedocs.org/projects/qvasp/badge/?version=latest)](https://qvasp.readthedocs.io/en/latest/?badge=latest)
 [![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/installer/conda.svg)](https://conda.anaconda.org/hui_zhou)
 [![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/platforms.svg)](https://anaconda.org/hui_zhou/gvasp)
+![Codecov](https://img.shields.io/codecov/c/github/Rasic2/gvasp)
 
 ## Table of contents
 
