@@ -3,7 +3,8 @@ import shutil
 import sys
 import unittest
 
-from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask
+from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask, \
+    SequentialTask
 
 
 def file_cleaner(func):
@@ -45,6 +46,12 @@ class TestSubmitTask(unittest.TestCase):
     def test_dos(self):
         task = DOSTask()
         task.generate()
+
+    @block_print
+    @file_cleaner
+    def test_sequential(self):
+        task = SequentialTask(end='dos')
+        task.generate(low=True, analysis=True)
 
     @block_print
     @file_cleaner
