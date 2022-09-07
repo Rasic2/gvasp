@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from common.task import ChargeTask
+from gvasp.common.task import ChargeTask
 
 
 class TestLoader(unittest.TestLoader):

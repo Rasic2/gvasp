@@ -2,7 +2,7 @@ import os
 import unittest
 from pathlib import Path
 
-from common.file import POSCAR
+from gvasp.common.file import POSCAR
 
 
 class TestAlign(unittest.TestCase):
