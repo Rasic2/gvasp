@@ -4,13 +4,14 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
+from gvasp.common.constant import RED, RESET
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import Logger
 from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
 from gvasp.common.setting import ConfigManager, RootDir, Version, Platform
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
-    SequentialTask
+    SequentialTask, OutputTask
 from gvasp.common.utils import colors_generator
 
 
@@ -51,6 +52,10 @@ def main_parser() -> argparse.ArgumentParser:
     neb_submit_group.add_argument("-c", "--cancel_check_overlap", action='store_true',
                                   help='whether or not check_overlap')
     submit_parser.set_defaults(which="submit")
+
+    # output parser
+    output_parser = subparsers.add_parser(name="output", help="output to .xsd file")
+    output_parser.set_defaults(which="output")
 
     # movie parser
     movie_parser = subparsers.add_parser(name="movie", help="visualize the trajectory")
@@ -173,6 +178,13 @@ def main():
                         method=args.method, potential=args.potential, check_overlap=not args.cancel_check_overlap)
                 else:
                     print(f"Cancel neb task")
+
+        elif args.which == 'output':  # output task
+            with open("submit.script", "r") as f:
+                content = f.readlines()
+            name = content[1].split()[2]
+            OutputTask.output(name=f"{name}.xsd")
+            logger.info(f"{RED}transform to {name}.xsd file{RESET}")
 
         elif args.which == 'movie':  # movie task
             normal_tasks = {"opt": OptTask.movie,

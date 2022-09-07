@@ -2,14 +2,13 @@ import logging
 import time
 from pathlib import Path
 
+from gvasp.common.constant import RESET, BOLD
 from gvasp.common.setting import ConfigManager
 
 date = time.strftime("%Y-%m-%d", time.localtime())
 BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
 
-RESET_SEQ = "\033[0m"
 COLOR_SEQ = "\033[1;%dm"
-BOLD_SEQ = "\033[1m"
 
 COLORS = {
     'WARNING': YELLOW,
@@ -22,7 +21,7 @@ COLORS = {
 
 def formatter_message(message, use_color=True):
     if use_color:
-        message = message.replace("$RESET", RESET_SEQ).replace("$BOLD", BOLD_SEQ)
+        message = message.replace("$RESET", RESET).replace("$BOLD", BOLD)
     else:
         message = message.replace("$RESET", "").replace("$BOLD", "")
 
@@ -39,7 +38,7 @@ class ColoredFormatter(logging.Formatter):
         levelname = record.levelname
 
         if self.use_color and levelname in COLORS:
-            levelname_color = COLOR_SEQ % (30 + COLORS[levelname]) + levelname + RESET_SEQ
+            levelname_color = COLOR_SEQ % (30 + COLORS[levelname]) + levelname + RESET
             record.levelname = levelname_color
 
         return logging.Formatter.format(self, record)

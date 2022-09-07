@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import yaml
 
+from gvasp.common.constant import GREEN, YELLOW, RESET, RED
 from gvasp.common.base import Atom
 from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
 from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
@@ -12,14 +13,6 @@ from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR,
 from gvasp.common.logger import Logger
 from gvasp.common.setting import WorkDir, ConfigManager
 from gvasp.neb.path import IdppPath, LinearPath
-
-Red = "\033[1;31m"
-Green = "\033[1;32m"
-Yellow = "\033[1;33m"
-Blue = "\033[1;34m"
-Purple = "\033[1;35m"
-Cyan = "\033[1;36m"
-Reset = "\033[0m"
 
 
 def write_wrapper(func):
@@ -121,9 +114,9 @@ class BaseTask(metaclass=abc.ABCMeta):
         print()
         print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
         print()
-        print(f"{Green}Job Name: {self.title}{Reset}")
-        print(f"{Yellow}INCAR template: {self._incar}{Reset}")
-        print(f"{Yellow}Submit template: {self.submit}{Reset}")
+        print(f"{GREEN}Job Name: {self.title}{RESET}")
+        print(f"{YELLOW}INCAR template: {self._incar}{RESET}")
+        print(f"{YELLOW}Submit template: {self.submit}{RESET}")
 
     def _generate_INCAR(self):
         """
@@ -198,6 +191,16 @@ class BaseTask(metaclass=abc.ABCMeta):
                     g.write(line)
 
 
+class OutputTask(object):
+    @staticmethod
+    def output(name):
+        """
+        Transform the results to .xsd file
+        """
+
+        XSDFile.write(contcar="CONTCAR", outcar="OUTCAR", name=name)
+
+
 class Animatable(metaclass=abc.ABCMeta):
 
     @staticmethod
@@ -226,7 +229,7 @@ class OptTask(BaseTask, Animatable):
         self._generate_submit(low=low)
         self._generate_info(potential=potential)
         if low and print_end:
-            print(f"{Red}low first{Reset}")
+            print(f"{RED}low first{RESET}")
 
     @write_wrapper
     def _generate_INCAR(self, low):
@@ -754,7 +757,7 @@ class SequentialTask(object):
         if self.end == "chg" or self.end == "dos":
             low_string = "low first, " if low else ""
             analysis_string = "apply analysis" if analysis else ""
-            print(f"{Red}Sequential Task: opt => {self.end}, " + low_string + analysis_string + Reset)
+            print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + analysis_string + RESET)
             run_command = SubmitFile("submit.script").run_command
             with open("submit.script", "a+") as g:
                 g.write("\n"
