@@ -1,9 +1,6 @@
-import json
 import unittest
-from pathlib import Path
 
-from common.encoder import PathJSONEncoder
-from common.setting import ConfigManager
+from gvasp.common.setting import ConfigManager
 
 
 class TestConfig(unittest.TestCase):
