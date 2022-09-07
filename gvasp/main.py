@@ -9,7 +9,8 @@ from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import Logger
 from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
 from gvasp.common.setting import ConfigManager, RootDir, Version, Platform
-from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask
+from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
+    SequentialTask
 from gvasp.common.utils import colors_generator
 
 
@@ -29,8 +30,18 @@ def main_parser() -> argparse.ArgumentParser:
     submit_parser = subparsers.add_parser(name="submit", help="generate inputs for special job-task")
     submit_parser.add_argument("task", choices=["opt", "con-TS", "chg", "dos", "freq", "md", "stm", "neb", "dimer"],
                                type=str, help='specify job type for submit')
-    submit_parser.add_argument("-p", "--potential", metavar="POTENTIAL", default="PAW_PBE", nargs="+",
-                               choices=POTENTIAL, type=str, help='specify potential')
+    submit_parser.add_argument("-p", "--potential", metavar="POTENTIAL", default="PAW_PBE", nargs="+", type=str,
+                               help=f'specify potential, optional: {POTENTIAL}')
+    low_group = submit_parser.add_argument_group(title='low-task',
+                                                 description='only valid for opt and sequential [chg, dos] tasks')
+    low_group.add_argument("-l", "--low", help="specify whether perform low-accuracy calculation first",
+                           action="store_true")
+
+    charge_task = submit_parser.add_argument_group(title='charge-task', description='only valid for chg and dos tasks')
+    charge_task.add_argument("-s", "--sequential", help='whether or not sequential', action="store_true")
+    charge_task.add_argument("-a", "--analysis", help='whether or not apply bader calculation && split CHGCAR',
+                             action="store_true")
+
     neb_submit_group = submit_parser.add_argument_group(title='neb-task')
     neb_submit_group.add_argument("--ini_poscar", type=str, help='specify ini poscar for neb task')
     neb_submit_group.add_argument("--fni_poscar", type=str, help='specify fni poscar for neb task')
@@ -118,18 +129,30 @@ def main():
             print(f"5. Reset Done")
 
         elif args.which == 'submit':  # submit task
-            ordinary = {"opt": OptTask().generate,
-                        "con-TS": ConTSTask().generate,
-                        "chg": ChargeTask().generate,
-                        "dos": DOSTask().generate,
-                        "freq": FreqTask().generate,
-                        "md": MDTask().generate,
-                        "stm": STMTask().generate,
-                        "dimer": DimerTask().generate}
+            normal_tasks = {"con-TS": ConTSTask().generate,
+                            "freq": FreqTask().generate,
+                            "md": MDTask().generate,
+                            "stm": STMTask().generate,
+                            "dimer": DimerTask().generate}
 
-            if args.task in ordinary.keys():
+            if args.task in normal_tasks.keys():
                 logger.info(f"generate `{args.task}` task")
-                ordinary[args.task](potential=args.potential)
+                normal_tasks[args.task](potential=args.potential)
+            elif args.task == "opt":
+                logger.info(f"generate `opt` task")
+                OptTask().generate(potential=args.potential, low=args.low)
+            elif args.task == "chg":
+                if args.sequential:
+                    SequentialTask(end="chg").generate(potential=args.potential, low=args.low, analysis=args.analysis)
+                else:
+                    logger.info(f"generate `chg` task")
+                    ChargeTask().generate(potential=args.potential, analysis=args.analysis)
+            elif args.task == "dos":
+                if args.sequential:
+                    SequentialTask(end="dos").generate(potential=args.potential, low=args.low, analysis=args.analysis)
+                else:
+                    logger.info(f"generate `dos` task")
+                    DOSTask().generate(potential=args.potential)
             elif args.task == "neb":
                 if args.ini_poscar is None or args.fni_poscar is None:
                     raise AttributeError(None, "ini_poscar and fni_poscar arguments must be set!")
@@ -152,14 +175,14 @@ def main():
                     print(f"Cancel neb task")
 
         elif args.which == 'movie':  # movie task
-            ordinary = {"opt": OptTask.movie,
-                        "con-TS": ConTSTask.movie,
-                        "md": MDTask.movie,
-                        "dimer": DimerTask.movie
-                        }
-            if args.task in ordinary.keys():
+            normal_tasks = {"opt": OptTask.movie,
+                            "con-TS": ConTSTask.movie,
+                            "md": MDTask.movie,
+                            "dimer": DimerTask.movie
+                            }
+            if args.task in normal_tasks.keys():
                 logger.info(f"`{args.task}` task movie")
-                ordinary[args.task](name=args.name)
+                normal_tasks[args.task](name=args.name)
 
             if args.task == 'freq':
                 FreqTask.movie(freq=args.freq)

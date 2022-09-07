@@ -35,7 +35,8 @@ def end_symbol(func):
     @wraps(func)
     def wrapper(self, *args, **kargs):
         func(self, *args, **kargs)
-        print(f"------------------------------------------------------------------")
+        if kargs.get("print_end", True):
+            print(f"------------------------------------------------------------------")
 
     return wrapper
 
@@ -77,8 +78,11 @@ class BaseTask(metaclass=abc.ABCMeta):
     def _search_suffix(suffix):
         for directory in BaseTask.get_all_parents():
             for file in directory.iterdir():
-                if file.is_file() and file.name.endswith(f"{suffix}"):
-                    return file
+                try:
+                    if file.is_file() and file.name.endswith(f"{suffix}"):
+                        return file
+                except PermissionError:
+                    continue
         else:
             return
 
@@ -210,7 +214,8 @@ class OptTask(BaseTask, Animatable):
     Optimization task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", low=False):
+    @end_symbol
+    def generate(self, potential="PAW_PBE", low=False, print_end=True):
         """
         rewrite BaseTask's generate
         """
@@ -220,6 +225,8 @@ class OptTask(BaseTask, Animatable):
         self._generate_INCAR(low=low)
         self._generate_submit(low=low)
         self._generate_info(potential=potential)
+        if low and print_end:
+            print(f"{Red}low first{Reset}")
 
     @write_wrapper
     def _generate_INCAR(self, low):
@@ -742,7 +749,7 @@ class SequentialTask(object):
     @end_symbol
     def generate(self, potential="PAW_PBE", low=False, analysis=False):
         task = OptTask()
-        task.generate(potential=potential, low=low)
+        task.generate(potential=potential, low=low, print_end=False)
 
         if self.end == "chg" or self.end == "dos":
             low_string = "low first, " if low else ""

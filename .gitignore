@@ -144,3 +144,4 @@ _dos.cpp
 tests/con-TS
 /tests/idpp/
 *.tar.gz
+*.so
