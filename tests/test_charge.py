@@ -1,18 +1,11 @@
 import os
-import unittest
+
+import pytest
 
 from gvasp.common.task import ChargeTask
 
 
-class TestLoader(unittest.TestLoader):
-    def getTestCaseNames(self, testcase):
-        test_names = super().getTestCaseNames(testcase)
-        test_methods = list(testcase.__dict__.keys())
-        test_names = sorted(test_names, key=test_methods.index)
-        return test_names
-
-
-class TestCharge(unittest.TestCase):
+class TestCharge():
     def test_sum(self):
         ChargeTask.sum()
         os.remove("CHGCAR_sum")
@@ -28,4 +21,4 @@ class TestCharge(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(testLoader=TestLoader())
+    pytest.main(['./test_charge.py'])
