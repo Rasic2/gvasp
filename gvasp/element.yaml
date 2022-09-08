@@ -219,6 +219,26 @@ Element Br:
         Element Cl: 2.332
         Element Br: 2.290
 
+Element Sn:
+    formula: Sn
+    number: 50
+    period: 5
+    group: 14
+    color: '#668181'
+    _default_bonds:
+        Element H: 2.006
+        Element N: 2.715
+        Element O: 2.821
+        Element F: 2.637
+        Element P: 2.606
+        Element S: 3.152
+        Element Cl: 3.131
+        Element As: 2.776
+        Element Se: 2.966
+        Element Br: 3.215
+        Element Te: 2.916
+        Element I: 3.522
+
 Element Ce:
     formula: Ce
     number: 58
