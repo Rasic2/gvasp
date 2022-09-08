@@ -101,8 +101,6 @@ venv.bak/
 
 ####
 *.DS_Store
-POSCAR
-CONTCAR
 .png
 chgcar2grd
 .vscode
@@ -112,7 +110,6 @@ Uvalue
 test
 OUT.ANI
 dis_*
-CONTCAR*
 DOSCAR*
 .idea
 *.svg
@@ -121,9 +118,7 @@ CHGCAR*
 AECCAR*
 *.grd
 OUTCAR
-XDATCAR
 MODECAR
-neb-test
 Temp
 *.cell
 OUTCAR*
@@ -142,3 +137,6 @@ tests/con-TS
 *.tar.gz
 *.so
 xsd/
+*.incar
+*.submit
+/tests/CONTCAR-test
