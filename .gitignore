@@ -106,8 +106,8 @@ CONTCAR
 .png
 chgcar2grd
 .vscode
+/pot
 example
-pot
 Uvalue
 test
 OUT.ANI
@@ -129,14 +129,12 @@ Temp
 OUTCAR*
 xsd_test
 KPOINTS
-POTCAR
 *.arc
 tests/INCAR*
 !docs/*.svg
 extension/*.so
 EIGENVAL
 tests/*.json
-pot.tgz
 wheelhouse
 _dos.cpp
 tests/con-TS
