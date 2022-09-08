@@ -4,22 +4,25 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      - name: Install dependencies
+      - name: install dependencies
         run: pip install -r requirements.txt
-      - name: Generate lib files
-        run: | 
+      - name: generate lib files
+        run: |
           python setup.py build
           find ./build -iname '*.so' -exec cp {} ./gvasp/lib \;
-      - name: Run tests and collect coverage
+      - name: modify config
+        run: |
+          python tests/modify_config.py
+      - name: run tests and collect coverage
         run: |
           pip install pytest
           pip install pytest-cov
           pytest --cov=./ --cov-report=xml
-      - name: Upload coverage to Codecov
+      - name: upload coverage to Codecov
         uses: codecov/codecov-action@v3

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from gvasp.common.setting import RootDir
 from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask, \
-    SequentialTask
+    SequentialTask, ConTSTask
 
 
 def file_cleaner(func):
@@ -71,6 +71,12 @@ class TestSubmitTask(unittest.TestCase):
     @file_cleaner
     def test_stm(self):
         task = STMTask()
+        task.generate()
+
+    @block_print
+    @file_cleaner
+    def test_conTS(self):
+        task = ConTSTask()
         task.generate()
 
     @block_print
