@@ -126,7 +126,6 @@ KPOINTS
 tests/INCAR*
 !docs/*.svg
 extension/*.so
-EIGENVAL
 tests/*.json
 wheelhouse
 _dos.cpp

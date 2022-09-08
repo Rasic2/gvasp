@@ -7,20 +7,20 @@ from common.plot import PlotOpt, PlotBand, PlotDOS, PlotPES, PlotNEB
 class TestPlot(unittest.TestCase):
 
     def test_opt(self):
-        plotter = PlotOpt("OUTCAR_opt")
+        plotter = PlotOpt(Path(".") / "tests" / "OUTCAR")
         plotter.plot()
         plotter.save()
 
     def test_band(self):
-        plotter = PlotBand("EIGENVAL", title="Band Structure")
+        plotter = PlotBand(Path(".") / "tests" / "EIGENVAL", title="Band Structure")
         plotter.plot()
         plotter.save()
 
-    def test_dos(self):
-        plotter = PlotDOS(dos_file='DOSCAR-test', pos_file='CONTCAR-test')
-        plotter.plot(color='#ed0345')
-        plotter.plot(atoms='Ce', color='#000000')
-        plotter.save()
+    # def test_dos(self):
+    #     plotter = PlotDOS(dos_file='DOSCAR-test', pos_file='CONTCAR-test')
+    #     plotter.plot(color='#ed0345')
+    #     plotter.plot(atoms='Ce', color='#000000')
+    #     plotter.save()
 
     def test_pes1(self):
         plotter = PlotPES(height=8)
@@ -51,10 +51,10 @@ class TestPlot(unittest.TestCase):
 
         plotter.save()
 
-    def test_neb(self):
-        plotter = PlotNEB()
-        plotter.plot(workdir=Path("neb-test"))
-        plotter.save()
+    # def test_neb(self):
+    #     plotter = PlotNEB()
+    #     plotter.plot(workdir=Path("neb-test"))
+    #     plotter.save()
 
 
 if __name__ == '__main__':
