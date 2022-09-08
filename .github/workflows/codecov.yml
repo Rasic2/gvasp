@@ -4,32 +4,34 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
-      - name: install dependencies
+      - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: generate lib files
+      - name: Generate lib files
         run: |
           python setup.py build
           find ./build -iname '*.so' -exec cp {} ./gvasp/lib \;
-      - name: modify config
+      - name: Modify config
         run: |
           python tests/modify_config.py
-      - name: copy files
+      - name: Copy files
         run: |
           cp tests/*.xsd .
           cp tests/XDATCAR .
           cp tests/OUTCAR .
           cp tests/CONTCAR .
           cp tests/EIGENVAL .
-      - name: run tests and collect coverage
+          cp tests/AECCAR* .
+          cp tests/CHGCAR .
+      - name: Run tests and collect coverage
         run: |
           pip install pytest
           pip install pytest-cov
           pytest --cov=./ --cov-report=xml
-      - name: upload coverage to Codecov
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

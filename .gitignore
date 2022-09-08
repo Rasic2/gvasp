@@ -114,8 +114,6 @@ DOSCAR*
 .idea
 *.svg
 logs/
-CHGCAR*
-AECCAR*
 *.grd
 MODECAR
 Temp
