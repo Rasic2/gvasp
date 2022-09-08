@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from common.plot import PlotOpt, PlotBand, PlotDOS, PlotPES, PlotNEB
+from gvasp.common.plot import PlotOpt, PlotBand, PlotDOS, PlotPES, PlotNEB
 
 
 class TestPlot(unittest.TestCase):
