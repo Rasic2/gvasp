@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from common.setting import RootDir
+from gvasp.common.setting import RootDir
 
 config = {"potdir": f"{Path(RootDir).parent}/tests/pot"}
 
