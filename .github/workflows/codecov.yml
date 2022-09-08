@@ -19,6 +19,9 @@ jobs:
       - name: modify config
         run: |
           python tests/modify_config.py
+      - name: copy *.xsd file
+        run: |
+          cp tests/*.xsd .
       - name: run tests and collect coverage
         run: |
           pip install pytest
