@@ -84,8 +84,8 @@ class TestSubmitTask(unittest.TestCase):
     def test_neb(self):
         task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
                        fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
-        task.generate(method="linear")
-
+        task.generate(method="idpp")
+        
         for dir in NEBTask._search_neb_dir():
             shutil.rmtree(dir)
 
