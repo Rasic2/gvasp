@@ -406,11 +406,11 @@ class FreqTask(BaseTask, Animatable):
         self.incar.POTIM = 0.015
 
     @staticmethod
-    def movie(freq="image"):
+    def movie(file="OUTCAR", freq="image"):
         """
         visualize the frequency vibration, default: image
         """
-        outcar = OUTCAR("OUTCAR")
+        outcar = OUTCAR(file)
         outcar.animation_freq(freq=freq)
 
 

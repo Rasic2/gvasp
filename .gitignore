@@ -137,7 +137,6 @@ xsd/
 *.incar
 *.submit
 /tests/CONTCAR-test
-/tests/OUTCAR_freq
 /tests/OUTCAR_opt
 /tests/neb-test/OUTCAR
 /tests/neb-test/00/OUTCAR

@@ -1131,7 +1131,7 @@ class OUTCAR(MetaFile):
         if isinstance(freq, str) and freq != "image":
             raise FrequencyError(f"`{freq}` is not supported, should be `image`")
 
-        freq = [index for index, item in enumerate(self.frequency.image) if item] if isinstance(freq, str) else freq
+        freq = [index for index, item in enumerate(self.frequency.image) if item] if isinstance(freq, str) else [freq]
 
         if len(freq) == 0:
             raise FrequencyError(f"`{freq}` frequency is not found")

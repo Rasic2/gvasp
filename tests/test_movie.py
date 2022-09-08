@@ -19,9 +19,9 @@ class TestMovie(unittest.TestCase):
     def test_opt(self):
         OptTask.movie()
 
-    # @file_cleaner
-    # def test_freq(self):
-    #     FreqTask.movie()
+    @file_cleaner
+    def test_freq(self):
+        FreqTask.movie(file=Path(".") / "tests" / "OUTCAR_freq", freq=0)
 
     @file_cleaner
     def test_neb(self):
