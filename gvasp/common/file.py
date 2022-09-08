@@ -832,10 +832,14 @@ class CHGBase(StructInfoFile):
             factor:     coordination factor
         """
         self.structure.write_POSCAR(name=self.__class__.__name__, title=title, factor=factor)
-        density_fortran = self.density.reshape(-1, order="F").reshape(-1, 5)
+        density_fortran = self.density.reshape(-1, order="F")
+        residue = density_fortran.size % 5
+        density_fortran1 = density_fortran[:-residue].reshape(-1, 5)
+        density_fortran2 = density_fortran[-residue:].reshape(1, -1)
         with open(self.__class__.__name__, "a+") as f:
             f.write(f"{self.NGX:>5}{self.NGY:>5}{self.NGZ:>5}\n")
-            np.savetxt(f, density_fortran, fmt="%18.11E")
+            np.savetxt(f, density_fortran1, fmt="%18.11E")
+            np.savetxt(f, density_fortran2, fmt="%18.11E")
 
 
 class AECCAR0(CHGBase):
@@ -918,11 +922,19 @@ class CHGCAR(StructInfoFile):
         self._density_tot_strings = self.strings[index[0] + 1:index[0] + 1 + count]
         self._density_mag_strings = self.strings[index[1] + 1:index[1] + 1 + count]
 
-        self.density_tot = np.append([], np.char.split(self._density_tot_strings).tolist()).astype(float)
-        self.density_tot = self.density_tot.reshape((self.NGX, self.NGY, self.NGZ), order="F")
+        # solve residue problem
+        self._density_tot_strings_list = np.char.split(self._density_tot_strings).tolist()
+        residue = 5 - len(self._density_tot_strings_list[-1])
+        self._density_tot_strings_list[-1] += ['0.'] * residue
 
-        self.density_mag = np.append([], np.char.split(self._density_mag_strings).tolist()).astype(float)
-        self.density_mag = self.density_mag.reshape((self.NGX, self.NGY, self.NGZ), order="F")
+        self._density_mag_strings_list = np.char.split(self._density_mag_strings).tolist()
+        self._density_mag_strings_list[-1] += ['0.'] * residue
+
+        self.density_tot = np.append([], self._density_tot_strings_list).astype(float)
+        self.density_tot = self.density_tot[:-residue].reshape((self.NGX, self.NGY, self.NGZ), order="F")
+
+        self.density_mag = np.append([], self._density_mag_strings_list).astype(float)
+        self.density_mag = self.density_mag[:-residue].reshape((self.NGX, self.NGY, self.NGZ), order="F")
 
     def split(self):
         """split CHGCAR to CHGCAR_tot && CHGCAR_mag"""
