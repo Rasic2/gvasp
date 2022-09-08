@@ -1,5 +1,4 @@
 import unittest
-from pathlib import Path
 
 from gvasp.common.plot import PlotOpt, PlotBand, PlotDOS, PlotPES, PlotNEB
 
@@ -7,12 +6,12 @@ from gvasp.common.plot import PlotOpt, PlotBand, PlotDOS, PlotPES, PlotNEB
 class TestPlot(unittest.TestCase):
 
     def test_opt(self):
-        plotter = PlotOpt(Path(".") / "tests" / "OUTCAR")
+        plotter = PlotOpt("OUTCAR")
         plotter.plot()
         plotter.save()
 
     def test_band(self):
-        plotter = PlotBand(Path(".") / "tests" / "EIGENVAL", title="Band Structure")
+        plotter = PlotBand("EIGENVAL", title="Band Structure")
         plotter.plot()
         plotter.save()
 

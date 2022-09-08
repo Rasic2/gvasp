@@ -25,6 +25,7 @@ jobs:
           cp tests/XDATCAR .
           cp tests/OUTCAR .
           cp tests/CONTCAR .
+          cp tests/EIGENVAL .
       - name: run tests and collect coverage
         run: |
           pip install pytest
