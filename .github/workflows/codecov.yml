@@ -23,6 +23,8 @@ jobs:
         run: |
           cp tests/*.xsd .
           cp tests/XDATCAR .
+          cp tests/OUTCAR .
+          cp tests/CONTCAR .
       - name: run tests and collect coverage
         run: |
           pip install pytest

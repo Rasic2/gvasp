@@ -117,11 +117,9 @@ logs/
 CHGCAR*
 AECCAR*
 *.grd
-OUTCAR
 MODECAR
 Temp
 *.cell
-OUTCAR*
 xsd_test
 KPOINTS
 *.arc
@@ -140,3 +138,11 @@ xsd/
 *.incar
 *.submit
 /tests/CONTCAR-test
+/tests/OUTCAR_freq
+/tests/OUTCAR_opt
+/tests/neb-test/OUTCAR
+/tests/neb-test/00/OUTCAR
+/tests/neb-test/01/OUTCAR
+/tests/neb-test/02/OUTCAR
+/tests/neb-test/03/OUTCAR
+/tests/neb-test/04/OUTCAR
