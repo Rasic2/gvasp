@@ -16,7 +16,7 @@ class TestPlot(unittest.TestCase):
         plotter.save()
 
     def test_dos(self):
-        plotter = PlotDOS(dos_file='DOSCAR-dos', pos_file='CONTCAR-dos')
+        plotter = PlotDOS(dos_file='DOSCAR_dos', pos_file='CONTCAR_dos')
         plotter.plot(color='#ed0345')
         plotter.plot(atoms='C', color='#000000')
         plotter.save()
