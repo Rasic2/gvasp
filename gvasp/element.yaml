@@ -71,6 +71,26 @@ Element F:
         Element P: 1.540
         Element S: 1.590
 
+Element Al:
+    formula: Al
+    number: 13
+    period: 3
+    group: 13
+    color: '#FF64FF'
+    _default_bonds:
+        Element H: 1.906
+        Element N: 2.246
+        Element O: 2.107
+        Element F: 2.001
+        Element P: 2.696
+        Element S: 2.666
+        Element Cl: 2.488
+        Element As: 2.756
+        Element Se: 2.726
+        Element Br: 2.656
+        Element Te: 2.936
+        Element I: 2.866
+
 Element P:
     formula: P
     number: 15
@@ -218,6 +238,26 @@ Element Br:
         Element S: 2.270
         Element Cl: 2.332
         Element Br: 2.290
+
+Element Zr:
+    formula: Zr
+    number: 40
+    period: 5
+    group: 4
+    color: '#96E1E1'
+    _default_bonds:
+        Element H: 2.290
+        Element N: 2.650
+        Element O: 3.096
+        Element F: 2.996
+        Element P: 3.020
+        Element S: 2.910
+        Element Cl: 3.336
+        Element As: 3.070
+        Element Se: 3.030
+        Element Br: 2.980
+        Element Te: 3.170
+        Element I: 3.190
 
 Element Sn:
     formula: Sn
