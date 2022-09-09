@@ -34,6 +34,7 @@ class ConfigManager(object):
                f"! ConfigDir:      {self.config_dir} \n" \
                f"! INCAR-template: {self.template} \n" \
                f"! UValue:         {self.UValue} \n" \
+               f"! scheduler:      {self.scheduler.stem} \n" \
                f"! PotDir:         {self.potdir} \n" \
                f"! LogDir:         {self.logdir} \n" \
                f"------------------------------------------------------------------------------------------"

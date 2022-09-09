@@ -22,11 +22,14 @@ Initial environment is like this:
     ! ConfigDir:      /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp
     ! INCAR-template: /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/INCAR
     ! UValue:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/UValue.yaml
+    ! scheduler:      slurm
     ! PotDir:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/pot
     ! LogDir:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/logs
     ------------------------------------------------------------------------------------------
 
 * ConfigDir: represents the directory of :file:`INCAR (template)`, :file:`UValue.yaml` and :file:`pot`
+
+* scheduler: represents the job control system, now only support the slurm (but you can specify a .submit file in your parent-chain path, see :ref:`here <user_template>`)
 
 * LogDir: represents the directory of logs
 
@@ -76,3 +79,16 @@ and run command:
     gvasp config -f config.json
 
 Then the environment will be reset, :program:`GVasp` will auto search the :file:`INCAR` and :file:`UValue.yaml` under the config_dir.
+
+.. _user_template:
+
+User template
+----------------
+
+Now, user can defined their incar or submit template with the following steps:
+
+1. Named the incar or submit template as the *.incar and *.submit files.
+
+2. Put them in your parent or parent's parent and so on directories (defined as the :code:`parent-chain`).
+
+After these two steps, the :program:`GVasp` :ref:`generate the inputs <generate>` will apply your templates.

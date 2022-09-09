@@ -1,5 +1,7 @@
 .. |inputs| replace:: :file:`INCAR`, :file:`KPOINTS`, :file:`POSCAR` and :file:`POTCAR`
 
+.. _generate:
+
 Generate Vasp Inputs
 =================================
 

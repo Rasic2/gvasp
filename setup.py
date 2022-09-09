@@ -39,7 +39,8 @@ setup(
         'numpy',
         'pandas',
         'pyyaml',
-        'scipy'],
+        'scipy',
+        'pytest'],
     ext_modules=cythonize([Extension(name='gvasp.lib.dos_cython', sources=['extension/dos_cython.pyx']),
                            Extension(name='gvasp.lib.path_cython', sources=['extension/path_cython.pyx'])],
                           language_level=3) +
@@ -48,6 +49,6 @@ setup(
                  Extension(name='gvasp.lib.base_bind', sources=['extension/base_bind.cpp'])],
     include_dirs=[sysconfig.get_config_var("INCLUDE"), np.get_include(), pybind11.get_include()],
     include_package_data=True,
-    package_data={"gvasp": ["*.json", "*.yaml", "INCAR"]},
+    package_data={"gvasp": ["*.json", "*.yaml", "INCAR", "*.submit"]},
     entry_points={'console_scripts': ['gvasp = gvasp.main:main']}
 )

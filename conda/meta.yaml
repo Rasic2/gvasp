@@ -32,6 +32,7 @@ requirements:
     - pandas
     - pyyaml
     - scipy
+    - pytest
 
 about:
   home: https://github.com/Rasic2/gvasp
