@@ -15,6 +15,9 @@ The command is simple, like this:
 
     gvasp sort --ini_poscar INI_POSCAR --fni_poscar FNI_POSCAR
 
+.. note::
+    The INI_POSCAR and FNI_POSCAR are names provided by user of the initial and final structures.
+
 Then :program:`GVasp` will generate two POSCAR files which suffix is :file:`_sort`.
 
 .. note::

@@ -9,6 +9,7 @@ Welcome to GVasp's documentation!
    install
    config-setting
    functions/submit
+   functions/output
    functions/movie
    functions/plot
    functions/sort

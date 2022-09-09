@@ -38,3 +38,19 @@ Certainly, if you don't like the default potential (**"PAW_PBE"**), you can also
 
 .. note::
     The -p/--potential accept one or more values, if you specify one potential, all the elements will use the same potential; and if you specify two or more potentials, the potential will auto corresponding to the element in POSCAR, noticed that the number of potential should equal to the number of elements in POSCAR
+
+.. _low:
+
+open low-first option
+----------------------
+
+In the practical calculation, the structure optimization is time spent and one method to accelerate the optimization task can start from a low-accuracy calculation and then perform the normal calculation based the optimized low-accuracy structure.
+
+Using :program:`GVasp`, you can run the following command to perform such low-first calculation:
+
+.. code-block:: bash
+
+    gvasp submit opt -l/--low
+
+.. note::
+    In fact, in the latest version, we only set the ENCUT as 300 to perform the low-accuracy calculation.

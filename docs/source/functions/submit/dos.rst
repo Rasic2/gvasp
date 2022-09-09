@@ -27,3 +27,17 @@ If you want to specify potential, just run the command:
 
 .. note::
     More information of potential setting can be seen in :ref:`optimization <potential>` task.
+
+apply sequential task
+----------------------
+
+If you finally want to perform the DOS calculation, we recommend you use the following command:
+
+.. code-block:: bash
+
+    gvasp submit dos -s/--sequential
+
+and the task will perform the optimization, charge calculation and DOS calculation in a sequential task.
+
+.. note::
+    Sequential task also support the :ref:`low <low>` and :ref:`analysis <analysis>` options.
