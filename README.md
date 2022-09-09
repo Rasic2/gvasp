@@ -20,9 +20,10 @@
 
 ## About GVasp
 
-A quick post-process for resolve or assistant the VASP calculations, which can involve in four kinds of tasks as below:
+A quick post-process for resolve or assistant the VASP calculations, which can involve in many kinds of tasks as below:
 
 * generate inputs
+* visualize output
 * visualize trajectory
 * plot interface
 * charge related work
@@ -83,7 +84,7 @@ conda create -n gvasp python=3.9
 If you run the `gvasp -v` and print version information, then you install the `GVasp` successful ~~
 
 ```
-GVasp version 0.0.2 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
+GVasp version 0.0.3 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
 ```
 
 ## Setting Environment
@@ -103,12 +104,15 @@ Initial environment is like this:
 ! ConfigDir:      /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp
 ! INCAR-template: /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/INCAR
 ! UValue:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/UValue.yaml
+! scheduler:      slurm
 ! PotDir:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/pot
 ! LogDir:         /mnt/c/Users/hui_zhou/Desktop/packages/gvasp/gvasp/logs
 ------------------------------------------------------------------------------------------
 ```
 
 - ConfigDir: represents the directory of `INCAR (template)`, `UValue.yaml` and `pot`
+
+- scheduler: represents the job control system, now only support slurm (but you can specify a .submit file in your parent-chain path)
 
 - LogDir: represents the directory of `logs`
 
@@ -152,6 +156,16 @@ gvasp config -f config.json
 
 Then the environment will be reset, `GVasp` will auto search the `INCAR`and `UValue.yaml` under the `config_dir`.
 
+### User template
+
+`GVasp` support user to define their incar or submit template with the following steps:
+
+1. Named the incar or submit template as the `*.incar` and `*.submit` files.
+
+2. Put them in your parent directory or parent’s parent directory and so on (defined as the parent-chain).
+
+After these two steps, the GVasp generate the inputs will apply your templates.
+
 ## Code Structure
 
 * [gvasp](gvasp): source code directory
@@ -175,4 +189,6 @@ Then the environment will be reset, `GVasp` will auto search the `INCAR`and `UVa
 * pybind11
 * numpy
 * matplotlib
+
+Copyright © 2022 `Hui Zhou` All rights reserved.
 
