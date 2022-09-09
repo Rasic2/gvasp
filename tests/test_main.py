@@ -8,18 +8,24 @@ parser = main_parser()
 class TestMain():
     def test_help(self):
         try:
-            args = parser.parse_args(["-h"])
-            main(parser, args)
+            args = ["", "-h"]
+            main(args)
         except SystemExit:
             pass
 
     def test_list(self):
-        args = parser.parse_args(["-l"])
-        main(parser, args)
+        try:
+            args = ["", "-l"]
+            main(args)
+        except SystemExit:
+            pass
 
     def test_version(self):
-        args = parser.parse_args(["-v"])
-        main(parser, args)
+        try:
+            args = ["", "-v"]
+            main(args)
+        except SystemExit:
+            pass
 
 
 if __name__ == '__main__':

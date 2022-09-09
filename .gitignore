@@ -140,3 +140,5 @@ xsd/
 /tests/neb-test/02/OUTCAR
 /tests/neb-test/03/OUTCAR
 /tests/neb-test/04/OUTCAR
+/extension/dos_cython.cpp
+/extension/path_cython.c

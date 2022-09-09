@@ -101,9 +101,11 @@ def main_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(parser, args):
+def main(argv):
     Config = ConfigManager()
     logger = Logger().logger
+    parser = main_parser()
+    args = parser.parse_args(argv)
 
     if len(sys.argv) == 1:
         parser.print_help()
@@ -294,6 +296,4 @@ def main(parser, args):
 
 
 if __name__ == "__main__":
-    parser = main_parser()
-    args = parser.parse_args()
-    main(parser, args)
+    main(sys.argv[1:])
