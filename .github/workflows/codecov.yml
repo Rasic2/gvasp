@@ -28,6 +28,7 @@ jobs:
           cp tests/EIGENVAL .
           cp tests/AECCAR* .
           cp tests/CHGCAR .
+          cp tests/CONTCAR_dos tests/DOSCAR_dos .
       - name: Run tests and collect coverage
         run: |
           pip install pytest

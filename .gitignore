@@ -110,7 +110,6 @@ Uvalue
 test
 OUT.ANI
 dis_*
-DOSCAR*
 .idea
 *.svg
 logs/
@@ -134,7 +133,6 @@ tests/con-TS
 xsd/
 *.incar
 *.submit
-/tests/CONTCAR-test
 /tests/OUTCAR_opt
 /tests/neb-test/OUTCAR
 /tests/neb-test/00/OUTCAR
