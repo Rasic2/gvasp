@@ -4,12 +4,12 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-from gvasp.common.constant import RED, RESET
+from gvasp.common.constant import RED, RESET, Version, Platform
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import Logger
 from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
-from gvasp.common.setting import ConfigManager, RootDir, Version, Platform
+from gvasp.common.setting import ConfigManager, RootDir
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
     SequentialTask, OutputTask
 from gvasp.common.utils import colors_generator
@@ -101,10 +101,13 @@ def main_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv):
+def main(argv=None):
     Config = ConfigManager()
     logger = Logger().logger
     parser = main_parser()
+
+    if argv is None:
+        argv = sys.argv[1:]
     args = parser.parse_args(argv)
 
     if len(sys.argv) == 1:

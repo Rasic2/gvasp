@@ -1,15 +1,11 @@
 import inspect
 import json
 import os
-import platform
 import shutil
 from pathlib import Path
 
 from gvasp.common.encoder import PathJSONEncoder
 from gvasp.common.utils import get_HOME
-
-Version = "0.0.2"
-Platform = platform.platform()
 
 ComDir = os.path.dirname(os.path.abspath(os.path.realpath(inspect.getfile(inspect.currentframe()))))
 RootDir = os.path.dirname(ComDir)
