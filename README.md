@@ -15,6 +15,7 @@
 - [Setting Environment](#setting-environment)
     - [Default Environment](#default-environment)
     - [Modify Environment](#modify-environment)
+    - [User Template](#user-template)
 - [Code Structure](#code-structure)
 - [Requirements](#requirements)
 
