@@ -15,19 +15,6 @@ Welcome to GVasp's documentation!
    functions/sort
    functions/charge
 
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Package Production
-
-   package
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Environment Migration
-
-   environment
-
 .. toctree::
    :maxdepth: 1
    :caption: Module

@@ -142,3 +142,7 @@ xsd/
 /tests/neb-test/04/OUTCAR
 /extension/dos_cython.cpp
 /extension/path_cython.c
+/conda
+!/conda/bld.bat
+!/conda/build.sh
+!/conda/meta.yaml
