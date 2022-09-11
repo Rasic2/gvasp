@@ -89,6 +89,21 @@ Now, user can defined their incar or submit template with the following steps:
 
 1. Named the incar or submit template as the *.incar and *.submit files.
 
-2. Put them in your parent or parent's parent and so on directories (defined as the :code:`parent-chain`).
+2. Put them in your work directory or parent directory or parent's parent directory and so on directories (defined as the :code:`parent-chain`).
+
+For example, if you want to submit a job in the :file:`/public1/home/sc81076/hzhou/M-CeO2/test` directory, the incar and/or submit template put in these directories is allowed:
+
+.. code-block:: bash
+
+    /public1/home/sc81076/hzhou/M-CeO2/test
+    /public1/home/sc81076/hzhou/M-CeO2
+    /public1/home/sc81076/hzhou/
+    /public1/home/sc81076/
+    /public1/home/
+    /public1/
+    /
 
 After these two steps, the :program:`GVasp` :ref:`generate the inputs <generate>` will apply your templates.
+
+.. note::
+    If you have two or more templates in these directories at the same time, the :program:`GVasp` will select the directory which is nearest to the work directory.
