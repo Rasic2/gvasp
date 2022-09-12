@@ -108,7 +108,7 @@ class BaseTask(metaclass=abc.ABCMeta):
                   f"{self.structure.atoms.size[element]:>6d}"
                   f"{element_tf:>6d}(T)   "
                   f"{p}    "
-                  f"{self.incar.LDAUL[index]}     "
+                  f"{self.incar.LDAUL[index]:>2d}     "
                   f"{self.incar.LDAUU[index] - self.incar.LDAUJ[index]}")
             index += 1
         print()

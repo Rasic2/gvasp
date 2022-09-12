@@ -299,6 +299,26 @@ Element Ce:
         Element Te: 3.226
         Element I: 3.624
 
+Element W:
+    formula: W
+    number: 74
+    period: 6
+    group: 6
+    color: '#2794D6'
+    _default_bonds:
+        Element H: 1.809
+        Element N: 2.109
+        Element O: 2.201
+        Element F: 2.030
+        Element P: 2.509
+        Element S: 2.439
+        Element Cl: 2.470
+        Element As: 2.589
+        Element Se: 2.559
+        Element Br: 2.499
+        Element Te: 2.759
+        Element I: 2.709
+
 Element Au:
     formula: Au
     number: 79
