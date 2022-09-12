@@ -146,3 +146,4 @@ xsd/
 !/conda/bld.bat
 !/conda/build.sh
 !/conda/meta.yaml
+/tests/NEB-0912/

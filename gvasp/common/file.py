@@ -326,15 +326,22 @@ class POTCAR(MetaFile):
             raise TypeError(f"potentials should be {POTENTIAL}")
 
         if isinstance(potentials, str):
-            potdir = Path(potdir) / potentials
-            potcar = reduce(add, [POTCAR(name=(potdir / Path(element) / "POTCAR")) for element in elements])
+            potentials = [potentials] * len(elements)
         elif isinstance(potentials, list) and len(potentials) == len(elements):
-            potcar = reduce(add, [POTCAR(name=Path(potdir) / potential / Path(element) / "POTCAR")
-                                  for potential, element in zip(potentials, elements)])
+            pass
         else:
             raise ParameterError(f"{potentials} and {elements} is not match")
 
-        return potcar
+        potcar_instances = []
+        logger = Logger().logger
+        for potential, element in zip(potentials, elements):
+            if element == "Zr" and potential == "PAW_PBE":
+                potcar_instances.append(POTCAR(name=(Path(potdir) / potential / f"{Path(element)}_sv" / "POTCAR")))
+                logger.warning(f"{element} with {potential} has not corresponding POTCAR, use *_sv instead")
+            else:
+                potcar_instances.append(POTCAR(name=(Path(potdir) / potential / f"{Path(element)}" / "POTCAR")))
+
+        return reduce(add, potcar_instances)
 
     def write(self, name):
         with open(name, "w") as f:
