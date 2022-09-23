@@ -1,11 +1,9 @@
 import pytest
 
-from gvasp.main import main_parser, main
-
-parser = main_parser()
+from gvasp.main import main
 
 
-class TestMain():
+class TestMain(object):
     def test_help(self):
         try:
             args = ["", "-h"]
@@ -29,4 +27,4 @@ class TestMain():
 
 
 if __name__ == '__main__':
-    pytest.main(['./test_main.py'])
+    pytest.main([__file__])

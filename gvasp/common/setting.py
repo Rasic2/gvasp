@@ -1,6 +1,7 @@
 import inspect
 import json
 import os
+import re
 import shutil
 from pathlib import Path
 
@@ -49,7 +50,16 @@ class ConfigManager(object):
 
         self.template = self.config_dir / 'INCAR'  # location of template
         self.UValue = self.config_dir / 'UValue.yaml'  # location of UValue
-        self.potdir = Path(config['potdir']) if 'potdir' in config and config['potdir'] is not None else None
+
+        if 'potdir' in config and config['potdir'] is not None:
+            string = config['potdir']
+            env_matches = re.findall(r"[/\\]*\$(\w+)[/\\]*", string)
+            for match in env_matches:
+                if os.getenv(match):
+                    string = string.replace("$" + match, os.getenv(match))  # may cause bug, e.g. $HOME && $HOMEPATH
+            self.potdir = Path(string).expanduser()
+        else:
+            self.potdir = None
 
         try:
             if Path(config['logdir']).exists():
