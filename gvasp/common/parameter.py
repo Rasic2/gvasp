@@ -104,6 +104,7 @@ class Parameter(object):
     IVDW = ValueDescriptor("IVDW", [0, 1, 10, 11, 12, 2, 20, 21, 202, 4])
     LSOL = TypeDescriptor('LSOL', bool)
     EB_K = TypeDescriptor('EB_K', float)
+    LVHAR = TypeDescriptor('LVHAR', bool)
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -122,7 +123,8 @@ class Parameter(object):
                         },
                    "_bool_Param":
                        {'func': logic,
-                        'name': ['LWAVE', 'LCHARG', 'LDAU', 'LAECHG', 'LCLIMB', 'LPARD', 'LSEPB', 'LSEPK', 'LSOL'],
+                        'name': ['LWAVE', 'LCHARG', 'LDAU', 'LAECHG', 'LCLIMB', 'LPARD', 'LSEPB', 'LSEPK', 'LSOL',
+                                 'LVHAR'],
                         },
                    "_bool_str_Param":
                        {'func': bool_str,
@@ -170,3 +172,5 @@ class Parameter(object):
     _vdwParam = ('IVDW',)
 
     _solParam = ('LSOL', 'EB_K')
+
+    _wfParam = ('LVHAR',)

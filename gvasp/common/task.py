@@ -393,6 +393,40 @@ class ChargeTask(BaseTask):
         CHGCAR_mag("CHGCAR_mag").to_grd(name=name, DenCut=Dencut)
 
 
+class WorkFuncTask(BaseTask):
+    """
+    Work Function calculation task manager, subclass of BaseTask
+    """
+
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False):
+        """
+        fully inherit BaseTask's generate
+        """
+        super(WorkFuncTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol)
+
+    def _generate_cdir(self, dir="workfunc", files=None):
+        if files is None:
+            files = ["INCAR", "CONTCAR"]
+        super(WorkFuncTask, self)._generate_cdir(dir=dir, files=files)
+
+    @write_wrapper
+    def _generate_INCAR(self, vdw, sol):
+        """
+        Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
+        parameters setting:
+            ISTART = 1
+            ICHARG = 11
+            IBRION = -1
+            NSW = 1
+            LORBIT = 12
+            NEDOS = 2000
+        """
+        super(WorkFuncTask, self)._generate_INCAR(vdw, sol)
+        self.incar.IBRION = -1
+        self.incar.NSW = 1
+        self.incar.LVHAR = True
+
+
 class DOSTask(BaseTask):
     """
     Density of States (DOS) calculation task manager, subclass of BaseTask
@@ -829,6 +863,24 @@ class SequentialTask(object):
             if analysis:
                 ChargeTask.apply_analysis()
 
+        if self.end == "wf":
+            low_string = "low first, " if low else ""
+            print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + RESET)
+            run_command = SubmitFile("submit.script").run_command
+            with open("submit.script", "a+") as g:
+                g.write("\n"
+                        "#----------/WorkFunc Option/----------#\n"
+                        "mkdir workfunc \n"
+                        "cp OUTCAR OUTCAR_backup \n"
+                        "cp INCAR KPOINTS POTCAR workfunc \n"
+                        "cp CONTCAR workfunc/POSCAR \n"
+                        f"sed -i '/IBRION/c\  IBRION = -1' workfunc/INCAR \n"
+                        f"sed -i '/NSW/c\  NSW = 1' workfunc/INCAR \n"
+                        f"sed -i '/NSW/a\  LVHAR = .TRUE.' workfunc/INCAR \n"
+                        f"cd workfunc || return \n"
+                        f"\n"
+                        f"{run_command}")
+
         if self.end == "dos":
             run_command = SubmitFile("submit.script").run_command
             with open("submit.script", "a+") as g:
@@ -850,5 +902,5 @@ class SequentialTask(object):
                         f"\n"
                         f"{run_command}")
 
-        if self.end not in ['opt', 'chg', 'dos']:
-            raise TypeError(f"Unsupported Sequential Task to {self.end}, should be [opt, chg, dos]")
+        if self.end not in ['opt', 'chg', 'wf', 'dos']:
+            raise TypeError(f"Unsupported Sequential Task to {self.end}, should be [opt, chg, wf, dos]")

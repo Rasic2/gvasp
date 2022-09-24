@@ -192,6 +192,7 @@ class INCAR(MetaFile, Parameter):
         self._write_opt(name)
         self._write_md(name)
         self._write_charge(name)
+        self._write_wf(name)
         self._write_density(name)
         self._write_freq(name)
         self._write_stm(name)
@@ -234,6 +235,11 @@ class INCAR(MetaFile, Parameter):
     def _write_charge(self, name):
         with open(name, "a+") as f:
             f.write(f"#----------/Charge Parameter/----------# \n")
+
+    @formatter(Parameter._wfParam)
+    def _write_wf(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/WorkFunc Parameter/----------# \n")
 
     @formatter(Parameter._dosParam)
     def _write_density(self, name):

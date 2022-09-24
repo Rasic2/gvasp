@@ -11,7 +11,7 @@ from gvasp.common.logger import Logger
 from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
 from gvasp.common.setting import ConfigManager, RootDir
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
-    SequentialTask, OutputTask
+    SequentialTask, OutputTask, WorkFuncTask
 from gvasp.common.utils import colors_generator
 
 
@@ -29,7 +29,8 @@ def main_parser() -> argparse.ArgumentParser:
 
     # submit parser
     submit_parser = subparsers.add_parser(name="submit", help="generate inputs for special job-task")
-    submit_parser.add_argument("task", choices=["opt", "con-TS", "chg", "dos", "freq", "md", "stm", "neb", "dimer"],
+    submit_parser.add_argument("task",
+                               choices=["opt", "con-TS", "chg", "wf", "dos", "freq", "md", "stm", "neb", "dimer"],
                                type=str, help='specify job type for submit')
     submit_parser.add_argument("-P", "--potential", metavar="POTENTIAL", default="PAW_PBE", nargs="+", type=str,
                                help=f'specify potential, optional: {POTENTIAL}')
@@ -38,14 +39,18 @@ def main_parser() -> argparse.ArgumentParser:
     submit_parser.add_argument("-C", "--continuous", help=f'calculation from finished job', action='store_true')
 
     low_group = submit_parser.add_argument_group(title='low-task',
-                                                 description='only valid for opt and sequential [chg, dos] tasks')
+                                                 description='only valid for opt and sequential [chg, wf, dos] tasks')
     low_group.add_argument("-l", "--low", help="specify whether perform low-accuracy calculation first",
                            action="store_true")
 
-    charge_task = submit_parser.add_argument_group(title='charge-task', description='only valid for chg and dos tasks')
-    charge_task.add_argument("-s", "--sequential", help='whether or not sequential', action="store_true")
-    charge_task.add_argument("-a", "--analysis", help='whether or not apply bader calculation && split CHGCAR',
-                             action="store_true")
+    sequential_group = submit_parser.add_argument_group(title='sequential-task',
+                                                        desctiption='only valid for [chg, wf, dos] tasks')
+    sequential_group.add_argument("-s", "--sequential", help='whether or not sequential', action="store_true")
+
+    charge_group = submit_parser.add_argument_group(title='charge-task',
+                                                    description='only valid for chg and sequential [chg, dos] tasks')
+    charge_group.add_argument("-a", "--analysis", help='whether or not apply bader calculation && split CHGCAR',
+                              action="store_true")
 
     neb_submit_group = submit_parser.add_argument_group(title='neb-task')
     neb_submit_group.add_argument("-ini", "--ini_poscar", type=str, help='specify ini poscar for neb task')
@@ -162,6 +167,14 @@ def main(argv=None):
                     logger.info(f"generate `chg` task")
                     ChargeTask().generate(potential=args.potential, continuous=args.continuous, analysis=args.analysis,
                                           vdw=args.vdw, sol=args.sol)
+            elif args.task == "wf":
+                if args.sequential:
+                    SequentialTask(end="wf").generate(potential=args.potential, low=args.low, vdw=args.vdw,
+                                                      sol=args.sol)
+                else:
+                    logger.info(f"generate `wf` task")
+                    WorkFuncTask().generate(potential=args.potential, continuous=args.continuous, vdw=args.vdw,
+                                            sol=args.sol)
             elif args.task == "dos":
                 if args.sequential:
                     SequentialTask(end="dos").generate(potential=args.potential, low=args.low, analysis=args.analysis,
