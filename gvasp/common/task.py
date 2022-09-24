@@ -1,4 +1,6 @@
 import abc
+import os
+import shutil
 from functools import wraps
 from pathlib import Path
 
@@ -9,7 +11,7 @@ from gvasp.common.constant import GREEN, YELLOW, RESET, RED
 from gvasp.common.base import Atom
 from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
 from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
-    CHGCAR_mag, INCAR, SubmitFile
+    CHGCAR_mag, INCAR, SubmitFile, CONTCAR
 from gvasp.common.logger import Logger
 from gvasp.common.setting import WorkDir, ConfigManager
 from gvasp.neb.path import IdppPath, LinearPath
@@ -85,16 +87,26 @@ class BaseTask(metaclass=abc.ABCMeta):
 
     @end_symbol
     @abc.abstractmethod
-    def generate(self, potential: (str, list), vdw, sol):
+    def generate(self, potential: (str, list), continuous=False, vdw=False, sol=False):
         """
         generate main method, subclass should inherit or overwrite
         """
-        self._generate_POSCAR()
+        if continuous:
+            self._generate_cdir()
+        self._generate_POSCAR(continuous)
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR(vdw=vdw, sol=sol)
         self._generate_submit()
         self._generate_info(potential=potential)
+
+    def _generate_cdir(self, dir=None, files=None):
+        Path(dir).mkdir(exist_ok=True)
+        for file in files:
+            shutil.copy(file, dir)
+            shutil.copy(file, dir)
+        os.chdir(dir)
+        self.incar = INCAR("INCAR")
 
     def _generate_info(self, potential):
         """
@@ -122,6 +134,12 @@ class BaseTask(metaclass=abc.ABCMeta):
         print(f"{YELLOW}INCAR template: {self._incar}{RESET}")
         print(f"{YELLOW}UValue template: {self.UValuePath}{RESET}")
         print(f"{YELLOW}Submit template: {self.submit}{RESET}")
+
+        if getattr(self.incar, "IVDW", None) is not None:
+            print(f"{RED}VDW-correction: IVDW = {self.incar.IVDW}{RESET}")
+
+        if getattr(self.incar, "LSOL", None) is not None:
+            print(f"{RED}Solvation calculation{RESET}")
 
     def _generate_INCAR(self, vdw, sol):
         """
@@ -165,21 +183,27 @@ class BaseTask(metaclass=abc.ABCMeta):
             f.write(f"{' '.join(list(map(str, KPOINTS.min_number(lattice=self.structure.lattice))))} \n")
             f.write("0 0 0 \n")
 
-    def _generate_POSCAR(self, *args, **kargs):
+    def _generate_POSCAR(self, continuous, *args, **kargs):
         """
         generate POSCAR from only one *.xsd file, and register `self.structure` and `self.elements`
         """
-        xsd_files = list(WorkDir.glob("*.xsd"))
-        if not len(xsd_files):
-            raise XSDFileNotFoundError("*.xsd file is not found, please check workdir")
-        elif len(xsd_files) > 1:
-            raise TooManyXSDFileError("exist more than one *.xsd file, please check workdir")
+        if not continuous:
+            xsd_files = list(WorkDir.glob("*.xsd"))
+            if not len(xsd_files):
+                raise XSDFileNotFoundError("*.xsd file is not found, please check workdir")
+            elif len(xsd_files) > 1:
+                raise TooManyXSDFileError("exist more than one *.xsd file, please check workdir")
 
-        xsd_file = XSDFile(xsd_files[0])
-        self.title = xsd_file.name.stem
-        self.structure = xsd_file.structure
-        self.elements = list(self.structure.atoms.size.keys())
-        self.structure.write_POSCAR(name="POSCAR")
+            xsd_file = XSDFile(xsd_files[0])
+            self.title = xsd_file.name.stem
+            self.structure = xsd_file.structure
+            self.elements = list(self.structure.atoms.size.keys())
+            self.structure.write_POSCAR(name="POSCAR")
+        else:
+            self.title = f"continuous-{self.__class__.__name__}"
+            self.structure = CONTCAR("CONTCAR").structure
+            self.elements = list(self.structure.atoms.size.keys())
+            self.structure.write_POSCAR(name="POSCAR")
 
     def _generate_POTCAR(self, potential):
         """
@@ -229,11 +253,13 @@ class OptTask(BaseTask, Animatable):
     """
 
     @end_symbol
-    def generate(self, potential="PAW_PBE", low=False, print_end=True, vdw=False, sol=False):
+    def generate(self, potential="PAW_PBE", continuous=False, low=False, print_end=True, vdw=False, sol=False):
         """
         rewrite BaseTask's generate
         """
-        self._generate_POSCAR()
+        if continuous:
+            self._generate_cdir()
+        self._generate_POSCAR(continuous)
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR(low=low, vdw=vdw, sol=sol)
@@ -241,6 +267,11 @@ class OptTask(BaseTask, Animatable):
         self._generate_info(potential=potential)
         if low and print_end:
             print(f"{RED}low first{RESET}")
+
+    def _generate_cdir(self, dir="opt_cal", files=None):
+        if files is None:
+            files = ["INCAR", "CONTCAR"]
+        super(OptTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
     def _generate_INCAR(self, low, vdw, sol):
@@ -285,16 +316,23 @@ class ChargeTask(BaseTask):
     """
 
     @end_symbol
-    def generate(self, potential="PAW_PBE", analysis=False, vdw=False, sol=False):
+    def generate(self, potential="PAW_PBE", continuous=False, analysis=False, vdw=False, sol=False):
         """
         rewrite BaseTask's generate
         """
-        self._generate_POSCAR()
+        if continuous:
+            self._generate_cdir()
+        self._generate_POSCAR(continuous)
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR(vdw, sol)
         self._generate_submit(analysis=analysis)
         self._generate_info(potential=potential)
+
+    def _generate_cdir(self, dir="chg_cal", files=None):
+        if files is None:
+            files = ["INCAR", "CONTCAR"]
+        super(ChargeTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol):
@@ -360,11 +398,16 @@ class DOSTask(BaseTask):
     Density of States (DOS) calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", vdw=False, sol=False):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False):
         """
         fully inherit BaseTask's generate
         """
-        super(DOSTask, self).generate(potential=potential, vdw=vdw, sol=sol)
+        super(DOSTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol)
+
+    def _generate_cdir(self, dir="dos_cal", files=None):
+        if files is None:
+            files = ["INCAR", "CONTCAR", "CHGCAR"]
+        super(DOSTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol):

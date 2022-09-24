@@ -31,10 +31,12 @@ def main_parser() -> argparse.ArgumentParser:
     submit_parser = subparsers.add_parser(name="submit", help="generate inputs for special job-task")
     submit_parser.add_argument("task", choices=["opt", "con-TS", "chg", "dos", "freq", "md", "stm", "neb", "dimer"],
                                type=str, help='specify job type for submit')
-    submit_parser.add_argument("-p", "--potential", metavar="POTENTIAL", default="PAW_PBE", nargs="+", type=str,
+    submit_parser.add_argument("-P", "--potential", metavar="POTENTIAL", default="PAW_PBE", nargs="+", type=str,
                                help=f'specify potential, optional: {POTENTIAL}')
-    submit_parser.add_argument("-v", "--vdw", help=f'add vdw-correction', action='store_True')
-    submit_parser.add_argument("-S", "--sol", help=f'perform solvation calculation', action='store_True')
+    submit_parser.add_argument("-V", "--vdw", help=f'add vdw-correction', action='store_true')
+    submit_parser.add_argument("-S", "--sol", help=f'perform solvation calculation', action='store_true')
+    submit_parser.add_argument("-C", "--continuous", help=f'calculation from finished job', action='store_true')
+
     low_group = submit_parser.add_argument_group(title='low-task',
                                                  description='only valid for opt and sequential [chg, dos] tasks')
     low_group.add_argument("-l", "--low", help="specify whether perform low-accuracy calculation first",
@@ -46,8 +48,8 @@ def main_parser() -> argparse.ArgumentParser:
                              action="store_true")
 
     neb_submit_group = submit_parser.add_argument_group(title='neb-task')
-    neb_submit_group.add_argument("--ini_poscar", type=str, help='specify ini poscar for neb task')
-    neb_submit_group.add_argument("--fni_poscar", type=str, help='specify fni poscar for neb task')
+    neb_submit_group.add_argument("-ini", "--ini_poscar", type=str, help='specify ini poscar for neb task')
+    neb_submit_group.add_argument("-fni", "--fni_poscar", type=str, help='specify fni poscar for neb task')
     neb_submit_group.add_argument("-i", "--images", type=int, help='specify the neb images')
     neb_submit_group.add_argument("-m", "--method", type=str, choices=['linear', 'idpp'],
                                   help='specify the method to generate neb images')
@@ -72,8 +74,8 @@ def main_parser() -> argparse.ArgumentParser:
 
     # sort parser
     sort_parser = subparsers.add_parser(name="sort", help="sort two POSCAR for neb task submit")
-    sort_parser.add_argument("--ini_poscar", type=str, help='specify ini poscar for neb task')
-    sort_parser.add_argument("--fni_poscar", type=str, help='specify fni poscar for neb task')
+    sort_parser.add_argument("-ini", "--ini_poscar", type=str, help='specify ini poscar for neb task')
+    sort_parser.add_argument("-fni", "--fni_poscar", type=str, help='specify fni poscar for neb task')
     sort_parser.set_defaults(which="sort")
 
     # plot parser
@@ -150,21 +152,23 @@ def main(argv=None):
                 normal_tasks[args.task](potential=args.potential, vdw=args.vdw, sol=args.sol)
             elif args.task == "opt":
                 logger.info(f"generate `opt` task")
-                OptTask().generate(potential=args.potential, low=args.low, vdw=args.vdw, sol=args.sol)
+                OptTask().generate(potential=args.potential, continuous=args.continuous, low=args.low, vdw=args.vdw,
+                                   sol=args.sol)
             elif args.task == "chg":
                 if args.sequential:
                     SequentialTask(end="chg").generate(potential=args.potential, low=args.low, analysis=args.analysis,
                                                        vdw=args.vdw, sol=args.sol)
                 else:
                     logger.info(f"generate `chg` task")
-                    ChargeTask().generate(potential=args.potential, analysis=args.analysis, vdw=args.vdw, sol=args.sol)
+                    ChargeTask().generate(potential=args.potential, continuous=args.continuous, analysis=args.analysis,
+                                          vdw=args.vdw, sol=args.sol)
             elif args.task == "dos":
                 if args.sequential:
                     SequentialTask(end="dos").generate(potential=args.potential, low=args.low, analysis=args.analysis,
                                                        vdw=args.vdw, sol=args.sol)
                 else:
                     logger.info(f"generate `dos` task")
-                    DOSTask().generate(potential=args.potential, vdw=args.vdw, sol=args.sol)
+                    DOSTask().generate(potential=args.potential, continuous=args.continuous, vdw=args.vdw, sol=args.sol)
             elif args.task == "neb":
                 if args.ini_poscar is None or args.fni_poscar is None:
                     raise AttributeError(None, "ini_poscar and fni_poscar arguments must be set!")
