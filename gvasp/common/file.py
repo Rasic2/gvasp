@@ -978,6 +978,7 @@ class LOCPOT(StructInfoFile):
         super(LOCPOT, self).__init__(name=name)
         self.NGX, self.NGY, self.NGZ, self.NGrid = None, None, None, None
         self.potential = None
+        self.lattice = None
 
         self._head = None
         self._potential_strings = None
@@ -989,10 +990,12 @@ class LOCPOT(StructInfoFile):
         Returns:
             self.NGrid (int): value = NGX * NGY * NGZ
             self.potential (np.array[:, :, :]): record the electrostatic potential
+            self.lattice (Lattice): <Lattice class> instance
         """
         start = len(self.structure.atoms) + 9
         self.NGX, self.NGY, self.NGZ = tuple(map(int, self.strings[start].split()))
         self._head = self.strings[:start + 1]
+        self.lattice = Lattice.from_string(self._head[2:5])
         index = np.where(np.array(self.strings) == self.strings[start])[0]
 
         self.NGrid = self.NGX * self.NGY * self.NGZ
@@ -1027,12 +1030,14 @@ class LOCPOT(StructInfoFile):
 
         if getattr(self, 'potential', None) is None:
             self.load()
+        NGXYZ = (self.NGX, self.NGY, self.NGZ)
 
         if mapping.get(direction, None) is None:
             raise KeyError(f"{direction} is not supported, should be [x, y, z]")
 
         potential_swap = np.swapaxes(self.potential, -1, mapping[direction])
-        return np.mean(potential_swap, axis=(0, 1))
+        return np.linspace(start=0, stop=self.lattice.length[mapping[direction]],
+                           num=NGXYZ[mapping[direction]]), np.mean(potential_swap, axis=(0, 1))
 
 
 class OUTCAR(MetaFile):

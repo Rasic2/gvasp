@@ -8,7 +8,7 @@ from gvasp.common.constant import RED, RESET, Version, Platform
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import Logger
-from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS
+from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS, PlotEPotential
 from gvasp.common.setting import ConfigManager, RootDir
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
     SequentialTask, OutputTask, WorkFuncTask
@@ -85,7 +85,7 @@ def main_parser() -> argparse.ArgumentParser:
 
     # plot parser
     plot_parser = subparsers.add_parser(name='plot', help="plot DOS, BandStructure, PES and so on")
-    plot_parser.add_argument("task", choices=['opt', 'band', 'dos', 'PES', 'neb'], type=str,
+    plot_parser.add_argument("task", choices=['opt', 'band', 'ep', 'dos', 'PES', 'neb'], type=str,
                              help='specify job type for plot')
     plot_parser.add_argument("-j", "--json", type=str, help='*.json file to quick setting', required=True)
     display_plot_group = plot_parser.add_mutually_exclusive_group()
@@ -254,6 +254,9 @@ def main(argv=None):
                 if color_lack:
                     colors = ("#ed0345", "#009734")
                 plotter.plot(color=colors)
+            elif args.task == 'ep':
+                plotter = PlotEPotential(**arguments)
+                plotter.plot()
             elif args.task == 'band':
                 plotter = PlotBand(**arguments)
                 plotter.plot()

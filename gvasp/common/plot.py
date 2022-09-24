@@ -12,7 +12,7 @@ from scipy import interpolate
 from scipy.integrate import simps
 
 from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
-from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR
+from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT
 from gvasp.common.structure import Structure
 from gvasp.common.task import NEBTask
 
@@ -258,6 +258,19 @@ class PlotBand(Figure):
         energy_avg = self.energy.mean(axis=-1)
         for band_index in range(energy_avg.shape[1]):
             plt.plot(energy_avg[:, band_index], "-o")
+
+
+class PlotEPotential(Figure):
+    def __init__(self, direction='z', title='Local Potential', xlabel='Position (Å)', ylabel='Energy (eV)',**kargs):
+        super(PlotEPotential, self).__init__(title=title, xlabel=xlabel, ylabel=ylabel, **kargs)
+        self.lpotential = LOCPOT(name="LOCPOT").line_potential(direction=direction)
+
+    @plot_wrapper
+    def plot(self):
+        """
+        Plot Electrostatic Potential
+        """
+        plt.plot(*self.lpotential)
 
 
 class PESData(object):
