@@ -973,6 +973,68 @@ class CHGCAR(StructInfoFile):
             mag.writelines(self._density_mag_strings)
 
 
+class LOCPOT(StructInfoFile):
+    def __init__(self, name):
+        super(LOCPOT, self).__init__(name=name)
+        self.NGX, self.NGY, self.NGZ, self.NGrid = None, None, None, None
+        self.potential = None
+
+        self._head = None
+        self._potential_strings = None
+
+    def load(self):
+        """
+        load Electrostatic Potential
+
+        Returns:
+            self.NGrid (int): value = NGX * NGY * NGZ
+            self.potential (np.array[:, :, :]): record the electrostatic potential
+        """
+        start = len(self.structure.atoms) + 9
+        self.NGX, self.NGY, self.NGZ = tuple(map(int, self.strings[start].split()))
+        self._head = self.strings[:start + 1]
+        index = np.where(np.array(self.strings) == self.strings[start])[0]
+
+        self.NGrid = self.NGX * self.NGY * self.NGZ
+        count = self.NGrid / 5 if self.NGrid % 5 == 0 else self.NGrid / 5 + 1
+        count = int(count)
+
+        self._potential_strings = self.strings[index[0] + 1:index[0] + 1 + count]
+
+        # solve residue problem
+        self._potential_strings = np.char.split(self._potential_strings).tolist()
+        residue = 5 - len(self._potential_strings[-1])
+        self._potential_strings[-1] += ['0.'] * residue
+
+        self.potential = np.append([], self._potential_strings).astype(float)
+        if residue:
+            self.potential = self.potential[:-residue].reshape((self.NGX, self.NGY, self.NGZ), order="F")
+        else:
+            self.potential = self.potential.reshape((self.NGX, self.NGY, self.NGZ), order="F")
+
+    def line_potential(self, direction='z'):
+        """
+        Calculate the electrostatic potential along one direction, default: z-axis
+
+        Args:
+            direction (str): which axis you want to calculate the electrostatic potential
+
+        Returns:
+            line_potential (np.array[:]): electrostatic potential along one axis
+
+        """
+        mapping = {'x': 0, 'y': 1, 'z': 2}
+
+        if getattr(self, 'potential', None) is None:
+            self.load()
+
+        if mapping.get(direction, None) is None:
+            raise KeyError(f"{direction} is not supported, should be [x, y, z]")
+
+        potential_swap = np.swapaxes(self.potential, -1, mapping[direction])
+        return np.mean(potential_swap, axis=(0, 1))
+
+
 class OUTCAR(MetaFile):
     def __init__(self, name):
         super(OUTCAR, self).__init__(name=name)

@@ -71,6 +71,15 @@ Element F:
         Element P: 1.540
         Element S: 1.590
 
+Element Na:
+    formula: Na
+    number: 11
+    period: 3
+    group: 1
+    color: '#AA5EF2'
+    _default_bonds:
+        Element O: 2.956
+
 Element Al:
     formula: Al
     number: 13
@@ -140,6 +149,15 @@ Element Cl:
         Element P: 2.040
         Element S: 1.990
         Element Cl: 2.142
+
+Element Ti:
+    formula: Ti
+    number: 22
+    period: 4
+    group: 4
+    color: '#C0C3C6'
+    _default_bonds:
+        Element F: 2.862
 
 Element Cr:
     formula: Cr

@@ -44,7 +44,7 @@ def main_parser() -> argparse.ArgumentParser:
                            action="store_true")
 
     sequential_group = submit_parser.add_argument_group(title='sequential-task',
-                                                        desctiption='only valid for [chg, wf, dos] tasks')
+                                                        description='only valid for [chg, wf, dos] tasks')
     sequential_group.add_argument("-s", "--sequential", help='whether or not sequential', action="store_true")
 
     charge_group = submit_parser.add_argument_group(title='charge-task',
