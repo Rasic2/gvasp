@@ -49,6 +49,7 @@ class Figure(object):
                  xticks=None, xlabel=None, ylabel=None, bwidth=1, **kargs):
         self.width = width
         self.height = height
+        plt.close(1)  # close the old figure
         self.fig = plt.figure(figsize=(width, height))
         self.family = family
         self.weight = weight
