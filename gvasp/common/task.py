@@ -40,8 +40,7 @@ class BaseTask(metaclass=abc.ABCMeta):
     Note: subclass should have `generate` method
     """
     Template, PotDir, Scheduler = ConfigManager().template, ConfigManager().potdir, ConfigManager().scheduler
-    with open(ConfigManager().UValue) as f:
-        UValue = yaml.safe_load(f.read())
+    UValueBase = ConfigManager().UValue
 
     def __init__(self):
         self.title = None
@@ -51,6 +50,11 @@ class BaseTask(metaclass=abc.ABCMeta):
         # set INCAR template
         self._incar = self.Template if self._search_suffix(".incar") is None else self._search_suffix(".incar")
         self.incar = INCAR(self._incar)
+
+        # set UValue template
+        self.UValuePath = self.UValueBase if self._search_suffix(".uvalue") is None else self._search_suffix(".uvalue")
+        with open(self.UValuePath) as f:
+            self.UValue = yaml.safe_load(f.read())
 
         # set submit template
         self.submit = self.Scheduler if self._search_suffix(".submit") is None else self._search_suffix(".submit")
@@ -116,6 +120,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         print()
         print(f"{GREEN}Job Name: {self.title}{RESET}")
         print(f"{YELLOW}INCAR template: {self._incar}{RESET}")
+        print(f"{YELLOW}UValue template: {self.UValuePath}{RESET}")
         print(f"{YELLOW}Submit template: {self.submit}{RESET}")
 
     def _generate_INCAR(self):

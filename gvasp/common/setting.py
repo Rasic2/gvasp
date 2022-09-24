@@ -37,20 +37,27 @@ class ConfigManager(object):
                f"------------------------------------------------------------------------------------------"
 
     def load(self):
+        """
+        Load the configuration (need consider the multi-users)
+        """
+        # check config.json, if not exist, `config set to {}`
         try:
             with open(f"{RootDir}/config.json", "r") as f:
                 config = json.load(f)
         except NotADirectoryError:
             config = {}
 
+        # check config_dir, if not specify this key, set to RootDir
         try:
             self.config_dir = Path(config['config_dir'])  # config directory
         except KeyError:
             self.config_dir = Path(RootDir)
 
+        # specify the INCAR && UValue.yaml template
         self.template = self.config_dir / 'INCAR'  # location of template
         self.UValue = self.config_dir / 'UValue.yaml'  # location of UValue
 
+        # record the potdir and the path is not checked here
         if 'potdir' in config and config['potdir'] is not None:
             string = config['potdir']
             env_matches = re.findall(r"[/\\]*\$(\w+)[/\\]*", string)
@@ -61,6 +68,7 @@ class ConfigManager(object):
         else:
             self.potdir = None
 
+        # specify the logdir, if not exist, set to HomeDir/logs
         try:
             if Path(config['logdir']).exists():
                 self.logdir = Path(config['logdir'])  # location of logdir
@@ -69,6 +77,7 @@ class ConfigManager(object):
         except KeyError:
             self.logdir = HomeDir / "logs"
 
+        # specify the scheduler
         self.scheduler = config.get("scheduler", "slurm")
 
     def __setattr__(self, key, value):

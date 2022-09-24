@@ -148,3 +148,4 @@ xsd/
 !/conda/meta.yaml
 /tests/NEB-0912/
 /tests/W_element/
+/tests/UValue/
