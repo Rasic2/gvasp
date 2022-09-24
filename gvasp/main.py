@@ -33,6 +33,7 @@ def main_parser() -> argparse.ArgumentParser:
                                type=str, help='specify job type for submit')
     submit_parser.add_argument("-p", "--potential", metavar="POTENTIAL", default="PAW_PBE", nargs="+", type=str,
                                help=f'specify potential, optional: {POTENTIAL}')
+    submit_parser.add_argument("-v", "--vdw", help=f'add vdw-correction', action='store_True')
     low_group = submit_parser.add_argument_group(title='low-task',
                                                  description='only valid for opt and sequential [chg, dos] tasks')
     low_group.add_argument("-l", "--low", help="specify whether perform low-accuracy calculation first",
@@ -145,22 +146,24 @@ def main(argv=None):
 
             if args.task in normal_tasks.keys():
                 logger.info(f"generate `{args.task}` task")
-                normal_tasks[args.task](potential=args.potential)
+                normal_tasks[args.task](potential=args.potential, vdw=args.vdw)
             elif args.task == "opt":
                 logger.info(f"generate `opt` task")
-                OptTask().generate(potential=args.potential, low=args.low)
+                OptTask().generate(potential=args.potential, low=args.low, vdw=args.vdw)
             elif args.task == "chg":
                 if args.sequential:
-                    SequentialTask(end="chg").generate(potential=args.potential, low=args.low, analysis=args.analysis)
+                    SequentialTask(end="chg").generate(potential=args.potential, low=args.low, analysis=args.analysis,
+                                                       vdw=args.vdw)
                 else:
                     logger.info(f"generate `chg` task")
-                    ChargeTask().generate(potential=args.potential, analysis=args.analysis)
+                    ChargeTask().generate(potential=args.potential, analysis=args.analysis, vdw=args.vdw)
             elif args.task == "dos":
                 if args.sequential:
-                    SequentialTask(end="dos").generate(potential=args.potential, low=args.low, analysis=args.analysis)
+                    SequentialTask(end="dos").generate(potential=args.potential, low=args.low, analysis=args.analysis,
+                                                       vdw=args.vdw)
                 else:
                     logger.info(f"generate `dos` task")
-                    DOSTask().generate(potential=args.potential)
+                    DOSTask().generate(potential=args.potential, vdw=args.vdw)
             elif args.task == "neb":
                 if args.ini_poscar is None or args.fni_poscar is None:
                     raise AttributeError(None, "ini_poscar and fni_poscar arguments must be set!")
@@ -178,7 +181,8 @@ def main(argv=None):
                 check = input(f"Please confirm or cancel (y/n): ")
                 if check.lower()[0] == "y":
                     NEBTask(ini_poscar=args.ini_poscar, fni_poscar=args.fni_poscar, images=args.images).generate(
-                        method=args.method, potential=args.potential, check_overlap=not args.cancel_check_overlap)
+                        method=args.method, potential=args.potential, check_overlap=not args.cancel_check_overlap,
+                        vdw=args.vdw)
                 else:
                     print(f"Cancel neb task")
 

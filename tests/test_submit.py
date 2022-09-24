@@ -35,56 +35,56 @@ class TestSubmitTask(unittest.TestCase):
     @file_cleaner
     def test_opt(self):
         task = OptTask()
-        task.generate()
+        task.generate(vdw=True)
 
     @block_print
     @file_cleaner
     def test_chg(self):
         task = ChargeTask()
-        task.generate()
+        task.generate(vdw=True)
 
     @block_print
     @file_cleaner
     def test_dos(self):
         task = DOSTask()
-        task.generate()
+        task.generate(vdw=True)
 
     @block_print
     @file_cleaner
     def test_sequential(self):
         task = SequentialTask(end='dos')
-        task.generate(low=True, analysis=True)
+        task.generate(low=True, analysis=True, vdw=True)
 
     @block_print
     @file_cleaner
     def test_freq(self):
         task = FreqTask()
-        task.generate()
+        task.generate(vdw=True)
 
     @block_print
     @file_cleaner
     def test_md(self):
         task = MDTask()
-        task.generate()
+        task.generate(vdw=True)
 
     @block_print
     @file_cleaner
     def test_stm(self):
         task = STMTask()
-        task.generate()
+        task.generate(vdw=True)
 
     @block_print
     @file_cleaner
     def test_conTS(self):
         task = ConTSTask()
-        task.generate()
+        task.generate(vdw=True)
 
     @block_print
     @file_cleaner
     def test_neb(self):
         task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
                        fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
-        task.generate(method="idpp")
+        task.generate(method="idpp", vdw=True)
         
         for dir in NEBTask._search_neb_dir():
             shutil.rmtree(dir)
@@ -93,7 +93,7 @@ class TestSubmitTask(unittest.TestCase):
     @file_cleaner
     def test_dimer(self):
         task = DimerTask()
-        task.generate()
+        task.generate(vdw=True)
 
 
 if __name__ == '__main__':

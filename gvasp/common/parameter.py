@@ -101,6 +101,7 @@ class Parameter(object):
     EINT = TypeDescriptor('EINT', float)
     LSEPB = TypeDescriptor('LSEPB', bool)
     LSEPK = TypeDescriptor('LSEPK', bool)
+    IVDW = ValueDescriptor("IVDW", [0, 1, 10, 11, 12, 2, 20, 21, 202, 4])
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -110,7 +111,7 @@ class Parameter(object):
                        {'func': int,
                         'name': ['ISTART', 'IBRION', 'NSW', 'ISIF', 'NELM', 'NELMIN', 'ISPIN', 'ISMEAR', 'LDAUTYPE',
                                  'LDAUPRINT', 'LMAXMIX', 'NPAR', 'ISYM', 'ICHAIN', 'DRotMax', 'IOPT', 'ICHARG',
-                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD']
+                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD', "IVDW"]
                         },
                    "_floatParam":
                        {'func': float,
@@ -163,3 +164,5 @@ class Parameter(object):
     _dimerParam = ('DdR', 'DRotMax', 'DFNMin', 'DFNMax')
 
     _plusUParam = ('LDAU', 'LDAUTYPE', 'LDAUL', 'LDAUU', 'LDAUJ', 'LDAUPRINT', 'LMAXMIX')
+
+    _vdwParam = ('IVDW',)
