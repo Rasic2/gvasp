@@ -85,14 +85,14 @@ class BaseTask(metaclass=abc.ABCMeta):
 
     @end_symbol
     @abc.abstractmethod
-    def generate(self, potential: (str, list), vdw):
+    def generate(self, potential: (str, list), vdw, sol):
         """
         generate main method, subclass should inherit or overwrite
         """
         self._generate_POSCAR()
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(vdw=vdw)
+        self._generate_INCAR(vdw=vdw, sol=sol)
         self._generate_submit()
         self._generate_info(potential=potential)
 
@@ -123,7 +123,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         print(f"{YELLOW}UValue template: {self.UValuePath}{RESET}")
         print(f"{YELLOW}Submit template: {self.submit}{RESET}")
 
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         generate by copy incar_template, modify the +U parameters
         """
@@ -150,6 +150,9 @@ class BaseTask(metaclass=abc.ABCMeta):
 
         if vdw:
             self.incar.IVDW = 12
+
+        if sol:
+            self.incar.LSOL = True  # only consider water, not set EB_K
 
     def _generate_KPOINTS(self):
         """
@@ -226,25 +229,25 @@ class OptTask(BaseTask, Animatable):
     """
 
     @end_symbol
-    def generate(self, potential="PAW_PBE", low=False, print_end=True, vdw=False):
+    def generate(self, potential="PAW_PBE", low=False, print_end=True, vdw=False, sol=False):
         """
         rewrite BaseTask's generate
         """
         self._generate_POSCAR()
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(low=low, vdw=vdw)
+        self._generate_INCAR(low=low, vdw=vdw, sol=sol)
         self._generate_submit(low=low)
         self._generate_info(potential=potential)
         if low and print_end:
             print(f"{RED}low first{RESET}")
 
     @write_wrapper
-    def _generate_INCAR(self, low, vdw):
+    def _generate_INCAR(self, low, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
         """
-        super(OptTask, self)._generate_INCAR(vdw)
+        super(OptTask, self)._generate_INCAR(vdw, sol)
         self.incar._ENCUT = self.incar.ENCUT
         if low:
             self.incar.ENCUT = 300.
@@ -282,19 +285,19 @@ class ChargeTask(BaseTask):
     """
 
     @end_symbol
-    def generate(self, potential="PAW_PBE", analysis=False, vdw=False):
+    def generate(self, potential="PAW_PBE", analysis=False, vdw=False, sol=False):
         """
         rewrite BaseTask's generate
         """
         self._generate_POSCAR()
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(vdw)
+        self._generate_INCAR(vdw, sol)
         self._generate_submit(analysis=analysis)
         self._generate_info(potential=potential)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -302,7 +305,7 @@ class ChargeTask(BaseTask):
             LAECHG = .TRUE.
             LCHARG = .TRUE.
         """
-        super(ChargeTask, self)._generate_INCAR(vdw)
+        super(ChargeTask, self)._generate_INCAR(vdw=vdw, sol=sol)
         self.incar.IBRION = 1
         self.incar.LAECHG = True
         self.incar.LCHARG = True
@@ -357,14 +360,14 @@ class DOSTask(BaseTask):
     Density of States (DOS) calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", vdw=False):
+    def generate(self, potential="PAW_PBE", vdw=False, sol=False):
         """
         fully inherit BaseTask's generate
         """
-        super(DOSTask, self).generate(potential=potential, vdw=vdw)
+        super(DOSTask, self).generate(potential=potential, vdw=vdw, sol=sol)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -375,7 +378,7 @@ class DOSTask(BaseTask):
             LORBIT = 12
             NEDOS = 2000
         """
-        super(DOSTask, self)._generate_INCAR(vdw)
+        super(DOSTask, self)._generate_INCAR(vdw, sol)
         self.incar.ISTART = 1
         self.incar.ICHARG = 11
         self.incar.IBRION = -1
@@ -389,14 +392,14 @@ class FreqTask(BaseTask, Animatable):
     Frequency calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", vdw=False):
+    def generate(self, potential="PAW_PBE", vdw=False, sol=False):
         """
         fully inherit BaseTask's generate
         """
-        super(FreqTask, self).generate(potential=potential, vdw=vdw)
+        super(FreqTask, self).generate(potential=potential, vdw=vdw, sol=sol)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -406,7 +409,7 @@ class FreqTask(BaseTask, Animatable):
             NFREE = 2
             POTIM = 0.015
         """
-        super(FreqTask, self)._generate_INCAR(vdw)
+        super(FreqTask, self)._generate_INCAR(vdw=vdw, sol=sol)
         self.incar.IBRION = 5
         self.incar.ISYM = 0
         self.incar.NSW = 1
@@ -427,14 +430,14 @@ class MDTask(BaseTask, Animatable):
      ab-initio molecular dynamics (AIMD) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", vdw=False):
+    def generate(self, potential="PAW_PBE", vdw=False, sol=False):
         """
         fully inherit BaseTask's generate
         """
-        super(MDTask, self).generate(potential=potential, vdw=vdw)
+        super(MDTask, self).generate(potential=potential, vdw=vdw, sol=sol)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -446,7 +449,7 @@ class MDTask(BaseTask, Animatable):
             TEBEG = 300.
             TEEND = 300.
         """
-        super(MDTask, self)._generate_INCAR(vdw)
+        super(MDTask, self)._generate_INCAR(vdw=vdw, sol=sol)
         self.incar.IBRION = 0
         self.incar.NSW = 100000
         self.incar.POTIM = 0.5
@@ -468,14 +471,14 @@ class STMTask(BaseTask):
      Scanning Tunneling Microscope (STM) image modelling calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", vdw=False):
+    def generate(self, potential="PAW_PBE", vdw=False, sol=False):
         """
         fully inherit BaseTask's generate
         """
-        super(STMTask, self).generate(potential=potential, vdw=vdw)
+        super(STMTask, self).generate(potential=potential, vdw=vdw, sol=sol)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -488,7 +491,7 @@ class STMTask(BaseTask):
             LSEPB = .FALSE.
             LSEPK = .FALSE.
         """
-        super(STMTask, self)._generate_INCAR(vdw)
+        super(STMTask, self)._generate_INCAR(vdw=vdw, sol=sol)
         self.incar.ISTART = 1
         self.incar.IBRION = -1
         self.incar.NSW = 0
@@ -504,21 +507,21 @@ class ConTSTask(BaseTask, Animatable):
      Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", vdw=False):
+    def generate(self, potential="PAW_PBE", vdw=False, sol=False):
         """
         fully inherit BaseTask's generate
         """
-        super(ConTSTask, self).generate(potential=potential, vdw=vdw)
+        super(ConTSTask, self).generate(potential=potential, vdw=vdw, sol=sol)
         self._generate_fort()
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
             IBRION = 1
         """
-        super(ConTSTask, self)._generate_INCAR(vdw)
+        super(ConTSTask, self)._generate_INCAR(vdw=vdw, sol=sol)
         self.incar.IBRION = 1
 
     def _generate_fort(self):
@@ -574,18 +577,18 @@ class NEBTask(BaseTask, Animatable):
         POSCAR.align(ini_poscar, fni_poscar)
 
     @end_symbol
-    def generate(self, method="linear", check_overlap=True, potential="PAW_PBE", vdw=False):
+    def generate(self, method="linear", check_overlap=True, potential="PAW_PBE", vdw=False, sol=False):
         """
         Overwrite BaseTask's generate, add `method` and `check_overlap` parameters
         """
         self._generate_POSCAR(method=method, check_overlap=check_overlap)
         self._generate_KPOINTS()
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(vdw=vdw)
+        self._generate_INCAR(vdw=vdw, sol=sol)
         self._generate_info(potential=potential)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -598,7 +601,7 @@ class NEBTask(BaseTask, Animatable):
             MAXMOVE = 0.03
             IMAGES =
         """
-        super(NEBTask, self)._generate_INCAR(vdw=vdw)
+        super(NEBTask, self)._generate_INCAR(vdw=vdw, sol=sol)
         self.incar.IBRION = 3
         self.incar.POTIM = 0.
         self.incar.SPRING = -5.
@@ -708,14 +711,14 @@ class NEBTask(BaseTask, Animatable):
 
 
 class DimerTask(BaseTask, Animatable):
-    def generate(self, potential="PAW_PBE", vdw=False):
+    def generate(self, potential="PAW_PBE", vdw=False, sol=False):
         """
         fully inherit BaseTask's generate
         """
-        super(DimerTask, self).generate(potential=potential, vdw=vdw)
+        super(DimerTask, self).generate(potential=potential, vdw=vdw, sol=sol)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw):
+    def _generate_INCAR(self, vdw, sol):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -729,7 +732,7 @@ class DimerTask(BaseTask, Animatable):
             DFNMin = 0.01
             IOPT = 2     
         """
-        super(DimerTask, self)._generate_INCAR(vdw=vdw)
+        super(DimerTask, self)._generate_INCAR(vdw=vdw, sol=sol)
         self.incar.IBRION = 3
         self.incar.POTIM = 0.
         self.incar.ISYM = 0
@@ -758,9 +761,9 @@ class SequentialTask(object):
         self.end = end
 
     @end_symbol
-    def generate(self, potential="PAW_PBE", low=False, analysis=False, vdw=False):
+    def generate(self, potential="PAW_PBE", low=False, analysis=False, vdw=False, sol=False):
         task = OptTask()
-        task.generate(potential=potential, low=low, print_end=False, vdw=vdw)
+        task.generate(potential=potential, low=low, print_end=False, vdw=vdw, sol=sol)
 
         if self.end == "chg" or self.end == "dos":
             low_string = "low first, " if low else ""

@@ -102,6 +102,8 @@ class Parameter(object):
     LSEPB = TypeDescriptor('LSEPB', bool)
     LSEPK = TypeDescriptor('LSEPK', bool)
     IVDW = ValueDescriptor("IVDW", [0, 1, 10, 11, 12, 2, 20, 21, 202, 4])
+    LSOL = TypeDescriptor('LSOL', bool)
+    EB_K = TypeDescriptor('EB_K', float)
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -116,11 +118,11 @@ class Parameter(object):
                    "_floatParam":
                        {'func': float,
                         'name': ['ENCUT', 'EDIFF', 'EDIFFG', 'SIGMA', 'AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG', 'POTIM',
-                                 'DdR', 'DFNMin', 'DFNMax', 'TEBEG', 'TEEND', 'SPRING', 'MAXMOVE', 'EINT'],
+                                 'DdR', 'DFNMin', 'DFNMax', 'TEBEG', 'TEEND', 'SPRING', 'MAXMOVE', 'EINT', 'EB_K'],
                         },
                    "_bool_Param":
                        {'func': logic,
-                        'name': ['LWAVE', 'LCHARG', 'LDAU', 'LAECHG', 'LCLIMB', 'LPARD', 'LSEPB', 'LSEPK'],
+                        'name': ['LWAVE', 'LCHARG', 'LDAU', 'LAECHG', 'LCLIMB', 'LPARD', 'LSEPB', 'LSEPK', 'LSOL'],
                         },
                    "_bool_str_Param":
                        {'func': bool_str,
@@ -166,3 +168,5 @@ class Parameter(object):
     _plusUParam = ('LDAU', 'LDAUTYPE', 'LDAUL', 'LDAUU', 'LDAUJ', 'LDAUPRINT', 'LMAXMIX')
 
     _vdwParam = ('IVDW',)
+
+    _solParam = ('LSOL', 'EB_K')

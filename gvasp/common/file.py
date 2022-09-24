@@ -188,6 +188,7 @@ class INCAR(MetaFile, Parameter):
         self._write_base(name)
         self._write_scf(name)
         self._write_vdw(name)
+        self._write_sol(name)
         self._write_opt(name)
         self._write_md(name)
         self._write_charge(name)
@@ -213,6 +214,11 @@ class INCAR(MetaFile, Parameter):
     def _write_vdw(self, name):
         with open(name, "a+") as f:
             f.write(f"#----------/VDW Parameter/----------# \n")
+
+    @formatter(Parameter._solParam)
+    def _write_sol(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/Solvation Parameter/----------# \n")
 
     @formatter(Parameter._optParam)
     def _write_opt(self, name):

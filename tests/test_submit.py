@@ -35,57 +35,57 @@ class TestSubmitTask(unittest.TestCase):
     @file_cleaner
     def test_opt(self):
         task = OptTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_chg(self):
         task = ChargeTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_dos(self):
         task = DOSTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_sequential(self):
         task = SequentialTask(end='dos')
-        task.generate(low=True, analysis=True, vdw=True)
+        task.generate(low=True, analysis=True, vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_freq(self):
         task = FreqTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_md(self):
         task = MDTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_stm(self):
         task = STMTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_conTS(self):
         task = ConTSTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
     @block_print
     @file_cleaner
     def test_neb(self):
         task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
                        fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
-        task.generate(method="idpp", vdw=True)
-        
+        task.generate(method="idpp", vdw=True, sol=True)
+
         for dir in NEBTask._search_neb_dir():
             shutil.rmtree(dir)
 
@@ -93,7 +93,7 @@ class TestSubmitTask(unittest.TestCase):
     @file_cleaner
     def test_dimer(self):
         task = DimerTask()
-        task.generate(vdw=True)
+        task.generate(vdw=True, sol=True)
 
 
 if __name__ == '__main__':
