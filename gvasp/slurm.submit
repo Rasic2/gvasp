@@ -9,5 +9,5 @@
 
 source /public1/soft/intel/2020/compilers_and_libraries_2020.4.304/linux/bin/compilervars.sh intel64
 
-EXEC=/public1/home/sc81049/soft/vasp+vtst/bin/vasp_gam
+EXEC=/public1/home/sc81049/soft/vasp+vtst/bin/vasp_std
 mpirun -np $SLURM_JOB_CPUS_PER_NODE $EXEC >print-out 2>&1
