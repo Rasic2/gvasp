@@ -6,10 +6,9 @@ from typing import List, Any
 
 import numpy as np
 import yaml
-
-from gvasp.common.logger import Logger
-from gvasp.common.setting import RootDir
 from gvasp.lib.base_bind import search_image as search_image_bind
+
+from gvasp.common.setting import RootDir
 
 yaml.warnings({'YAMLLoadWarning': False})
 
