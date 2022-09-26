@@ -4,10 +4,11 @@ import os
 import shutil
 import stat
 import sys
+import traceback
 from pathlib import Path
 from typing import Iterable
 
-from gvasp.common.constant import RED, RESET, Version, Platform
+from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import Logger
@@ -345,4 +346,13 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    try:
+        main(sys.argv[1:])
+    except Exception as error:
+        exc_type, exc_value, exc_obj = sys.exc_info()
+        exc_location = traceback.format_exc(limit=-1).splitlines()[1]
+        print(f"+{'Error'.center(len(exc_location) + 30, '-')}\n"
+              f"| exception_location:     {RED}{exc_location.lstrip()}{RESET} \n"
+              f"| exception_type:         {GREEN}{exc_type}{RESET} \n"
+              f"| exception_value:        {YELLOW}{exc_value}{RESET}\n"
+              f"+{'-----'.center(len(exc_location) + 30, '-')}")
