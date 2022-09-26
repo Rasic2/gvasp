@@ -309,7 +309,7 @@ class KPOINTS(MetaFile):
 class POTCAR(MetaFile):
     def __init__(self, name):
         super(POTCAR, self).__init__(name=name)
-        self.potential, self.element = None, None
+        self.potential, self.element, self.valence = None, None, None
 
         if Path(self.name).exists():
             self._parse()
