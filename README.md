@@ -10,12 +10,12 @@
 
 - [About GVasp](#about-gvasp)
 - [Install](#install)
-    - [Create Environment](#create-environment)
-    - [Install GVasp](#install-gvasp)
+  - [Create Environment](#create-environment)
+  - [Install GVasp](#install-gvasp)
 - [Setting Environment](#setting-environment)
-    - [Default Environment](#default-environment)
-    - [Modify Environment](#modify-environment)
-    - [User Template](#user-template)
+  - [Default Environment](#default-environment)
+  - [Modify Environment](#modify-environment)
+  - [User Template](#user-template)
 - [Code Structure](#code-structure)
 - [Requirements](#requirements)
 
@@ -23,11 +23,11 @@
 
 A quick post-process for resolve or assistant the VASP calculations, which can involve in many kinds of tasks as below:
 
-* generate inputs
-* visualize output
-* visualize trajectory
-* plot interface
-* charge related work
+- generate inputs
+- visualize output
+- visualize trajectory
+- plot interface
+- charge related work
 
 More detailed information can see [here](https://qvasp.readthedocs.io/en/latest/).
 
@@ -51,15 +51,16 @@ conda create -n gvasp python=3.9
 
    You can install the `GVasp` using the following command (under the root directory):
 
-    ```
-    python3 setup.py install
-    ```
+   ```
+   python3 setup.py install
+   ```
 
    or
 
-    ```
-    pip3 install .
-    ```
+   ```
+   pip3 install .
+   ```
+
 2. Use PyPi
 
    We have made the wheel (production process can
@@ -67,9 +68,10 @@ conda create -n gvasp python=3.9
    the [pypi](https://pypi.org/project/gvasp/),
    you can also install from it:
 
-    ```
-    pip3 install gvasp
-    ```
+   ```
+   pip3 install gvasp
+   ```
+
    If the download speed is too slow, we suggest you change the pip mirror by modifying the `~/.pip/pip.conf` file.
 
 3. Use conda
@@ -78,14 +80,14 @@ conda create -n gvasp python=3.9
    see [here](https://codenote.readthedocs.io/en/latest/package.html#conda-package)) and uploaded to
    the [Anaconda](https://anaconda.org/hui_zhou/gvasp), so you can also install `GVasp` from it:
 
-    ```
-    conda install -c hui_zhou gvasp
-    ```
+   ```
+   conda install -c hui_zhou gvasp
+   ```
 
 If you run the `gvasp -v` and print version information, then you install the `GVasp` successful ~~
 
 ```
-GVasp version 0.0.3 (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
+GVasp version x.x.x (Linux-5.10.16.3-microsoft-standard-WSL2-x86_64-with-glibc2.35)
 ```
 
 ## Setting Environment
@@ -111,7 +113,7 @@ Initial environment is like this:
 ------------------------------------------------------------------------------------------
 ```
 
-- ConfigDir: represents the directory of `INCAR (template)`, `UValue.yaml` and `pot`
+- ConfigDir: represents the directory of `INCAR (template)`, `UValue.yaml` and other setting files
 
 - scheduler: represents the job control system, now only support slurm (but you can specify a .submit file in your parent-chain path)
 
@@ -159,9 +161,9 @@ Then the environment will be reset, `GVasp` will auto search the `INCAR`and `UVa
 
 ### User template
 
-`GVasp` support user to define their incar or submit template with the following steps:
+`GVasp` support user to define their INCAR, UValue.yaml or submit template with the following steps:
 
-1. Named the incar or submit template as the `*.incar` and `*.submit` files.
+1. Named the INCAR, UValue.yaml or submit template as the `*.incar`, `*.uvalue` and `*.submit` files respectively.
 
 2. Put them in your parent directory or parent’s parent directory and so on (defined as the parent-chain).
 
@@ -169,27 +171,27 @@ After these two steps, the GVasp generate the inputs will apply your templates.
 
 ## Code Structure
 
-* [gvasp](gvasp): source code directory
+- [gvasp](gvasp): source code directory
 
-* [gvasp/common](gvasp/common): main module
+- [gvasp/common](gvasp/common): main module
 
-* [gvasp/neb](gvasp/neb): neb-related path module
+- [gvasp/neb](gvasp/neb): neb-related path module
 
-* [gvasp/lib](gvasp/lib): store the dynamic library (*.so and *.pyd)
+- [gvasp/lib](gvasp/lib): store the dynamic library (_.so and _.pyd)
 
-* [extension](extension): `C++`/`Cython` extensions (source code)
+- [extension](extension): `C++`/`Cython` extensions (source code)
 
-* [docs](docs): documents file (*.rst format)
+- [docs](docs): documents file (\*.rst format)
 
-* [tests](tests): test files
+- [tests](tests): test files
 
 ## Requirements
 
-* Python >= 3.9
-* Cython
-* pybind11
-* numpy
-* matplotlib
+- Python >= 3.9
+- Cython
+- pybind11
+- numpy
+- matplotlib
+- bash-completion
 
 Copyright © 2022 `Hui Zhou` All rights reserved.
-
