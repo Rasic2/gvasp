@@ -13,14 +13,8 @@ Likewise the :ref:`optimization <optimization>` task, you can also use :program:
 
     gvasp submit freq
 
-specify potential
+Other arguments
 -------------------
 
-If you want to specify potential, just run the command:
-
-.. code-block:: bash
-
-    gvasp submit freq -p/--potential POTENTIAL
-
 .. note::
-    More information of potential setting can be seen in :ref:`optimization <potential>` task.
+    More information of other arguments can be seen in :ref:`optimization <arguments>` task.

@@ -40,6 +40,8 @@ Using :program:`GVasp`, you can run the following command to perform such low-fi
 
 _________________________________________________
 
+.. _arguments:
+
 The following arguments can be applied in all of the tasks.
 
 .. _potential:

@@ -16,16 +16,15 @@ NEB method
 
 .. code-block:: bash
 
-    gvasp submit neb --ini_poscar INI_POSCAR --fni_poscar FNI_POSCAR [-i IMAGES] [-m METHOD] [-c/--cancel_check_overlap]
+    gvasp submit neb -ini/--ini_poscar INI_POSCAR -fni/--fni_poscar FNI_POSCAR [-i IMAGES] [-m METHOD] [-c/--cancel_check_overlap]
 
 .. note::
-    The NEB method will construct the reaction path, so one use NEB method must specify the start (**-\-ini_poscar**) and end (**-\-fni_poscar**) structure, while **-i**, **-m** and **-c** is optional arguments.
+    The NEB method will construct the reaction path, so one use NEB method must specify the start (**-ini/-\-ini_poscar**) and end (**-fni/-\-fni_poscar**) structure, while **-i**, **-m** and **-c** is optional arguments.
 
 specify images
 ---------------
 
 Images is the number of intermediate structures between initial and final structures, if you don't specify, :code:`images = 4` will apply.
-
 
 specify method
 ---------------
@@ -38,7 +37,6 @@ Another is :code:`idpp` method, which declares to generate more suitable structu
 
 If you don't specify the :code:`method`, GVasp will apply :code:`method = "linear"`.
 
-
 check overlap
 --------------
 
@@ -48,15 +46,8 @@ Therefore, :program:`GVasp` check overlap always when you generate the inputs, a
 
 If you don't like this, you can set :code:`-c/--cancel_check_overlap` to cancel check, but we (actually I) strongly recommend you don't do this `dangerous` action.
 
-
-specify potential
+Other arguments
 -------------------
 
-If you want to specify potential, just run the command:
-
-.. code-block:: bash
-
-    gvasp submit neb -p/--potential POTENTIAL
-
 .. note::
-    More information of potential setting can be seen in :ref:`optimization <potential>` task.
+    More information of other arguments can be seen in :ref:`optimization <arguments>` task.

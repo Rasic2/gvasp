@@ -11,14 +11,8 @@ For ab-initio molecule dynamics (AIMD), likewise the :ref:`optimization <optimiz
 
     gvasp submit md
 
-specify potential
+Other arguments
 -------------------
 
-If you want to specify potential, just run the command:
-
-.. code-block:: bash
-
-    gvasp submit md -p/--potential POTENTIAL
-
 .. note::
-    More information of potential setting can be seen in :ref:`optimization <potential>` task.
+    More information of other arguments can be seen in :ref:`optimization <arguments>` task.

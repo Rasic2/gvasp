@@ -34,6 +34,7 @@ Detailed information about the mentioned arguments can see in :ref:`opt <optimiz
 
    submit/opt
    submit/chg
+   submit/wf
    submit/dos
    submit/freq
    submit/md

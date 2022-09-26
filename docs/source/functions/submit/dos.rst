@@ -16,17 +16,17 @@ Likewise the :ref:`optimization <optimization>` task, run the command:
 .. attention::
     This command only generate the **INCAR**, **KPOINTS**, **POSCAR** and **POTCAR** files, thus you should prepare other files (e.g. CHGCAR) by yourself.
 
-specify potential
--------------------
+From finished job
+--------------------
 
-If you want to specify potential, just run the command:
+Meantime, you can also start a dos task from a finished job which has the CONTCAR and CHGCAR files, and the :program:`GVasp` will auto generate the inputs for this task, just run the following command:
 
 .. code-block:: bash
 
-    gvasp submit dos -p/--potential POTENTIAL
+    gvasp submit dos -C/--continuous
 
 .. note::
-    More information of potential setting can be seen in :ref:`optimization <potential>` task.
+    This feature is also support for the chg and wf tasks.
 
 apply sequential task
 ----------------------
@@ -41,3 +41,9 @@ and the task will perform the optimization, charge calculation and DOS calculati
 
 .. note::
     Sequential task also support the :ref:`low <low>` and :ref:`analysis <analysis>` options.
+
+Other arguments
+-------------------
+
+.. note::
+    More information of other arguments can be seen in :ref:`optimization <arguments>` task.

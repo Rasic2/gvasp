@@ -16,15 +16,8 @@ Dimer Method
 .. attention::
     The Dimer method is not very useful, so **GVasp** provide a little support to this method. We also recommend user to try :ref:`Con-TS <con-TS>` or :ref:`NEB <neb_topic>` method to locate the TS.
 
-
-specify potential
+Other arguments
 -------------------
 
-If you want to specify potential, just run the command:
-
-.. code-block:: bash
-
-    gvasp submit neb -p/--potential POTENTIAL
-
 .. note::
-    More information of potential setting can be seen in :ref:`optimization <potential>` task.
+    More information of other arguments can be seen in :ref:`optimization <arguments>` task.

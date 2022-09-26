@@ -7,23 +7,23 @@ Charge Density
 
 Charge Density calculation is another important task, you can also use :program:`GVasp` to handle its inputs.
 
-Likewise the :ref:`optimization <optimization>` task, run the command:
+Likewise the :ref:`optimization <optimization>` task, run the command (need a *.xsd file):
 
 .. code-block:: bash
 
     gvasp submit chg
 
-specify potential
--------------------
+From finished job
+--------------------
 
-If you want to specify potential, just run the command:
+Meantime, you can also start a chg task from a finished job which has the CONTCAR file, and the :program:`GVasp` will auto generate the inputs for this task, just run the following command:
 
 .. code-block:: bash
 
-    gvasp submit chg -p/--potential POTENTIAL
+    gvasp submit chg -C/--continuous
 
 .. note::
-    More information of potential setting can be seen in :ref:`optimization <potential>` task.
+    This feature is also support for the wf and dos tasks.
 
 .. _analysis:
 
@@ -54,3 +54,9 @@ and the task will perform the optimization and charge calculation in a sequentia
 
 .. note::
     Sequential task also support the :ref:`low <low>` and :ref:`analysis <analysis>` options.
+
+Other arguments
+-------------------
+
+.. note::
+    More information of other arguments can be seen in :ref:`optimization <arguments>` task.
