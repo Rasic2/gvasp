@@ -111,7 +111,6 @@ test
 OUT.ANI
 dis_*
 .idea
-*.svg
 logs/
 *.grd
 MODECAR
@@ -150,3 +149,4 @@ xsd/
 /tests/W_element/
 /tests/Template/
 /tests/LOCPOT/
+/tests/figure.svg
