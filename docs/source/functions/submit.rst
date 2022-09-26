@@ -7,7 +7,26 @@ Generate Vasp Inputs
 
 :program:`GVasp` can help user quick generate VASP inputs (|inputs|), just need only run :file:`gvasp submit TASK [arguments]`.
 
-All tasks accept optional [-p/-\-potential] to specify the :ref:`potential <potential>`, other arguments will describe in corresponding sub-topic.
+The following arguments can be applied in all of the tasks, while other arguments will describe in corresponding sub-topic.
+
+.. list-table::
+    :widths: 15 30
+    :header-rows: 1
+
+    * - Argument
+      - Description
+    * - -P/-\-potential
+      - specify the potential
+    * - -V/-\-vdw
+      - open the vdw-correction
+    * - -S/-\-sol
+      - including the solvation effect
+    * - -G/-\-gamma
+      - perform the Gamma-point calculation
+    * - -N/-\-nelect
+      - perform charged system calculation
+
+Detailed information about the mentioned arguments can see in :ref:`opt <optimization>` task.
 
 .. toctree::
    :maxdepth: 1

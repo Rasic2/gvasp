@@ -85,13 +85,13 @@ Then the environment will be reset, :program:`GVasp` will auto search the :file:
 User template
 ----------------
 
-Now, user can defined their incar or submit template with the following steps:
+Now, user can defined their INCAR, UValue.yaml or submit.script template with the following steps:
 
-1. Named the incar or submit template as the *.incar and *.submit files.
+1. Named the INCAR, UValue.yaml or submit.script template as the *.incar, *.uvalue and *.submit files, respectively.
 
 2. Put them in your work directory or parent directory or parent's parent directory and so on directories (defined as the :code:`parent-chain`).
 
-For example, if you want to submit a job in the :file:`/public1/home/sc81076/hzhou/M-CeO2/test` directory, the incar and/or submit template put in these directories is allowed:
+For example, if you want to submit a job in the :file:`/public1/home/sc81076/hzhou/M-CeO2/test` directory, the INCAR, UValue.yaml and/or submit.script template put in these directories is allowed:
 
 .. code-block:: bash
 
