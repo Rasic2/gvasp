@@ -40,6 +40,8 @@ def main_parser() -> argparse.ArgumentParser:
                                help=f'specify potential, optional: {POTENTIAL}')
     submit_parser.add_argument("-V", "--vdw", help=f'add vdw-correction', action='store_true')
     submit_parser.add_argument("-S", "--sol", help=f'perform solvation calculation', action='store_true')
+    submit_parser.add_argument("-G", "--gamma", help=f'perform Gamma-point calculation', action='store_true')
+    submit_parser.add_argument("-N", "--nelect", help=f'specify the system charge', type=float)
     submit_parser.add_argument("-C", "--continuous", help=f'calculation from finished job', action='store_true')
 
     low_group = submit_parser.add_argument_group(title='low-task',
@@ -174,36 +176,36 @@ def main(argv=None):
                             "stm": STMTask().generate,
                             "dimer": DimerTask().generate}
 
+            normal_kargs = {"potential": args.potential,
+                            "vdw": args.vdw,
+                            "sol": args.sol,
+                            "gamma": args.gamma,
+                            "nelect": args.nelect}
+
             if args.task in normal_tasks.keys():
                 logger.info(f"generate `{args.task}` task")
-                normal_tasks[args.task](potential=args.potential, vdw=args.vdw, sol=args.sol)
+                normal_tasks[args.task](**normal_kargs)
             elif args.task == "opt":
                 logger.info(f"generate `opt` task")
-                OptTask().generate(potential=args.potential, continuous=args.continuous, low=args.low, vdw=args.vdw,
-                                   sol=args.sol)
+                OptTask().generate(continuous=args.continuous, low=args.low, **normal_kargs)
             elif args.task == "chg":
                 if args.sequential:
-                    SequentialTask(end="chg").generate(potential=args.potential, low=args.low, analysis=args.analysis,
-                                                       vdw=args.vdw, sol=args.sol)
+                    SequentialTask(end="chg").generate(low=args.low, analysis=args.analysis, **normal_kargs)
                 else:
                     logger.info(f"generate `chg` task")
-                    ChargeTask().generate(potential=args.potential, continuous=args.continuous, analysis=args.analysis,
-                                          vdw=args.vdw, sol=args.sol)
+                    ChargeTask().generate(continuous=args.continuous, analysis=args.analysis, **normal_kargs)
             elif args.task == "wf":
                 if args.sequential:
-                    SequentialTask(end="wf").generate(potential=args.potential, low=args.low, vdw=args.vdw,
-                                                      sol=args.sol)
+                    SequentialTask(end="wf").generate(low=args.low, **normal_kargs)
                 else:
                     logger.info(f"generate `wf` task")
-                    WorkFuncTask().generate(potential=args.potential, continuous=args.continuous, vdw=args.vdw,
-                                            sol=args.sol)
+                    WorkFuncTask().generate(continuous=args.continuous, **normal_kargs)
             elif args.task == "dos":
                 if args.sequential:
-                    SequentialTask(end="dos").generate(potential=args.potential, low=args.low, analysis=args.analysis,
-                                                       vdw=args.vdw, sol=args.sol)
+                    SequentialTask(end="dos").generate(low=args.low, analysis=args.analysis, **normal_kargs)
                 else:
                     logger.info(f"generate `dos` task")
-                    DOSTask().generate(potential=args.potential, continuous=args.continuous, vdw=args.vdw, sol=args.sol)
+                    DOSTask().generate(continuous=args.continuous, **normal_kargs)
             elif args.task == "neb":
                 if args.ini_poscar is None or args.fni_poscar is None:
                     raise AttributeError(None, "ini_poscar and fni_poscar arguments must be set!")
@@ -221,8 +223,7 @@ def main(argv=None):
                 check = input(f"Please confirm or cancel (y/n): ")
                 if check.lower()[0] == "y":
                     NEBTask(ini_poscar=args.ini_poscar, fni_poscar=args.fni_poscar, images=args.images).generate(
-                        method=args.method, potential=args.potential, check_overlap=not args.cancel_check_overlap,
-                        vdw=args.vdw, sol=args.sol)
+                        method=args.method, check_overlap=not args.cancel_check_overlap, **normal_kargs)
                 else:
                     print(f"Cancel neb task")
 

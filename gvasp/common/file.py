@@ -332,6 +332,7 @@ class POTCAR(MetaFile):
     def _parse(self):
         self.potential = [line.split()[2] for line in self.strings if line.find("TITEL") != -1]
         self.element = [line.split()[3] for line in self.strings if line.find("TITEL") != -1]
+        self.valence = [float(line.split()[5]) for line in self.strings if line.find("ZVAL") != -1]
 
     @staticmethod
     def cat(potentials, elements: List[str], potdir=f"{RootDir}/pot"):

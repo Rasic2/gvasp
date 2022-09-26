@@ -105,6 +105,7 @@ class Parameter(object):
     LSOL = TypeDescriptor('LSOL', bool)
     EB_K = TypeDescriptor('EB_K', float)
     LVHAR = TypeDescriptor('LVHAR', bool)
+    NELECT = TypeDescriptor('NELECT', float)
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -119,7 +120,8 @@ class Parameter(object):
                    "_floatParam":
                        {'func': float,
                         'name': ['ENCUT', 'EDIFF', 'EDIFFG', 'SIGMA', 'AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG', 'POTIM',
-                                 'DdR', 'DFNMin', 'DFNMax', 'TEBEG', 'TEEND', 'SPRING', 'MAXMOVE', 'EINT', 'EB_K'],
+                                 'DdR', 'DFNMin', 'DFNMax', 'TEBEG', 'TEEND', 'SPRING', 'MAXMOVE', 'EINT', 'NELECT',
+                                 'EB_K'],
                         },
                    "_bool_Param":
                        {'func': logic,
@@ -153,7 +155,7 @@ class Parameter(object):
 
     _mdParam = ('SMASS', 'MDALGO', 'TEBEG', 'TEEND')
 
-    _chgParam = ('LAECHG', 'LCHARG', 'LREAL', 'ALGO', 'ISMEAR', 'SIGMA',)
+    _chgParam = ('LAECHG', 'LCHARG', 'LREAL', 'ALGO', 'ISMEAR', 'SIGMA', 'NELECT')
 
     _dosParam = ('ICHARG', 'LORBIT', 'NEDOS')
 
