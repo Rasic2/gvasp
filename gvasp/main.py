@@ -1,5 +1,8 @@
 import argparse
 import json
+import os
+import shutil
+import stat
 import sys
 from pathlib import Path
 from typing import Iterable
@@ -9,7 +12,7 @@ from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import Logger
 from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS, PlotEPotential
-from gvasp.common.setting import ConfigManager, RootDir
+from gvasp.common.setting import ConfigManager, RootDir, HomeDir
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
     SequentialTask, OutputTask, WorkFuncTask
 from gvasp.common.utils import colors_generator
@@ -110,7 +113,25 @@ def main_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def main_completion():
+    if 'Linux' in Platform and not (Path(HomeDir) / ".gvasp-completion").exists():
+        shutil.copy(Path(RootDir) / "gvasp-bash-completion.sh", Path(HomeDir) / ".gvasp-completion")
+        with open(Path(HomeDir) / ".bash_completion", "a+") as f:
+            f.write("source ~/.gvasp-completion \n")
+
+
+def main_permission():
+    files_read_only = ['config.json', 'element.yaml', 'gvasp-bash-completion.sh', 'INCAR', 'slurm.script',
+                       'UValue.yaml']
+    for file in files_read_only:
+        if os.access(Path(RootDir) / file, os.W_OK):
+            os.chmod(Path(RootDir) / file, stat.S_IRUSR)
+
+
 def main(argv=None):
+    main_completion()  # set auto-completion
+    main_permission()  # modify file permission
+
     Config = ConfigManager()
     logger = Logger().logger
     parser = main_parser()

@@ -1,15 +1,14 @@
 import abc
 import os
 import shutil
-import subprocess
 from functools import wraps
 from pathlib import Path
 
 import numpy as np
 import yaml
 
-from gvasp.common.constant import GREEN, YELLOW, RESET, RED
 from gvasp.common.base import Atom
+from gvasp.common.constant import GREEN, YELLOW, RESET, RED
 from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
 from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
     CHGCAR_mag, INCAR, SubmitFile, CONTCAR
@@ -187,7 +186,7 @@ class BaseTask(metaclass=abc.ABCMeta):
                 f.write(f"{' '.join(list(map(str, KPOINTS.min_number(lattice=self.structure.lattice))))} \n")
             f.write("0 0 0 \n")
 
-    def _generate_POSCAR(self, continuous, *args, **kargs):
+    def _generate_POSCAR(self, continuous, method=None, check_overlap=None):
         """
         generate POSCAR from only one *.xsd file, and register `self.structure` and `self.elements`
         """
@@ -216,7 +215,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         potcar = POTCAR.cat(potentials=potential, elements=self.elements, potdir=self.PotDir)
         potcar.write(name="POTCAR")
 
-    def _generate_submit(self, gamma):
+    def _generate_submit(self, gamma=False, low=False, analysis=False):
         """
          generate job.submit automatically
          """
@@ -294,11 +293,11 @@ class OptTask(BaseTask, Animatable):
         if low:
             self.incar.ENCUT = 300.
 
-    def _generate_submit(self, low, gamma):
+    def _generate_submit(self, low=False, gamma=False, analysis=False):
         """
          generate job.submit automatically
          """
-        super(OptTask, self)._generate_submit(gamma)
+        super(OptTask, self)._generate_submit(low, analysis, gamma)
 
         run_command = SubmitFile(self.submit).run_command
         with open("submit.script", "a+") as g:
@@ -359,7 +358,7 @@ class ChargeTask(BaseTask):
         self.incar.LAECHG = True
         self.incar.LCHARG = True
 
-    def _generate_submit(self, analysis, gamma):
+    def _generate_submit(self, analysis=False, gamma=False, low=False):
         """
          generate job.submit automatically
          """
@@ -480,7 +479,7 @@ class FreqTask(BaseTask, Animatable):
     Frequency calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", vdw=False, sol=False, gamma=False):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False):
         """
         fully inherit BaseTask's generate
         """
@@ -518,7 +517,7 @@ class MDTask(BaseTask, Animatable):
      ab-initio molecular dynamics (AIMD) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", vdw=False, sol=False, gamma=False):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False):
         """
         fully inherit BaseTask's generate
         """
@@ -559,7 +558,7 @@ class STMTask(BaseTask):
      Scanning Tunneling Microscope (STM) image modelling calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", vdw=False, sol=False, gamma=False):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False):
         """
         fully inherit BaseTask's generate
         """
@@ -595,7 +594,7 @@ class ConTSTask(BaseTask, Animatable):
      Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", vdw=False, sol=False, gamma=False):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False):
         """
         fully inherit BaseTask's generate
         """
@@ -699,7 +698,7 @@ class NEBTask(BaseTask, Animatable):
         self.incar.MAXMOVE = 0.03
         self.incar.IMAGES = self.images
 
-    def _generate_POSCAR(self, method, check_overlap):
+    def _generate_POSCAR(self, method=None, check_overlap=None, continuous=None):
         """
         Generate NEB-task images && check their structure overlap
         """
