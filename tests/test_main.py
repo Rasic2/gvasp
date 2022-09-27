@@ -16,6 +16,12 @@ class TestMain(object):
         args = ["-v"]
         main(args)
 
+    def test_submit(self):
+        args = ["opt", "chg", "wf", "dos", "freq", "md", "con-TS", "stm", "dimer"]
+
+        for arg in args:
+            main(["submit"] + [arg])
+
 
 if __name__ == '__main__':
     pytest.main([__file__])
