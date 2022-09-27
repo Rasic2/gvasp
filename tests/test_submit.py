@@ -1,12 +1,13 @@
 import os
 import shutil
 import sys
-import unittest
 from pathlib import Path
+
+import pytest
 
 from gvasp.common.setting import RootDir
 from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask, \
-    SequentialTask, ConTSTask
+    SequentialTask, ConTSTask, WorkFuncTask
 
 
 def file_cleaner(func):
@@ -29,10 +30,9 @@ def block_print(func):
     return wrapper
 
 
-class TestSubmitTask(unittest.TestCase):
+class TestSubmitTask(object):
 
     @block_print
-    @file_cleaner
     def test_opt(self):
         task = OptTask()
         task.generate(vdw=True, sol=True)
@@ -41,6 +41,13 @@ class TestSubmitTask(unittest.TestCase):
     @file_cleaner
     def test_chg(self):
         task = ChargeTask()
+        task.generate(vdw=True, sol=True, continuous=True)
+        os.chdir("../")
+
+    @block_print
+    @file_cleaner
+    def test_wf(self):
+        task = WorkFuncTask()
         task.generate(vdw=True, sol=True)
 
     @block_print
@@ -97,4 +104,4 @@ class TestSubmitTask(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    pytest.main([__file__])
