@@ -1,4 +1,5 @@
 import abc
+import logging
 import os
 import shutil
 from functools import wraps
@@ -12,9 +13,10 @@ from gvasp.common.constant import GREEN, YELLOW, RESET, RED
 from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
 from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
     CHGCAR_mag, INCAR, SubmitFile, CONTCAR
-from gvasp.common.logger import Logger
 from gvasp.common.setting import WorkDir, ConfigManager
 from gvasp.neb.path import IdppPath, LinearPath
+
+logger = logging.getLogger(__name__)
 
 
 def write_wrapper(func):
@@ -152,7 +154,6 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
         generate by copy incar_template, modify the +U parameters
         """
-        logger = Logger().logger
         if self.incar.LDAU:
             LDAUL, LDAUU, LDAUJ = [], [], []
             for element in self.elements:
@@ -732,7 +733,6 @@ class NEBTask(BaseTask, Animatable):
         """
         Generate NEB-task images by idpp method (J. Chem. Phys. 140, 214106 (2014))
         """
-        logger = Logger().logger
 
         idpp_path = IdppPath.from_linear(self.ini_poscar, self.fni_poscar, self.images)
         idpp_path.run()
@@ -744,7 +744,6 @@ class NEBTask(BaseTask, Animatable):
         """
         Generate NEB-task images by linear interpolation method
         """
-        logger = Logger().logger
 
         linear_path = LinearPath(self.ini_poscar, self.fni_poscar, self.images)
         linear_path.run()
@@ -772,7 +771,6 @@ class NEBTask(BaseTask, Animatable):
         """
         Check if two atoms' distance is too small, (following may add method to tailor their distances)
         """
-        logger = Logger().logger
         logger.info("Check structures overlap")
         neb_dirs = NEBTask._search_neb_dir()
 

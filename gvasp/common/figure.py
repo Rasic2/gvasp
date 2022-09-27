@@ -1,8 +1,11 @@
+import logging
 from functools import wraps
 
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy import interpolate
+
+logger = logging.getLogger(__name__)
 
 
 def plot_wrapper(func):
@@ -158,9 +161,6 @@ class Text(object):
             1. tailor box along the line
             2. if not, tailor the box vertically, then loop
         """
-        from gvasp.common.logger import Logger
-        logger = Logger().logger
-
         left_m = -0.3 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # left margin
         right_m = 0.3 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # right margin
         top_m = 0.07 * (self.fontsize / 18) * (self.figure.width / 15.6) * (self.figure.height / 8)  # top margin

@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import os
 import shutil
 import stat
@@ -11,7 +12,7 @@ from typing import Iterable
 from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
-from gvasp.common.logger import Logger
+from gvasp.common.logger import init_root_logger
 from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS, PlotEPotential
 from gvasp.common.setting import ConfigManager, RootDir, HomeDir
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
@@ -132,11 +133,13 @@ def main_permission():
 
 
 def main(argv=None):
+    init_root_logger()
+
     main_completion()  # set auto-completion
     main_permission()  # modify file permission
 
     Config = ConfigManager()
-    logger = Logger().logger
+    logger = logging.getLogger(__name__)
     parser = main_parser()
 
     if argv is None:

@@ -1,14 +1,8 @@
 import logging
-import time
 from pathlib import Path
 
-from gvasp.common.constant import RESET, BOLD
+from gvasp.common.constant import RESET, BOLD, DATE, YELLOW, WHITE, BLUE, RED
 from gvasp.common.setting import ConfigManager
-
-date = time.strftime("%Y-%m-%d", time.localtime())
-BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
-
-COLOR_SEQ = "\033[1;%dm"
 
 COLORS = {
     'WARNING': YELLOW,
@@ -31,14 +25,15 @@ def formatter_message(message, use_color=True):
 class ColoredFormatter(logging.Formatter):
 
     def __init__(self, msg, use_color=False):
-        logging.Formatter.__init__(self, msg)
+        super(ColoredFormatter, self).__init__(msg)
+
         self.use_color = use_color
 
     def format(self, record):
         levelname = record.levelname
 
         if self.use_color and levelname in COLORS:
-            levelname_color = COLOR_SEQ % (30 + COLORS[levelname]) + levelname + RESET
+            levelname_color = COLORS[levelname] + levelname + RESET
             record.levelname = levelname_color
 
         return logging.Formatter.format(self, record)
@@ -56,11 +51,12 @@ class ColoredLogger(logging.Logger):
         print("Create logdir error, because it is not a directory")
 
     def __init__(self, name):
-        logging.Logger.__init__(self, name)
+        super(ColoredLogger, self).__init__(name)
+
         file_formatter = ColoredFormatter(self.FILE_FORMAT, False)
         color_formatter = ColoredFormatter(self.COLOR_FORMAT, True)
 
-        fh = logging.FileHandler(f"{self.LogDir}/{date}.txt")
+        fh = logging.FileHandler(f"{self.LogDir}/{DATE}.txt")
         fh.setFormatter(file_formatter)
 
         ch = logging.StreamHandler()
@@ -70,15 +66,7 @@ class ColoredLogger(logging.Logger):
         self.addHandler(ch)
 
 
-class Logger(object):
-    _logger = None
-
-    def __new__(cls, *args, **kwargs):
-        if cls._logger is None:
-            cls._logger = super().__new__(cls)
-        return cls._logger
-
-    def __init__(self):
-        logging.setLoggerClass(ColoredLogger)
-        self.logger = logging.getLogger("__main__")
-        self.logger.setLevel(logging.INFO)
+def init_root_logger(name=None, level=logging.INFO):
+    logging.setLoggerClass(ColoredLogger)
+    root_logger = logging.getLogger(name)
+    root_logger.setLevel(level=level)

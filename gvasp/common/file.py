@@ -1,3 +1,4 @@
+import logging
 import math
 from collections import namedtuple
 from datetime import datetime
@@ -16,7 +17,6 @@ from pandas import DataFrame
 from gvasp.common.base import Atoms, Lattice
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
-from gvasp.common.logger import Logger
 from gvasp.common.parameter import Parameter
 from gvasp.common.setting import RootDir
 from gvasp.common.structure import Structure
@@ -28,6 +28,8 @@ COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'p
            'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
            'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
            'f6_down', 'f7_up', 'f7_down']
+
+logger = logging.getLogger(__name__)
 
 
 class MetaFile(object):
@@ -352,7 +354,6 @@ class POTCAR(MetaFile):
             raise ParameterError(f"{potentials} and {elements} is not match")
 
         potcar_instances = []
-        logger = Logger().logger
         for potential, element in zip(potentials, elements):
             if element == "Zr" and potential == "PAW_PBE":
                 potcar_instances.append(POTCAR(name=(Path(potdir) / potential / f"{Path(element)}_sv" / "POTCAR")))
@@ -658,7 +659,6 @@ class POSCAR(StructInfoFile):
             pos1:   first POSCAR file name
             pos2:   second POSCAR file name
         """
-        logger = Logger().logger
 
         structure1 = POSCAR(name=pos1).structure
         structure2 = POSCAR(name=pos2).structure
@@ -791,7 +791,6 @@ class EIGENVAL(MetaFile):
         @params:
             dir:    save directory, default: $CWD/band_data
         """
-        logger = Logger().logger
         Path(directory).mkdir(exist_ok=True)
         for index in range(self.NBand):
             np.savetxt(f"{directory}/band_{index + 1}", self.energy[:, index])
@@ -1225,8 +1224,6 @@ class OUTCAR(MetaFile):
             frames:     specify how many points you want to interpolate along one direction, default = 30
             scale:      determine the vibration scale, default = 0.6
         """
-        logger = Logger().logger
-
         if self.frequency is None:
             raise AnimationError(f"{self.name} don't include frequency information")
 
