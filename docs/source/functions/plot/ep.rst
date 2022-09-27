@@ -23,6 +23,9 @@ For this task, the :file:`plot.json` is like this
 .. code-block:: json
 
     {
+        "width": 5,
+        "height": 4,
+        "fontsize": 10
     }
 
 The attention of :code:`--show`, :code:`--save` and :code:`--json` can be seen in :ref:`optimization <show_plot>` part.

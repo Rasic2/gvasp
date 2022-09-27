@@ -5,25 +5,16 @@ from gvasp.main import main
 
 class TestMain(object):
     def test_help(self):
-        try:
-            args = ["", "-h"]
-            main(args)
-        except SystemExit:
-            pass
+        args = []
+        main(args)
 
     def test_list(self):
-        try:
-            args = ["", "-l"]
-            main(args)
-        except SystemExit:
-            pass
+        args = ["-l"]
+        main(args)
 
     def test_version(self):
-        try:
-            args = ["", "-v"]
-            main(args)
-        except SystemExit:
-            pass
+        args = ["-v"]
+        main(args)
 
 
 if __name__ == '__main__':
