@@ -125,13 +125,30 @@ def main_completion():
 
 
 def main_permission():
-    files_read_only = ['config.json', 'element.yaml', 'gvasp-bash-completion.sh', 'INCAR', 'slurm.script',
+    files_read_only = ['config.json', 'element.yaml', 'gvasp-bash-completion.sh', 'INCAR', 'slurm.submit',
                        'UValue.yaml']
     for file in files_read_only:
         if os.access(Path(RootDir) / file, os.W_OK):
             os.chmod(Path(RootDir) / file, stat.S_IRUSR)
 
 
+def exception_format(func):
+    def wrapper(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception:
+            exc_type, exc_value, exc_obj = sys.exc_info()
+            exc_location = traceback.format_exc(limit=-1).splitlines()[1]
+            print(f"+{'Error'.center(len(exc_location) + 30, '-')}\n"
+                  f"| exception_location:     {RED}{exc_location.lstrip()}{RESET} \n"
+                  f"| exception_type:         {GREEN}{exc_type}{RESET} \n"
+                  f"| exception_value:        {YELLOW}{exc_value}{RESET}\n"
+                  f"+{'-----'.center(len(exc_location) + 30, '-')}")
+
+    return wrapper
+
+
+@exception_format
 def main(argv=None):
     init_root_logger()
 
@@ -347,16 +364,3 @@ def main(argv=None):
 
         elif args.which == 'grd':  # grd task
             ChargeTask.to_grd(name=args.name, Dencut=args.DenCut)
-
-
-if __name__ == "__main__":
-    try:
-        main(sys.argv[1:])
-    except Exception as error:
-        exc_type, exc_value, exc_obj = sys.exc_info()
-        exc_location = traceback.format_exc(limit=-1).splitlines()[1]
-        print(f"+{'Error'.center(len(exc_location) + 30, '-')}\n"
-              f"| exception_location:     {RED}{exc_location.lstrip()}{RESET} \n"
-              f"| exception_type:         {GREEN}{exc_type}{RESET} \n"
-              f"| exception_value:        {YELLOW}{exc_value}{RESET}\n"
-              f"+{'-----'.center(len(exc_location) + 30, '-')}")

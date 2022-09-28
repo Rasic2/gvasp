@@ -21,7 +21,7 @@ if "win" in sysconfig.get_platform():
 
 setup(
     name='gvasp',
-    version='0.0.3',
+    version='0.1.0',
     license='GPL-3.0',
     author='hui_zhou',
     author_email='1051987201@qq.com',
@@ -49,6 +49,6 @@ setup(
                  Extension(name='gvasp.lib.base_bind', sources=['extension/base_bind.cpp'])],
     include_dirs=[sysconfig.get_config_var("INCLUDE"), np.get_include(), pybind11.get_include()],
     include_package_data=True,
-    package_data={"gvasp": ["*.json", "*.yaml", "INCAR", "*.submit"]},
+    package_data={"gvasp": ["*.json", "*.yaml", "INCAR", "*.submit", "*.sh"]},
     entry_points={'console_scripts': ['gvasp = gvasp.main:main']}
 )
