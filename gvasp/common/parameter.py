@@ -1,15 +1,17 @@
+import re
+
 from gvasp.common.descriptor import TypeDescriptor, ValueDescriptor, IntegerLeftDescriptor, TypeListDescriptor, \
     IntegerLeftRealRightDescriptor
 
 
 def logic(value: str):
     """transform str to bool"""
-    if value.upper() == ".FALSE.":
+    if re.findall("F", value.upper()):
         return False
-    elif value.upper() == ".TRUE.":
+    elif re.findall("T", value.upper()):
         return True
     else:
-        raise ValueError(f"{value} can't transform to <class bool>")
+        raise ValueError(f"`{value}` can't transform to <class bool>")
 
 
 def bool_str(value):
@@ -106,6 +108,7 @@ class Parameter(object):
     EB_K = TypeDescriptor('EB_K', float)
     LVHAR = TypeDescriptor('LVHAR', bool)
     NELECT = TypeDescriptor('NELECT', float)
+    NSIM = TypeDescriptor('NSIM', int)
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -115,7 +118,7 @@ class Parameter(object):
                        {'func': int,
                         'name': ['ISTART', 'IBRION', 'NSW', 'ISIF', 'NELM', 'NELMIN', 'ISPIN', 'ISMEAR', 'LDAUTYPE',
                                  'LDAUPRINT', 'LMAXMIX', 'NPAR', 'ISYM', 'ICHAIN', 'DRotMax', 'IOPT', 'ICHARG',
-                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD', "IVDW"]
+                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD', "IVDW", "NSIM"]
                         },
                    "_floatParam":
                        {'func': float,
@@ -149,7 +152,7 @@ class Parameter(object):
     _baseParam = ('SYSTEM', 'PREC', 'ISTART', 'ISYM', 'ENCUT', 'NELM', 'NELMIN', 'EDIFF', 'EDIFFG', 'GGA', 'ISPIN',
                   'LWAVE', 'NPAR',)
 
-    _scfParam = ('AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG')
+    _scfParam = ('AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG', 'NSIM')
 
     _optParam = ('IBRION', 'NSW', 'POTIM', 'ISIF',)
 

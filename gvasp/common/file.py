@@ -171,6 +171,8 @@ class INCAR(MetaFile, Parameter):
         Initialize the attributes, if attribute not found, raise AttributeNotRegisteredError
         """
         for line in self.strings:
+            if not line.strip():  # catch blanklines
+                continue
             if line.split()[0][0] != "#":
                 real_line = line.split("#")[0]
                 attr_name = real_line.split("=")[0].strip()

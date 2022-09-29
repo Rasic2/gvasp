@@ -150,7 +150,7 @@ def exception_format(func):
 
 @exception_format
 def main(argv=None):
-    init_root_logger()
+    init_root_logger(name="gvasp")
 
     main_completion()  # set auto-completion
     main_permission()  # modify file permission
