@@ -19,6 +19,8 @@ from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask,
     SequentialTask, OutputTask, WorkFuncTask
 from gvasp.common.utils import colors_generator
 
+logger = logging.getLogger(__name__)
+
 
 def main_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -156,7 +158,6 @@ def main(argv=None):
     main_permission()  # modify file permission
 
     Config = ConfigManager()
-    logger = logging.getLogger(__name__)
     parser = main_parser()
 
     if argv is None:
