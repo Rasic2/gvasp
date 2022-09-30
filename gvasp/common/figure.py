@@ -26,6 +26,7 @@ def plot_wrapper(func):
         except:
             pass
         plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
+        plt.ylim() if self.ylim is None else plt.ylim(self.ylim)
         plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
                    fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -46,7 +47,7 @@ class Figure(object):
             raise TypeError(f"<{cls.__name__} class> may not be instantiated")
         return super(Figure, cls).__new__(cls)
 
-    def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None,
+    def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
                  xticks=None, xlabel=None, ylabel=None, bwidth=1, **kargs):
         self.width = width
         self.height = height
@@ -57,6 +58,7 @@ class Figure(object):
         self.fontsize = fontsize
         self.title = title
         self.xlim = xlim
+        self.ylim = ylim
         self.xticks = xticks
         self.xlabel = xlabel
         self.ylabel = ylabel
