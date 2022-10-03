@@ -503,9 +503,10 @@ class DOSTask(BaseTask):
         self.incar.NSW = 1
         self.incar.LORBIT = 12
         self.incar.NEDOS = 2000
-
-        del self.incar.LAECHG
         self.incar.LCHARG = False
+
+        if getattr(self.incar, "LAECHG", None) is not None:
+            del self.incar.LAECHG
 
 
 class FreqTask(BaseTask, Animatable):
