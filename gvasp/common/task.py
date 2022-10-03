@@ -78,13 +78,25 @@ class BaseTask(metaclass=abc.ABCMeta):
 
     @staticmethod
     def _search_suffix(suffix):
+        """
+        Search file with the special suffix in all parents directories
+
+        Args:
+            suffix (str): specify the suffix
+
+        Returns:
+            file (Path): file path with the special suffix
+        """
         for directory in BaseTask.get_all_parents():
-            for file in directory.iterdir():
-                try:
-                    if file.is_file() and file.name.endswith(f"{suffix}"):
-                        return file
-                except PermissionError:
-                    continue
+            try:
+                for file in directory.iterdir():
+                    try:
+                        if file.is_file() and file.name.endswith(f"{suffix}"):
+                            return file
+                    except PermissionError:
+                        continue
+            except PermissionError:
+                continue
         else:
             return
 
@@ -131,7 +143,10 @@ class BaseTask(metaclass=abc.ABCMeta):
                   f"{self.incar.LDAUU[index] - self.incar.LDAUJ[index]}")
             index += 1
         print()
-        print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
+        if gamma:
+            print(f"KPoints: [1 1 1]")
+        else:
+            print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
         print()
         print(f"{GREEN}Job Name: {self.title}{RESET}")
         print(f"{YELLOW}INCAR template: {self._incar}{RESET}")
@@ -310,7 +325,7 @@ class OptTask(BaseTask, Animatable):
         """
          generate job.submit automatically
          """
-        super(OptTask, self)._generate_submit(low, analysis, gamma)
+        super(OptTask, self)._generate_submit(low=low, analysis=analysis, gamma=gamma)
 
         run_command = SubmitFile(self.submit).run_command
         with open("submit.script", "a+") as g:
@@ -321,7 +336,7 @@ class OptTask(BaseTask, Animatable):
                         "cp CONTCAR POSCAR \n"
                         "cp OUTCAR OUTCAR_300 \n"
                         "mv CONTCAR CONTCAR_300 \n"
-                        f"sed -i 's/ENCUT = 300/ENCUT = {self.incar._ENCUT}/' INCAR\n"
+                        f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
                         f"\n"
                         f"{run_command}")
 
@@ -488,6 +503,9 @@ class DOSTask(BaseTask):
         self.incar.NSW = 1
         self.incar.LORBIT = 12
         self.incar.NEDOS = 2000
+
+        del self.incar.LAECHG
+        self.incar.LCHARG = False
 
 
 class FreqTask(BaseTask, Animatable):

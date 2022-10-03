@@ -24,6 +24,24 @@ def bool_str(value):
         return value
 
 
+def str_prec(value):
+    """transform PREC optional values to ['Low', 'Medium', 'High', 'Normal', 'Single', 'Accurate']"""
+    if re.match("L", value.upper()):
+        return "Low"
+    elif re.match("M", value.upper()):
+        return "Medium"
+    elif re.match("H", value.upper()):
+        return "High"
+    elif re.match("N", value.upper()):
+        return "Normal"
+    elif re.match("S", value.upper()):
+        return "Single"
+    elif re.match("A", value.upper()):
+        return "Accurate"
+    else:
+        raise ValueError(f"`{value}` can't transform to ['Low', 'Medium', 'High', 'Normal', 'Single', 'Accurate']")
+
+
 def int_float(value):
     """transform str to int (value<0) or float (value>0)"""
     return float(value) if float(value) > 0 else int(float(value))
@@ -112,7 +130,11 @@ class Parameter(object):
 
     _type_trans = {"_strParam":
                        {'func': str,
-                        'name': ['SYSTEM', 'PREC', 'GGA', 'ALGO'],
+                        'name': ['SYSTEM', 'GGA', 'ALGO'],
+                        },
+                   "_PRECParam":
+                       {'func': str_prec,
+                        'name': ['PREC', ],
                         },
                    "_intParam":
                        {'func': int,

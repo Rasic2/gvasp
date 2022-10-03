@@ -321,15 +321,18 @@ class POTCAR(MetaFile):
     def __add__(self, other):
         potential = self.potential if isinstance(self.potential, list) else [self.potential]
         element = self.element if isinstance(self.element, list) else [self.element]
+        valence = self.valence if isinstance(self.valence, list) else [self.valence]
         strings = self._strings
 
         potential += other.potential
         element += other.element
+        valence += other.valence
         strings += other._strings
 
         potcar = POTCAR("POTCAR")
         potcar.potential = potential
         potcar.element = element
+        potcar.valence = valence
         potcar._strings = strings
         return potcar
 

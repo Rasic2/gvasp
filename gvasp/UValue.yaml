@@ -27,3 +27,8 @@ Element Ce:
     orbital: 3
     U: 5.5
     J: 0.5
+
+Element Ti:
+    orbital: 2
+    U: 4.5
+    J: 0.3
