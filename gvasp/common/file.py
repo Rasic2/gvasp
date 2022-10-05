@@ -778,7 +778,7 @@ class EIGENVAL(MetaFile):
                 energy_flag = True
                 continue
             elif energy_flag:
-                sBand.append(list(map(float, line.split()[1:])))
+                sBand.append(list(map(float, line.split()[1:3])))
                 if len(sBand) == self.NBand:
                     energy_flag = False
                     self.energy.append(sBand)

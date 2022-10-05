@@ -21,7 +21,7 @@ if "win" in sysconfig.get_platform():
 
 setup(
     name='gvasp',
-    version='0.1.0',
+    version='0.1.1',
     license='GPL-3.0',
     author='hui_zhou',
     author_email='1051987201@qq.com',

@@ -1,3 +1,4 @@
+import logging
 import time
 from collections import defaultdict
 from functools import wraps
@@ -23,6 +24,8 @@ COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'p
            'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
            'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
            'f6_down', 'f7_up', 'f7_down']
+
+logger = logging.getLogger(__name__)
 
 
 def interpolated_wrapper(func):
@@ -250,18 +253,24 @@ class PlotBand(Figure):
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
             self.energy = self.energy.transpose((1, 0, 2))
 
+        try:
+            self.fermi = OUTCAR("OUTCAR").fermi
+        except FileNotFoundError:
+            logger.warning("`OUTCAR` not found, set E-fermi=0.0")
+            self.fermi = 0.
+
     @plot_wrapper
     def plot(self):
         """
         Plot Band Structure, for spin-system, the average energy was applied
         """
-        energy_avg = self.energy.mean(axis=-1)
+        energy_avg = self.energy.mean(axis=-1) - self.fermi
         for band_index in range(energy_avg.shape[1]):
             plt.plot(energy_avg[:, band_index], "-o")
 
 
 class PlotEPotential(Figure):
-    def __init__(self, direction='z', title='Local Potential', xlabel='Position (Å)', ylabel='Energy (eV)',**kargs):
+    def __init__(self, direction='z', title='Local Potential', xlabel='Position (Å)', ylabel='Energy (eV)', **kargs):
         super(PlotEPotential, self).__init__(title=title, xlabel=xlabel, ylabel=ylabel, **kargs)
         self.lpotential = LOCPOT(name="LOCPOT").line_potential(direction=direction)
 
