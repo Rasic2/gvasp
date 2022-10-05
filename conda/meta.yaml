@@ -33,6 +33,7 @@ requirements:
     - pyyaml
     - scipy
     - pytest
+    - seekpath
 
 about:
   home: https://github.com/Rasic2/gvasp

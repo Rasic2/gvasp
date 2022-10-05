@@ -152,3 +152,6 @@ xsd/
 /tests/figure.svg
 /tests/performance/
 /tests/anatase_band/
+/tests/fort.188
+/tests/POSCAR
+/tests/submit.script

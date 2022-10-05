@@ -40,7 +40,8 @@ setup(
         'pandas',
         'pyyaml',
         'scipy',
-        'pytest'],
+        'pytest',
+        'seekpath'],
     ext_modules=cythonize([Extension(name='gvasp.lib.dos_cython', sources=['extension/dos_cython.pyx']),
                            Extension(name='gvasp.lib.path_cython', sources=['extension/path_cython.pyx'])],
                           language_level=3) +

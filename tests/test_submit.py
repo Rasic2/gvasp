@@ -7,7 +7,7 @@ import pytest
 
 from gvasp.common.setting import RootDir
 from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, DimerTask, NEBTask, \
-    SequentialTask, ConTSTask, WorkFuncTask
+    SequentialTask, ConTSTask, WorkFuncTask, BandTask
 
 
 def file_cleaner(func):
@@ -38,9 +38,15 @@ class TestSubmitTask(object):
         task.generate(vdw=True, sol=True)
 
     @block_print
-    @file_cleaner
     def test_chg(self):
         task = ChargeTask()
+        task.generate(vdw=True, sol=True, continuous=True)
+        os.chdir("../")
+
+    @block_print
+    @file_cleaner
+    def test_band(self):
+        task = BandTask()
         task.generate(vdw=True, sol=True, continuous=True)
         os.chdir("../")
 

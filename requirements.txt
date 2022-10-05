@@ -7,3 +7,4 @@ pandas
 pyyaml
 scipy
 pytest
+seekpath

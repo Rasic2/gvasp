@@ -7,6 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import yaml
+from seekpath import get_path
 
 from gvasp.common.base import Atom
 from gvasp.common.constant import GREEN, YELLOW, RESET, RED
@@ -108,17 +109,16 @@ class BaseTask(metaclass=abc.ABCMeta):
         """
         if continuous:
             self._generate_cdir()
-        self._generate_POSCAR(continuous)
-        self._generate_KPOINTS(gamma)
+        self._generate_POSCAR(continuous=continuous)
+        self._generate_KPOINTS(gamma=gamma)
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
-        self._generate_submit(gamma)
+        self._generate_submit(gamma=gamma)
         self._generate_info(potential=potential, gamma=gamma)
 
     def _generate_cdir(self, dir=None, files=None):
         Path(dir).mkdir(exist_ok=True)
         for file in files:
-            shutil.copy(file, dir)
             shutil.copy(file, dir)
         os.chdir(dir)
         self.incar = INCAR("INCAR")
@@ -145,6 +145,8 @@ class BaseTask(metaclass=abc.ABCMeta):
         print()
         if gamma:
             print(f"KPoints: [1 1 1]")
+        elif self.__class__.__name__ == "BandTask":
+            print(f"KPoints: line-mode for band structure")
         else:
             print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
         print()
@@ -465,6 +467,72 @@ class WorkFuncTask(BaseTask):
         self.incar.IBRION = -1
         self.incar.NSW = 1
         self.incar.LVHAR = True
+
+
+class BandTask(BaseTask):
+    """
+    Band Structure calculation task manager, subclass of BaseTask
+    """
+
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, nelect=None, gamma=False):
+        """
+        fully inherit BaseTask's generate
+        """
+        super(BandTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, nelect=nelect)
+
+    def _generate_cdir(self, dir="band_cal", files=None):
+        if files is None:
+            files = ["INCAR", "CONTCAR", "CHGCAR"]
+        super(BandTask, self)._generate_cdir(dir=dir, files=files)
+
+    @write_wrapper
+    def _generate_INCAR(self, vdw, sol, nelect):
+        """
+        Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
+        parameters setting:
+            ISTART = 1
+            ICHARG = 11
+            IBRION = -1
+            NSW = 1
+            LORBIT = 12
+            NEDOS = 2000
+        """
+        super(BandTask, self)._generate_INCAR(vdw, sol, nelect)
+        self.incar.ISTART = 1
+        self.incar.ICHARG = 11
+        self.incar.IBRION = -1
+        self.incar.NSW = 1
+        self.incar.LCHARG = False
+
+        if getattr(self.incar, "LAECHG", None) is not None:
+            del self.incar.LAECHG
+
+    def _generate_KPOINTS(self, gamma=False, points=21):
+        """
+        generate KPOINTS in line-mode
+        """
+        lattice = self.structure.lattice.matrix
+        positions = self.structure.atoms.frac_coord
+        numbers = self.structure.atoms.number
+        spglib_structure = (lattice, positions, numbers)
+
+        path = get_path(structure=spglib_structure)
+        KLabel = path['point_coords']
+        KPath = path['path']
+
+        with open("KPOINTS", "w") as f:
+            f.write("K Along High Symmetry Lines \n")
+            f.write(f"{points} \n")
+            f.write(f"Line-Mode \n")
+            f.write(f"Rec \n")
+
+            for (start, end) in KPath:
+                start_str = [format(item, "8.5f") for item in KLabel[start]]
+                end_str = [format(item, "8.5f") for item in KLabel[end]]
+
+                f.write(f"{' '.join(start_str)}\t!{start} \n")
+                f.write(f"{' '.join(end_str)}\t!{end} \n")
+                f.write("\n")
 
 
 class DOSTask(BaseTask):
