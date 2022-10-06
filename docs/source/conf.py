@@ -7,10 +7,10 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'GVasp'
-copyright = '2022, hui_zhou'
-author = 'hui_zhou'
-version = '0.1.0'
-release = '0.1.0'
+copyright = '2022, Hui Zhou'
+author = 'Hui Zhou'
+version = '0.1.1'
+release = '0.1.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -20,7 +20,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('../../gvasp'))
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinxcontrib.inkscapeconverter']
 
 templates_path = ['_templates']
 exclude_patterns = []
