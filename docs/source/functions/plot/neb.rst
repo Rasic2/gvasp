@@ -15,6 +15,7 @@ then, one may obtain the :file:`figure.svg` like this
 
 .. image:: neb.svg
    :align: center
+   :width: 400
 
 For this task, the :file:`plot.json` is like this
 

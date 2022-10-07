@@ -10,12 +10,12 @@
 
 - [About GVasp](#about-gvasp)
 - [Install](#install)
-  - [Create Environment](#create-environment)
-  - [Install GVasp](#install-gvasp)
+    - [Create Environment](#create-environment)
+    - [Install GVasp](#install-gvasp)
 - [Setting Environment](#setting-environment)
-  - [Default Environment](#default-environment)
-  - [Modify Environment](#modify-environment)
-  - [User Template](#user-template)
+    - [Default Environment](#default-environment)
+    - [Modify Environment](#modify-environment)
+    - [User Template](#user-template)
 - [Code Structure](#code-structure)
 - [Requirements](#requirements)
 
@@ -115,7 +115,8 @@ Initial environment is like this:
 
 - ConfigDir: represents the directory of `INCAR (template)`, `UValue.yaml` and other setting files
 
-- scheduler: represents the job control system, now only support slurm (but you can specify a .submit file in your parent-chain path)
+- scheduler: represents the job control system, now only support slurm (but you can specify a .submit file in your
+  parent-chain path)
 
 - LogDir: represents the directory of `logs`
 
@@ -177,7 +178,7 @@ After these two steps, the GVasp generate the inputs will apply your templates.
 
 - [gvasp/neb](gvasp/neb): neb-related path module
 
-- [gvasp/lib](gvasp/lib): store the dynamic library (_.so and _.pyd)
+- [gvasp/lib](gvasp/lib): store the dynamic library (\*.so and \*.pyd)
 
 - [extension](extension): `C++`/`Cython` extensions (source code)
 

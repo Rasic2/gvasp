@@ -17,15 +17,19 @@ Just like this,
 
 .. image:: band.svg
    :align: center
+   :width: 400
 
 For this task, the :file:`plot.json` is like this
 
 .. code-block:: json
 
     {
-        "width": 5,
-        "height": 4,
-        "fontsize": 10,
+        "title": "Band Structure",
+        "ylim": [-6, 4],
+        "ylabel": "Energy (eV)",
+        "bwidth": 2,
+        "xlim": [0, 147],
+        "xticks": []
     }
 
 The attention of :code:`--show`, :code:`--save` and :code:`--json` can be seen in :ref:`optimization <show_plot>` part.

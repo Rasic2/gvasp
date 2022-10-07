@@ -13,7 +13,7 @@ def plot_wrapper(func):
     def wrapper(self, *args, **kargs):
         plt.rc('font', family=self.family, weight=self.weight)  # set the font globally
         plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
-        plt.rcParams['lines.linewidth'] = 2  # set line-width
+        plt.rcParams['lines.linewidth'] = 3  # set line-width
         plt.rcParams['lines.markersize'] = 2.0
         func(self, *args, **kargs)
         ax = plt.gca()

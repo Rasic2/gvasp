@@ -18,6 +18,8 @@ then, one may obtain the :file:`figure.svg` which plot the energy and force chan
 Just like this,
 
 .. image:: opt.svg
+   :width: 600
+   :align: center
 
 The only parameter in plot.json is :code:`height`, certainly it is optional.
 

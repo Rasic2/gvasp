@@ -17,6 +17,7 @@ Just like this,
 
 .. image:: ep.svg
    :align: center
+   :width: 400
 
 For this task, the :file:`plot.json` is like this
 
