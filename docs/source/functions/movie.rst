@@ -15,3 +15,6 @@ Except :ref:`frequency <freq_movie>`, other tasks accept optional [-n/-\-name] t
    movie/md
    movie/freq
    movie/ts
+
+.. note::
+    More detailed information about the arc file display can see `here <https://codenote.readthedocs.io/en/latest/chemistry/MS.html#arc>`_.
