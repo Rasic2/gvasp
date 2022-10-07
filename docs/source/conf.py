@@ -20,7 +20,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('../../gvasp'))
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinxcontrib.inkscapeconverter']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon', 'sphinxcontrib.inkscapeconverter']
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -31,3 +31,8 @@ exclude_patterns = []
 source_suffix = ['.rst', '.md', '.MD']
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+# -- Options for Latex ---
+latex_elements = {
+    'extraclassoptions': 'openany,oneside',
+}
