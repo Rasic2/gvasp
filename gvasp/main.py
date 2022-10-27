@@ -102,6 +102,11 @@ def main_parser() -> argparse.ArgumentParser:
     display_plot_group.add_argument("--save", action='store_true', help='save figure as figure.svg')
     plot_parser.set_defaults(which='plot')
 
+    # band-center parser
+    band_center_parser = subparsers.add_parser(name="band-center", help="calculate the band-center of the DOS")
+    band_center_parser.add_argument("-j", "--json", type=str, help='*.json file to quick setting', required=True)
+    band_center_parser.set_defaults(which="band-center")
+
     # sum parser
     sum_parser = subparsers.add_parser(name="sum", help="sum AECCAR0 and AECCAR2 to CHGCAR_sum")
     sum_parser.set_defaults(which="sum")
@@ -356,6 +361,18 @@ def main(argv=None):
             if args.save:
                 Figure.save()
                 logger.info(f"Figure has been saved as figure.svg, please check")
+
+        elif args.which == 'band-center':  # band-center task
+            with open(args.json, "r") as f:  # load json file to read setting and data
+                arguments = json.load(f)
+
+            if "pos_file" not in arguments:
+                arguments['pos_file'] = "CONTCAR"
+            if "dos_file" not in arguments:
+                arguments['dos_file'] = "DOSCAR"
+
+            post_dos = PlotDOS(dos_file=arguments['dos_file'], pos_file=arguments['pos_file'])
+            post_dos.center(atoms=arguments['atoms'], orbitals=arguments['orbitals'], xlim=arguments['xlim'])
 
         elif args.which == 'sum':  # sum task
             ChargeTask.sum()

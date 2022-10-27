@@ -155,3 +155,7 @@ xsd/
 /tests/fort.188
 /tests/POSCAR
 /tests/submit.script
+/tests/charge_visularize/
+/tests/displacement/
+/tests/center/
+/tests/carbonylation/

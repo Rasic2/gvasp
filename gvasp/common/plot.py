@@ -167,7 +167,6 @@ class PlotDOS(Figure):
                 atoms = list(range(pre_atom[0], pre_atom[1] + 1, 1))
             else:
                 atoms = [index for index, element in enumerate(self.element) if old_atoms == element]
-                print(atoms)
 
         y = 0
         rang = (self.total_dos.index.values < xlim[1]) & (self.total_dos.index.values > xlim[0])
