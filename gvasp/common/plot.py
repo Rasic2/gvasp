@@ -43,7 +43,7 @@ def interpolated_wrapper(func):
                 number = 1
 
             if self.method == 'fill':
-                plt.fill(x_new, y_new / number, color=self.color)
+                plt.fill(x_new, y_new / number, color=self.color, alpha=self.alpha)
             elif self.method == 'line':
                 plt.plot(x_new, y_new / number, color=self.color)
             elif self.method == 'dash line':
@@ -85,7 +85,7 @@ class PlotDOS(Figure):
         self.atoms, self.orbitals, self.color, self.method, self.avgflag = None, None, None, None, None
 
     @plot_wrapper
-    def plot(self, atoms=None, orbitals=None, color="#000000", method='line', avgflag=False):
+    def plot(self, atoms=None, orbitals=None, color="#000000", method='line', avgflag=False, alpha=0.5):
         """
         Plot DOS Main Func
 
@@ -99,6 +99,7 @@ class PlotDOS(Figure):
         self.atoms = atoms
         self.orbitals = orbitals
         self.color = color  # this argument will transfer to interpolated_wrapper
+        self.alpha = alpha  # this argument will transfer to interpolated_wrapper (fill only)
         self.method = method
         self.avgflag = avgflag
 
