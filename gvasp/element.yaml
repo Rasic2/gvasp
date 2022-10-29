@@ -180,6 +180,27 @@ Element Cr:
         Element Te: 2.676
         Element I: 3.192
 
+Element Co:
+    formula: Co
+    number: 27
+    period: 4
+    group: 9
+    color: #5D6DFF
+    _default_bonds:
+        Element H: 1.92780
+        Element C: 2.19691
+        Element N: 2.36293
+        Element O: 2.40493
+        Element F: 2.35293
+        Element P: 2.36642
+        Element S: 2.65293
+        Element Cl: 2.74593
+        Element As: 2.43642
+        Element Se: 2.39642
+        Element Br: 2.33642
+        Element Te: 2.61642
+        Element I: 2.52878
+
 Element Cu:
     formula: Cu
     number: 29
@@ -336,6 +357,27 @@ Element W:
         Element Br: 2.499
         Element Te: 2.759
         Element I: 2.709
+
+Element Pt:
+    formula: Pt
+    number: 78
+    period: 6
+    group: 10
+    color: #185B91
+    _default_bonds:
+        Element H: 1.44998
+        Element C: 2.36649
+        Element N: 2.41649
+        Element O: 2.40649
+        Element F: 2.54002
+        Element P: 2.23998
+        Element S: 2.76649
+        Element Cl: 2.75646
+        Element As: 2.30998
+        Element Se: 2.23998
+        Element Br: 2.94191
+        Element Te: 2.49998
+        Element I: 2.41998
 
 Element Au:
     formula: Au
