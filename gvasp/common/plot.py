@@ -132,27 +132,42 @@ class PlotDOS(Figure):
             for orbital_value in orbitals:
                 yield plus_tot.index.values, orbital_value, len(self.atoms)
 
+        def identify_atoms(self):
+            """Calculate the real index for the atoms"""
+            if not isinstance(self.atoms, list):
+                self.atoms = [self.atoms]
+
+            inner_atoms = []
+            for item in self.atoms:
+                if isinstance(item, int):
+                    inner_atoms.append(item)
+                elif isinstance(item, str):
+                    if '-' in item:
+                        slice_atoms = [int(item) for item in item.split('-')]
+                        if slice_atoms[1] >= len(self.element):
+                            logger.error(f"The end index `{slice_atoms[1]}` > atoms count ({len(self.element) - 1})")
+                            exit(1)
+                        inner_atoms += list(range(slice_atoms[0], slice_atoms[1] + 1, 1))
+                    else:
+                        element_atoms = [index for index, element in enumerate(self.element) if item == element]
+                        if len(element_atoms) == 0:
+                            logger.warning(f"Atoms don't have <Element {item}>, ignore it!")
+                        inner_atoms += element_atoms
+                else:
+                    raise TypeError(f"The format of {self.atoms} is not correct!")
+
+            set_atoms = set(inner_atoms)
+            if len(inner_atoms) != len(set_atoms):
+                logger.warning("The specification of atoms have repeat items, we will only plot once for it!")
+
+            self.atoms = list(set_atoms)
+
         """Main Content of Plot func"""
         if self.atoms is None:
             return plot_tot(self)
-
-        elif isinstance(self.atoms, list):
-            assert all([isinstance(item, int) for item in self.atoms]), f"Atoms must be a Int List!"
+        elif isinstance(self.atoms, (list, int, str)):
+            identify_atoms(self)
             return plot_atoms(self)
-
-        elif isinstance(self.atoms, str):
-            if '-' in self.atoms:
-                pre_atom = [int(item) for item in self.atoms.split('-')]
-                self.atoms = list(range(pre_atom[0], pre_atom[1] + 1, 1))
-            else:
-                self.atoms = [index for index, element in enumerate(self.element) if self.atoms == element]
-                assert len(self.atoms) > 0, f"Atoms don't have this element!"
-            return plot_atoms(self)
-
-        elif isinstance(self.atoms, int):
-            self.atoms = [self.atoms]
-            return plot_atoms(self)
-
         else:
             raise ValueError(f"The format of {self.atoms} is not correct!")
 
