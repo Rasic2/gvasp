@@ -42,17 +42,17 @@ def interpolated_wrapper(func):
             if not self.avgflag:
                 number = 1
 
-            if self.method == 'fill':
-                plt.fill(x_new, y_new / number, color=self.color, alpha=self.alpha)
-            elif self.method == 'line':
+            if self.method == 'line':
                 plt.plot(x_new, y_new / number, color=self.color)
             elif self.method == 'dash line':
                 plt.plot(x_new, y_new / number, '--', color=self.color)
-            elif self.method == 'output':
+            elif self.method in ['fill', 'output']:
                 x_out.append(x_new)
                 y_out.append(y_new)
 
-        if self.method == 'output':
+        if self.method == 'fill':
+            plt.fill_between(x_out[0], y_out[0] / number, y_out[1] / number, color=self.color, alpha=self.alpha)
+        elif self.method == 'output':
             x_out = np.array(x_out).transpose((1, 0))  # construct np.array and transpose the (0, 1) axis for plot after
             y_out = np.array(y_out).transpose((1, 0))
             time_prefix = time.strftime("%H-%M-%S", time.localtime())
