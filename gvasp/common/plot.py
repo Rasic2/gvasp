@@ -66,11 +66,10 @@ class PlotDOS(Figure):
     """
     <PlotDOS main class>
 
-    @method:
+    Methods:
         plot():     plot main func
         center():   calculate the band-center
 
-    @static-method:
         contcar_parse:  parse CONTCAR data
         doscar_parse:   parse DOSCAR data
     """
@@ -85,18 +84,20 @@ class PlotDOS(Figure):
         self.atoms, self.orbitals, self.color, self.method, self.avgflag = None, None, None, None, None
 
     @plot_wrapper
-    def plot(self, atoms=None, orbitals=None, color="#000000", method='line', avgflag=False, alpha=0.5):
+    def plot(self, atoms=None, exclude=None, orbitals=None, color="#000000", method='line', avgflag=False, alpha=0.5):
         """
         Plot DOS Main Func
 
-        @params:
+        Args:
             atoms:      accept int, list, and str('1-10' or 'Ce') type
+            exclude:    remove specified atoms in <atoms parameters>
             orbitals:   list, e.g., ['s',  'p']
-            method:     ['line', 'dash line','fill', 'output']
-            avgflag:    whether calculate the average dos
+            method (str):     ['line', 'dash line','fill', 'output']
+            avgflag (bool):    whether calculate the average dos
         """
 
         self.atoms = atoms
+        self.exclude = exclude
         self.orbitals = orbitals
         self.color = color  # this argument will transfer to interpolated_wrapper
         self.alpha = alpha  # this argument will transfer to interpolated_wrapper (fill only)
@@ -132,41 +133,44 @@ class PlotDOS(Figure):
             for orbital_value in orbitals:
                 yield plus_tot.index.values, orbital_value, len(self.atoms)
 
-        def identify_atoms(self):
+        def identify_atoms(atoms, elements):
             """Calculate the real index for the atoms"""
-            if not isinstance(self.atoms, list):
-                self.atoms = [self.atoms]
+            if not isinstance(atoms, list):
+                atoms = [atoms]
 
             inner_atoms = []
-            for item in self.atoms:
+            for item in atoms:
                 if isinstance(item, int):
                     inner_atoms.append(item)
                 elif isinstance(item, str):
                     if '-' in item:
                         slice_atoms = [int(item) for item in item.split('-')]
-                        if slice_atoms[1] >= len(self.element):
-                            logger.error(f"The end index `{slice_atoms[1]}` > atoms count ({len(self.element) - 1})")
+                        if slice_atoms[1] >= len(elements):
+                            logger.error(f"The end index `{slice_atoms[1]}` > atoms count ({len(elements) - 1})")
                             exit(1)
                         inner_atoms += list(range(slice_atoms[0], slice_atoms[1] + 1, 1))
                     else:
-                        element_atoms = [index for index, element in enumerate(self.element) if item == element]
+                        element_atoms = [index for index, element in enumerate(elements) if item == element]
                         if len(element_atoms) == 0:
                             logger.warning(f"Atoms don't have <Element {item}>, ignore it!")
                         inner_atoms += element_atoms
                 else:
-                    raise TypeError(f"The format of {self.atoms} is not correct!")
+                    raise TypeError(f"The format of {atoms} is not correct!")
 
             set_atoms = set(inner_atoms)
             if len(inner_atoms) != len(set_atoms):
                 logger.warning("The specification of atoms have repeat items, we will only plot once for it!")
 
-            self.atoms = list(set_atoms)
+            return list(set_atoms)
 
         """Main Content of Plot func"""
         if self.atoms is None:
             return plot_tot(self)
         elif isinstance(self.atoms, (list, int, str)):
-            identify_atoms(self)
+            self.atoms = identify_atoms(self.atoms, self.element)
+            if self.exclude is not None:
+                self.exclude = identify_atoms(self.exclude, self.element)
+                self.atoms = list(set(self.atoms) - set(self.exclude))
             return plot_atoms(self)
         else:
             raise ValueError(f"The format of {self.atoms} is not correct!")
