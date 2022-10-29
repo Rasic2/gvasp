@@ -128,7 +128,9 @@ class PlotDOS(Figure):
             if self.orbitals is None:
                 orbitals = [plus_tot['up'].values, plus_tot['down'].values]
             else:
-                orbitals = [plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_up', '_down'])]
+                orbitals_up = np.array([plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_up'])])
+                orbitals_down = np.array([plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_down'])])
+                orbitals = [np.sum(orbitals_up, axis=0), np.sum(orbitals_down, axis=0)]
 
             for orbital_value in orbitals:
                 yield plus_tot.index.values, orbital_value, len(self.atoms)
