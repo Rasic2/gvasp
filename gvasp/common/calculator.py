@@ -33,6 +33,8 @@ def surface_energy(crystal_dir: str, slab_dir: str):
     A = lattice_slab.length[0] * lattice_slab.length[1]
 
     E_surf = (E_slab - n * E_crystal) / (2 * A) * 16.02
+
+    print(f"The surface energy: {E_surf}")
     return E_surf
 
 

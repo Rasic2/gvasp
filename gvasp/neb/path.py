@@ -73,7 +73,7 @@ class IdppPath(BasePath):
 
         # Construct the set of target distance matrices via linear interpolation between those of end-point structures.
         pool = ProcessPool(processes=cpu_count())
-        results = [pool.apply_async(structure.find_neighbour_table, args=(atoms_num, None, False, True)) for structure
+        results = [pool.apply_async(structure.find_neighbour_table, args=(atoms_num, None, None, False, True)) for structure
                    in structures]
         structures = [item.get() for item in results]
         pool.close()
