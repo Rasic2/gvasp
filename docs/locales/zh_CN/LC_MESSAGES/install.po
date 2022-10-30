@@ -19,37 +19,37 @@ msgstr ""
 
 #: ../../source/install.rst:4
 msgid "Contents:"
-msgstr ""
+msgstr "目录："
 
 #: ../../source/install.rst:2
 msgid "Install"
-msgstr ""
+msgstr "安装"
 
 #: ../../source/install.rst:8
 msgid ""
 "You can install the **GVasp** use the conda and pip tools, or compile it "
 "from the source code in GitHub."
-msgstr ""
+msgstr "你可以通过 conda 或 pip 来安装 **GVasp**，也可以通过克隆 GitHub 的源码自行编译安装。"
 
 #: ../../source/install.rst:11
 msgid "Conda install"
-msgstr ""
+msgstr "Conda 安装方法"
 
 #: ../../source/install.rst:18
 msgid "Pip install"
-msgstr ""
+msgstr "Pip 安装方法"
 
 #: ../../source/install.rst:25
 msgid "Source code compilation"
-msgstr ""
+msgstr "源码编译安装"
 
 #: ../../source/install.rst:31
 msgid "or"
-msgstr ""
+msgstr "或者"
 
 #: ../../source/install.rst:37
 msgid ""
 "If you run the :code:`gvasp -v` and print version information, then you "
 "install the :program:`GVasp` successful ~~"
-msgstr ""
+msgstr "如果你运行 :code:`gvasp -v` 并且打印出如下所示的版本信息，表示你已经成功安装了 :program:`GVasp` 。"
 

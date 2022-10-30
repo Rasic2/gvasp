@@ -19,109 +19,109 @@ msgstr ""
 
 #: ../../source/config-setting.rst:4
 msgid "Contents:"
-msgstr ""
+msgstr "目录："
 
 #: ../../source/config-setting.rst:2
 msgid "Setting Environment"
-msgstr ""
+msgstr "GVasp 运行环境设置"
 
 #: ../../source/config-setting.rst:9
 msgid "Display Default Environment"
-msgstr ""
+msgstr "GVasp 默认运行环境"
 
 #: ../../source/config-setting.rst:11
 msgid "Default environment can display by following command:"
-msgstr ""
+msgstr "默认环境可以通过下述命令进行修改："
 
 #: ../../source/config-setting.rst:17
 msgid "Initial environment is like this:"
-msgstr ""
+msgstr "初始环境为："
 
 #: ../../source/config-setting.rst:30
 msgid ""
 "ConfigDir: represents the directory of :file:`INCAR (template)`, "
 ":file:`UValue.yaml` and :file:`pot`"
-msgstr ""
+msgstr "ConfigDir: 代表存放 :file:`INCAR (template)`, :file:`UValue.yaml` 和 :file:`pot` 的目录"
 
 #: ../../source/config-setting.rst:32
 msgid ""
 "scheduler: represents the job control system, now only support the slurm "
 "(but you can specify a .submit file in your parent-chain path, see "
 ":ref:`here <user_template>`)"
-msgstr ""
+msgstr "scheduler: 代表任务调度系统，目前仅支持 slurm（但是你可以指定一个 .submit 文件进行修改，详情看 :ref:`这里 <user_template>`）"
 
 #: ../../source/config-setting.rst:34
 msgid "LogDir: represents the directory of logs"
-msgstr ""
+msgstr "LogDir: 代表存放日志文件的目录"
 
 #: ../../source/config-setting.rst:36
 msgid ""
 ":file:`INCAR`: INCAR template file of all :program:`GVasp` submit tasks, "
 "default parameters, :download:`INCAR <./INCAR>`"
-msgstr ""
+msgstr ":file:`INCAR`: 用于 submit 任务的 INCAR 模板文件，默认参数可见 :download:`INCAR <./INCAR>`"
 
 #: ../../source/config-setting.rst:38
 msgid ""
 ":file:`UValue.yaml`: define the UValue for elements, for example, "
 ":download:`UValue.yaml <./UValue.yaml>`"
-msgstr ""
+msgstr ":file:`UValue.yaml`: 定义元素的 U 值，参考格式 :download:`UValue.yaml <./UValue.yaml>`"
 
 #: ../../source/config-setting.rst:40
 msgid ""
 ":file:`pot`: directory of the elements' POTCAR (please prepare it by "
 "yourself)"
-msgstr ""
+msgstr ":file:`pot`: 存放各种元素 POTCAR 的目录（自行准备，不提供）"
 
 #: ../../source/config-setting.rst:42
 msgid "The structure of :file:`pot` is like this:"
-msgstr ""
+msgstr ":file:`pot` 目录结构如下："
 
 #: ../../source/config-setting.rst:56
 msgid "INCAR, UValue.yaml, pot should not be renamed"
-msgstr ""
+msgstr "INCAR, UValue.yaml, pot 不应该被重命名"
 
 #: ../../source/config-setting.rst:62
 msgid "Modify Default Environment"
-msgstr ""
+msgstr "修改默认环境"
 
 #: ../../source/config-setting.rst:64
 msgid ""
 "If you don't like the default environment setting, you can modify the "
 "environment by writing a config.json, the format of config.json is like "
 "this:"
-msgstr ""
+msgstr "如果你不喜欢默认的环境设置，可以通过指定一个 config.json 文件来进行修改，格式如下："
 
 #: ../../source/config-setting.rst:75
 msgid "and run command:"
-msgstr ""
+msgstr "然后运行下述命令"
 
 #: ../../source/config-setting.rst:81
 msgid ""
 "Then the environment will be reset, :program:`GVasp` will auto search the"
 " :file:`INCAR` and :file:`UValue.yaml` under the config_dir."
-msgstr ""
+msgstr "之后环境就会被重置， :program:`GVasp` 会自动在 config_dir 指定的目录下面定位 :file:`INCAR` 和 :file:`UValue.yaml` ."
 
 #: ../../source/config-setting.rst:86
 msgid "User template"
-msgstr ""
+msgstr "用户模板"
 
 #: ../../source/config-setting.rst:88
 msgid ""
 "Now, user can defined their INCAR, UValue.yaml or submit.script template "
 "with the following steps:"
-msgstr ""
+msgstr "现在，用户可以按照下述步骤定义自己的 INCAR, UValue.yaml 或者 submit.script 模板文件："
 
 #: ../../source/config-setting.rst:90
 msgid ""
 "Named the INCAR, UValue.yaml or submit.script template as the *.incar, "
 "*.uvalue and *.submit files, respectively."
-msgstr ""
+msgstr "将 INCAR, UValue.yaml 或 submit.script 模板文件分别重命名为 *.incar, *.uvalue 和 *.submit"
 
 #: ../../source/config-setting.rst:92
 msgid ""
 "Put them in your work directory or parent directory or parent's parent "
 "directory and so on directories (defined as the :code:`parent-chain`)."
-msgstr ""
+msgstr "将他们放在当前的工作目录或者上级目录或者更上级目录，以此类推"
 
 #: ../../source/config-setting.rst:94
 msgid ""
@@ -129,18 +129,18 @@ msgid ""
 ":file:`/public1/home/sc81076/hzhou/M-CeO2/test` directory, the INCAR, "
 "UValue.yaml and/or submit.script template put in these directories is "
 "allowed:"
-msgstr ""
+msgstr "例如，如果你想在 :file:`/public1/home/sc81076/hzhou/M-CeO2/test` 目录下面提交一个任务，那么 INCAR, UValue.yaml 和/或 submit.script 模板文件放在以下目录都可："
 
 #: ../../source/config-setting.rst:106
 msgid ""
 "After these two steps, the :program:`GVasp` :ref:`generate the inputs "
 "<generate>` will apply your templates."
-msgstr ""
+msgstr "执行完这两步之后，:program:`GVasp` 就会按照提供的模板 :ref:`产生输入文件 <generate>` 。"
 
 #: ../../source/config-setting.rst:109
 msgid ""
 "If you have two or more templates in these directories at the same time, "
 "the :program:`GVasp` will select the directory which is nearest to the "
 "work directory."
-msgstr ""
+msgstr "如果你在上述目录中同时存在两个或更多的同种模板文件，:program:`GVasp` 会选择离工作目录最近的模板作为最终的输入参考。"
 

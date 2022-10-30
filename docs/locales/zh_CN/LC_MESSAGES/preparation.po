@@ -41,14 +41,14 @@ msgstr "conda 安装完成之后，创建一个新环境，例如：gvasp，并�
 msgid ""
 "The conda tool can modify its original mirrors by modify the "
 ":file:`~/.condrc`, for example, :download:`.condrc-example <./.condrc>`"
-msgstr ""
+msgstr "可以修改 :file:`~/.condrc` 文件来更换conda的镜像源，示例文件为 :download:`.condrc-example <./.condrc>`"
 
 #: ../../source/preparation.rst:20
 msgid ""
 "The pip tool can modify its original mirrors by add a "
 ":file:`~/.pip/pip.conf`, for example, :download:`pip.conf-example "
 "<./pip.conf>`"
-msgstr ""
+msgstr "可以修改 :file:`~/.pip/pip.conf` 文件来更换pip的镜像源，示例文件为 :download:`pip.conf-example <./pip.conf>`"
 
 #~ msgid ""
 #~ "在安装 :program:`GVasp`之前，我们强烈建议你首先安装 `conda "
