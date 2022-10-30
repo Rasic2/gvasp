@@ -9,6 +9,7 @@ import traceback
 from pathlib import Path
 from typing import Iterable
 
+from common.calculator import surface_energy, electrostatic_energy
 from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
@@ -121,6 +122,17 @@ def main_parser() -> argparse.ArgumentParser:
     grd_parser.add_argument("-n", "--name", default="vasp.grd", type=str, help="specify the name of *.grd")
     grd_parser.add_argument("-d", "--DenCut", default=250, type=int, help="specify the cutoff density")
     grd_parser.set_defaults(which="grd")
+
+    # calc parser
+    calc_parser = subparsers.add_parser(name="calc", help="various calculation utils")
+    calc_parser.add_argument("task", type=int, help="specify task-order (0-[surface energy]; 1-[electrostatic energy])")
+    surf_calc_group = calc_parser.add_argument_group(title='surface energy calculation')
+    surf_calc_group.add_argument("-c", "--crystal_dir", type=str, help='specify crystal directory')
+    surf_calc_group.add_argument("-s", "--slab_dir", type=str, help='specify slab directory')
+    electrostatic_calc_group = calc_parser.add_argument_group(title='electrostatic energy calculation')
+    electrostatic_calc_group.add_argument("-a", "--atoms", nargs="+", help="specify the atoms")
+    electrostatic_calc_group.add_argument("-w", "--workdir", default=".", help="specify the workdir")
+    calc_parser.set_defaults(which="calc")
 
     return parser
 
@@ -383,3 +395,9 @@ def main(argv=None):
 
         elif args.which == 'grd':  # grd task
             ChargeTask.to_grd(name=args.name, Dencut=args.DenCut)
+
+        elif args.which == 'calc':  # calculation utils task
+            if args.task == 0:
+                surface_energy(crystal_dir=args.crystal_dir, slab_dir=args.slab_dir)
+            elif args.task == 1:
+                electrostatic_energy(atoms=args.atoms, workdir=args.workdir)
