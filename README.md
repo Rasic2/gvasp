@@ -2,7 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/Rasic2/gvasp)
 [![Documentation Status](https://readthedocs.org/projects/qvasp/badge/?version=latest)](https://qvasp.readthedocs.io/en/latest/?badge=latest)
-[![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/installer/conda.svg)](https://conda.anaconda.org/hui_zhou)
+[![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/version.svg)](https://anaconda.org/hui_zhou/gvasp)
 [![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/platforms.svg)](https://anaconda.org/hui_zhou/gvasp)
 ![Codecov](https://img.shields.io/codecov/c/github/Rasic2/gvasp)
 
@@ -28,6 +28,8 @@ A quick post-process for resolve or assistant the VASP calculations, which can i
 - visualize trajectory
 - plot interface
 - charge related work
+- band-center calculation
+- surface energy / electrostatic energy calculations
 
 More detailed information can see [here](https://qvasp.readthedocs.io/en/latest/).
 
@@ -47,18 +49,14 @@ conda create -n gvasp python=3.9
 
 ### Install GVasp
 
-1. From sourcecode
+1. Use conda (recommend)
 
-   You can install the `GVasp` using the following command (under the root directory):
-
-   ```
-   python3 setup.py install
-   ```
-
-   or
+   We now made a conda package (production process can
+   see [here](https://codenote.readthedocs.io/en/latest/package.html#conda-package)) and uploaded to
+   the [Anaconda](https://anaconda.org/hui_zhou/gvasp), so you can also install `GVasp` from it:
 
    ```
-   pip3 install .
+   conda install -c hui_zhou gvasp
    ```
 
 2. Use PyPi
@@ -74,14 +72,18 @@ conda create -n gvasp python=3.9
 
    If the download speed is too slow, we suggest you change the pip mirror by modifying the `~/.pip/pip.conf` file.
 
-3. Use conda
+3. From sourcecode
 
-   We now also made a conda package (production process can
-   see [here](https://codenote.readthedocs.io/en/latest/package.html#conda-package)) and uploaded to
-   the [Anaconda](https://anaconda.org/hui_zhou/gvasp), so you can also install `GVasp` from it:
+   You can install the `GVasp` using the following command (under the root directory):
 
    ```
-   conda install -c hui_zhou gvasp
+   python3 setup.py install
+   ```
+
+   or
+
+   ```
+   pip3 install .
    ```
 
 If you run the `gvasp -v` and print version information, then you install the `GVasp` successful ~~

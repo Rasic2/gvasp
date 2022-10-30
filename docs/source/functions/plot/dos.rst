@@ -1,5 +1,7 @@
+.. _dos_plot:
+
 Density of States Plot
-=================================
+========================
 
 .. toctree::
    :maxdepth: 2
@@ -99,6 +101,20 @@ Particularly, if you want to plot all atoms belonging to one element, you can al
       "data": {"0": [{"atoms":"O", "color": "#ed0345"}]}
     }
 
+Multi-Elements is now also supported, like this:
+
+.. code-block:: json
+
+    {
+      "width":6,
+      "height": 4,
+      "fontsize": 10,
+      "xlim": [-35, 10],
+      "dos_file": ["DOSCAR-test"],
+      "pos_file": ["CONTCAR-test"],
+      "data": {"0": [{"atoms":["O", "Ce"], "color": "#ed0345"}]}
+    }
+
 If you want to decomposing to orbitals, add the :code:`orbitals` parameter, like this:
 
 .. code-block:: json
@@ -137,6 +153,29 @@ The figure is like this:
 .. image:: dos3.svg
    :align: center
 
+use fill method
+----------------
+
+You can also plot the dos in fill format, and the alpha argument is also accepted.
+
+.. code-block:: json
+
+    {
+      "width":6,
+      "height": 4,
+      "fontsize": 10,
+      "xlim": [-0.5, 0],
+      "dos_file": ["DOSCAR_dos"],
+      "pos_file": ["CONTCAR_dos"],
+      "data": {
+        "0": [{"atoms":["C"],"color": "b", "orbitals":["s", "p"],"method": "fill", "alpha": 0.3},
+              {"atoms":["H"],"color": "g", "orbitals":["s", "p"],"method": "fill", "alpha": 0.3}]}
+    }
+
+The figure is like this:
+
+.. image:: dos4.svg
+   :align: center
 
 multiple files
 ---------------
@@ -157,3 +196,6 @@ Not enough, if you want to compare different structures, you can modify the plot
     }
 
 It's still very simple, what you need to do is modify the plot.json, run the command again, then you got it ~~
+
+.. important::
+    The default DOSCAR format is regulated by setting the LORBIT=12 in INCAR, so if your LORBIT in INCAR is not 11 or 12, please add `"LORBIT": 10` in the plot.json.

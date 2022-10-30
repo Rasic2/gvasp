@@ -173,6 +173,10 @@ class PlotDOS(Figure):
                 y -= self.atom_list[atom].loc[rang, 'down']
         e_count = simps(y.values, y.index.values)  # Simpson Integration method for obtain the electrons' num
         dos = simps([a * b for a, b in zip(y.values, y.index.values)], y.index.values)
+
+        print(f"Selected Atoms: {atoms}")
+        print(f"Selected Orbitals: {orbitals}")
+        print(f"Energy Range: {xlim}")
         print(f"Number of Electrons: {e_count:.4f}; Center Value: {dos / e_count:.4f}")
 
     @staticmethod

@@ -14,6 +14,8 @@ Welcome to GVasp's documentation!
    functions/plot
    functions/sort
    functions/charge
+   functions/center
+   functions/calculation
 
 .. toctree::
    :maxdepth: 1

@@ -9,7 +9,7 @@ import traceback
 from pathlib import Path
 from typing import Iterable
 
-from common.calculator import surface_energy, electrostatic_energy
+from gvasp.common.calculator import surface_energy, electrostatic_energy
 from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL

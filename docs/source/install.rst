@@ -5,17 +5,34 @@ Install
    :maxdepth: 2
    :caption: Contents:
 
-You can install the **GVasp** using the following command:
+You can install the **GVasp** use the conda and pip tools, or compile it from the source code in GitHub.
+
+Conda install
+--------------
 
 .. code-block:: bash
 
-    python3 setup.py install
+    conda install gvasp -c hui_zhou
+
+Pip install
+-------------
+
+.. code-block:: bash
+
+    pip install gvasp
+
+Source code compilation
+------------------------
+
+.. code-block:: bash
+
+    python setup.py install
 
 or
 
 .. code-block:: bash
 
-    pip3 install .
+    pip install .
 
 If you run the :code:`gvasp -v` and print version information, then you install the :program:`GVasp` successful ~~
 
