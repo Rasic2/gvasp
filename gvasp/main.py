@@ -97,9 +97,10 @@ def main_parser() -> argparse.ArgumentParser:
     plot_parser.add_argument("task", choices=['opt', 'band', 'ep', 'dos', 'PES', 'neb'], type=str,
                              help='specify job type for plot')
     plot_parser.add_argument("-j", "--json", type=str, help='*.json file to quick setting', required=True)
+    plot_parser.add_argument("-n", "--name", type=str, default="figure.svg", help='specify name of dos plot figure')
     display_plot_group = plot_parser.add_mutually_exclusive_group()
     display_plot_group.add_argument("--show", action='store_true', help='show figure')
-    display_plot_group.add_argument("--save", action='store_true', help='save figure as figure.svg')
+    display_plot_group.add_argument("--save", action='store_true', help='save figure')
     plot_parser.set_defaults(which='plot')
 
     # band-center parser
@@ -359,8 +360,8 @@ def main(argv=None):
                     logger.warning(f"Linux platform may not support figure `show`, if fail, use `save` substitute")
                 Figure.show()
             if args.save:
-                Figure.save()
-                logger.info(f"Figure has been saved as figure.svg, please check")
+                Figure.save(name=args.name)
+                logger.info(f"Figure has been saved as `{args.name}`, please check")
 
         elif args.which == 'band-center':  # band-center task
             with open(args.json, "r") as f:  # load json file to read setting and data

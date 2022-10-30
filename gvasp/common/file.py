@@ -14,6 +14,7 @@ import numpy as np
 from lxml import etree
 from pandas import DataFrame
 
+from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS
 from gvasp.common.base import Atoms, Lattice
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
@@ -23,11 +24,6 @@ from gvasp.common.structure import Structure
 from gvasp.lib import dos_cython, file_bind
 
 POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
-ORBITALS = ['s', 'p', 'd', 'f']
-COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'px_down', 'dxy_up', 'dxy_down',
-           'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
-           'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
-           'f6_down', 'f7_up', 'f7_down']
 
 logger = logging.getLogger(__name__)
 
@@ -706,8 +702,9 @@ class XDATCAR(StructInfoFile):
 
 
 class DOSCAR(MetaFile):
-    def __init__(self, name):
+    def __init__(self, name, LORBIT=12):
         super(DOSCAR, self).__init__(name=name)
+        self.LORBIT = LORBIT
         self.NAtom = int(self.strings[0].split()[0])
         self.Emax, self.Emin, self.NDOS, self.fermi = tuple(map(float, self.strings[5].split()[:4]))
         self.NDOS = int(self.NDOS)
@@ -716,8 +713,16 @@ class DOSCAR(MetaFile):
         def merge_dos(energy_list, Total_up, Total_down, atom_list, length):
             """TODO:  need  optimize, deprecate DataFrame"""
             atom_data = [energy_list]
-            columns = COLUMNS[:length]
-            orbitals = ORBITALS[1:int(math.sqrt(length / 2))]
+            if self.LORBIT == 10:
+                columns = COLUMNS_8[:length]
+                orbitals = []
+            elif self.LORBIT == 12:
+                columns = COLUMNS_32[:length]
+                orbitals = ORBITALS[1:int(math.sqrt(length / 2))]
+            else:
+                logger.error(f"LORBIT = {self.LORBIT} is not supported in this version!")
+                exit(1)
+
             Total_Dos = DataFrame(index=energy_list, columns=['tot_up', 'tot_down'], dtype='object')
             Total_Dos['tot_up'] = Total_up
             Total_Dos['tot_down'] = Total_down

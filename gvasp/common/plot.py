@@ -12,6 +12,7 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 
+from gvasp.common.constant import COLUMNS_32
 from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
 from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT
 from gvasp.common.structure import Structure
@@ -19,11 +20,6 @@ from gvasp.common.task import NEBTask
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
-
-COLUMNS = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'px_down', 'dxy_up', 'dxy_down',
-           'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
-           'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
-           'f6_down', 'f7_up', 'f7_down']
 
 logger = logging.getLogger(__name__)
 
@@ -74,12 +70,12 @@ class PlotDOS(Figure):
         doscar_parse:   parse DOSCAR data
     """
 
-    def __init__(self, dos_file, pos_file, xlabel="Energy (eV)", ylabel="Density of States (a.u.)", **kargs):
+    def __init__(self, dos_file, pos_file, LORBIT=12, xlabel="Energy (eV)", ylabel="Density of States (a.u.)", **kargs):
         super(PlotDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
         self.dos_file = dos_file
         self.pos_file = pos_file
         self.element = PlotDOS.parse_contcar(self.pos_file)
-        self.total_dos, self.atom_list = PlotDOS.parse_doscar(self.dos_file)
+        self.total_dos, self.atom_list = PlotDOS.parse_doscar(self.dos_file, LORBIT)
 
         self.atoms, self.orbitals, self.color, self.method, self.avgflag = None, None, None, None, None
 
@@ -115,8 +111,8 @@ class PlotDOS(Figure):
             """Plot DOS of atom list"""
             plus_tot = defaultdict(list)
             plus_tot = DataFrame(plus_tot, index=self.atom_list[0],
-                                 columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] + COLUMNS,
-                                 dtype='object')
+                                 columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] +
+                                         COLUMNS_32, dtype='object')
             plus_tot.iloc[:, :] = 0.0
             for atom in self.atoms:
                 for column in plus_tot.columns.values:
@@ -225,7 +221,7 @@ class PlotDOS(Figure):
         return element
 
     @staticmethod
-    def parse_doscar(name):
+    def parse_doscar(name, LORBIT):
         """
         read DOSCAR file, obtain the TDOS && LDOS.
 
@@ -236,7 +232,7 @@ class PlotDOS(Figure):
             TDOS:       DataFrame(NDOS, 2)
             LDOS:       energy_list + List(NAtom * DataFrame(NDOS, NOrbital+8))
         """
-        dos_instance = DOSCAR(name=name).load()
+        dos_instance = DOSCAR(name=name, LORBIT=LORBIT).load()
         return dos_instance.TDOS, dos_instance.LDOS
 
 
