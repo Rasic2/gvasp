@@ -148,7 +148,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         elif self.__class__.__name__ == "BandTask":
             print(f"KPoints: line-mode for band structure")
         else:
-            print(f"KPoints: {KPOINTS.min_number(lattice=self.structure.lattice)}")
+            print(f"KPoints: {KPOINTS.min_number(structure=self.structure)}")
         print()
         print(f"{GREEN}Job Name: {self.title}{RESET}")
         print(f"{YELLOW}INCAR template: {self._incar}{RESET}")
@@ -212,7 +212,7 @@ class BaseTask(metaclass=abc.ABCMeta):
             if gamma:
                 f.write(f"1 1 1 \n")
             else:
-                f.write(f"{' '.join(list(map(str, KPOINTS.min_number(lattice=self.structure.lattice))))} \n")
+                f.write(f"{' '.join(list(map(str, KPOINTS.min_number(structure=self.structure))))} \n")
             f.write("0 0 0 \n")
 
     def _generate_POSCAR(self, continuous, method=None, check_overlap=None):

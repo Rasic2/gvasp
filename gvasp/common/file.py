@@ -302,8 +302,14 @@ class KPOINTS(MetaFile):
             f.write(self.weight)
 
     @staticmethod
-    def min_number(lattice: Lattice, length=20.0):
-        return np.ceil(length / lattice.length).astype(int)
+    def min_number(structure: Structure, length=20.0):
+        lattice = structure.lattice
+        kpoints = np.ceil(length / lattice.length).astype(int)
+        z_max = np.max(structure.atoms.frac_coord[:, 2])
+        z_min = np.min(structure.atoms.frac_coord[:, 2])
+        if (z_max - z_min) >= 0.5:
+            kpoints[2] = 1
+        return kpoints
 
 
 class POTCAR(MetaFile):
@@ -713,6 +719,10 @@ class DOSCAR(MetaFile):
         def merge_dos(energy_list, Total_up, Total_down, atom_list, length):
             """TODO:  need  optimize, deprecate DataFrame"""
             atom_data = [energy_list]
+            Total_Dos = DataFrame(index=energy_list, columns=['tot_up', 'tot_down'], dtype='object')
+            Total_Dos['tot_up'] = Total_up
+            Total_Dos['tot_down'] = Total_down
+
             if self.LORBIT == 10:
                 columns = COLUMNS_8[:length]
                 orbitals = []
@@ -722,10 +732,6 @@ class DOSCAR(MetaFile):
             else:
                 logger.error(f"LORBIT = {self.LORBIT} is not supported in this version!")
                 exit(1)
-
-            Total_Dos = DataFrame(index=energy_list, columns=['tot_up', 'tot_down'], dtype='object')
-            Total_Dos['tot_up'] = Total_up
-            Total_Dos['tot_down'] = Total_down
 
             for data in atom_list:
                 DATA = DataFrame(data, index=energy_list, columns=columns)
