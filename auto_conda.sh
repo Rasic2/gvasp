@@ -20,7 +20,7 @@ cd $CondaDir || exit
 
 conda activate gvasp-build
 conda-build purge
-conda-build .
+conda-build . -c conda-forge
 conda activate
 
 # delete all files

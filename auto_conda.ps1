@@ -15,9 +15,9 @@ Remove-Item $CondaDir/gvasp/lib/*.pyd
 
 # start make package
 Set-Location $CondaDir
-conda activate gvasp_build_conda
+conda activate gvasp_build
 conda-build purge
-conda-build .
+conda-build . -c conda-forge
 conda activate
 
 # delete all files
