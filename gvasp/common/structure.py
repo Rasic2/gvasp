@@ -83,6 +83,7 @@ class Structure(object):
             tolerance1:     first sort tolerance
             tolerance2:     second sort tolerance
         """
+
         def sort(atoms1, match_list, atoms1_sort, atoms2_sort, tolerance=0.2):
             for atom_i in atoms1:
                 distances_candidate = []
@@ -135,7 +136,8 @@ class Structure(object):
 
         # TODO: performance optimization
 
-    def find_neighbour_table(self, neighbour_num: int = 12, adj_matrix=None, sort=True, including_self=False):
+    def find_neighbour_table(self, neighbour_num: int = 12, cut_radius=None, adj_matrix=None, sort=True,
+                             including_self=False):
         new_atoms = []
         neighbour_table = NeighbourTable(list)
         for atom_i in self.atoms:
@@ -158,7 +160,13 @@ class Structure(object):
 
             neighbour_table_i = sorted(neighbour_table_i,
                                        key=lambda x: x[1]) if adj_matrix is None and sort else neighbour_table_i
-            neighbour_table[atom_i] = neighbour_table_i[:neighbour_num]
+            if neighbour_num is not None:
+                neighbour_table[atom_i] = neighbour_table_i[:neighbour_num]
+            else:
+                neighbour_table[atom_i] = neighbour_table_i
+
+            if cut_radius is not None:
+                neighbour_table[atom_i] = [item for item in neighbour_table[atom_i] if item[1] <= cut_radius]
 
             # update bonds && coordination number
             atom_i.bonds = [(item[0], item[1]) for item in neighbour_table_i if item[3]]

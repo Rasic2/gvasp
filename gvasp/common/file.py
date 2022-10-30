@@ -989,6 +989,25 @@ class CHGCAR(StructInfoFile):
             mag.writelines(self._density_mag_strings)
 
 
+class ACFFile(MetaFile):
+    def __init__(self, name):
+        super(ACFFile, self).__init__(name=name)
+
+        self.cart_coord = []
+        self.charge = []
+
+        self._parse()
+
+    def _parse(self):
+        for line in self.strings[2:-4]:
+            item = line.split()
+            self.cart_coord.append(list(map(float, item[1:4])))
+            self.charge.append(float(item[4]))
+
+        self.cart_coord = np.array(self.cart_coord)
+        self.charge = np.array(self.charge)
+
+
 class LOCPOT(StructInfoFile):
     def __init__(self, name):
         super(LOCPOT, self).__init__(name=name)
