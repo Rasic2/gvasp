@@ -36,3 +36,7 @@ html_static_path = ['_static']
 latex_elements = {
     'extraclassoptions': 'openany,oneside',
 }
+
+# -- Options for Translate ---
+language = 'en'
+locale_dirs = ['../locales/']

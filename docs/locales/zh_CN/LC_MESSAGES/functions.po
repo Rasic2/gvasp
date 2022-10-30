@@ -1,0 +1,1341 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022, Hui Zhou
+# This file is distributed under the same license as the GVasp package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GVasp 0.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-30 15:01+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/functions/calculation.rst:2
+msgid "Calculation Utils"
+msgstr ""
+
+#: ../../source/functions/calculation.rst:4
+msgid ""
+"This section summary various calculation utils, including the surface "
+"energy calculation (0) and electrostatic interaction energy calculation "
+"(1), while the usage of the latter can see `here "
+"<https://pubs.acs.org/doi/10.1021/acscatal.1c04856>`_. Different tasks "
+"are specified by the command number."
+msgstr ""
+
+#: ../../source/functions/calculation.rst:7
+msgid "surface energy calculation"
+msgstr ""
+
+#: ../../source/functions/calculation.rst:9
+msgid ""
+"You can use :program:`GVasp` calculate the surface energy by the "
+"following command:"
+msgstr ""
+
+#: ../../source/functions/calculation.rst:15
+msgid ""
+"where the :code:`crystal_dir` and :code:`slab_dir` represent the job "
+"directory for the crystal and slab models, respectively."
+msgstr ""
+
+#: ../../source/functions/calculation.rst:18
+msgid "electrostatic interaction energy calculation"
+msgstr ""
+
+#: ../../source/functions/calculation.rst:20
+msgid ""
+"You can use :program:`GVasp` calculate the electrostatic interaction "
+"energy by the following command:"
+msgstr ""
+
+#: ../../source/functions/calculation.rst:26
+msgid ""
+"where the :code:`atoms` represents the atoms you want to calculate, and "
+":code:`workdir` represents the work directory (default is \".\") store "
+"the :file:`ACF.dat`."
+msgstr ""
+
+#: ../../source/functions/center.rst:2
+msgid "Band Center Calculation"
+msgstr ""
+
+#: ../../source/functions/center.rst:4
+msgid ""
+"The d-band center descriptor is widely applied in heterogeneous "
+"catalysis, and it can be calculated by the following equation:"
+msgstr ""
+
+#: ../../source/functions/center.rst:6
+msgid ""
+"\\epsilon_d = \\frac{\\int_{-\\infty}^{\\infty} \\epsilon\\rho "
+"_d(\\epsilon)d\\epsilon}{\\int_{-\\infty}^{\\infty} \\rho "
+"_d(\\epsilon)d\\epsilon}"
+msgstr ""
+
+#: ../../source/functions/center.rst:10
+msgid ""
+"In :program:`GVasp`, you can easily calculated the band-center by the "
+"following command:"
+msgstr ""
+
+#: ../../source/functions/center.rst:16
+msgid "The center.json is like this:"
+msgstr ""
+
+#: ../../source/functions/center.rst:28
+msgid ""
+"The arguments in the center.json is similar with that in :ref:`dos-plot "
+"<dos_plot>` task."
+msgstr ""
+
+#: ../../source/functions/charge.rst:2
+msgid "Charge Related"
+msgstr ""
+
+#: ../../source/functions/charge.rst:4
+msgid ""
+"This section solve the charge related tasks, such as chgsum, chgsplit and"
+" transform the CHGCAR to \\*.grd file."
+msgstr ""
+
+#: ../../source/functions/charge.rst:7
+msgid "Charge Sum"
+msgstr ""
+
+#: ../../source/functions/charge.rst:9
+msgid ""
+"Charge Sum meaning sum to CHARGE file to CHGCAR_sum, i.e. :code:`AECCAR0 "
+"+ AECCAR2 = CHGCAR_sum`."
+msgstr ""
+
+#: ../../source/functions/charge.rst:11 ../../source/functions/charge.rst:24
+#: ../../source/functions/charge.rst:37
+msgid "The command is:"
+msgstr ""
+
+#: ../../source/functions/charge.rst:20
+msgid "Charge Split"
+msgstr ""
+
+#: ../../source/functions/charge.rst:22
+msgid ""
+"Charge Split meaning split CHGCAR file to CHGCAR_tot and CHGCAR_mag, i.e."
+" :code:`CHGCAR -> CHGCAR_tot + CHGCAR_mag`."
+msgstr ""
+
+#: ../../source/functions/charge.rst:33
+msgid "Generate Grd File"
+msgstr ""
+
+#: ../../source/functions/charge.rst:35
+msgid ""
+":file:`*.grd` can be load by `Material Studio <https://www.3ds.com"
+"/products-services/biovia/products/molecular-modeling-simulation/biovia-"
+"materials-studio/>`_, so :program:`GVasp` provide the transform from "
+":file:`CHGCAR_mag` to it."
+msgstr ""
+
+#: ../../source/functions/charge.rst:43
+msgid ""
+"name parameter specify the output name of \\*.grd, default is "
+":file:`vasp.grd`."
+msgstr ""
+
+#: ../../source/functions/charge.rst:45
+msgid ""
+"DenCut parameter specify the cutoff density (set it can decrease the size"
+" of grd file), default is 250."
+msgstr ""
+
+#: ../../source/functions/charge.rst:48
+msgid ""
+"More detailed information about loading grd file in Material Studio can "
+"see `here "
+"<https://codenote.readthedocs.io/en/latest/chemistry/MS.html#grd>`_."
+msgstr ""
+
+#: ../../source/functions/movie.rst:10 ../../source/functions/movie/freq.rst:6
+#: ../../source/functions/movie/md.rst:6 ../../source/functions/movie/opt.rst:6
+#: ../../source/functions/movie/ts.rst:6
+#: ../../source/functions/movie/ts/con-ts.rst:6
+#: ../../source/functions/movie/ts/dimer.rst:6
+#: ../../source/functions/movie/ts/neb.rst:6 ../../source/functions/plot.rst:11
+#: ../../source/functions/plot/band.rst:4 ../../source/functions/plot/dos.rst:6
+#: ../../source/functions/plot/ep.rst:4 ../../source/functions/plot/neb.rst:4
+#: ../../source/functions/plot/opt.rst:4 ../../source/functions/plot/pes.rst:4
+#: ../../source/functions/sort.rst:6 ../../source/functions/submit.rst:31
+#: ../../source/functions/submit/chg.rst:4
+#: ../../source/functions/submit/dos.rst:4
+#: ../../source/functions/submit/freq.rst:4
+#: ../../source/functions/submit/md.rst:4
+#: ../../source/functions/submit/opt.rst:8
+#: ../../source/functions/submit/stm.rst:4
+#: ../../source/functions/submit/ts.rst:6
+#: ../../source/functions/submit/ts/con-ts.rst:6
+#: ../../source/functions/submit/ts/dimer.rst:4
+#: ../../source/functions/submit/ts/neb.rst:6
+#: ../../source/functions/submit/wf.rst:4
+msgid "Contents:"
+msgstr ""
+
+#: ../../source/functions/movie.rst:2
+msgid "Visualize Trajectory"
+msgstr ""
+
+#: ../../source/functions/movie.rst:4
+msgid ""
+"Visualize is a useful method to check calculation process, "
+":program:`GVasp` provide visualize support for various VASP tasks, i.e., "
+"optimization, moleculer dynamics, frequency, and TS search."
+msgstr ""
+
+#: ../../source/functions/movie.rst:6
+msgid ""
+"The idea is to transform the :file:`XDATCAR` (for :ref:`optimization "
+"<opt_movie>`, :ref:`moleculer dynamics <md_movie>`, :ref:`frequency "
+"<freq_movie>`, :ref:`con-TS <con-TS_movie>`, and :ref:`dimer "
+"<dimer_movie>` tasks) or [:file:`POSCAR` | :file:`CONTCAR`] (for "
+":ref:`neb <neb_movie>` task) to the :file:`*.arc` file (`Material Studio "
+"<https://www.3ds.com/products-services/biovia/products/molecular-"
+"modeling-simulation/biovia-materials-studio/>`_ accepted)."
+msgstr ""
+
+#: ../../source/functions/movie.rst:8
+msgid ""
+"Except :ref:`frequency <freq_movie>`, other tasks accept optional "
+"[-n/-\\-name] to specify the name of output :file:`*.arc`, other "
+"arguments will describe in corresponding sub-topic."
+msgstr ""
+
+#: ../../source/functions/movie.rst:20
+msgid ""
+"More detailed information about the arc file display can see `here "
+"<https://codenote.readthedocs.io/en/latest/chemistry/MS.html#arc>`_."
+msgstr ""
+
+#: ../../source/functions/movie/freq.rst:4
+msgid "Frequency Vibration"
+msgstr ""
+
+#: ../../source/functions/movie/freq.rst:10
+msgid ""
+"One can use :program:`GVasp` to visualize the frequency vibration, only "
+"need run the command below:"
+msgstr ""
+
+#: ../../source/functions/movie/freq.rst:16
+msgid "and the :file:`freq*.arc` will output in the workdir."
+msgstr ""
+
+#: ../../source/functions/movie/freq.rst:19
+msgid ""
+"The default behavior of :program:`GVasp` will search the *image "
+"frequency* and visualize its or their vibration."
+msgstr ""
+
+#: ../../source/functions/movie/freq.rst:22
+msgid "specify freq"
+msgstr ""
+
+#: ../../source/functions/movie/freq.rst:24
+msgid ""
+"Certainly, you can also specify the *frequency* by add the argument "
+"-f/-\\-freq, and it accept :code:`'image'` (str) or :code:`int-type` "
+"(start from 0) value as the input."
+msgstr ""
+
+#: ../../source/functions/movie/freq.rst:27
+msgid "If you set a int value, noticed that the freq exist in your system."
+msgstr ""
+
+#: ../../source/functions/movie/md.rst:4
+msgid "Ab-initio Molecule Dynamics Visualize"
+msgstr ""
+
+#: ../../source/functions/movie/md.rst:10
+msgid ""
+"One can use :program:`GVasp` to visualize the molecule dynamics (MD) "
+"trajectory, only need run the command below:"
+msgstr ""
+
+#: ../../source/functions/movie/md.rst:16
+#: ../../source/functions/movie/opt.rst:16
+#: ../../source/functions/movie/ts/con-ts.rst:16
+#: ../../source/functions/movie/ts/dimer.rst:16
+#: ../../source/functions/movie/ts/neb.rst:16
+msgid "and the :file:`movie.arc` will output in the workdir."
+msgstr ""
+
+#: ../../source/functions/movie/md.rst:19
+#: ../../source/functions/movie/opt.rst:21
+#: ../../source/functions/movie/ts/con-ts.rst:20
+#: ../../source/functions/movie/ts/dimer.rst:20
+#: ../../source/functions/movie/ts/neb.rst:25
+msgid "specify name"
+msgstr ""
+
+#: ../../source/functions/movie/md.rst:21
+#: ../../source/functions/movie/ts/con-ts.rst:22
+#: ../../source/functions/movie/ts/dimer.rst:22
+#: ../../source/functions/movie/ts/neb.rst:27
+msgid ""
+"Certainly, if you don't like the prefix (`\"movie\"`), you can also "
+"specify another name to substitute it, likewise the :ref:`optimization "
+"<name_movie>` task."
+msgstr ""
+
+#: ../../source/functions/movie/opt.rst:4
+msgid "Optimization Visualize"
+msgstr ""
+
+#: ../../source/functions/movie/opt.rst:10
+msgid ""
+"One can use :program:`GVasp` to visualize the optimization trajectory, "
+"only need run the command below:"
+msgstr ""
+
+#: ../../source/functions/movie/opt.rst:23
+msgid ""
+"Certainly, if you don't like the prefix (`\"movie\"`), you can also "
+"specify another name to substitute it, for example,"
+msgstr ""
+
+#: ../../source/functions/movie/opt.rst:29
+msgid "then the opt.arc will output."
+msgstr ""
+
+#: ../../source/functions/movie/ts.rst:2
+msgid "Transition State Search Visualize"
+msgstr ""
+
+#: ../../source/functions/movie/ts.rst:4
+msgid ""
+":program:`GVasp` support visualize optimization trajectory of below three"
+" TS-search method."
+msgstr ""
+
+#: ../../source/functions/movie/ts/con-ts.rst:4
+#: ../../source/functions/submit/ts/con-ts.rst:4
+msgid "Constrained-TS Method"
+msgstr ""
+
+#: ../../source/functions/movie/ts/con-ts.rst:10
+msgid ""
+"One can use :program:`GVasp` to visualize the optimization trajectory in "
+"TS-search process (currently is **con-TS**), only need run the command "
+"below:"
+msgstr ""
+
+#: ../../source/functions/movie/ts/dimer.rst:4
+#: ../../source/functions/submit/ts/dimer.rst:2
+msgid "Dimer Method"
+msgstr ""
+
+#: ../../source/functions/movie/ts/dimer.rst:10
+msgid ""
+"One can use :program:`GVasp` to visualize the optimization trajectory in "
+"TS-search process (currently is **dimer**), only need run the command "
+"below:"
+msgstr ""
+
+#: ../../source/functions/movie/ts/neb.rst:4
+msgid "NEB Method"
+msgstr ""
+
+#: ../../source/functions/movie/ts/neb.rst:10
+msgid ""
+"For NEB method, we actually support to visualize the reaction path by "
+"concentrate its images' :file:`POSCARs` or :file:`CONTCARs`, and likewise"
+" the other task, one can do this by:"
+msgstr ""
+
+#: ../../source/functions/movie/ts/neb.rst:20
+msgid "specify position"
+msgstr ""
+
+#: ../../source/functions/movie/ts/neb.rst:22
+msgid ""
+"Through the -p/-\\-pos argument, You can choose which type of files to "
+"construct the *reaction path*, i.e., :file:`POSCAR` or :file:`CONTCAR`, "
+"default type is :file:`POSCAR`."
+msgstr ""
+
+#: ../../source/functions/output.rst:2
+msgid "Output Visualize"
+msgstr ""
+
+#: ../../source/functions/output.rst:4
+msgid ""
+":program:`GVasp` can visualize the VASP :file:`CONTCAR` by generating the"
+" :file:`*.xsd` file, just need to run the following command:"
+msgstr ""
+
+#: ../../source/functions/output.rst:11
+msgid "The name of the \\*.xsd file depend on your job name in submit.script."
+msgstr ""
+
+#: ../../source/functions/plot.rst:2
+msgid "Plot Interface"
+msgstr ""
+
+#: ../../source/functions/plot.rst:4
+msgid ""
+":program:`GVasp` support optimization, electrostatic potential, band "
+"structure, density of states, potential energy surface as well as the neb"
+" images plot. Each plot task can use :code:`--save` or :code:`--show` to "
+"save or show the output figure. For the plot setting and data load, one "
+"need to use :code:`-j/--json` to specify one json file to handle it."
+msgstr ""
+
+#: ../../source/functions/plot.rst:7
+msgid "**-\\-save** and **-\\-show** can't as the arguments at the meantime."
+msgstr ""
+
+#: ../../source/functions/plot.rst:9
+msgid "Detailed arguments setting can see the **sub-topics** below."
+msgstr ""
+
+#: ../../source/functions/plot.rst:23
+msgid ""
+"We recommend user plot the figure under the **Win/MAC OS** system, "
+"because **Linux** may lack some necessary fonts."
+msgstr ""
+
+#: ../../source/functions/plot/band.rst:2
+msgid "Band Structure Plot"
+msgstr ""
+
+#: ../../source/functions/plot/band.rst:8
+msgid ""
+"For the band structure, one can use :program:`GVasp` to plot it, just run"
+" the command:"
+msgstr ""
+
+#: ../../source/functions/plot/band.rst:14
+#: ../../source/functions/plot/ep.rst:14
+msgid "then, one may obtain the :file:`figure.svg` which plot the band structure."
+msgstr ""
+
+#: ../../source/functions/plot/band.rst:16
+#: ../../source/functions/plot/ep.rst:16 ../../source/functions/plot/opt.rst:18
+msgid "Just like this,"
+msgstr ""
+
+#: ../../source/functions/plot/band.rst:22
+#: ../../source/functions/plot/ep.rst:22 ../../source/functions/plot/neb.rst:20
+msgid "For this task, the :file:`plot.json` is like this"
+msgstr ""
+
+#: ../../source/functions/plot/band.rst:35
+#: ../../source/functions/plot/ep.rst:32 ../../source/functions/plot/neb.rst:30
+msgid ""
+"The attention of :code:`--show`, :code:`--save` and :code:`--json` can be"
+" seen in :ref:`optimization <show_plot>` part."
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:4
+msgid "Density of States Plot"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:10
+msgid ""
+"Density of States (DOS) is vary important to understand the electronic "
+"structure of the solid, and our :program:`GVasp` also support its plot."
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:13
+#: ../../source/functions/plot/pes.rst:11
+msgid "simple case"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:15
+msgid ""
+"Firstly, we start from the Total DOS plot, the files user need to prepare"
+" is :file:`DOSCAR` and :file:`CONTCAR`, then run command below:"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:21
+#: ../../source/functions/plot/dos.rst:71
+#: ../../source/functions/plot/dos.rst:151
+#: ../../source/functions/plot/dos.rst:175
+msgid "The figure is like this:"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:26
+#: ../../source/functions/plot/pes.rst:30
+#: ../../source/functions/plot/pes.rst:75
+#: ../../source/functions/plot/pes.rst:102
+msgid "The plot.json is like this:"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:40
+msgid ""
+"It can ben seen that, many parameters have been added in plot.json, but "
+"actually the :code:`dos_file`, :code:`pos_file` and :code:`data` is "
+"required."
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:42
+msgid "**dos_file**: represents the location of :file:`DOSCAR`, should be a list"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:44
+msgid "**pos_file**: represents the location of :file:`CONTCAR`, should be a list"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:46
+msgid ""
+"**data**: a dict, key is index of plot DOSCAR/CONTCAR in "
+":code:`dos_file`; value is a list, each element represents a line in the "
+"figure"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:49
+msgid "`dos_file` and `pos_file` should have same length"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:51
+msgid ""
+"Therefore, for the simple case, we only added the :code:`color` to "
+"control the line's color. Very simple, is it?"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:55
+msgid "atoms projection"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:57
+msgid ""
+"If we want to plot the projection DOS to some atoms, the plot.json is "
+"like this:"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:76
+msgid ""
+"Actually, because the atoms list is continuous, **syntactic sugar** can "
+"be applied, like this"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:90
+msgid ""
+"Particularly, if you want to plot all atoms belonging to one element, you"
+" can also applied the **syntactic sugar** like this"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:104
+msgid "Multi-Elements is now also supported, like this:"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:118
+msgid ""
+"If you want to decomposing to orbitals, add the :code:`orbitals` "
+"parameter, like this:"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:134
+#: ../../source/functions/plot/pes.rst:87
+msgid "multiple lines"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:136
+msgid "One figure, one DOSCAR, multiple lines, modify the plot.json like this:"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:157
+msgid "use fill method"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:159
+msgid ""
+"You can also plot the dos in fill format, and the alpha argument is also "
+"accepted."
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:181
+msgid "multiple files"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:183
+msgid ""
+"Not enough, if you want to compare different structures, you can modify "
+"the plot.json like this"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:198
+msgid ""
+"It's still very simple, what you need to do is modify the plot.json, run "
+"the command again, then you got it ~~"
+msgstr ""
+
+#: ../../source/functions/plot/dos.rst:201
+msgid ""
+"The default DOSCAR format is regulated by setting the LORBIT=12 in INCAR,"
+" so if your LORBIT in INCAR is not 11 or 12, please add `\"LORBIT\": 10` "
+"in the plot.json."
+msgstr ""
+
+#: ../../source/functions/plot/ep.rst:2
+msgid "Electrostatic Potential Plot"
+msgstr ""
+
+#: ../../source/functions/plot/ep.rst:8
+msgid ""
+"For the electrostatic potential (ep), one can use :program:`GVasp` to "
+"plot it, just run the command:"
+msgstr ""
+
+#: ../../source/functions/plot/neb.rst:2
+msgid "NEB images Plot"
+msgstr ""
+
+#: ../../source/functions/plot/neb.rst:8
+msgid ""
+"For the transition state using the NEB method, one can use "
+":program:`GVasp` to plot the energy difference of all images, just run "
+"the command:"
+msgstr ""
+
+#: ../../source/functions/plot/neb.rst:14
+msgid "then, one may obtain the :file:`figure.svg` like this"
+msgstr ""
+
+#: ../../source/functions/plot/opt.rst:2
+msgid "Optimization trajectory Plot"
+msgstr ""
+
+#: ../../source/functions/plot/opt.rst:8
+msgid ""
+"For the optimization, one may not only care about the structural "
+"evolution (which can be visualized :ref:`here <opt_movie>`), but also the"
+" **energy/force** change with the **optimization steps**, which can also "
+"be analyzed by :program:`GVasp`."
+msgstr ""
+
+#: ../../source/functions/plot/opt.rst:10
+msgid "A simple code need to be typed for this work:"
+msgstr ""
+
+#: ../../source/functions/plot/opt.rst:16
+msgid ""
+"then, one may obtain the :file:`figure.svg` which plot the energy and "
+"force change with the steps increment."
+msgstr ""
+
+#: ../../source/functions/plot/opt.rst:24
+msgid ""
+"The only parameter in plot.json is :code:`height`, certainly it is "
+"optional."
+msgstr ""
+
+#: ../../source/functions/plot/opt.rst:35
+msgid "The **json file** is required, even if is empty, :command:`touch` it."
+msgstr ""
+
+#: ../../source/functions/plot/opt.rst:38
+msgid ""
+"**-\\-show** or **-\\-save** should specify one, and only need to one, "
+"otherwise nothing happen."
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:2
+msgid "Potential Energy Surface Plot"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:8
+msgid ""
+"Potential Energy Surface (PES) plot is important in reaction mechanism "
+"research, and our :program:`GVasp` certainly support to plot PES with "
+"*various* data."
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:13
+msgid ""
+"A very simple reaction data like this (noted they are all relative "
+"energy):"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:19
+msgid "We can plot it by run the command like before:"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:25
+msgid "And the figure like this:"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:39
+msgid ""
+"**data** parament is a set of lines, so even if you have only one line, "
+"its type should be List[List[float]]."
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:42
+msgid "change style"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:44
+msgid ""
+"By add a :code:`style=\"solid_curve\"`, the figure can be changed like "
+"this:"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:57
+msgid ""
+"For the \"solid_curve\" style, one need to specify the data belonging to "
+"a intermediate state (MS) of transition state (TS), so **data** parament'"
+" type now be List[List[List[float], List[str]]]."
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:60
+msgid "None value"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:62
+msgid "If your data have :code:`None`, the :program:`GVasp` can work well."
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:64
+msgid "for example,"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:70
+#: ../../source/functions/plot/pes.rst:97
+msgid "The plot figure is like this:"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:84
+msgid ""
+"**Json** file can't recognize the None value, so we substitute the *None*"
+" as *null*."
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:89
+msgid "If you want to compete different reaction pathway, data like below:"
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:113
+msgid "And we close the `text` by add :code:`text_flag = false`."
+msgstr ""
+
+#: ../../source/functions/plot/pes.rst:115
+msgid ""
+"Here, you may known how to plot the PES with :program:`GVasp`, of course,"
+" it can do better in the future."
+msgstr ""
+
+#: ../../source/functions/sort.rst:4
+msgid "Align Structures"
+msgstr ""
+
+#: ../../source/functions/sort.rst:10
+msgid ""
+"If you use the :program:`GVasp` to generate the :ref:`NEB <neb_topic>` "
+"inputs, the first thing is align the structure, because the atoms in "
+"initial and final structures may not one-to-one."
+msgstr ""
+
+#: ../../source/functions/sort.rst:12
+msgid "The command is simple, like this:"
+msgstr ""
+
+#: ../../source/functions/sort.rst:19
+msgid ""
+"The INI_POSCAR and FNI_POSCAR are names provided by user of the initial "
+"and final structures."
+msgstr ""
+
+#: ../../source/functions/sort.rst:21
+msgid ""
+"Then :program:`GVasp` will generate two POSCAR files which suffix is "
+":file:`_sort`."
+msgstr ""
+
+#: ../../source/functions/sort.rst:24
+msgid ""
+"To check if the align success, you can visualize the NEB (set the "
+":code:`-p/-\\-pos=POSCAR`), detailed information can see :ref:`here "
+"<neb_movie>`."
+msgstr ""
+
+#: ../../source/functions/submit.rst:6
+msgid "Generate Vasp Inputs"
+msgstr ""
+
+#: ../../source/functions/submit.rst:8
+msgid ""
+":program:`GVasp` can help user quick generate VASP inputs (|inputs|), "
+"just need only run :file:`gvasp submit TASK [arguments]`."
+msgstr ""
+
+#: ../../source/functions/submit.rst:10
+msgid ""
+"The following arguments can be applied in all of the tasks, while other "
+"arguments will describe in corresponding sub-topic."
+msgstr ""
+
+#: ../../source/functions/submit.rst:16
+msgid "Argument"
+msgstr ""
+
+#: ../../source/functions/submit.rst:17
+msgid "Description"
+msgstr ""
+
+#: ../../source/functions/submit.rst:18
+msgid "-P/-\\-potential"
+msgstr ""
+
+#: ../../source/functions/submit.rst:19
+msgid "specify the potential"
+msgstr ""
+
+#: ../../source/functions/submit.rst:20
+msgid "-V/-\\-vdw"
+msgstr ""
+
+#: ../../source/functions/submit.rst:21
+#: ../../source/functions/submit/opt.rst:67
+msgid "open the vdw-correction"
+msgstr ""
+
+#: ../../source/functions/submit.rst:22
+msgid "-S/-\\-sol"
+msgstr ""
+
+#: ../../source/functions/submit.rst:23
+#: ../../source/functions/submit/opt.rst:81
+msgid "including the solvation effect"
+msgstr ""
+
+#: ../../source/functions/submit.rst:24
+msgid "-G/-\\-gamma"
+msgstr ""
+
+#: ../../source/functions/submit.rst:25
+#: ../../source/functions/submit/opt.rst:95
+msgid "perform the Gamma-point calculation"
+msgstr ""
+
+#: ../../source/functions/submit.rst:26
+msgid "-N/-\\-nelect"
+msgstr ""
+
+#: ../../source/functions/submit.rst:27
+#: ../../source/functions/submit/opt.rst:106
+msgid "perform charged system calculation"
+msgstr ""
+
+#: ../../source/functions/submit.rst:29
+msgid ""
+"Detailed information about the mentioned arguments can see in :ref:`opt "
+"<optimization>` task."
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:2
+msgid "Charge Density"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:8
+msgid ""
+"Charge Density calculation is another important task, you can also use "
+":program:`GVasp` to handle its inputs."
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:10
+msgid ""
+"Likewise the :ref:`optimization <optimization>` task, run the command "
+"(need a *.xsd file):"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:17
+#: ../../source/functions/submit/dos.rst:20
+#: ../../source/functions/submit/wf.rst:17
+msgid "From finished job"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:19
+msgid ""
+"Meantime, you can also start a chg task from a finished job which has the"
+" CONTCAR file, and the :program:`GVasp` will auto generate the inputs for"
+" this task, just run the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:26
+msgid "This feature is also support for the wf and dos tasks."
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:31
+msgid "open analysis option"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:33
+msgid ""
+"If you want to apply the `bader "
+"<http://theory.cm.utexas.edu/henkelman/code/bader/>`_ calculation, "
+":ref:`chgsplit <split>` and :ref:`transform CHGCAR_mag to grd <grd>` "
+"after the charge calculation, you can run the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:39
+msgid "and the mentioned task will be performed in one task."
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:42
+msgid "Make sure you add bader in your PATH environment."
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:45
+#: ../../source/functions/submit/dos.rst:32
+#: ../../source/functions/submit/wf.rst:29
+msgid "apply sequential task"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:47
+msgid ""
+"If you finally want to perform the charge optimization, we recommend you "
+"use the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:53
+msgid ""
+"and the task will perform the optimization and charge calculation in a "
+"sequential task."
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:56
+#: ../../source/functions/submit/dos.rst:43
+msgid ""
+"Sequential task also support the :ref:`low <low>` and :ref:`analysis "
+"<analysis>` options."
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:59
+#: ../../source/functions/submit/dos.rst:46
+#: ../../source/functions/submit/freq.rst:17
+#: ../../source/functions/submit/md.rst:15
+#: ../../source/functions/submit/stm.rst:15
+#: ../../source/functions/submit/ts/con-ts.rst:19
+#: ../../source/functions/submit/ts/dimer.rst:20
+#: ../../source/functions/submit/ts/neb.rst:50
+#: ../../source/functions/submit/wf.rst:43
+msgid "Other arguments"
+msgstr ""
+
+#: ../../source/functions/submit/chg.rst:62
+#: ../../source/functions/submit/dos.rst:49
+#: ../../source/functions/submit/freq.rst:20
+#: ../../source/functions/submit/md.rst:18
+#: ../../source/functions/submit/stm.rst:18
+#: ../../source/functions/submit/ts/con-ts.rst:22
+#: ../../source/functions/submit/ts/dimer.rst:23
+#: ../../source/functions/submit/ts/neb.rst:53
+#: ../../source/functions/submit/wf.rst:46
+msgid ""
+"More information of other arguments can be seen in :ref:`optimization "
+"<arguments>` task."
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:2
+msgid "Density of States"
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:8
+msgid ""
+"Density of States (DOS) calculation is another important task, you can "
+"also use :program:`GVasp` to handle its inputs."
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:10
+#: ../../source/functions/submit/wf.rst:10
+msgid "Likewise the :ref:`optimization <optimization>` task, run the command:"
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:17
+msgid ""
+"This command only generate the **INCAR**, **KPOINTS**, **POSCAR** and "
+"**POTCAR** files, thus you should prepare other files (e.g. CHGCAR) by "
+"yourself."
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:22
+msgid ""
+"Meantime, you can also start a dos task from a finished job which has the"
+" CONTCAR and CHGCAR files, and the :program:`GVasp` will auto generate "
+"the inputs for this task, just run the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:29
+msgid "This feature is also support for the chg and wf tasks."
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:34
+msgid ""
+"If you finally want to perform the DOS calculation, we recommend you use "
+"the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/dos.rst:40
+msgid ""
+"and the task will perform the optimization, charge calculation and DOS "
+"calculation in a sequential task."
+msgstr ""
+
+#: ../../source/functions/submit/freq.rst:2
+msgid "Frequency"
+msgstr ""
+
+#: ../../source/functions/submit/freq.rst:8
+msgid ""
+"Frequency calculation is often used to check imaginary frequency, IR "
+"spectrum modelling, free energy correction and so on."
+msgstr ""
+
+#: ../../source/functions/submit/freq.rst:10
+msgid ""
+"Likewise the :ref:`optimization <optimization>` task, you can also use "
+":program:`GVasp` to handle its inputs, just run the command:"
+msgstr ""
+
+#: ../../source/functions/submit/md.rst:2
+msgid "Ab-initio Molecule Dynamics"
+msgstr ""
+
+#: ../../source/functions/submit/md.rst:8
+msgid ""
+"For ab-initio molecule dynamics (AIMD), likewise the :ref:`optimization "
+"<optimization>` task, you can also use :program:`GVasp` to handle its "
+"inputs, just run the command:"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:6
+msgid "Optimization"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:12
+msgid ""
+"Optimization is the most common task in the daily calculation work, and "
+"we now can quickly generate the inputs for optimization task with the "
+"help of :program:`GVasp`, the only need file is the :file:`*.xsd`."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:14
+msgid ""
+"When prepared the :file:`*.xsd` (from `Material Studio "
+"<https://www.3ds.com/products-services/biovia/products/molecular-"
+"modeling-simulation/biovia-materials-studio/>`_ Software) in workdir, run"
+" the command:"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:20
+msgid "and the inputs (|inputs|) will be generated."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:23
+msgid ""
+"The workdir should only have one \\*.xsd file, otherwise, the structure "
+"generated is unknown."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:28
+msgid "open low-first option"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:30
+msgid ""
+"In the practical calculation, the structure optimization is time spent "
+"and one method to accelerate the optimization task can start from a low-"
+"accuracy calculation and then perform the normal calculation based the "
+"optimized low-accuracy structure."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:32
+msgid ""
+"Using :program:`GVasp`, you can run the following command to perform such"
+" low-first calculation:"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:39
+msgid ""
+"In fact, in the latest version, we only set the ENCUT as 300 to perform "
+"the low-accuracy calculation."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:45
+msgid "The following arguments can be applied in all of the tasks."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:50
+msgid "specify potential"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:52
+msgid ""
+"Certainly, if you don't like the default potential (**\"PAW_PBE\"**), you"
+" can also transfer a argument by specify the potential you want, like "
+"this"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:59
+msgid ""
+"The potential can only specify to the member of the [**'PAW_LDA'**, "
+"**'PAW_PBE'**, **'PAW_PW91'**, **'USPP_LDA'**, **'USPP_PW91'**]"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:62
+msgid ""
+"The -p/--potential accept one or more values, if you specify one "
+"potential, all the elements will use the same potential; and if you "
+"specify two or more potentials, the potential will auto corresponding to "
+"the element in POSCAR, noticed that the number of potential should equal "
+"to the number of elements in POSCAR"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:69
+msgid ""
+"The :program:`GVasp` support including the van der Waals (vdw) correction"
+" in calculation, just by running the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:76
+msgid "Open the vdw option will set IVDW = 12 in INCAR file."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:83
+msgid ""
+"The :program:`GVasp` support including the solvation effect in "
+"calculation, just by running the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:90
+msgid ""
+"The default solvent is water, and you can modify it by adding EB_K "
+"argument in INCAR by yourself."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:97
+msgid ""
+"Use single Gamma-point and vasp_gam to perform the calculation for the "
+"large-scale system can run the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:108
+msgid ""
+"If you want to calculate a charged system by setting the NELECT argument,"
+" you can also use the :program:`GVasp` to generate the inputs."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:110
+msgid ""
+"Take the +1 charged system as the example, the command line can be typed "
+"as this:"
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:117
+msgid ""
+"The NELECT accept real number as its input, so the float input (e.g., "
+"-0.5) is also allowed."
+msgstr ""
+
+#: ../../source/functions/submit/opt.rst:119
+msgid ""
+"Noted that the mentioned arguments can also be used lonely or together "
+"with other arguments, like this:"
+msgstr ""
+
+#: ../../source/functions/submit/stm.rst:2
+msgid "STM image Modeling"
+msgstr ""
+
+#: ../../source/functions/submit/stm.rst:8
+msgid ""
+"For STM image modelling, likewise the :ref:`optimization <optimization>` "
+"task, you can also use :program:`GVasp` to handle its inputs, just run "
+"the command:"
+msgstr ""
+
+#: ../../source/functions/submit/ts.rst:2
+msgid "Transition State Search"
+msgstr ""
+
+#: ../../source/functions/submit/ts.rst:4
+msgid ""
+":program:`GVasp` provide three options to search transition state (TS), "
+"namely as `Constrained-TS <https://pubs.acs.org/doi/10.1021/ja801648h>`_,"
+" `NEB <http://theory.cm.utexas.edu/vtsttools/neb.html>`_ and `Dimer "
+"<http://theory.cm.utexas.edu/vtsttools/dimer.html>`_ methods."
+msgstr ""
+
+#: ../../source/functions/submit/ts/con-ts.rst:10
+msgid ""
+"`Constrained-TS (Con-TS) <https://pubs.acs.org/doi/10.1021/ja801648h>`_ "
+"is a much faster method to locate the transition state (TS), which "
+"searches for TSs from a guessed TS-like structure by fixing only one "
+"degree of freedom, e.g., the distance of the dissociating chemical bond."
+msgstr ""
+
+#: ../../source/functions/submit/ts/con-ts.rst:12
+msgid ""
+":program:`GVasp` support to generate the inputs of Con-TS, just run the "
+"command below:"
+msgstr ""
+
+#: ../../source/functions/submit/ts/dimer.rst:8
+msgid ""
+"`Dimer <http://theory.cm.utexas.edu/vtsttools/dimer.html>`_ is also a "
+"method to locate the TS, which allows the user to start from any initial "
+"configuration and search for a nearby saddle point, but actually it not "
+"very often use relative to :ref:`Con-TS <con-TS>` and :ref:`NEB "
+"<neb_topic>` methods."
+msgstr ""
+
+#: ../../source/functions/submit/ts/dimer.rst:10
+msgid ""
+":program:`GVasp` also support the Dimer method to locate the TS, just run"
+" the command below:"
+msgstr ""
+
+#: ../../source/functions/submit/ts/dimer.rst:17
+msgid ""
+"The Dimer method is not very useful, so **GVasp** provide a little "
+"support to this method. We also recommend user to try :ref:`Con-TS <con-"
+"TS>` or :ref:`NEB <neb_topic>` method to locate the TS."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:4
+msgid "NEB method"
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:10
+msgid ""
+"`NEB <http://theory.cm.utexas.edu/vtsttools/neb.html>`_ is a traditional "
+"method to locate the TS, which works by optimizing a number of "
+"intermediate images along the reaction path. Therefore, it's a "
+"computational cost method, while it sometimes can successfully locate TS "
+"which can't be searched by :ref:`Con-TS <con-TS>` method."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:13
+msgid "Don't forget to :ref:`align the structure <align>` first."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:15
+msgid ""
+":program:`GVasp` also support the NEB method to locate the TS, just run "
+"the command below:"
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:22
+msgid ""
+"The NEB method will construct the reaction path, so one use NEB method "
+"must specify the start (**-ini/-\\-ini_poscar**) and end "
+"(**-fni/-\\-fni_poscar**) structure, while **-i**, **-m** and **-c** is "
+"optional arguments."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:25
+msgid "specify images"
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:27
+msgid ""
+"Images is the number of intermediate structures between initial and final"
+" structures, if you don't specify, :code:`images = 4` will apply."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:30
+msgid "specify method"
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:32
+msgid ""
+"GVasp provide two method to control how to generate the intermediate "
+"structures."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:34
+msgid ""
+"One is :code:`linear`, generate structures by linear interpolation from "
+"start to end structures."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:36
+msgid ""
+"Another is :code:`idpp` method, which declares to generate more suitable "
+"structures for NEB task, more detailed information can be seen `here "
+"<https://aip.scitation.org/doi/10.1063/1.4878664>`_."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:38
+msgid ""
+"If you don't specify the :code:`method`, GVasp will apply :code:`method ="
+" \"linear\"`."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:41
+msgid "check overlap"
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:43
+msgid ""
+"Noted that the intermediate structures generated automatically, so some "
+"atoms may overlap or closing in some cases, if you don't check, the NEB "
+"task may fail quickly."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:45
+msgid ""
+"Therefore, :program:`GVasp` check overlap always when you generate the "
+"inputs, and this behavior is also its default."
+msgstr ""
+
+#: ../../source/functions/submit/ts/neb.rst:47
+msgid ""
+"If you don't like this, you can set :code:`-c/--cancel_check_overlap` to "
+"cancel check, but we (actually I) strongly recommend you don't do this "
+"`dangerous` action."
+msgstr ""
+
+#: ../../source/functions/submit/wf.rst:2
+msgid "Work Function"
+msgstr ""
+
+#: ../../source/functions/submit/wf.rst:8
+msgid ""
+"Work Function (WF) calculation is another important task, you can also "
+"use :program:`GVasp` to handle its inputs."
+msgstr ""
+
+#: ../../source/functions/submit/wf.rst:19
+msgid ""
+"Meantime, you can also start a wf task from a finished job which has the "
+"CONTCAR file, and the :program:`GVasp` will auto generate the inputs for "
+"this task, just run the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/wf.rst:26
+msgid "This feature is also support for the chg and dos tasks."
+msgstr ""
+
+#: ../../source/functions/submit/wf.rst:31
+msgid ""
+"If you finally want to perform the WF calculation, we recommend you use "
+"the following command:"
+msgstr ""
+
+#: ../../source/functions/submit/wf.rst:37
+msgid ""
+"and the task will perform the optimization and WF calculation in a "
+"sequential task."
+msgstr ""
+
+#: ../../source/functions/submit/wf.rst:40
+msgid "Sequential task also support the :ref:`low <low>` option."
+msgstr ""
+

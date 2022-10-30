@@ -1,0 +1,146 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022, Hui Zhou
+# This file is distributed under the same license as the GVasp package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GVasp 0.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-30 14:59+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/config-setting.rst:4
+msgid "Contents:"
+msgstr ""
+
+#: ../../source/config-setting.rst:2
+msgid "Setting Environment"
+msgstr ""
+
+#: ../../source/config-setting.rst:9
+msgid "Display Default Environment"
+msgstr ""
+
+#: ../../source/config-setting.rst:11
+msgid "Default environment can display by following command:"
+msgstr ""
+
+#: ../../source/config-setting.rst:17
+msgid "Initial environment is like this:"
+msgstr ""
+
+#: ../../source/config-setting.rst:30
+msgid ""
+"ConfigDir: represents the directory of :file:`INCAR (template)`, "
+":file:`UValue.yaml` and :file:`pot`"
+msgstr ""
+
+#: ../../source/config-setting.rst:32
+msgid ""
+"scheduler: represents the job control system, now only support the slurm "
+"(but you can specify a .submit file in your parent-chain path, see "
+":ref:`here <user_template>`)"
+msgstr ""
+
+#: ../../source/config-setting.rst:34
+msgid "LogDir: represents the directory of logs"
+msgstr ""
+
+#: ../../source/config-setting.rst:36
+msgid ""
+":file:`INCAR`: INCAR template file of all :program:`GVasp` submit tasks, "
+"default parameters, :download:`INCAR <./INCAR>`"
+msgstr ""
+
+#: ../../source/config-setting.rst:38
+msgid ""
+":file:`UValue.yaml`: define the UValue for elements, for example, "
+":download:`UValue.yaml <./UValue.yaml>`"
+msgstr ""
+
+#: ../../source/config-setting.rst:40
+msgid ""
+":file:`pot`: directory of the elements' POTCAR (please prepare it by "
+"yourself)"
+msgstr ""
+
+#: ../../source/config-setting.rst:42
+msgid "The structure of :file:`pot` is like this:"
+msgstr ""
+
+#: ../../source/config-setting.rst:56
+msgid "INCAR, UValue.yaml, pot should not be renamed"
+msgstr ""
+
+#: ../../source/config-setting.rst:62
+msgid "Modify Default Environment"
+msgstr ""
+
+#: ../../source/config-setting.rst:64
+msgid ""
+"If you don't like the default environment setting, you can modify the "
+"environment by writing a config.json, the format of config.json is like "
+"this:"
+msgstr ""
+
+#: ../../source/config-setting.rst:75
+msgid "and run command:"
+msgstr ""
+
+#: ../../source/config-setting.rst:81
+msgid ""
+"Then the environment will be reset, :program:`GVasp` will auto search the"
+" :file:`INCAR` and :file:`UValue.yaml` under the config_dir."
+msgstr ""
+
+#: ../../source/config-setting.rst:86
+msgid "User template"
+msgstr ""
+
+#: ../../source/config-setting.rst:88
+msgid ""
+"Now, user can defined their INCAR, UValue.yaml or submit.script template "
+"with the following steps:"
+msgstr ""
+
+#: ../../source/config-setting.rst:90
+msgid ""
+"Named the INCAR, UValue.yaml or submit.script template as the *.incar, "
+"*.uvalue and *.submit files, respectively."
+msgstr ""
+
+#: ../../source/config-setting.rst:92
+msgid ""
+"Put them in your work directory or parent directory or parent's parent "
+"directory and so on directories (defined as the :code:`parent-chain`)."
+msgstr ""
+
+#: ../../source/config-setting.rst:94
+msgid ""
+"For example, if you want to submit a job in the "
+":file:`/public1/home/sc81076/hzhou/M-CeO2/test` directory, the INCAR, "
+"UValue.yaml and/or submit.script template put in these directories is "
+"allowed:"
+msgstr ""
+
+#: ../../source/config-setting.rst:106
+msgid ""
+"After these two steps, the :program:`GVasp` :ref:`generate the inputs "
+"<generate>` will apply your templates."
+msgstr ""
+
+#: ../../source/config-setting.rst:109
+msgid ""
+"If you have two or more templates in these directories at the same time, "
+"the :program:`GVasp` will select the directory which is nearest to the "
+"work directory."
+msgstr ""
+

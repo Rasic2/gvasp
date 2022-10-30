@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022, Hui Zhou
+# This file is distributed under the same license as the GVasp package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GVasp 0.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-30 14:59+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/gvasp.common.rst:2
+msgid "gvasp.common package"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:5
+msgid "gvasp.common.base module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:13
+msgid "gvasp.common.descriptor module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:21
+msgid "gvasp.common.error module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:29
+msgid "gvasp.common.figure module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:37
+msgid "gvasp.common.file module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:45
+msgid "gvasp.common.logger module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:53
+msgid "gvasp.common.parameter module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:61
+msgid "gvasp.common.plot module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:69
+msgid "gvasp.common.setting module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:77
+msgid "gvasp.common.structure module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:85
+msgid "gvasp.common.task module"
+msgstr ""
+
+#: ../../source/gvasp.common.rst:93
+msgid "gvasp.common.utils module"
+msgstr ""
+

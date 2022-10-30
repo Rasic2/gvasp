@@ -1,0 +1,60 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022, Hui Zhou
+# This file is distributed under the same license as the GVasp package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GVasp 0.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-30 14:59+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/preparation.rst:4
+msgid "Contents:"
+msgstr "目录："
+
+#: ../../source/preparation.rst:2
+msgid "Preparation"
+msgstr "安装前准备"
+
+#: ../../source/preparation.rst:8
+msgid ""
+"Before install the :program:`GVasp`, we strongly recommend you to install"
+" `conda <https://anaconda.org/>`_ before."
+msgstr "在安装 :program:`GVasp` 之前，我们强烈建议你首先安装 `conda <https://anaconda.org/>`_ 。"
+
+#: ../../source/preparation.rst:10
+msgid ""
+"After install conda, create a new environment, e.g. gvasp, and install a "
+"python (version=3.9), using following command:"
+msgstr "conda 安装完成之后，创建一个新环境，例如：gvasp，并且安装 python 3.9，命令如下："
+
+#: ../../source/preparation.rst:17
+msgid ""
+"The conda tool can modify its original mirrors by modify the "
+":file:`~/.condrc`, for example, :download:`.condrc-example <./.condrc>`"
+msgstr ""
+
+#: ../../source/preparation.rst:20
+msgid ""
+"The pip tool can modify its original mirrors by add a "
+":file:`~/.pip/pip.conf`, for example, :download:`pip.conf-example "
+"<./pip.conf>`"
+msgstr ""
+
+#~ msgid ""
+#~ "在安装 :program:`GVasp`之前，我们强烈建议你首先安装 `conda "
+#~ "<https://anaconda.org/>`_Before install the "
+#~ ":program:`GVasp`, we strongly recommend you"
+#~ " to install `conda <https://anaconda.org/>`_ "
+#~ "before."
+#~ msgstr ""
+
