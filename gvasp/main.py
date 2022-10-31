@@ -155,7 +155,10 @@ def main_permission():
 def exception_format(func):
     def wrapper(*args, **kwargs):
         if len(args):
-            debug = (args[0][0] == "-d")  # script mode
+            try:
+                debug = (args[0][0] == "-d")  # script mode
+            except IndexError:  # catch case: args=[]
+                debug = False
         else:
             debug = (sys.argv[1] == "-d")  # command-line mode
         try:
