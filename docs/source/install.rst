@@ -12,7 +12,7 @@ Conda install
 
 .. code-block:: bash
 
-    conda install gvasp -c hui_zhou
+    conda install gvasp -c hui_zhou -c conda-forge
 
 Pip install
 -------------

@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../source/functions/calculation.rst:2
 msgid "Calculation Utils"
-msgstr ""
+msgstr "计算工具箱"
 
 #: ../../source/functions/calculation.rst:4
 msgid ""
@@ -28,44 +28,44 @@ msgid ""
 "(1), while the usage of the latter can see `here "
 "<https://pubs.acs.org/doi/10.1021/acscatal.1c04856>`_. Different tasks "
 "are specified by the command number."
-msgstr ""
+msgstr "本部分对计算实用工具进行介绍，包括表面能计算（任务0）和静电相互作用能（任务1），其中后者在科研中的用法可参看 `这里 <https://pubs.acs.org/doi/10.1021/acscatal.1c04856>`_ 。不同的计算工具由各自的任务号指定。"
 
 #: ../../source/functions/calculation.rst:7
 msgid "surface energy calculation"
-msgstr ""
+msgstr "表面能计算"
 
 #: ../../source/functions/calculation.rst:9
 msgid ""
 "You can use :program:`GVasp` calculate the surface energy by the "
 "following command:"
-msgstr ""
+msgstr "你可以按照下面的命令计算表面能："
 
 #: ../../source/functions/calculation.rst:15
 msgid ""
 "where the :code:`crystal_dir` and :code:`slab_dir` represent the job "
 "directory for the crystal and slab models, respectively."
-msgstr ""
+msgstr "其中 :code:`crystal_dir` 和 :code:`slab_dir` 分别代表晶胞和表面模型的计算目录。"
 
 #: ../../source/functions/calculation.rst:18
 msgid "electrostatic interaction energy calculation"
-msgstr ""
+msgstr "静电相互作用能计算"
 
 #: ../../source/functions/calculation.rst:20
 msgid ""
 "You can use :program:`GVasp` calculate the electrostatic interaction "
 "energy by the following command:"
-msgstr ""
+msgstr "你可以按照下面的命令计算静电相互作用能："
 
 #: ../../source/functions/calculation.rst:26
 msgid ""
 "where the :code:`atoms` represents the atoms you want to calculate, and "
 ":code:`workdir` represents the work directory (default is \".\") store "
 "the :file:`ACF.dat`."
-msgstr ""
+msgstr "其中， :code:`atoms` 代表你想计算静电相互作用能的原子； :code:`workdir` 代表存放 :file:`ACF.dat` 的目录（默认是当前目录）。"
 
 #: ../../source/functions/center.rst:2
 msgid "Band Center Calculation"
-msgstr ""
+msgstr "能带中心计算"
 
 #: ../../source/functions/center.rst:4
 msgid ""

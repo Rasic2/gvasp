@@ -56,7 +56,7 @@ conda create -n gvasp python=3.9
    the [Anaconda](https://anaconda.org/hui_zhou/gvasp), so you can also install `GVasp` from it:
 
    ```
-   conda install -c hui_zhou gvasp
+   conda install -c hui_zhou -c conda-forge gvasp
    ```
 
 2. Use PyPi
