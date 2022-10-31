@@ -384,7 +384,7 @@ msgstr "\\*.xsd 的文件名依赖于 submit.script 指定的作业名。"
 
 #: ../../source/functions/plot.rst:2
 msgid "Plot Interface"
-msgstr ""
+msgstr "绘图接口"
 
 #: ../../source/functions/plot.rst:4
 msgid ""
@@ -393,223 +393,223 @@ msgid ""
 " images plot. Each plot task can use :code:`--save` or :code:`--show` to "
 "save or show the output figure. For the plot setting and data load, one "
 "need to use :code:`-j/--json` to specify one json file to handle it."
-msgstr ""
+msgstr ":program:`GVasp` 提供结构优化、势能面、能带结构、态密度以及 NEB images 能量的绘图接口，每一种绘图任务都可以使用 :code:`--save` 或者 :code:`--show` 来保存或展示生成的图片。对于绘图设置和数据加载，用户只需使用 :code:`-j/--json` 指定一个 json 文件即可。"
 
 #: ../../source/functions/plot.rst:7
 msgid "**-\\-save** and **-\\-show** can't as the arguments at the meantime."
-msgstr ""
+msgstr "**-\\-save** 和 **-\\-show** 不能同时指定。"
 
 #: ../../source/functions/plot.rst:9
 msgid "Detailed arguments setting can see the **sub-topics** below."
-msgstr ""
+msgstr "更详细的参数设置可以参照下述 **子章节** 。"
 
 #: ../../source/functions/plot.rst:23
 msgid ""
 "We recommend user plot the figure under the **Win/MAC OS** system, "
 "because **Linux** may lack some necessary fonts."
-msgstr ""
+msgstr "我们推荐用户在 **Win/MAC OS** 操作系统下绘图，因为 **Linux** 可能会缺少一些必要的字体。"
 
 #: ../../source/functions/plot/band.rst:2
 msgid "Band Structure Plot"
-msgstr ""
+msgstr "能带结构绘制"
 
 #: ../../source/functions/plot/band.rst:8
 msgid ""
 "For the band structure, one can use :program:`GVasp` to plot it, just run"
 " the command:"
-msgstr ""
+msgstr "使用 :program:`GVasp` 绘制能带结构，只需执行下述命令："
 
 #: ../../source/functions/plot/band.rst:14
 #: ../../source/functions/plot/ep.rst:14
 msgid "then, one may obtain the :file:`figure.svg` which plot the band structure."
-msgstr ""
+msgstr "之后，就可以得到绘制能带结构的 :file:`figure.svg` 了。"
 
 #: ../../source/functions/plot/band.rst:16
 #: ../../source/functions/plot/ep.rst:16 ../../source/functions/plot/opt.rst:18
 msgid "Just like this,"
-msgstr ""
+msgstr "类似这样，"
 
 #: ../../source/functions/plot/band.rst:22
 #: ../../source/functions/plot/ep.rst:22 ../../source/functions/plot/neb.rst:20
 msgid "For this task, the :file:`plot.json` is like this"
-msgstr ""
+msgstr "对于这一任务， :file:`plot.json` 格式如下："
 
 #: ../../source/functions/plot/band.rst:35
 #: ../../source/functions/plot/ep.rst:32 ../../source/functions/plot/neb.rst:30
 msgid ""
 "The attention of :code:`--show`, :code:`--save` and :code:`--json` can be"
 " seen in :ref:`optimization <show_plot>` part."
-msgstr ""
+msgstr "关于 :code:`--show`, :code:`--save` 和 :code:`--json` 参数的注意事项可以参照 :ref:`结构优化 <show_plot>` 章节。"
 
 #: ../../source/functions/plot/dos.rst:4
 msgid "Density of States Plot"
-msgstr ""
+msgstr "态密度绘制"
 
 #: ../../source/functions/plot/dos.rst:10
 msgid ""
 "Density of States (DOS) is vary important to understand the electronic "
 "structure of the solid, and our :program:`GVasp` also support its plot."
-msgstr ""
+msgstr "态密度（DOS）对于理解固体材料的电子结构十分重要，使用 :program:`GVasp` 可以很容易的进行绘制。"
 
 #: ../../source/functions/plot/dos.rst:13
 #: ../../source/functions/plot/pes.rst:11
 msgid "simple case"
-msgstr ""
+msgstr "简单的例子"
 
 #: ../../source/functions/plot/dos.rst:15
 msgid ""
 "Firstly, we start from the Total DOS plot, the files user need to prepare"
 " is :file:`DOSCAR` and :file:`CONTCAR`, then run command below:"
-msgstr ""
+msgstr "首先，我们从 Total DOS 的绘制说起，用户需要提供 :file:`DOSCAR` 和 :file:`CONTCAR` 文件，然后运行下述命令："
 
 #: ../../source/functions/plot/dos.rst:21
 #: ../../source/functions/plot/dos.rst:71
 #: ../../source/functions/plot/dos.rst:151
 #: ../../source/functions/plot/dos.rst:175
 msgid "The figure is like this:"
-msgstr ""
+msgstr "绘制的态密度图类似这样："
 
 #: ../../source/functions/plot/dos.rst:26
 #: ../../source/functions/plot/pes.rst:30
 #: ../../source/functions/plot/pes.rst:75
 #: ../../source/functions/plot/pes.rst:102
 msgid "The plot.json is like this:"
-msgstr ""
+msgstr "plot.json 如下所示："
 
 #: ../../source/functions/plot/dos.rst:40
 msgid ""
 "It can ben seen that, many parameters have been added in plot.json, but "
 "actually the :code:`dos_file`, :code:`pos_file` and :code:`data` is "
 "required."
-msgstr ""
+msgstr "可以看到， plot.json 中添加了很多参数，但是只有 :code:`dos_file`, :code:`pos_file` 和 :code:`data` 是必须的。"
 
 #: ../../source/functions/plot/dos.rst:42
 msgid "**dos_file**: represents the location of :file:`DOSCAR`, should be a list"
-msgstr ""
+msgstr "**dos_file**: 代表 :file:`DOSCAR` 的位置（必须是列表）"
 
 #: ../../source/functions/plot/dos.rst:44
 msgid "**pos_file**: represents the location of :file:`CONTCAR`, should be a list"
-msgstr ""
+msgstr "**pos_file**: 代表 :file:`CONTCAR` 的位置（必须是列表）"
 
 #: ../../source/functions/plot/dos.rst:46
 msgid ""
 "**data**: a dict, key is index of plot DOSCAR/CONTCAR in "
 ":code:`dos_file`; value is a list, each element represents a line in the "
 "figure"
-msgstr ""
+msgstr "**data**: 字典格式，key 是 要绘制的 DOSCAR 在 :code:`dos_file` 中的索引序号，值是一个列表，每一个元素代表态密度图中将要绘制的一条线"
 
 #: ../../source/functions/plot/dos.rst:49
 msgid "`dos_file` and `pos_file` should have same length"
-msgstr ""
+msgstr "`dos_file` 和 `pos_file` 必须长度一样"
 
 #: ../../source/functions/plot/dos.rst:51
 msgid ""
 "Therefore, for the simple case, we only added the :code:`color` to "
 "control the line's color. Very simple, is it?"
-msgstr ""
+msgstr "因此，对于这一简单的列子，我们仅增加了一个 :code:`color` 参数来控制线的颜色。"
 
 #: ../../source/functions/plot/dos.rst:55
 msgid "atoms projection"
-msgstr ""
+msgstr "原子投影态密度"
 
 #: ../../source/functions/plot/dos.rst:57
 msgid ""
 "If we want to plot the projection DOS to some atoms, the plot.json is "
 "like this:"
-msgstr ""
+msgstr "我们想绘制原子投影的态密度， plot.json 示例如下："
 
 #: ../../source/functions/plot/dos.rst:76
 msgid ""
 "Actually, because the atoms list is continuous, **syntactic sugar** can "
 "be applied, like this"
-msgstr ""
+msgstr "事实上，如果我们要绘制的原子列表是连续的，可以使用 **原子语法糖** 来指定，类似这样："
 
 #: ../../source/functions/plot/dos.rst:90
 msgid ""
 "Particularly, if you want to plot all atoms belonging to one element, you"
 " can also applied the **syntactic sugar** like this"
-msgstr ""
+msgstr "特别是，如果我们想绘制某一元素的所有原子，也可以使用类似这样的 **原子语法糖** 来指定："
 
 #: ../../source/functions/plot/dos.rst:104
 msgid "Multi-Elements is now also supported, like this:"
-msgstr ""
+msgstr "同时指定多种元素现在也是支持的，类似这样："
 
 #: ../../source/functions/plot/dos.rst:118
 msgid ""
 "If you want to decomposing to orbitals, add the :code:`orbitals` "
 "parameter, like this:"
-msgstr ""
+msgstr "如果你还想将态密度分解到原子轨带上，那么需要额外增加一个 :code:`orbitals` 参数，类似这样："
 
 #: ../../source/functions/plot/dos.rst:134
 #: ../../source/functions/plot/pes.rst:87
 msgid "multiple lines"
-msgstr ""
+msgstr "同一文件多态密度图绘制"
 
 #: ../../source/functions/plot/dos.rst:136
 msgid "One figure, one DOSCAR, multiple lines, modify the plot.json like this:"
-msgstr ""
+msgstr "如果想在一张图上针对一个 DOSCAR 体系绘制多条态密度线，修改 plot.json 如下："
 
 #: ../../source/functions/plot/dos.rst:157
 msgid "use fill method"
-msgstr ""
+msgstr "使用填充方法"
 
 #: ../../source/functions/plot/dos.rst:159
 msgid ""
 "You can also plot the dos in fill format, and the alpha argument is also "
 "accepted."
-msgstr ""
+msgstr "你也可以使用填充格式来绘制态密度，alpha参数对于该种绘制风格同样是支持的。"
 
 #: ../../source/functions/plot/dos.rst:181
 msgid "multiple files"
-msgstr ""
+msgstr "多文件态密度图绘制"
 
 #: ../../source/functions/plot/dos.rst:183
 msgid ""
 "Not enough, if you want to compare different structures, you can modify "
 "the plot.json like this"
-msgstr ""
+msgstr "如果你想在一张图上比较不同结构的态密度图，可以修改 plot.json 如下："
 
 #: ../../source/functions/plot/dos.rst:198
 msgid ""
 "It's still very simple, what you need to do is modify the plot.json, run "
 "the command again, then you got it ~~"
-msgstr ""
+msgstr "仍然是非常简单的，核心步骤就是根据需要修改 plot.json ，然后重新运行命令，之后就大功告成了~~"
 
 #: ../../source/functions/plot/dos.rst:201
 msgid ""
 "The default DOSCAR format is regulated by setting the LORBIT=12 in INCAR,"
 " so if your LORBIT in INCAR is not 11 or 12, please add `\"LORBIT\": 10` "
 "in the plot.json."
-msgstr ""
+msgstr "默认生成的 DOSCAR 格式是按照 INCAR 中设置 LORBIT=12 来生成的，因此如果你 INCAR 中 LORBIT 的设置不是 11 或 12，请在 plot.json 中添加 `\"LORBIT\": 10` 来说明。"
 
 #: ../../source/functions/plot/ep.rst:2
 msgid "Electrostatic Potential Plot"
-msgstr ""
+msgstr "静电势绘制"
 
 #: ../../source/functions/plot/ep.rst:8
 msgid ""
 "For the electrostatic potential (ep), one can use :program:`GVasp` to "
 "plot it, just run the command:"
-msgstr ""
+msgstr "对于静电势（ep），使用 :program:`GVasp` 可以很容易的进行绘制。"
 
 #: ../../source/functions/plot/neb.rst:2
 msgid "NEB images Plot"
-msgstr ""
+msgstr "NEB images 能量绘制"
 
 #: ../../source/functions/plot/neb.rst:8
 msgid ""
 "For the transition state using the NEB method, one can use "
 ":program:`GVasp` to plot the energy difference of all images, just run "
 "the command:"
-msgstr ""
+msgstr "对于使用 NEB 方法搜索得到的势能面，使用 :program:`GVasp` 可以很容易的对所有的 images 能量进行绘制，只需要运行下述命令："
 
 #: ../../source/functions/plot/neb.rst:14
 msgid "then, one may obtain the :file:`figure.svg` like this"
-msgstr ""
+msgstr "之后，就可以获得一个类似的 :file:`figure.svg` "
 
 #: ../../source/functions/plot/opt.rst:2
 msgid "Optimization trajectory Plot"
-msgstr ""
+msgstr "优化轨迹绘制"
 
 #: ../../source/functions/plot/opt.rst:8
 msgid ""
@@ -617,118 +617,118 @@ msgid ""
 "evolution (which can be visualized :ref:`here <opt_movie>`), but also the"
 " **energy/force** change with the **optimization steps**, which can also "
 "be analyzed by :program:`GVasp`."
-msgstr ""
+msgstr "对于结构优化，可能不仅会关心结构的演变过程（可视化方法 :ref:`在这 <opt_movie>`），也会关心 **energy/force** 随着 **optimization steps** 增长的改变, 使用 :program:`GVasp` 可以很容易的进行类似的绘制分析。"
 
 #: ../../source/functions/plot/opt.rst:10
 msgid "A simple code need to be typed for this work:"
-msgstr ""
+msgstr "只需要运行下面的代码即可完成："
 
 #: ../../source/functions/plot/opt.rst:16
 msgid ""
 "then, one may obtain the :file:`figure.svg` which plot the energy and "
 "force change with the steps increment."
-msgstr ""
+msgstr "之后，便可以获得绘有能量和力随优化过程改变的 :file:`figure.svg` 文件。"
 
 #: ../../source/functions/plot/opt.rst:24
 msgid ""
 "The only parameter in plot.json is :code:`height`, certainly it is "
 "optional."
-msgstr ""
+msgstr "plot.json 中唯一的参数 :code:`height`，也是可选的。"
 
 #: ../../source/functions/plot/opt.rst:35
 msgid "The **json file** is required, even if is empty, :command:`touch` it."
-msgstr ""
+msgstr "**json file** 文件是必须的，即使内容为空。"
 
 #: ../../source/functions/plot/opt.rst:38
 msgid ""
 "**-\\-show** or **-\\-save** should specify one, and only need to one, "
 "otherwise nothing happen."
-msgstr ""
+msgstr "**-\\-show** 或 **-\\-save** 仅可指定一个，否则什么都不会发生。"
 
 #: ../../source/functions/plot/pes.rst:2
 msgid "Potential Energy Surface Plot"
-msgstr ""
+msgstr "势能面绘制"
 
 #: ../../source/functions/plot/pes.rst:8
 msgid ""
 "Potential Energy Surface (PES) plot is important in reaction mechanism "
 "research, and our :program:`GVasp` certainly support to plot PES with "
 "*various* data."
-msgstr ""
+msgstr "势能面（PES）绘制对于反应机理的研究是十分重要的，使用 :program:`GVasp` 可以很容易的进行绘制，仅需提供所需的数据即可。"
 
 #: ../../source/functions/plot/pes.rst:13
 msgid ""
 "A very simple reaction data like this (noted they are all relative "
 "energy):"
-msgstr ""
+msgstr "一个非常简单的反应数据类似这样（相对能量）："
 
 #: ../../source/functions/plot/pes.rst:19
 msgid "We can plot it by run the command like before:"
-msgstr ""
+msgstr "我们可以运行下面的命令来进行绘制："
 
 #: ../../source/functions/plot/pes.rst:25
 msgid "And the figure like this:"
-msgstr ""
+msgstr "势能面类似这样："
 
 #: ../../source/functions/plot/pes.rst:39
 msgid ""
 "**data** parament is a set of lines, so even if you have only one line, "
 "its type should be List[List[float]]."
-msgstr ""
+msgstr "**data** 参数是一系列线的集合，因此即使你只绘制一条线，它的类型也应该是 List[List[float]]。"
 
 #: ../../source/functions/plot/pes.rst:42
 msgid "change style"
-msgstr ""
+msgstr "改变风格"
 
 #: ../../source/functions/plot/pes.rst:44
 msgid ""
 "By add a :code:`style=\"solid_curve\"`, the figure can be changed like "
 "this:"
-msgstr ""
+msgstr "通过增加 :code:`style=\"solid_curve\"`，势能面图可以更改为如下所示："
 
 #: ../../source/functions/plot/pes.rst:57
 msgid ""
 "For the \"solid_curve\" style, one need to specify the data belonging to "
 "a intermediate state (MS) of transition state (TS), so **data** parament'"
 " type now be List[List[List[float], List[str]]]."
-msgstr ""
+msgstr "对于 \"solid_curve\" 风格, 需要指定数据点归属为中间态（MS）还是过渡态（TS），所以 **data** 参数的类型变为 List[List[List[float], List[str]]]。"
 
 #: ../../source/functions/plot/pes.rst:60
 msgid "None value"
-msgstr ""
+msgstr "空值"
 
 #: ../../source/functions/plot/pes.rst:62
 msgid "If your data have :code:`None`, the :program:`GVasp` can work well."
-msgstr ""
+msgstr "如果你的数据中含有 :code:`None`，:program:`GVasp` 也可以正常工作。"
 
 #: ../../source/functions/plot/pes.rst:64
 msgid "for example,"
-msgstr ""
+msgstr "例如，"
 
 #: ../../source/functions/plot/pes.rst:70
 #: ../../source/functions/plot/pes.rst:97
 msgid "The plot figure is like this:"
-msgstr ""
+msgstr "绘制出的图类似这样："
 
 #: ../../source/functions/plot/pes.rst:84
 msgid ""
 "**Json** file can't recognize the None value, so we substitute the *None*"
 " as *null*."
-msgstr ""
+msgstr "**Json** 文件不识别 None，需要替换 *None* 为 *null* 。"
 
 #: ../../source/functions/plot/pes.rst:89
 msgid "If you want to compete different reaction pathway, data like below:"
-msgstr ""
+msgstr "如果你想比较不同的反应路径，数据类似这样："
 
 #: ../../source/functions/plot/pes.rst:113
 msgid "And we close the `text` by add :code:`text_flag = false`."
-msgstr ""
+msgstr "我们可以通过增加 :code:`text_flag = false` 来关掉能量标签。"
 
 #: ../../source/functions/plot/pes.rst:115
 msgid ""
 "Here, you may known how to plot the PES with :program:`GVasp`, of course,"
 " it can do better in the future."
-msgstr ""
+msgstr "现在，你应该知道如何通过 :program:`GVasp` 来绘制 PES 了，当然我们还会持续改进。"
 
 #: ../../source/functions/sort.rst:4
 msgid "Align Structures"
