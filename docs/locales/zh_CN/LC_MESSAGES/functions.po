@@ -71,7 +71,7 @@ msgstr "能带中心计算"
 msgid ""
 "The d-band center descriptor is widely applied in heterogeneous "
 "catalysis, and it can be calculated by the following equation:"
-msgstr ""
+msgstr "d-带中心描述符广泛应用在多相催化研究领域，计算公式如下："
 
 #: ../../source/functions/center.rst:6
 msgid ""
@@ -84,56 +84,56 @@ msgstr ""
 msgid ""
 "In :program:`GVasp`, you can easily calculated the band-center by the "
 "following command:"
-msgstr ""
+msgstr "使用 :program:`GVasp` ，你可以使用下述命令很容易的计算能带中心："
 
 #: ../../source/functions/center.rst:16
 msgid "The center.json is like this:"
-msgstr ""
+msgstr "center.json 示例如下："
 
 #: ../../source/functions/center.rst:28
 msgid ""
 "The arguments in the center.json is similar with that in :ref:`dos-plot "
 "<dos_plot>` task."
-msgstr ""
+msgstr "center.json 文件中各参数的含义与 :ref:`dos-plot <dos_plot>` 任务类似。"
 
 #: ../../source/functions/charge.rst:2
 msgid "Charge Related"
-msgstr ""
+msgstr "电荷密度相关"
 
 #: ../../source/functions/charge.rst:4
 msgid ""
 "This section solve the charge related tasks, such as chgsum, chgsplit and"
 " transform the CHGCAR to \\*.grd file."
-msgstr ""
+msgstr "本部分主要介绍电荷密度相关的任务如何开展，例如电荷密度求和、电荷密度拆分以及如何把 CHGCAR 文件转为 grd 后缀的文件。"
 
 #: ../../source/functions/charge.rst:7
 msgid "Charge Sum"
-msgstr ""
+msgstr "电荷密度求和"
 
 #: ../../source/functions/charge.rst:9
 msgid ""
 "Charge Sum meaning sum to CHARGE file to CHGCAR_sum, i.e. :code:`AECCAR0 "
 "+ AECCAR2 = CHGCAR_sum`."
-msgstr ""
+msgstr "电荷密度求和是指对一些电荷密度文件中的电荷密度求和，并保存在 CHGCAR_sum 文件中，例如 :code:`AECCAR0 + AECCAR2 = CHGCAR_sum` 。"
 
 #: ../../source/functions/charge.rst:11 ../../source/functions/charge.rst:24
 #: ../../source/functions/charge.rst:37
 msgid "The command is:"
-msgstr ""
+msgstr "使用下述命令进行："
 
 #: ../../source/functions/charge.rst:20
 msgid "Charge Split"
-msgstr ""
+msgstr "电荷密度拆分"
 
 #: ../../source/functions/charge.rst:22
 msgid ""
 "Charge Split meaning split CHGCAR file to CHGCAR_tot and CHGCAR_mag, i.e."
 " :code:`CHGCAR -> CHGCAR_tot + CHGCAR_mag`."
-msgstr ""
+msgstr "电荷密度拆分是指将 CHGCAR 文件拆分为 CHGCAR_tot 和 CHGCAR_mag 两个文件，即 :code:`CHGCAR -> CHGCAR_tot + CHGCAR_mag` 。"
 
 #: ../../source/functions/charge.rst:33
 msgid "Generate Grd File"
-msgstr ""
+msgstr "生成 Grd 文件"
 
 #: ../../source/functions/charge.rst:35
 msgid ""
@@ -141,26 +141,26 @@ msgid ""
 "/products-services/biovia/products/molecular-modeling-simulation/biovia-"
 "materials-studio/>`_, so :program:`GVasp` provide the transform from "
 ":file:`CHGCAR_mag` to it."
-msgstr ""
+msgstr "储存电荷密度的 :file:`*.grd` 格式文件可以被 `Material Studio <https://www.3ds.com/products-services/biovia/products/molecular-modeling-simulation/biovia-materials-studio/>`_ 读取加载，因此 :program:`GVasp` 提供将 :file:`CHGCAR_mag` 转为对应 grd 文件的接口。"
 
 #: ../../source/functions/charge.rst:43
 msgid ""
 "name parameter specify the output name of \\*.grd, default is "
 ":file:`vasp.grd`."
-msgstr ""
+msgstr "name 参数指定输出的 grd 文件名，默认是 :file:`vasp.grd` 。"
 
 #: ../../source/functions/charge.rst:45
 msgid ""
 "DenCut parameter specify the cutoff density (set it can decrease the size"
 " of grd file), default is 250."
-msgstr ""
+msgstr "DenCut 参数指定截断密度（设置该参数可减少 grd 文件的尺寸），默认是 250 。"
 
 #: ../../source/functions/charge.rst:48
 msgid ""
 "More detailed information about loading grd file in Material Studio can "
 "see `here "
 "<https://codenote.readthedocs.io/en/latest/chemistry/MS.html#grd>`_."
-msgstr ""
+msgstr "关于如何在 Material Studio 中可视化 grd 文件可以看 `这里 <https://codenote.readthedocs.io/en/latest/chemistry/MS.html#grd>`_ 。"
 
 #: ../../source/functions/movie.rst:10 ../../source/functions/movie/freq.rst:6
 #: ../../source/functions/movie/md.rst:6 ../../source/functions/movie/opt.rst:6
