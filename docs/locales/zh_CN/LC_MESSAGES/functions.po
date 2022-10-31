@@ -732,61 +732,61 @@ msgstr "现在，你应该知道如何通过 :program:`GVasp` 来绘制 PES 了�
 
 #: ../../source/functions/sort.rst:4
 msgid "Align Structures"
-msgstr ""
+msgstr "结构对齐"
 
 #: ../../source/functions/sort.rst:10
 msgid ""
 "If you use the :program:`GVasp` to generate the :ref:`NEB <neb_topic>` "
 "inputs, the first thing is align the structure, because the atoms in "
 "initial and final structures may not one-to-one."
-msgstr ""
+msgstr "如果你使用 :program:`GVasp` 来生成 :ref:`NEB <neb_topic>` 所需的输入，首先要做的是结构对齐，因为原子的位置在初态和末态可能不是一一对应的。"
 
 #: ../../source/functions/sort.rst:12
 msgid "The command is simple, like this:"
-msgstr ""
+msgstr "命令十分简单，如下所示："
 
 #: ../../source/functions/sort.rst:19
 msgid ""
 "The INI_POSCAR and FNI_POSCAR are names provided by user of the initial "
 "and final structures."
-msgstr ""
+msgstr "INI_POSCAR 和 FNI_POSCAR 是用户提供的初态和末态结构文件。"
 
 #: ../../source/functions/sort.rst:21
 msgid ""
 "Then :program:`GVasp` will generate two POSCAR files which suffix is "
 ":file:`_sort`."
-msgstr ""
+msgstr "然后， :program:`GVasp` 会自动生成带有后缀 :file:`_sort` 的两个 POSCAR 文件。"
 
 #: ../../source/functions/sort.rst:24
 msgid ""
 "To check if the align success, you can visualize the NEB (set the "
 ":code:`-p/-\\-pos=POSCAR`), detailed information can see :ref:`here "
 "<neb_movie>`."
-msgstr ""
+msgstr "为了检查对其是否成功，你可以可视化 NEB images 的结构进行查看（设置 :code:`-p/-\\-pos=POSCAR`），更多细节可以看 :ref:`这里 <neb_movie>`。"
 
 #: ../../source/functions/submit.rst:6
 msgid "Generate Vasp Inputs"
-msgstr ""
+msgstr "产生 VASP 输入文件"
 
 #: ../../source/functions/submit.rst:8
 msgid ""
 ":program:`GVasp` can help user quick generate VASP inputs (|inputs|), "
 "just need only run :file:`gvasp submit TASK [arguments]`."
-msgstr ""
+msgstr ":program:`GVasp` 可以帮助用户快速生成 VASP 的输入文件（|inputs|），只需要运行 :file:`gvasp submit TASK [arguments]` 即可。"
 
 #: ../../source/functions/submit.rst:10
 msgid ""
 "The following arguments can be applied in all of the tasks, while other "
 "arguments will describe in corresponding sub-topic."
-msgstr ""
+msgstr "下面的参数可以应用在所有生成的任务中，其他的参数将在各自的章节单独讲述。"
 
 #: ../../source/functions/submit.rst:16
 msgid "Argument"
-msgstr ""
+msgstr "参数"
 
 #: ../../source/functions/submit.rst:17
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: ../../source/functions/submit.rst:18
 msgid "-P/-\\-potential"
@@ -794,7 +794,7 @@ msgstr ""
 
 #: ../../source/functions/submit.rst:19
 msgid "specify the potential"
-msgstr ""
+msgstr "指定赝势"
 
 #: ../../source/functions/submit.rst:20
 msgid "-V/-\\-vdw"
@@ -803,7 +803,7 @@ msgstr ""
 #: ../../source/functions/submit.rst:21
 #: ../../source/functions/submit/opt.rst:67
 msgid "open the vdw-correction"
-msgstr ""
+msgstr "开启 VDM-修正"
 
 #: ../../source/functions/submit.rst:22
 msgid "-S/-\\-sol"
@@ -812,7 +812,7 @@ msgstr ""
 #: ../../source/functions/submit.rst:23
 #: ../../source/functions/submit/opt.rst:81
 msgid "including the solvation effect"
-msgstr ""
+msgstr "包含溶剂效应"
 
 #: ../../source/functions/submit.rst:24
 msgid "-G/-\\-gamma"
@@ -821,7 +821,7 @@ msgstr ""
 #: ../../source/functions/submit.rst:25
 #: ../../source/functions/submit/opt.rst:95
 msgid "perform the Gamma-point calculation"
-msgstr ""
+msgstr "执行 Gamma-点计算"
 
 #: ../../source/functions/submit.rst:26
 msgid "-N/-\\-nelect"
@@ -830,50 +830,50 @@ msgstr ""
 #: ../../source/functions/submit.rst:27
 #: ../../source/functions/submit/opt.rst:106
 msgid "perform charged system calculation"
-msgstr ""
+msgstr "执行带电体系计算"
 
 #: ../../source/functions/submit.rst:29
 msgid ""
 "Detailed information about the mentioned arguments can see in :ref:`opt "
 "<optimization>` task."
-msgstr ""
+msgstr "上述参数的详细信息可以在 :ref:`opt <optimization>` 任务中查看。"
 
 #: ../../source/functions/submit/chg.rst:2
 msgid "Charge Density"
-msgstr ""
+msgstr "电荷密度任务"
 
 #: ../../source/functions/submit/chg.rst:8
 msgid ""
 "Charge Density calculation is another important task, you can also use "
 ":program:`GVasp` to handle its inputs."
-msgstr ""
+msgstr "电荷密度计算是另一项十分重要的任务类型，使用 :program:`GVasp` 可以很容易的生成适配的输入文件。"
 
 #: ../../source/functions/submit/chg.rst:10
 msgid ""
 "Likewise the :ref:`optimization <optimization>` task, run the command "
 "(need a *.xsd file):"
-msgstr ""
+msgstr "类似 :ref:`结构优化 <optimization>` 任务，运行命令（需要一个 *.xsd 文件）："
 
 #: ../../source/functions/submit/chg.rst:17
 #: ../../source/functions/submit/dos.rst:20
 #: ../../source/functions/submit/wf.rst:17
 msgid "From finished job"
-msgstr ""
+msgstr "从已完成任务生成输入"
 
 #: ../../source/functions/submit/chg.rst:19
 msgid ""
 "Meantime, you can also start a chg task from a finished job which has the"
 " CONTCAR file, and the :program:`GVasp` will auto generate the inputs for"
 " this task, just run the following command:"
-msgstr ""
+msgstr "同时，你也可以从一个已经完成的任务（含有 CONTCAR 文件）出发开展一个 chg 任务，只需要运行下述命令："
 
 #: ../../source/functions/submit/chg.rst:26
 msgid "This feature is also support for the wf and dos tasks."
-msgstr ""
+msgstr "这一特征也适用于 wf 和 dos 任务。"
 
 #: ../../source/functions/submit/chg.rst:31
 msgid "open analysis option"
-msgstr ""
+msgstr "开启电荷密度分析选项"
 
 #: ../../source/functions/submit/chg.rst:33
 msgid ""
@@ -881,40 +881,40 @@ msgid ""
 "<http://theory.cm.utexas.edu/henkelman/code/bader/>`_ calculation, "
 ":ref:`chgsplit <split>` and :ref:`transform CHGCAR_mag to grd <grd>` "
 "after the charge calculation, you can run the following command:"
-msgstr ""
+msgstr "如果你想在计算完成后执行 `bader <http://theory.cm.utexas.edu/henkelman/code/bader/>`_ 计算， :ref:`电荷密度拆分 <split>` 和 :ref:`转换 CHGCAR_mag 到 grd 文件 <grd>` ，你可以使用下述命令生成输入："
 
 #: ../../source/functions/submit/chg.rst:39
 msgid "and the mentioned task will be performed in one task."
-msgstr ""
+msgstr "之后上述一连串的任务将在一个作业中完成。"
 
 #: ../../source/functions/submit/chg.rst:42
 msgid "Make sure you add bader in your PATH environment."
-msgstr ""
+msgstr "确保你的 bader 在 PATH 环境变量里。"
 
 #: ../../source/functions/submit/chg.rst:45
 #: ../../source/functions/submit/dos.rst:32
 #: ../../source/functions/submit/wf.rst:29
 msgid "apply sequential task"
-msgstr ""
+msgstr "开展连续任务"
 
 #: ../../source/functions/submit/chg.rst:47
 msgid ""
 "If you finally want to perform the charge optimization, we recommend you "
 "use the following command:"
-msgstr ""
+msgstr "如果你最终想开展一个电荷密度的计算，我们推荐你使用下述命令生成输入文件："
 
 #: ../../source/functions/submit/chg.rst:53
 msgid ""
 "and the task will perform the optimization and charge calculation in a "
 "sequential task."
-msgstr ""
+msgstr "之后，该作业会先从结构优化任务开始，结束后再进行电荷密度计算。"
 
 #: ../../source/functions/submit/chg.rst:56
 #: ../../source/functions/submit/dos.rst:43
 msgid ""
 "Sequential task also support the :ref:`low <low>` and :ref:`analysis "
 "<analysis>` options."
-msgstr ""
+msgstr "连续任务也支持 :ref:`low <low>` 和 :ref:`analysis <analysis>` 选项。"
 
 #: ../../source/functions/submit/chg.rst:59
 #: ../../source/functions/submit/dos.rst:46
@@ -926,7 +926,7 @@ msgstr ""
 #: ../../source/functions/submit/ts/neb.rst:50
 #: ../../source/functions/submit/wf.rst:43
 msgid "Other arguments"
-msgstr ""
+msgstr "其他的参数"
 
 #: ../../source/functions/submit/chg.rst:62
 #: ../../source/functions/submit/dos.rst:49
@@ -940,90 +940,90 @@ msgstr ""
 msgid ""
 "More information of other arguments can be seen in :ref:`optimization "
 "<arguments>` task."
-msgstr ""
+msgstr "更多关于其他参数的信息可以参见 :ref:`结构优化 <arguments>` 任务。"
 
 #: ../../source/functions/submit/dos.rst:2
 msgid "Density of States"
-msgstr ""
+msgstr "态密度"
 
 #: ../../source/functions/submit/dos.rst:8
 msgid ""
 "Density of States (DOS) calculation is another important task, you can "
 "also use :program:`GVasp` to handle its inputs."
-msgstr ""
+msgstr "态密度（DOS）计算也是另一项十分重要的任务类型，使用 :program:`GVasp` 也可以很容易的生成对应的输入文件。"
 
 #: ../../source/functions/submit/dos.rst:10
 #: ../../source/functions/submit/wf.rst:10
 msgid "Likewise the :ref:`optimization <optimization>` task, run the command:"
-msgstr ""
+msgstr "类似 :ref:`结构优化 <optimization>` 任务，运行下述命令："
 
 #: ../../source/functions/submit/dos.rst:17
 msgid ""
 "This command only generate the **INCAR**, **KPOINTS**, **POSCAR** and "
 "**POTCAR** files, thus you should prepare other files (e.g. CHGCAR) by "
 "yourself."
-msgstr ""
+msgstr "该命令仅会生成 **INCAR**, **KPOINTS**, **POSCAR** 和 **POTCAR** 文件，因此你需要自行准备其他文件（例如，CHGCAR）。"
 
 #: ../../source/functions/submit/dos.rst:22
 msgid ""
 "Meantime, you can also start a dos task from a finished job which has the"
 " CONTCAR and CHGCAR files, and the :program:`GVasp` will auto generate "
 "the inputs for this task, just run the following command:"
-msgstr ""
+msgstr "同时，你也可以从一个已完成的任务（含有 CONTCAR 和 CHGCAR 文件）出发生成 dos 任务所需的输入，只需要运行下述命令："
 
 #: ../../source/functions/submit/dos.rst:29
 msgid "This feature is also support for the chg and wf tasks."
-msgstr ""
+msgstr "这一功能也适应于 chg 和 wf 任务。"
 
 #: ../../source/functions/submit/dos.rst:34
 msgid ""
 "If you finally want to perform the DOS calculation, we recommend you use "
 "the following command:"
-msgstr ""
+msgstr "如果你最终想开展一个态密度的计算任务，我们推荐你使用下述命令生成输入文件："
 
 #: ../../source/functions/submit/dos.rst:40
 msgid ""
 "and the task will perform the optimization, charge calculation and DOS "
 "calculation in a sequential task."
-msgstr ""
+msgstr "之后，该作业会先从结构优化任务开始，结束后后进行电荷密度计算，最后在执行态密度的计算。"
 
 #: ../../source/functions/submit/freq.rst:2
 msgid "Frequency"
-msgstr ""
+msgstr "频率计算"
 
 #: ../../source/functions/submit/freq.rst:8
 msgid ""
 "Frequency calculation is often used to check imaginary frequency, IR "
 "spectrum modelling, free energy correction and so on."
-msgstr ""
+msgstr "频率计算广泛用于虚频验证，光谱模拟，自由能校正等多种计算任务中。"
 
 #: ../../source/functions/submit/freq.rst:10
 msgid ""
 "Likewise the :ref:`optimization <optimization>` task, you can also use "
 ":program:`GVasp` to handle its inputs, just run the command:"
-msgstr ""
+msgstr "类似 :ref:`结构优化 <optimization>` 任务，运行下述命令："
 
 #: ../../source/functions/submit/md.rst:2
 msgid "Ab-initio Molecule Dynamics"
-msgstr ""
+msgstr "AIMD 计算"
 
 #: ../../source/functions/submit/md.rst:8
 msgid ""
 "For ab-initio molecule dynamics (AIMD), likewise the :ref:`optimization "
 "<optimization>` task, you can also use :program:`GVasp` to handle its "
 "inputs, just run the command:"
-msgstr ""
+msgstr "对于分子动力学模拟（AIMD）计算，类似 :ref:`结构优化 <optimization>` 任务，运行下述命令生成对应的输入文件："
 
 #: ../../source/functions/submit/opt.rst:6
 msgid "Optimization"
-msgstr ""
+msgstr "结构优化"
 
 #: ../../source/functions/submit/opt.rst:12
 msgid ""
 "Optimization is the most common task in the daily calculation work, and "
 "we now can quickly generate the inputs for optimization task with the "
 "help of :program:`GVasp`, the only need file is the :file:`*.xsd`."
-msgstr ""
+msgstr "结构优化是日常计算任务中最广泛开展的任务类型，现在通过 :program:`GVasp` 可以很快速的生成对应的输入文件，用户只需要提供一个 :file:`*.xsd` 文件即可。"
 
 #: ../../source/functions/submit/opt.rst:14
 msgid ""
@@ -1031,21 +1031,21 @@ msgid ""
 "<https://www.3ds.com/products-services/biovia/products/molecular-"
 "modeling-simulation/biovia-materials-studio/>`_ Software) in workdir, run"
 " the command:"
-msgstr ""
+msgstr "当准备好 :file:`*.xsd` (来自 `Material Studio <https://www.3ds.com/products-services/biovia/products/molecular-modeling-simulation/biovia-materials-studio/>`_ 软件) 后，执行下述命令："
 
 #: ../../source/functions/submit/opt.rst:20
 msgid "and the inputs (|inputs|) will be generated."
-msgstr ""
+msgstr "之后，输入文件 (|inputs|) 就会自动生成出来了。"
 
 #: ../../source/functions/submit/opt.rst:23
 msgid ""
 "The workdir should only have one \\*.xsd file, otherwise, the structure "
 "generated is unknown."
-msgstr ""
+msgstr "工作目录下面只能有一个 \\*.xsd 文件，否则结构生成的结果是未知的。"
 
 #: ../../source/functions/submit/opt.rst:28
 msgid "open low-first option"
-msgstr ""
+msgstr "开启 low-first 选项"
 
 #: ../../source/functions/submit/opt.rst:30
 msgid ""
@@ -1053,40 +1053,40 @@ msgid ""
 "and one method to accelerate the optimization task can start from a low-"
 "accuracy calculation and then perform the normal calculation based the "
 "optimized low-accuracy structure."
-msgstr ""
+msgstr "在实际的计算任务中，结构优化十分耗时，一种加快策略是先采用低精度开展计算任务，然后再基于低精度优化后的结构进行正常精度的计算。"
 
 #: ../../source/functions/submit/opt.rst:32
 msgid ""
 "Using :program:`GVasp`, you can run the following command to perform such"
 " low-first calculation:"
-msgstr ""
+msgstr "使用 :program:`GVasp`，你可以使用下述命令来开展这样的 low-first 计算任务。"
 
 #: ../../source/functions/submit/opt.rst:39
 msgid ""
 "In fact, in the latest version, we only set the ENCUT as 300 to perform "
 "the low-accuracy calculation."
-msgstr ""
+msgstr "事实上，在当前的版本中，我们只把 ENCUT 设为 300.0 来进行低精度的计算任务。"
 
 #: ../../source/functions/submit/opt.rst:45
 msgid "The following arguments can be applied in all of the tasks."
-msgstr ""
+msgstr "下面的参数可以应用在所有的自动生成输入任务中。"
 
 #: ../../source/functions/submit/opt.rst:50
 msgid "specify potential"
-msgstr ""
+msgstr "指定赝势"
 
 #: ../../source/functions/submit/opt.rst:52
 msgid ""
 "Certainly, if you don't like the default potential (**\"PAW_PBE\"**), you"
 " can also transfer a argument by specify the potential you want, like "
 "this"
-msgstr ""
+msgstr "当然，如果你不想用默认的赝势（**\"PAW_PBE\"**），也可以通过传递参数来指定赝势的类型，类似这样："
 
 #: ../../source/functions/submit/opt.rst:59
 msgid ""
 "The potential can only specify to the member of the [**'PAW_LDA'**, "
 "**'PAW_PBE'**, **'PAW_PW91'**, **'USPP_LDA'**, **'USPP_PW91'**]"
-msgstr ""
+msgstr "指定的赝势必须是 [**'PAW_LDA'**, **'PAW_PBE'**, **'PAW_PW91'**, **'USPP_LDA'**, **'USPP_PW91'**] 这些类型中的其中之一。"
 
 #: ../../source/functions/submit/opt.rst:62
 msgid ""
@@ -1095,74 +1095,74 @@ msgid ""
 "specify two or more potentials, the potential will auto corresponding to "
 "the element in POSCAR, noticed that the number of potential should equal "
 "to the number of elements in POSCAR"
-msgstr ""
+msgstr "-p/--potential 接受一个或多个可选值，如果你指定一个赝势，那么所有元素都会用这种赝势；如果指定多个，那么赝势将会一一对应到各自的元素上，注意元素的个数应于 POSCAR 中的元素个数一致。"
 
 #: ../../source/functions/submit/opt.rst:69
 msgid ""
 "The :program:`GVasp` support including the van der Waals (vdw) correction"
 " in calculation, just by running the following command:"
-msgstr ""
+msgstr ":program:`GVasp` 支持指定范德华（vdw）修正选项，只需要运行下述命令："
 
 #: ../../source/functions/submit/opt.rst:76
 msgid "Open the vdw option will set IVDW = 12 in INCAR file."
-msgstr ""
+msgstr "开启 vdw 选项会在 INCAR 中设置 IVDW = 12。"
 
 #: ../../source/functions/submit/opt.rst:83
 msgid ""
 "The :program:`GVasp` support including the solvation effect in "
 "calculation, just by running the following command:"
-msgstr ""
+msgstr ":program:`GVasp` 支持开展溶液体系计算，只需要运行下述命令："
 
 #: ../../source/functions/submit/opt.rst:90
 msgid ""
 "The default solvent is water, and you can modify it by adding EB_K "
 "argument in INCAR by yourself."
-msgstr ""
+msgstr "默认溶剂是水，你可以通过修改 INCAR 中的 EB_K 参数来指定不同的溶剂。"
 
 #: ../../source/functions/submit/opt.rst:97
 msgid ""
 "Use single Gamma-point and vasp_gam to perform the calculation for the "
 "large-scale system can run the following command:"
-msgstr ""
+msgstr "使用 vasp_gam 对大尺度体系开展 Gamma 点计算可以使用下述命令："
 
 #: ../../source/functions/submit/opt.rst:108
 msgid ""
 "If you want to calculate a charged system by setting the NELECT argument,"
 " you can also use the :program:`GVasp` to generate the inputs."
-msgstr ""
+msgstr "如果你想通过设置 NELECT 参数来执行带点体系的计算，使用 :program:`GVasp` 也可以很容易的生成对应的输入。"
 
 #: ../../source/functions/submit/opt.rst:110
 msgid ""
 "Take the +1 charged system as the example, the command line can be typed "
 "as this:"
-msgstr ""
+msgstr "以 +1 带电体系为例，执行的命令如下所示："
 
 #: ../../source/functions/submit/opt.rst:117
 msgid ""
 "The NELECT accept real number as its input, so the float input (e.g., "
 "-0.5) is also allowed."
-msgstr ""
+msgstr "NELECT 参数接受实数作为输入值，因此浮点数（例如，-0.5）也是允许值。"
 
 #: ../../source/functions/submit/opt.rst:119
 msgid ""
 "Noted that the mentioned arguments can also be used lonely or together "
 "with other arguments, like this:"
-msgstr ""
+msgstr "上述参数可以单独使用，也可以和其他参数一起共同其效果，类似这样："
 
 #: ../../source/functions/submit/stm.rst:2
 msgid "STM image Modeling"
-msgstr ""
+msgstr "STM 图像模拟"
 
 #: ../../source/functions/submit/stm.rst:8
 msgid ""
 "For STM image modelling, likewise the :ref:`optimization <optimization>` "
 "task, you can also use :program:`GVasp` to handle its inputs, just run "
 "the command:"
-msgstr ""
+msgstr "对于 STM 模拟，类似 :ref:`结构优化 <optimization>` 任务，运行下述命令生成对应的输入文件："
 
 #: ../../source/functions/submit/ts.rst:2
 msgid "Transition State Search"
-msgstr ""
+msgstr "过渡态搜索"
 
 #: ../../source/functions/submit/ts.rst:4
 msgid ""
@@ -1170,7 +1170,7 @@ msgid ""
 "namely as `Constrained-TS <https://pubs.acs.org/doi/10.1021/ja801648h>`_,"
 " `NEB <http://theory.cm.utexas.edu/vtsttools/neb.html>`_ and `Dimer "
 "<http://theory.cm.utexas.edu/vtsttools/dimer.html>`_ methods."
-msgstr ""
+msgstr ":program:`GVasp` 提供三种方式来执行过渡态（TS）结构的搜索，分别是 `限制性过渡态搜索 <https://pubs.acs.org/doi/10.1021/ja801648h>`_, `NEB <http://theory.cm.utexas.edu/vtsttools/neb.html>`_ 和 `Dimer <http://theory.cm.utexas.edu/vtsttools/dimer.html>`_ 方法。"
 
 #: ../../source/functions/submit/ts/con-ts.rst:10
 msgid ""
@@ -1178,13 +1178,13 @@ msgid ""
 "is a much faster method to locate the transition state (TS), which "
 "searches for TSs from a guessed TS-like structure by fixing only one "
 "degree of freedom, e.g., the distance of the dissociating chemical bond."
-msgstr ""
+msgstr "`限制性过渡态搜索 (Con-TS) <https://pubs.acs.org/doi/10.1021/ja801648h>`_ 是定位过渡态（TS）非常高效的方法，它通过固定初猜结构的某一个自由度（例如，原子间的距离）来快速定位过渡态的结构。"
 
 #: ../../source/functions/submit/ts/con-ts.rst:12
 msgid ""
 ":program:`GVasp` support to generate the inputs of Con-TS, just run the "
 "command below:"
-msgstr ""
+msgstr ":program:`GVasp` 支持生成 Con-TS 所需的输入文件，只需要运行下述命令："
 
 #: ../../source/functions/submit/ts/dimer.rst:8
 msgid ""
@@ -1193,24 +1193,24 @@ msgid ""
 "configuration and search for a nearby saddle point, but actually it not "
 "very often use relative to :ref:`Con-TS <con-TS>` and :ref:`NEB "
 "<neb_topic>` methods."
-msgstr ""
+msgstr "`Dimer <http://theory.cm.utexas.edu/vtsttools/dimer.html>`_ 也是一种用来定位 TS 的方法，允许用户从一个初始构型出发来搜索过渡态，但是相比于 :ref:`Con-TS <con-TS>` 和 :ref:`NEB <neb_topic>` 方法来说效率较低。"
 
 #: ../../source/functions/submit/ts/dimer.rst:10
 msgid ""
 ":program:`GVasp` also support the Dimer method to locate the TS, just run"
 " the command below:"
-msgstr ""
+msgstr ":program:`GVasp` 也支持生成 Dimer 搜索过渡态所需的输入文件，只需要运行下述命令："
 
 #: ../../source/functions/submit/ts/dimer.rst:17
 msgid ""
 "The Dimer method is not very useful, so **GVasp** provide a little "
 "support to this method. We also recommend user to try :ref:`Con-TS <con-"
 "TS>` or :ref:`NEB <neb_topic>` method to locate the TS."
-msgstr ""
+msgstr "Dimer 方法搜索过渡态效率较低，因此 **GVasp** 仅提供较少的支持。我们推荐用户尝试 :ref:`Con-TS <con-TS>` 或 :ref:`NEB <neb_topic>` 方法来定位 TS。"
 
 #: ../../source/functions/submit/ts/neb.rst:4
 msgid "NEB method"
-msgstr ""
+msgstr "NEB 方法"
 
 #: ../../source/functions/submit/ts/neb.rst:10
 msgid ""
@@ -1219,17 +1219,17 @@ msgid ""
 "intermediate images along the reaction path. Therefore, it's a "
 "computational cost method, while it sometimes can successfully locate TS "
 "which can't be searched by :ref:`Con-TS <con-TS>` method."
-msgstr ""
+msgstr "`NEB <http://theory.cm.utexas.edu/vtsttools/neb.html>`_ 是一种传统用来定位 TS 的方法，它通过优化反应路径上的一系列结构来定位过渡态。因此，计算成本高昂，但有时可以用来替代 :ref:`Con-TS <con-TS>` 方法搜索一些特殊的过渡态结构。"
 
 #: ../../source/functions/submit/ts/neb.rst:13
 msgid "Don't forget to :ref:`align the structure <align>` first."
-msgstr ""
+msgstr "不要忘记首先 :ref:`对齐结构 <align>` 。"
 
 #: ../../source/functions/submit/ts/neb.rst:15
 msgid ""
 ":program:`GVasp` also support the NEB method to locate the TS, just run "
 "the command below:"
-msgstr ""
+msgstr ":program:`GVasp` 也支持生成 NEB 搜索过渡态所需的输入文件，只需要运行下述命令："
 
 #: ../../source/functions/submit/ts/neb.rst:22
 msgid ""
@@ -1237,105 +1237,105 @@ msgid ""
 "must specify the start (**-ini/-\\-ini_poscar**) and end "
 "(**-fni/-\\-fni_poscar**) structure, while **-i**, **-m** and **-c** is "
 "optional arguments."
-msgstr ""
+msgstr "NEB 方法会构建反应路径，因此使用 NEB 方法时需要指定开始（**-ini/-\\-ini_poscar**）和结束（**-fni/-\\-fni_poscar**）的结构，**-i**, **-m** 和 **-c** 是可选的参数。"
 
 #: ../../source/functions/submit/ts/neb.rst:25
 msgid "specify images"
-msgstr ""
+msgstr "指定 images 的个数"
 
 #: ../../source/functions/submit/ts/neb.rst:27
 msgid ""
 "Images is the number of intermediate structures between initial and final"
 " structures, if you don't specify, :code:`images = 4` will apply."
-msgstr ""
+msgstr "Images 是在初态和末态之间插入的中间体结构个数，如果不指定，默认为 4 。"
 
 #: ../../source/functions/submit/ts/neb.rst:30
 msgid "specify method"
-msgstr ""
+msgstr "指定路径生成方法"
 
 #: ../../source/functions/submit/ts/neb.rst:32
 msgid ""
 "GVasp provide two method to control how to generate the intermediate "
 "structures."
-msgstr ""
+msgstr "GVasp 提供两种方法来生成反应路径的结构。"
 
 #: ../../source/functions/submit/ts/neb.rst:34
 msgid ""
 "One is :code:`linear`, generate structures by linear interpolation from "
 "start to end structures."
-msgstr ""
+msgstr "一种是 :code:`linear`，使用线性插值方法来生成中间体结构。"
 
 #: ../../source/functions/submit/ts/neb.rst:36
 msgid ""
 "Another is :code:`idpp` method, which declares to generate more suitable "
 "structures for NEB task, more detailed information can be seen `here "
 "<https://aip.scitation.org/doi/10.1063/1.4878664>`_."
-msgstr ""
+msgstr "另一种是 :code:`idpp` 方法，该方法声称可以生成更靠近真实反应坐标的中间体结构，更多细节可以看 `这里 <https://aip.scitation.org/doi/10.1063/1.4878664>`_ 。"
 
 #: ../../source/functions/submit/ts/neb.rst:38
 msgid ""
 "If you don't specify the :code:`method`, GVasp will apply :code:`method ="
 " \"linear\"`."
-msgstr ""
+msgstr "如果不指定 :code:`method`，GVasp 默认采用 linear 来生成反应路径。"
 
 #: ../../source/functions/submit/ts/neb.rst:41
 msgid "check overlap"
-msgstr ""
+msgstr "检查结构是否重叠"
 
 #: ../../source/functions/submit/ts/neb.rst:43
 msgid ""
 "Noted that the intermediate structures generated automatically, so some "
 "atoms may overlap or closing in some cases, if you don't check, the NEB "
 "task may fail quickly."
-msgstr ""
+msgstr "你可能注意到中间体结构是自动生成的，因此在某些体系中可能会发生原子重叠的情况，如果你不进行检查，NEB 任务很大可能会失败。"
 
 #: ../../source/functions/submit/ts/neb.rst:45
 msgid ""
 "Therefore, :program:`GVasp` check overlap always when you generate the "
 "inputs, and this behavior is also its default."
-msgstr ""
+msgstr "因此，:program:`GVasp` 在生成 NEB 输入时总是会自动检查原子重叠。"
 
 #: ../../source/functions/submit/ts/neb.rst:47
 msgid ""
 "If you don't like this, you can set :code:`-c/--cancel_check_overlap` to "
 "cancel check, but we (actually I) strongly recommend you don't do this "
 "`dangerous` action."
-msgstr ""
+msgstr "如果你不喜欢这种默认行为，你也可以设置 :code:`-c/--cancel_check_overlap` 来取消检查，但是我们（实际上是我）强烈推荐不要做这种 `危险` 行为。"
 
 #: ../../source/functions/submit/wf.rst:2
 msgid "Work Function"
-msgstr ""
+msgstr "功函计算"
 
 #: ../../source/functions/submit/wf.rst:8
 msgid ""
 "Work Function (WF) calculation is another important task, you can also "
 "use :program:`GVasp` to handle its inputs."
-msgstr ""
+msgstr "功函（WF）计算也是另一项十分重要的任务类型，使用 :program:`GVasp` 也可以很容易的生成对应的输入文件。"
 
 #: ../../source/functions/submit/wf.rst:19
 msgid ""
 "Meantime, you can also start a wf task from a finished job which has the "
 "CONTCAR file, and the :program:`GVasp` will auto generate the inputs for "
 "this task, just run the following command:"
-msgstr ""
+msgstr "同时，你也可以从一个已经完成的任务（含有 CONTCAR 文件）出发开展该类型的任务，只需要运行下述命令："
 
 #: ../../source/functions/submit/wf.rst:26
 msgid "This feature is also support for the chg and dos tasks."
-msgstr ""
+msgstr "这一功能也支持 chg 和 dos 任务类型。"
 
 #: ../../source/functions/submit/wf.rst:31
 msgid ""
 "If you finally want to perform the WF calculation, we recommend you use "
 "the following command:"
-msgstr ""
+msgstr "如果你的最终目标是开展 WF 计算，我们推荐你使用下述命令："
 
 #: ../../source/functions/submit/wf.rst:37
 msgid ""
 "and the task will perform the optimization and WF calculation in a "
 "sequential task."
-msgstr ""
+msgstr "之后，该作业会先从结构优化任务开始，结束后再进行功函计算。"
 
 #: ../../source/functions/submit/wf.rst:40
 msgid "Sequential task also support the :ref:`low <low>` option."
-msgstr ""
+msgstr "连续任务也支持开启 :ref:`low <low>` 选项。"
 
