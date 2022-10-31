@@ -184,18 +184,18 @@ msgstr "关于如何在 Material Studio 中可视化 grd 文件可以看 `这里
 #: ../../source/functions/submit/ts/neb.rst:6
 #: ../../source/functions/submit/wf.rst:4
 msgid "Contents:"
-msgstr ""
+msgstr "目录"
 
 #: ../../source/functions/movie.rst:2
 msgid "Visualize Trajectory"
-msgstr ""
+msgstr "可视化轨迹"
 
 #: ../../source/functions/movie.rst:4
 msgid ""
 "Visualize is a useful method to check calculation process, "
 ":program:`GVasp` provide visualize support for various VASP tasks, i.e., "
 "optimization, moleculer dynamics, frequency, and TS search."
-msgstr ""
+msgstr "可视化是可以用来检查计算的过程和结果， :program:`GVasp` 对各种 VASP 任务都提供了可视化支持，如，结构优化，分子动力学，频率计算，过渡态搜索等。"
 
 #: ../../source/functions/movie.rst:6
 msgid ""
@@ -206,65 +206,65 @@ msgid ""
 ":ref:`neb <neb_movie>` task) to the :file:`*.arc` file (`Material Studio "
 "<https://www.3ds.com/products-services/biovia/products/molecular-"
 "modeling-simulation/biovia-materials-studio/>`_ accepted)."
-msgstr ""
+msgstr "具体实现是将 :file:`XDATCAR` (对于 :ref:`结构优化 <opt_movie>`, :ref:`分子动力学 <md_movie>`, :ref:`频率计算 <freq_movie>`, :ref:`限制性过渡态搜索 <con-TS_movie>` 和 :ref:`dimer 过渡态搜索 <dimer_movie>` 任务) 或者 [:file:`POSCAR` | :file:`CONTCAR`] (对于 :ref:`neb 过渡态搜索 <neb_movie>` 任务) 转为 :file:`*.arc` 文件 (`Material Studio <https://www.3ds.com/products-services/biovia/products/molecular-modeling-simulation/biovia-materials-studio/>`_ 可识别读取)。"
 
 #: ../../source/functions/movie.rst:8
 msgid ""
 "Except :ref:`frequency <freq_movie>`, other tasks accept optional "
 "[-n/-\\-name] to specify the name of output :file:`*.arc`, other "
 "arguments will describe in corresponding sub-topic."
-msgstr ""
+msgstr "除了 :ref:`频率计算 <freq_movie>`, 其他的任务都接受一个可选的参数 [-n/-\\-name] 来指定输出 :file:`*.arc` 的文件名, 其他的参数将在下面的子章节分别介绍。"
 
 #: ../../source/functions/movie.rst:20
 msgid ""
 "More detailed information about the arc file display can see `here "
 "<https://codenote.readthedocs.io/en/latest/chemistry/MS.html#arc>`_."
-msgstr ""
+msgstr "更多关于如何展示 arc 文件相关的信息可以看 `这里 <https://codenote.readthedocs.io/en/latest/chemistry/MS.html#arc>`_ 。"
 
 #: ../../source/functions/movie/freq.rst:4
 msgid "Frequency Vibration"
-msgstr ""
+msgstr "频率振动可视化"
 
 #: ../../source/functions/movie/freq.rst:10
 msgid ""
 "One can use :program:`GVasp` to visualize the frequency vibration, only "
 "need run the command below:"
-msgstr ""
+msgstr "使用 :program:`GVasp` 可视化频率的振动方向，只需要运行下述命令："
 
 #: ../../source/functions/movie/freq.rst:16
 msgid "and the :file:`freq*.arc` will output in the workdir."
-msgstr ""
+msgstr "之后 :file:`freq*.arc` 将会输出在当前目录。"
 
 #: ../../source/functions/movie/freq.rst:19
 msgid ""
 "The default behavior of :program:`GVasp` will search the *image "
 "frequency* and visualize its or their vibration."
-msgstr ""
+msgstr ":program:`GVasp` 默认会搜索 *虚频* 并可视化它的振动方向。"
 
 #: ../../source/functions/movie/freq.rst:22
 msgid "specify freq"
-msgstr ""
+msgstr "指定频率"
 
 #: ../../source/functions/movie/freq.rst:24
 msgid ""
 "Certainly, you can also specify the *frequency* by add the argument "
 "-f/-\\-freq, and it accept :code:`'image'` (str) or :code:`int-type` "
 "(start from 0) value as the input."
-msgstr ""
+msgstr "当然，你也可以通过 -f/-\\-freq 参数来指定想分析的频率，它接受 :code:`'image'` （字符串格式） 或者 :code:`int-type` （序号从0开始）作为参数值。"
 
 #: ../../source/functions/movie/freq.rst:27
 msgid "If you set a int value, noticed that the freq exist in your system."
-msgstr ""
+msgstr "如果你蚕蛹整数格式输入，请确保你的体系中确实存在该频率。"
 
 #: ../../source/functions/movie/md.rst:4
 msgid "Ab-initio Molecule Dynamics Visualize"
-msgstr ""
+msgstr "AIMD 可视化"
 
 #: ../../source/functions/movie/md.rst:10
 msgid ""
 "One can use :program:`GVasp` to visualize the molecule dynamics (MD) "
 "trajectory, only need run the command below:"
-msgstr ""
+msgstr "使用 :program:`GVasp` 可视化分子动力学的轨迹，只需要运行下述命令："
 
 #: ../../source/functions/movie/md.rst:16
 #: ../../source/functions/movie/opt.rst:16
@@ -272,7 +272,7 @@ msgstr ""
 #: ../../source/functions/movie/ts/dimer.rst:16
 #: ../../source/functions/movie/ts/neb.rst:16
 msgid "and the :file:`movie.arc` will output in the workdir."
-msgstr ""
+msgstr "之后 :file:`movie.arc` 将会输出在当前目录。"
 
 #: ../../source/functions/movie/md.rst:19
 #: ../../source/functions/movie/opt.rst:21
@@ -280,7 +280,7 @@ msgstr ""
 #: ../../source/functions/movie/ts/dimer.rst:20
 #: ../../source/functions/movie/ts/neb.rst:25
 msgid "specify name"
-msgstr ""
+msgstr "指定输出文件名"
 
 #: ../../source/functions/movie/md.rst:21
 #: ../../source/functions/movie/ts/con-ts.rst:22
@@ -290,97 +290,97 @@ msgid ""
 "Certainly, if you don't like the prefix (`\"movie\"`), you can also "
 "specify another name to substitute it, likewise the :ref:`optimization "
 "<name_movie>` task."
-msgstr ""
+msgstr "当然，如果你不喜欢前缀（`\"movie\"`），你可以通过指定另外的名字来替代它，详情参考 :ref:`结构优化 <name_movie>` 任务。"
 
 #: ../../source/functions/movie/opt.rst:4
 msgid "Optimization Visualize"
-msgstr ""
+msgstr "结构优化"
 
 #: ../../source/functions/movie/opt.rst:10
 msgid ""
 "One can use :program:`GVasp` to visualize the optimization trajectory, "
 "only need run the command below:"
-msgstr ""
+msgstr "使用 :program:`GVasp` 可视化结构优化的轨迹，只需要运行下述命令："
 
 #: ../../source/functions/movie/opt.rst:23
 msgid ""
 "Certainly, if you don't like the prefix (`\"movie\"`), you can also "
 "specify another name to substitute it, for example,"
-msgstr ""
+msgstr "当然，如果你不喜欢前缀（`\"movie\"`），你可以通过指定另外的名字来替代它，例如，"
 
 #: ../../source/functions/movie/opt.rst:29
 msgid "then the opt.arc will output."
-msgstr ""
+msgstr "之后，:file:`opt.arc` 将会输出在当前目录。"
 
 #: ../../source/functions/movie/ts.rst:2
 msgid "Transition State Search Visualize"
-msgstr ""
+msgstr "过渡态搜索可视化"
 
 #: ../../source/functions/movie/ts.rst:4
 msgid ""
 ":program:`GVasp` support visualize optimization trajectory of below three"
 " TS-search method."
-msgstr ""
+msgstr ":program:`GVasp` 支持下列三种过渡态搜索方法的轨迹可视化。"
 
 #: ../../source/functions/movie/ts/con-ts.rst:4
 #: ../../source/functions/submit/ts/con-ts.rst:4
 msgid "Constrained-TS Method"
-msgstr ""
+msgstr "限制性过渡态搜索"
 
 #: ../../source/functions/movie/ts/con-ts.rst:10
 msgid ""
 "One can use :program:`GVasp` to visualize the optimization trajectory in "
 "TS-search process (currently is **con-TS**), only need run the command "
 "below:"
-msgstr ""
+msgstr "使用 :program:`GVasp` 可视化过渡态搜索（**con-TS** 方法）的轨迹，只需要运行下述命令："
 
 #: ../../source/functions/movie/ts/dimer.rst:4
 #: ../../source/functions/submit/ts/dimer.rst:2
 msgid "Dimer Method"
-msgstr ""
+msgstr "Dimer 过渡态搜索"
 
 #: ../../source/functions/movie/ts/dimer.rst:10
 msgid ""
 "One can use :program:`GVasp` to visualize the optimization trajectory in "
 "TS-search process (currently is **dimer**), only need run the command "
 "below:"
-msgstr ""
+msgstr "使用 :program:`GVasp` 可视化过渡态搜索（**dimer** 方法）的轨迹，只需要运行下述命令："
 
 #: ../../source/functions/movie/ts/neb.rst:4
 msgid "NEB Method"
-msgstr ""
+msgstr "NEB 过渡态搜索"
 
 #: ../../source/functions/movie/ts/neb.rst:10
 msgid ""
 "For NEB method, we actually support to visualize the reaction path by "
 "concentrate its images' :file:`POSCARs` or :file:`CONTCARs`, and likewise"
 " the other task, one can do this by:"
-msgstr ""
+msgstr "对于 NEB 方法，我们支持将 images （:file:`POSCARs` 或者 :file:`CONTCARs`）拼接成轨迹进行可视化，命令如下："
 
 #: ../../source/functions/movie/ts/neb.rst:20
 msgid "specify position"
-msgstr ""
+msgstr "指定文件类型"
 
 #: ../../source/functions/movie/ts/neb.rst:22
 msgid ""
 "Through the -p/-\\-pos argument, You can choose which type of files to "
 "construct the *reaction path*, i.e., :file:`POSCAR` or :file:`CONTCAR`, "
 "default type is :file:`POSCAR`."
-msgstr ""
+msgstr "通过 -p/-\\-pos 参数，你可以选择是通过 :file:`POSCAR` 还是 :file:`CONTCAR` 构建 *反应坐标* ，默认类型是 :file:`POSCAR`。"
 
 #: ../../source/functions/output.rst:2
 msgid "Output Visualize"
-msgstr ""
+msgstr "优化后的结构可视化"
 
 #: ../../source/functions/output.rst:4
 msgid ""
 ":program:`GVasp` can visualize the VASP :file:`CONTCAR` by generating the"
 " :file:`*.xsd` file, just need to run the following command:"
-msgstr ""
+msgstr ":program:`GVasp` 支持将 VASP :file:`CONTCAR` 转化为 :file:`*.xsd` 文件进行可视化，执行下述命令："
 
 #: ../../source/functions/output.rst:11
 msgid "The name of the \\*.xsd file depend on your job name in submit.script."
-msgstr ""
+msgstr "\\*.xsd 的文件名依赖于 submit.script 指定的作业名。"
 
 #: ../../source/functions/plot.rst:2
 msgid "Plot Interface"
