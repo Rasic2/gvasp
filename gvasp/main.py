@@ -154,16 +154,23 @@ def main_permission():
 
 def exception_format(func):
     def wrapper(*args, **kwargs):
+        if len(args):
+            debug = (args[0][0] == "-d")  # script mode
+        else:
+            debug = (sys.argv[1] == "-d")  # command-line mode
         try:
             func(*args, **kwargs)
         except Exception:
-            exc_type, exc_value, exc_obj = sys.exc_info()
-            exc_location = traceback.format_exc(limit=-1).splitlines()[1]
-            print(f"+{'Error'.center(len(exc_location) + 30, '-')}\n"
-                  f"| exception_location:     {RED}{exc_location.lstrip()}{RESET} \n"
-                  f"| exception_type:         {GREEN}{exc_type}{RESET} \n"
-                  f"| exception_value:        {YELLOW}{exc_value}{RESET}\n"
-                  f"+{'-----'.center(len(exc_location) + 30, '-')}")
+            if debug:
+                raise
+            else:
+                exc_type, exc_value, exc_obj = sys.exc_info()
+                exc_location = traceback.format_exc(limit=-1).splitlines()[1]
+                print(f"+{'Error'.center(len(exc_location) + 30, '-')}\n"
+                      f"| exception_location:     {RED}{exc_location.lstrip()}{RESET} \n"
+                      f"| exception_type:         {GREEN}{exc_type}{RESET} \n"
+                      f"| exception_value:        {YELLOW}{exc_value}{RESET}\n"
+                      f"+{'-----'.center(len(exc_location) + 30, '-')}")
 
     return wrapper
 
@@ -180,7 +187,11 @@ def main(argv=None):
 
     if argv is None:
         argv = sys.argv[1:]
-    args = parser.parse_args(argv)
+
+    if argv[0] == "-d":
+        args = parser.parse_args(argv[1:])
+    else:
+        args = parser.parse_args(argv)
 
     if len(sys.argv) == 1:
         parser.print_help()
@@ -383,8 +394,11 @@ def main(argv=None):
                 arguments['pos_file'] = "CONTCAR"
             if "dos_file" not in arguments:
                 arguments['dos_file'] = "DOSCAR"
+            if "LORBIT" not in arguments:
+                arguments['LORBIT'] = 12
 
-            post_dos = PlotDOS(dos_file=arguments['dos_file'], pos_file=arguments['pos_file'])
+            post_dos = PlotDOS(dos_file=arguments['dos_file'], pos_file=arguments['pos_file'],
+                               LORBIT=arguments["LORBIT"])
             post_dos.center(atoms=arguments['atoms'], orbitals=arguments['orbitals'], xlim=arguments['xlim'])
 
         elif args.which == 'sum':  # sum task
