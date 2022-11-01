@@ -201,6 +201,26 @@ Element Co:
         Element Te: 2.61642
         Element I: 2.52878
 
+Element Ni:
+    formula: Ni
+    number: 28
+    period: 4
+    group: 10
+    color: '#5D7BC3'
+    _default_bonds:
+        Element H: 1.44998
+        Element N: 2.30649
+        Element O: 2.28149
+        Element F: 2.20249
+        Element P: 2.31998
+        Element S: 2.58649
+        Element Cl: 2.62649
+        Element As: 2.28998
+        Element Se: 2.18998
+        Element Br: 2.80649
+        Element Te: 2.47998
+        Element I: 3.00649
+
 Element Cu:
     formula: Cu
     number: 29
@@ -398,3 +418,23 @@ Element Au:
         Element Br: 2.776
         Element Te: 2.459
         Element I: 3.212
+
+Element Bi:
+    formula: Bi
+    number: 83
+    period: 6
+    group: 15
+    color: '#9F4FB5'
+    _default_bonds:
+        Element H: 2.12642
+        Element N: 2.56329
+        Element O: 2.66080
+        Element F: 2.55291
+        Element P: 2.78642
+        Element S: 3.13291
+        Element Cl: 3.04291
+        Element As: 2.87642
+        Element Se: 3.50000
+        Element Br: 3.17993
+        Element Te: 3.02642
+        Element I: 3.38291
