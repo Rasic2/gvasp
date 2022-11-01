@@ -288,7 +288,6 @@ def main(argv=None):
                 content = f.readlines()
             name = content[1].split()[2]
             OutputTask.output(name=f"{name}.xsd")
-            logger.info(f"{RED}transform to {name}.xsd file{RESET}")
 
         elif args.which == 'movie':  # movie task
             normal_tasks = {"opt": OptTask.movie,

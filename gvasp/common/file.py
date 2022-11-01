@@ -14,7 +14,7 @@ import numpy as np
 from lxml import etree
 from pandas import DataFrame
 
-from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS
+from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET
 from gvasp.common.base import Atoms, Lattice
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
@@ -569,7 +569,7 @@ class XSDFile(MetaFile):
             CompleteRestriction.setAttribute("RestrictsObjects",
                                              f"ci({len(fix_atoms)}):{','.join([str(item) for item in fix_atoms])}")
             CompleteRestriction.setAttribute("RestrictsProperties",
-                                             f"{','.join(['FractionalXYZ'] * (len(fix_atoms) - 1))}")
+                                             f"{','.join(['FractionalXYZ'] * len(fix_atoms))}")
         else:
             CompleteRestriction.setAttribute("Visible", "0")
 
@@ -639,8 +639,14 @@ class XSDFile(MetaFile):
         XSD.appendChild(AtomisticTreeRoot)
         doc.appendChild(doctype)
         doc.appendChild(XSD)
-        with open(name, "w") as f:
+
+        stem = Path(name).stem
+        stem = stem + "-y" if outcar.finish else stem + "-n"
+
+        with open(f"{stem}.xsd", "w") as f:
             doc.writexml(f, indent='\t', addindent='\t', newl='\n', encoding="latin1")
+
+        logger.info(f"{RED}transform to {stem}.xsd file{RESET}")
 
 
 class POSCAR(StructInfoFile):
@@ -1090,6 +1096,7 @@ class OUTCAR(MetaFile):
         self.spin, self.bands, self.kpoints, self.fermi, self.steps = None, None, None, None, None
         self.energy, self.force, self.mag = None, None, None
         self.last_energy, self.last_force, self.last_mag = None, None, None
+        self.finish = "reached" in self.strings[-30]
         self._parse_base()
 
         self.frequency = None
@@ -1097,7 +1104,9 @@ class OUTCAR(MetaFile):
             self._parse_freq()
 
         self.kpoint_info, self.band_info = None, None
-        self._parse_band()
+
+        if self.finish:
+            self._parse_band()
 
         self.tangent, self.last_tangent = 0., 0.
         if len(self._neb):
