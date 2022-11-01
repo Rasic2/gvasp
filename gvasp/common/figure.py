@@ -66,11 +66,12 @@ class Figure(object):
 
     @staticmethod
     def show():
+        plt.subplots_adjust(right=0.95, top=0.95)
         plt.show()
 
     @staticmethod
     def save(name="figure.svg"):
-        plt.savefig(name)
+        plt.savefig(name, bbox_inches="tight")
 
 
 class LineBase(object):
