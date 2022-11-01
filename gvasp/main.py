@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Iterable
 
 from gvasp.common.calculator import surface_energy, electrostatic_energy
-from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW
+from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW, LOGO, BOLD
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import init_root_logger
@@ -191,12 +191,15 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    if argv[0] == "-d":
-        args = parser.parse_args(argv[1:])
-    else:
-        args = parser.parse_args(argv)
+    dargv = argv[1:] if argv[0] == "-d" else argv
+
+    if "-h" in dargv:  # print LOGO for '-h' option
+        print(f"{BOLD}{LOGO}{RESET}")
+
+    args = parser.parse_args(argv)
 
     if len(sys.argv) == 1:
+        print(f"{BOLD}{LOGO}{RESET}")
         parser.print_help()
 
     # version output
