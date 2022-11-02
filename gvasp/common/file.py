@@ -1122,7 +1122,10 @@ class OUTCAR(MetaFile):
         self.fermi = [float(line.split()[2]) for line in self.strings if "E-fermi" in line][-1]
         self.energy = [float(line.split()[3]) for line in self.strings if "energy  without" in line]
         self.force = [float(line.split()[5]) for line in self.strings if "FORCES: max atom" in line]
-        self.mag = [float(line.split()[5]) for line in self.strings if "number of electron " in line]
+        if self.spin == 2:
+            self.mag = [float(line.split()[5]) for line in self.strings if "number of electron " in line]
+        else:
+            self.mag = []
         self.last_energy = self.energy[-1] if len(self.energy) else None
         self.last_force = self.force[-1] if len(self.force) else None
         self.last_mag = self.mag[-1] if len(self.mag) else None
@@ -1134,20 +1137,23 @@ class OUTCAR(MetaFile):
         @return:
             register self.frequency attr (type: namedtuple)
         """
-        image, wave_number, coord, vibration = [], [], [], []
+        image, wave_number, vib_energy, coord, vibration = [], [], [], [], []
         for index in self._frequency:
             item = self.strings[index].split()
             image.append(False) if item[1] == "f" else image.append(True)
             wave_number.append(float(item[-4]))
+            vib_energy.append(float(item[-2]))
             item = list(map(lambda x: [float(i) for i in x],
                             np.char.split(self.strings[index + 2:index + 2 + len(self.element)])))
             coord.append(np.array(item)[:, :3])
             vibration.append(np.array(item)[:, 3:])
 
-        self.frequency = namedtuple("Frequency", ("image", "wave_number", "coord", "vibration"))(image,
-                                                                                                 np.array(wave_number),
-                                                                                                 np.array(coord),
-                                                                                                 np.array(vibration))
+        self.frequency = namedtuple("Frequency",
+                                    ("image", "wave_number", "vib_energy", "coord", "vibration"))(image,
+                                                                                                  np.array(wave_number),
+                                                                                                  np.array(vib_energy),
+                                                                                                  np.array(coord),
+                                                                                                  np.array(vibration))
 
     def _parse_band(self):
         """
