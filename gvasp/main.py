@@ -9,7 +9,7 @@ import traceback
 from pathlib import Path
 from typing import Iterable
 
-from gvasp.common.calculator import surface_energy, electrostatic_energy
+from gvasp.common.calculator import surface_energy, electrostatic_energy, thermo_adsorbent
 from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW, LOGO, BOLD
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
@@ -132,6 +132,8 @@ def main_parser() -> argparse.ArgumentParser:
     electrostatic_calc_group = calc_parser.add_argument_group(title='electrostatic energy calculation')
     electrostatic_calc_group.add_argument("-a", "--atoms", nargs="+", help="specify the atoms")
     electrostatic_calc_group.add_argument("-w", "--workdir", default=".", help="specify the workdir")
+    thermo_calc_group = calc_parser.add_argument_group(title='thermo correction')
+    thermo_calc_group.add_argument("-t", "--temperature", type=float, help="specify the temperature")
     calc_parser.set_defaults(which="calc")
 
     return parser
@@ -420,3 +422,5 @@ def main(argv=None):
                 surface_energy(crystal_dir=args.crystal_dir, slab_dir=args.slab_dir)
             elif args.task == 1:
                 electrostatic_energy(atoms=args.atoms, workdir=args.workdir)
+            elif args.task == 2:
+                thermo_adsorbent(temperature=args.temperature)

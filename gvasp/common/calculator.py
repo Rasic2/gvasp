@@ -72,12 +72,11 @@ def electrostatic_energy(atoms, workdir="."):
     print(f"\n{RED}Total Electrostatic Energy: {sum(E_static):+8.5f} e^2/Å.{RESET}")
 
 
-def entropy_adsorbent(temperature=298.15):
+def thermo_adsorbent(temperature: float = 298.15):
     h_p = constants.h  # Plank Constant: 6.62606957E-34 J*s
     k_b = constants.k  # Boltzmann Constant: 1.38064852E-23 m²*kg*s⁻²*K⁻¹
     R_gas = constants.R  # Gas Constant: 8.3144598 J*mol⁻¹*K⁻¹
     l_s = constants.c  # Light Speed: 299792458 m * s ⁻¹
-    temperature = float(temperature)
     beta = 1 / (k_b * temperature)
 
     def partition_function(miu):
@@ -85,8 +84,9 @@ def entropy_adsorbent(temperature=298.15):
         pf_l = x_i / (math.exp(x_i) - 1)  # (hv/kT)/(e^(hv/kT) -1 )
         pf_r = math.log(1 - math.exp(-x_i))  # ln(1-e^(-hv/kT))
         pf = pf_l - pf_r
+        enthalpy = R_gas * pf_l * temperature
         entropy = R_gas * pf
-        return entropy
+        return enthalpy, entropy
 
     frequency = OUTCAR("OUTCAR").frequency
     w_number_list, v_energy_list = list(map(list,
@@ -95,13 +95,20 @@ def entropy_adsorbent(temperature=298.15):
 
     E_zpe = sum(v_energy_list) / 2 / 1000  # calculate ZPE: (1) Sum(hv)/2  (2) convert meV to eV
 
-    # Calculate Entropy S (i * 100: convert cm-1 to m-1; if i <= 50 cm-1, let i=50)
-    sum_pf = sum(partition_function(max(i, 50) * 100) for i in w_number_list)
-    sum_pf = sum_pf / 1000 / 96.485  # convert J * K⁻¹ * mol⁻¹ to eV * K⁻¹
-    TS = temperature * sum_pf  # entropy contribution: T * S
+    H_vib = sum(partition_function(i * 100)[0] for i in w_number_list)  # i* 100: cm-1 -> m-1
+    S_vib = sum(partition_function(max(i, 50) * 100)[1] for i in w_number_list)  # if i <= 50 cm-1, let i=50
 
-    print("+" + "-".center(69, "-") + "+")
-    print("|" + "Entropy Correction for adsorbent".center(69, " ") + "|")
-    print("|" + "-".center(69, "-") + "|")
-    print("|" + f"S: {sum_pf:10.7f} eV * K⁻¹ \t TS: {TS:6.5f} eV \t E_ZPE: {E_zpe:6.4f} eV \t".center(65, " ") + "|")
-    print("+" + "-".center(69, "-") + "+")
+    H_tot = H_vib / 1000 / 96.485 + E_zpe  # convert J * mol⁻¹ to eV
+    S_tot = S_vib / 1000 / 96.485  # convert J * K⁻¹ * mol⁻¹ to eV * K⁻¹
+    TS_tot = temperature * S_tot
+    G_tot = H_tot - TS_tot
+
+    print("+" + "-".center(55, "-") + "+")
+    print("|" + f"Thermo Correction for adsorbent (T = {temperature:.2f})".center(55, " ") + "|")
+    print("|" + "-".center(55, "-") + "|")
+    print("|" + f" Zero-point energy E_ZPE".ljust(30, " ") + f": {E_zpe:10.7f} eV".ljust(25, " ") + "|")
+    print("|" + f" Thermal correction to H(T)".ljust(30, " ") + f": {H_tot:10.7f} eV".ljust(25, " ") + "|")
+    print("|" + f" Thermal correction to G(T)".ljust(30, " ") + f": {G_tot:10.7f} eV".ljust(25, " ") + "|")
+    print("|" + f" Entropy S".ljust(30, " ") + f": {S_tot:10.7f} eV/K".ljust(25, " ") + "|")
+    print("|" + f" Entropy contribution T*S".ljust(30, " ") + f": {TS_tot:10.7f} eV".ljust(25, " ") + "|")
+    print("+" + "-".center(55, "-") + "+")
