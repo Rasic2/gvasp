@@ -13,7 +13,7 @@ def plot_wrapper(func):
     def wrapper(self, *args, **kargs):
         plt.rc('font', family=self.family, weight=self.weight)  # set the font globally
         plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
-        plt.rcParams['lines.linewidth'] = 3  # set line-width
+        plt.rcParams['lines.linewidth'] = self.linewidth  # set line-width
         plt.rcParams['lines.markersize'] = 2.0
         func(self, *args, **kargs)
         ax = plt.gca()
@@ -48,7 +48,7 @@ class Figure(object):
         return super(Figure, cls).__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
-                 xticks=None, xlabel=None, ylabel=None, bwidth=1, **kargs):
+                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=3, **kargs):
         self.width = width
         self.height = height
         plt.close(1)  # close the old figure
@@ -63,6 +63,7 @@ class Figure(object):
         self.xlabel = xlabel
         self.ylabel = ylabel
         self.bwidth = bwidth
+        self.linewidth = linewidth
 
     @staticmethod
     def show():

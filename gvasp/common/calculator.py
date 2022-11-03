@@ -72,11 +72,13 @@ def electrostatic_energy(atoms, workdir="."):
     print(f"\n{RED}Total Electrostatic Energy: {sum(E_static):+8.5f} e^2/Å.{RESET}")
 
 
+h_p = constants.h  # Plank Constant: 6.62606957E-34 J*s
+k_b = constants.k  # Boltzmann Constant: 1.38064852E-23 m²*kg*s⁻²*K⁻¹
+R_gas = constants.R  # Gas Constant: 8.3144598 J*mol⁻¹*K⁻¹
+l_s = constants.c  # Light Speed: 299792458 m * s ⁻¹
+
+
 def thermo_adsorbent(temperature: float = 298.15):
-    h_p = constants.h  # Plank Constant: 6.62606957E-34 J*s
-    k_b = constants.k  # Boltzmann Constant: 1.38064852E-23 m²*kg*s⁻²*K⁻¹
-    R_gas = constants.R  # Gas Constant: 8.3144598 J*mol⁻¹*K⁻¹
-    l_s = constants.c  # Light Speed: 299792458 m * s ⁻¹
     beta = 1 / (k_b * temperature)
 
     def partition_function(miu):
@@ -103,12 +105,55 @@ def thermo_adsorbent(temperature: float = 298.15):
     TS_tot = temperature * S_tot
     G_tot = H_tot - TS_tot
 
+    E_DFT = OUTCAR("OUTCAR").last_energy
+    G = E_DFT + G_tot
+
     print("+" + "-".center(55, "-") + "+")
-    print("|" + f"Thermo Correction for adsorbent (T = {temperature:.2f})".center(55, " ") + "|")
+    print("|" + f"Thermo Correction for adsorbent (T = {temperature:.2f} K)".center(55, " ") + "|")
     print("|" + "-".center(55, "-") + "|")
     print("|" + f" Zero-point energy E_ZPE".ljust(30, " ") + f": {E_zpe:10.7f} eV".ljust(25, " ") + "|")
     print("|" + f" Thermal correction to H(T)".ljust(30, " ") + f": {H_tot:10.7f} eV".ljust(25, " ") + "|")
     print("|" + f" Thermal correction to G(T)".ljust(30, " ") + f": {G_tot:10.7f} eV".ljust(25, " ") + "|")
     print("|" + f" Entropy S".ljust(30, " ") + f": {S_tot:10.7f} eV/K".ljust(25, " ") + "|")
     print("|" + f" Entropy contribution T*S".ljust(30, " ") + f": {TS_tot:10.7f} eV".ljust(25, " ") + "|")
+    print("+" + f"-".center(55, "-") + "+")
+    print("|" + f" DFT energy E_DFT".ljust(30, " ") + f": {E_DFT:10.4f} eV".ljust(25, " ") + "|")
+    print("|" + f" Gibbs Free Energy G(T)".ljust(30, " ") + f": {G:10.4f} eV".ljust(25, " ") + "|")
+    print("+" + "-".center(55, "-") + "+")
+
+
+def thermo_gas(temperature=298.15, pressure=1, multiplicity=1):
+    """Development in future"""
+    beta = 1 / (k_b * temperature)
+
+    def partition_function(miu):
+        x_i = h_p * float(miu) * l_s * beta  # hv/kT
+        pf_l = x_i * math.exp(-x_i) / (1 - math.exp(-x_i))  # (hv/kT)*(e^(-hv/kT))/(1-e^(-hv/kT))
+        pf_r = math.log(1 - math.exp(-x_i))  # ln(1-e^(-hv/kT))
+        pf = pf_l - pf_r
+        enthalpy = R_gas * pf_l * temperature
+        entropy = R_gas * pf
+        return enthalpy, entropy
+
+    outcar = OUTCAR("OUTCAR")
+    frequency = outcar.frequency
+    w_number_list, v_energy_list = list(map(list,
+                                            zip(*[(frequency.wave_number[index], frequency.vib_energy[index])
+                                                  for index, freq in enumerate(frequency.image) if not freq])))
+    image_count = sum(frequency.image)
+    E_zpe = sum(sorted(v_energy_list, reverse=True)[:len(v_energy_list) - 6 + image_count]) / 2 / 1000  # no-linear mol
+    real_vib_w_number = sorted(w_number_list, reverse=True)[:len(w_number_list) - 6 + image_count]
+
+    H_trans = 2.5 * R_gas * temperature
+    H_rot = 1.5 * R_gas * temperature  # no-linear mol
+    H_vib = sum(partition_function(i * 100)[0] for i in real_vib_w_number)
+    H_tot = (H_trans + H_rot + H_vib) / 1000 / 96.485 + E_zpe
+
+    print("+" + "-".center(55, "-") + "+")
+    print("|" + f"Thermo Correction for adsorbent".center(55, " ") + "|")
+    print("|" + f"Condition: T = {temperature:.2f} K, P = {pressure:.2f} atm, I = {multiplicity:2d}".center(55,
+                                                                                                            " ") + "|")
+    print("|" + "-".center(55, "-") + "|")
+    print("|" + f" Zero-point energy E_ZPE".ljust(30, " ") + f": {E_zpe:10.7f} eV".ljust(25, " ") + "|")
+    print("|" + f" Thermal correction to H(T)".ljust(30, " ") + f": {H_tot:10.7f} eV".ljust(25, " ") + "|")
     print("+" + "-".center(55, "-") + "+")
