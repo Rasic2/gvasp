@@ -165,3 +165,4 @@ xsd/
 /tests/electrostatic/
 /tests/output/
 /tests/entropy/
+/tests/dos_align/

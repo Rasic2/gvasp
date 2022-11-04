@@ -1,6 +1,6 @@
 import unittest
 
-from gvasp.common.plot import PlotOpt, PlotBand, PlotDOS, PlotPES, PlotNEB
+from gvasp.common.plot import PlotOpt, PlotBand, PlotPES, PlotNEB, PostDOS
 
 
 class TestPlot(unittest.TestCase):
@@ -16,10 +16,10 @@ class TestPlot(unittest.TestCase):
         plotter.save()
 
     def test_dos(self):
-        plotter = PlotDOS(dos_file='DOSCAR_dos', pos_file='CONTCAR_dos')
-        plotter.plot(color='#ed0345')
-        plotter.plot(atoms='C', color='#000000')
-        plotter.save()
+        selector = {"0": [{"color": "#ed0345"}, {"atoms": "C", "color": "#000000"}]}
+        poster = PostDOS(dos_files=["DOSCAR_dos"], pos_files=["CONTCAR_dos"])
+        poster.plot(selector=selector)
+        poster.save()
 
     def test_pes1(self):
         plotter = PlotPES(height=8)

@@ -14,7 +14,7 @@ from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW, 
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
 from gvasp.common.logger import init_root_logger
-from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, PlotDOS, PlotEPotential
+from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, DOSData, PlotEPotential, PostDOS
 from gvasp.common.setting import ConfigManager, RootDir, HomeDir
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \
     SequentialTask, OutputTask, WorkFuncTask
@@ -351,16 +351,13 @@ def main(argv=None):
                     raise AttributeError(None, f"`data` arguments should exist")
 
                 dos_files, pos_files = arguments['dos_file'], arguments['pos_file']
-                data = arguments['data']
+                selector = arguments['data']
                 del arguments['dos_file']
                 del arguments['pos_file']
                 del arguments['data']
 
-                plotters = [PlotDOS(dos_file, pos_file, **arguments) for dos_file, pos_file in
-                            zip(dos_files, pos_files)]
-                for key in data.keys():
-                    for line_argument in data[key]:
-                        plotters[int(key)].plot(**line_argument)
+                poster = PostDOS(dos_files=dos_files, pos_files=pos_files, **arguments)
+                poster.plot(selector=selector)
 
             elif args.task == 'PES':
 
@@ -379,8 +376,8 @@ def main(argv=None):
                     colors = colors_generator()
 
                 plotter = PlotPES(**arguments)
-                for data, color in zip(arguments['data'], colors):
-                    plotter.plot(data=data, color=color, text_flag=arguments['text_flag'], style=arguments['style'])
+                for selector, color in zip(arguments['data'], colors):
+                    plotter.plot(data=selector, color=color, text_flag=arguments['text_flag'], style=arguments['style'])
             elif args.task == 'neb':
                 plotter = PlotNEB(**arguments)
                 plotter.plot(color=colors)
@@ -404,7 +401,7 @@ def main(argv=None):
             if "LORBIT" not in arguments:
                 arguments['LORBIT'] = 12
 
-            post_dos = PlotDOS(dos_file=arguments['dos_file'], pos_file=arguments['pos_file'],
+            post_dos = DOSData(dos_file=arguments['dos_file'], pos_file=arguments['pos_file'],
                                LORBIT=arguments["LORBIT"])
             post_dos.center(atoms=arguments['atoms'], orbitals=arguments['orbitals'], xlim=arguments['xlim'])
 

@@ -1,6 +1,5 @@
 import logging
-import time
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 from functools import wraps
 from itertools import product
 from pathlib import Path
@@ -12,12 +11,12 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 
-from gvasp.common.utils import identify_atoms
 from gvasp.common.constant import COLUMNS_32
 from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
 from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT
 from gvasp.common.structure import Structure
 from gvasp.common.task import NEBTask
+from gvasp.common.utils import identify_atoms
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -28,6 +27,7 @@ logger = logging.getLogger(__name__)
 def interpolated_wrapper(func):
     @wraps(func)
     def wrapper(self):
+        DOSL_data = namedtuple("DOSL_data", ("energy", "up", "down"))
         x_out, y_out = [], []
         for x, y, number in func(self):
             x_arr = np.array(x)
@@ -39,110 +39,70 @@ def interpolated_wrapper(func):
             if not self.avgflag:
                 number = 1
 
-            if self.method == 'line':
-                plt.plot(x_new, y_new / number, color=self.color)
-            elif self.method == 'dash line':
-                plt.plot(x_new, y_new / number, '--', color=self.color)
-            elif self.method in ['fill', 'output']:
-                x_out.append(x_new)
-                y_out.append(y_new)
+            x_out.append(x_new)
+            y_out.append(y_new / number)
 
-        if self.method == 'fill':
-            plt.fill_between(x_out[0], y_out[0] / number, y_out[1] / number, color=self.color, alpha=self.alpha)
-        elif self.method == 'output':
-            x_out = np.array(x_out).transpose((1, 0))  # construct np.array and transpose the (0, 1) axis for plot after
-            y_out = np.array(y_out).transpose((1, 0))
-            time_prefix = time.strftime("%H-%M-%S", time.localtime())
-            np.savetxt(f"datafile_x_{time_prefix}", x_out)
-            np.savetxt(f"datafile_y_{time_prefix}", y_out)
+        DOSL_data.energy = x_out[0]
+        DOSL_data.up = y_out[0]
+        DOSL_data.down = y_out[1]
+
+        return DOSL_data
 
     return wrapper
 
 
-class PlotDOS(Figure):
-    """
-    <PlotDOS main class>
+class PostDOS(Figure):
+    def __init__(self, dos_files: list, pos_files: list, LORBIT=12, xlabel="Energy (eV)",
+                 ylabel="Density of States (a.u.)", **kargs):
+        super(PostDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
 
-    Methods:
-        plot():     plot main func
-        center():   calculate the band-center
-
-        contcar_parse:  parse CONTCAR data
-        doscar_parse:   parse DOSCAR data
-    """
-
-    def __init__(self, dos_file, pos_file, LORBIT=12, xlabel="Energy (eV)", ylabel="Density of States (a.u.)", **kargs):
-        super(PlotDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
-        self.dos_file = dos_file
-        self.pos_file = pos_file
-        self.element = PlotDOS.parse_contcar(self.pos_file)
-        self.total_dos, self.atom_list = PlotDOS.parse_doscar(self.dos_file, LORBIT)
-
-        self.atoms, self.orbitals, self.color, self.method, self.avgflag = None, None, None, None, None
+        self.managers = [DOSData(dos_file=dos_file, pos_file=pos_file, LORBIT=LORBIT) for dos_file, pos_file in
+                         zip(dos_files, pos_files)]
 
     @plot_wrapper
-    def plot(self, atoms=None, exclude=None, orbitals=None, color="#000000", method='line', avgflag=False, alpha=0.5):
+    def plot(self, selector: dict):
         """
-        Plot DOS Main Func
+        <Plot DOS Method>
 
         Args:
-            atoms:      accept int, list, and str('1-10' or 'Ce') type
-            exclude:    remove specified atoms in <atoms parameters>
-            orbitals:   list, e.g., ['s',  'p']
-            method (str):     ['line', 'dash line','fill', 'output']
-            avgflag (bool):    whether calculate the average dos
+            selector (dict): keys: [atoms, orbitals, color, method, alpha]
+            selector.method (optional): ["line", "dash line", "fill", "output"]
+
+            Examples
+            ---------
+            >>> selector
+
+            selector = {"0": [{"atoms": "C", "orbitals": ["p"], "color": "#ed0345", "method": "fill", "alpha": 0.3},
+                              {"atoms": "1-10", "orbitals": ["s", "d"], "color": "#098760"}],
+                        "1": [{"atoms": [0, 1, "H"], "orbitals": ["p"], "color": "#ed0345"},
+                              {"atoms": 12, "orbitals": ["s", "p"], "color": "#098760"}]}
+
+        Returns:
+            display or save the DOS figures
         """
+        DOSdata = defaultdict(list)
 
-        self.atoms = atoms
-        self.exclude = exclude
-        self.orbitals = orbitals
-        self.color = color  # this argument will transfer to interpolated_wrapper
-        self.alpha = alpha  # this argument will transfer to interpolated_wrapper (fill only)
-        self.method = method
-        self.avgflag = avgflag
+        for key in selector.keys():
+            for line_argument in selector[key]:
+                DOSdata[key].append(self.managers[int(key)].get_data(**line_argument))
 
-        @interpolated_wrapper
-        def plot_tot(self):
-            """Plot Total DOS"""
-            for column in self.total_dos.columns.values:
-                yield self.total_dos.index.values, list(self.total_dos[column].values), 1
-
-        @interpolated_wrapper
-        def plot_atoms(self):
-            """Plot DOS of atom list"""
-            plus_tot = defaultdict(list)
-            plus_tot = DataFrame(plus_tot, index=self.atom_list[0],
-                                 columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] +
-                                         COLUMNS_32, dtype='object')
-            plus_tot.iloc[:, :] = 0.0
-            for atom in self.atoms:
-                for column in plus_tot.columns.values:
-                    try:
-                        plus_tot[column] += self.atom_list[atom][column]
-                    except KeyError:
-                        plus_tot[column] = 0
-
-            if self.orbitals is None:
-                orbitals = [plus_tot['up'].values, plus_tot['down'].values]
-            else:
-                orbitals_up = np.array([plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_up'])])
-                orbitals_down = np.array([plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_down'])])
-                orbitals = [np.sum(orbitals_up, axis=0), np.sum(orbitals_down, axis=0)]
-
-            for orbital_value in orbitals:
-                yield plus_tot.index.values, orbital_value, len(self.atoms)
-
-        """Main Content of Plot func"""
-        if self.atoms is None:
-            return plot_tot(self)
-        elif isinstance(self.atoms, (list, int, str)):
-            self.atoms = identify_atoms(self.atoms, self.element)
-            if self.exclude is not None:
-                self.exclude = identify_atoms(self.exclude, self.element)
-                self.atoms = list(set(self.atoms) - set(self.exclude))
-            return plot_atoms(self)
-        else:
-            raise ValueError(f"The format of {self.atoms} is not correct!")
+        for key in selector.keys():
+            for index, line_argument in enumerate(selector[key]):
+                method = line_argument.get("method", "line")
+                DOSL_data = DOSdata[key][index]
+                if method == 'line':
+                    plt.plot(DOSL_data.energy, DOSL_data.up, color=line_argument.get("color"))
+                    plt.plot(DOSL_data.energy, DOSL_data.down, color=line_argument.get("color"))
+                elif method == 'dash line':
+                    plt.plot(DOSL_data.energy, DOSL_data.up, '--', color=line_argument.get("color"))
+                    plt.plot(DOSL_data.energy, DOSL_data.down, '--', color=line_argument.get("color"))
+                elif method == 'fill':
+                    plt.fill_between(DOSL_data.energy, DOSL_data.up, DOSL_data.down, color=line_argument.get("color"),
+                                     alpha=line_argument.get("alpha", 1.))
+                elif method == 'output':
+                    DOSL_ndata = np.array([DOSL_data.energy, DOSL_data.up, DOSL_data.down]).transpose((1, 0))
+                    np.savetxt(f"DOS_F{key}_L{index}", DOSL_ndata, fmt='%.6e', delimiter="\t",
+                               header="energy, up, down")
 
     def center(self, atoms=None, orbitals=None, xlim=None):
         """
@@ -155,7 +115,7 @@ class PlotDOS(Figure):
                 pre_atom = [int(item) for item in old_atoms.split('-')]
                 atoms = list(range(pre_atom[0], pre_atom[1] + 1, 1))
             else:
-                atoms = [index for index, element in enumerate(self.element) if old_atoms == element]
+                atoms = [index for index, element in enumerate(self.elements) if old_atoms == element]
 
         y = 0
         rang = (self.total_dos.index.values < xlim[1]) & (self.total_dos.index.values > xlim[0])
@@ -179,31 +139,111 @@ class PlotDOS(Figure):
         print(f"Energy Range: {xlim}")
         print(f"Number of Electrons: {e_count:.4f}; Center Value: {dos / e_count:.4f}")
 
+
+class DOSData():
+    """
+    <DOSData main class>
+
+    Methods:
+        get_data():     get_data main func
+        center():   calculate the band-center
+
+        contcar_parse:  parse CONTCAR data
+        doscar_parse:   parse DOSCAR data
+    """
+
+    def __init__(self, dos_file, pos_file, LORBIT=12):
+        self.dos_file = dos_file
+        self.pos_file = pos_file
+        self.elements = DOSData.parse_contcar(self.pos_file)
+        self.total_dos, self.atom_list = DOSData.parse_doscar(self.dos_file, LORBIT)
+
+        self.atoms, self.orbitals, self.method, self.avgflag = None, None, None, None
+
+    def get_data(self, atoms=None, exclude=None, orbitals=None, avgflag=False, **kargs):
+        """
+        <Get_Data Main Func>
+
+        Args:
+            atoms:      accept int, list, and str('1-10' or 'Ce') type
+            exclude:    remove specified atoms in <atoms parameters>
+            orbitals:   list, e.g., ['s',  'p']
+            avgflag (bool):    whether calculate the average dos
+        """
+
+        self.atoms = atoms
+        self.exclude = exclude
+        self.orbitals = orbitals
+        self.avgflag = avgflag
+
+        @interpolated_wrapper
+        def TDOS_data(self):
+            """Get Total DOS"""
+            for column in self.total_dos.columns.values:
+                yield self.total_dos.index.values, list(self.total_dos[column].values), 1
+
+        @interpolated_wrapper
+        def LDOS_data(self):
+            """Get DOS of atom list"""
+            plus_tot = defaultdict(list)
+            plus_tot = DataFrame(plus_tot, index=self.atom_list[0],
+                                 columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] +
+                                         COLUMNS_32, dtype='object')
+            plus_tot.iloc[:, :] = 0.0
+            for atom in self.atoms:
+                for column in plus_tot.columns.values:
+                    try:
+                        plus_tot[column] += self.atom_list[atom][column]
+                    except KeyError:
+                        plus_tot[column] = 0
+
+            if self.orbitals is None:
+                orbitals = [plus_tot['up'].values, plus_tot['down'].values]
+            else:
+                orbitals_up = np.array([plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_up'])])
+                orbitals_down = np.array([plus_tot[item[0] + item[1]] for item in product(self.orbitals, ['_down'])])
+                orbitals = [np.sum(orbitals_up, axis=0), np.sum(orbitals_down, axis=0)]
+
+            for orbital_value in orbitals:
+                yield plus_tot.index.values, orbital_value, len(self.atoms)
+
+        """Main Content of get_data func"""
+        if self.atoms is None:
+            return TDOS_data(self)
+        elif isinstance(self.atoms, (list, int, str)):
+            self.atoms = identify_atoms(self.atoms, self.elements)
+            if self.exclude is not None:
+                self.exclude = identify_atoms(self.exclude, self.elements)
+                self.atoms = list(set(self.atoms) - set(self.exclude))
+            return LDOS_data(self)
+        else:
+            raise ValueError(f"The format of {self.atoms} is not correct!")
+
     @staticmethod
     def parse_contcar(name):
         """
         read CONTCAR file, obtain the elements' list.
 
-        @params:
+        Args:
             name:       CONTCAR file name
 
-        @return:
+        Returns:
             element:    elements list, e.g., ['','Be','Be','C']
         """
 
         structure = CONTCAR(name=name).structure
-        element = [' '] + structure.atoms.formula
-        return element
+        elements = [' '] + structure.atoms.formula
+        return elements
 
     @staticmethod
     def parse_doscar(name, LORBIT):
         """
         read DOSCAR file, obtain the TDOS && LDOS.
 
-        @params:
+        Args:
             name:       DOSCAR file name
 
-        @return:
+        Returns:
             TDOS:       DataFrame(NDOS, 2)
             LDOS:       energy_list + List(NAtom * DataFrame(NDOS, NOrbital+8))
         """

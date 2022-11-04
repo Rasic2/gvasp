@@ -48,7 +48,7 @@ class Figure(object):
         return super(Figure, cls).__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
-                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=3, **kargs):
+                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, **kargs):
         self.width = width
         self.height = height
         plt.close(1)  # close the old figure
