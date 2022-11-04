@@ -327,7 +327,7 @@ class POTCAR(MetaFile):
         strings = self._strings
 
         potential += other.potential
-        element += other.elements
+        element += other.element
         valence += other.valence
         strings += other._strings
 
