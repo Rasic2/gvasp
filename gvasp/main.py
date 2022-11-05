@@ -401,9 +401,15 @@ def main(argv=None):
             if "LORBIT" not in arguments:
                 arguments['LORBIT'] = 12
 
-            post_dos = DOSData(dos_file=arguments['dos_file'], pos_file=arguments['pos_file'],
-                               LORBIT=arguments["LORBIT"])
-            post_dos.center(atoms=arguments['atoms'], orbitals=arguments['orbitals'], xlim=arguments['xlim'])
+            dos_files, pos_files = [arguments['dos_file']], [arguments['pos_file']]
+            LORBIT = arguments['LORBIT']
+
+            del arguments['dos_file']
+            del arguments['pos_file']
+            del arguments['LORBIT']
+
+            post_dos = PostDOS(dos_files=dos_files, pos_files=pos_files, LORBIT=LORBIT)
+            post_dos.center(arguments)
 
         elif args.which == 'sum':  # sum task
             ChargeTask.sum()

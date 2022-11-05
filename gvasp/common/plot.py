@@ -104,40 +104,59 @@ class PostDOS(Figure):
                     np.savetxt(f"DOS_F{key}_L{index}", DOSL_ndata, fmt='%.6e', delimiter="\t",
                                header="energy, up, down")
 
-    def center(self, atoms=None, orbitals=None, xlim=None):
-        """
-        Calculate Band-Center Value (can't put in the <DOSCAR class>, causing it needs CONTCAR information)
-        """
+    def center(self, selector: dict):
+        """Calculate Band-Center Value"""
 
-        old_atoms = atoms
-        if isinstance(old_atoms, str):
-            if '-' in old_atoms:
-                pre_atom = [int(item) for item in old_atoms.split('-')]
-                atoms = list(range(pre_atom[0], pre_atom[1] + 1, 1))
-            else:
-                atoms = [index for index, element in enumerate(self.elements) if old_atoms == element]
+        manager = self.managers[0]
+        elements = manager.elements
+        total_dos = manager.total_dos
+        atom_list = manager.atom_list
+
+        atoms = identify_atoms(selector["atoms"], elements)
+        orbitals = selector.get("orbitals", None)
+        xlim = selector["xlim"]
 
         y = 0
-        rang = (self.total_dos.index.values < xlim[1]) & (self.total_dos.index.values > xlim[0])
+        rang = (total_dos.index.values < xlim[1]) & (total_dos.index.values > xlim[0])
         if atoms is None:
-            y += self.total_dos.loc[rang, 'tot_up']
-            y -= self.total_dos.loc[rang, 'tot_down']
+            y += total_dos.loc[rang, 'tot_up']
+            y -= total_dos.loc[rang, 'tot_down']
         elif orbitals is not None:
             for atom in atoms:
                 for orbital in orbitals:
-                    y += self.atom_list[atom].loc[rang, f'{orbital}_up']
-                    y -= self.atom_list[atom].loc[rang, f'{orbital}_down']
+                    y += atom_list[atom].loc[rang, f'{orbital}_up']
+                    y -= atom_list[atom].loc[rang, f'{orbital}_down']
         else:
             for atom in atoms:
-                y += self.atom_list[atom].loc[rang, 'up']
-                y -= self.atom_list[atom].loc[rang, 'down']
+                y += atom_list[atom].loc[rang, 'up']
+                y -= atom_list[atom].loc[rang, 'down']
         e_count = simps(y.values, y.index.values)  # Simpson Integration method for obtain the electrons' num
         dos = simps([a * b for a, b in zip(y.values, y.index.values)], y.index.values)
 
-        print(f"Selected Atoms: {atoms}")
-        print(f"Selected Orbitals: {orbitals}")
-        print(f"Energy Range: {xlim}")
-        print(f"Number of Electrons: {e_count:.4f}; Center Value: {dos / e_count:.4f}")
+        # format atoms output
+        format_atoms = ""
+        loop_atoms = ""
+        for index, atom in enumerate(atoms):
+            loop_atoms += f"{atom} "
+            if len(loop_atoms) == 36 or index == len(atoms) - 1:
+                loop_atoms = loop_atoms.ljust(38) + "|"
+                loop_atoms += "\n"
+                format_atoms += loop_atoms
+                if index != len(atoms) - 1:
+                    format_atoms += "| ".ljust(18)
+                else:
+                    format_atoms += "| ".ljust(56) + "|"
+                loop_atoms = ""
+
+        print("+" + "-".center(55, "-") + "+")
+        print("|" + f"Band-Center Calculation".center(55, " ") + "|")
+        print("|" + "-".center(55, "-") + "|")
+        print(f"| Selected Atoms: {format_atoms}")
+        print(f"| Selected Orbitals: {orbitals}".ljust(56, ) + "|")
+        print(f"| Energy Range: {xlim}".ljust(56, ) + "|")
+        print(f"| Number of Electrons: {e_count:.4f}".ljust(56, ) + "|")
+        print(f"| Center Value: {dos / e_count:.4f}".ljust(56, ) + "|")
+        print("+" + "-".center(55, "-") + "+")
 
 
 class DOSData():
@@ -318,7 +337,7 @@ class PESData(object):
     """
     Generate the data for PlotPES
 
-    @method:
+    Methods:
         convert_sd:    func for converting data to solid_dash type
         convert_sc:    func for converting data to solid_curve type
     """
@@ -337,7 +356,7 @@ class PESData(object):
         """
         func for converting data to solid_dash type
 
-        @return:
+        Returns:
             solid_x: x position in bi-tuple format of solid-type line (MS/TS-state)
             solid_y: y position in bi-tuple format of solid-type line (MS/TS-state)
             dash_x: x position in bi-tuple format of dash-type line (MS/TS)-(MS/TS)
@@ -357,7 +376,7 @@ class PESData(object):
         """
         func for converting data to solid_curve type
 
-        @return:
+        Returns:
             solid_x_1: x position in bi-tuple format of solid-type line (MS state)
             solid_y_1: y position in bi-tuple format of solid-type line (MS state)
             solid_x_2: y position in bi-tuple format of solid-type line (MS-MS)
@@ -387,7 +406,7 @@ class PlotPES(Figure):
     """
     Plot potential energy surface (PES)
 
-    @method:
+    Methods:
         plot():     plot main func
 
         add_solid:  auxiliary func, add solid line
@@ -422,7 +441,7 @@ class PlotPES(Figure):
         """
         Main plot func of <PlotPES class>
 
-        @param:
+        Args:
             data:       energy or (energy, label) types data
             color:      specify which color you want to plot
             text_flag:  only affect `solid_dash` type
