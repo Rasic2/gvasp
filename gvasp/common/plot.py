@@ -16,7 +16,7 @@ from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper,
 from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT
 from gvasp.common.structure import Structure
 from gvasp.common.task import NEBTask
-from gvasp.common.utils import identify_atoms
+from gvasp.common.utils import identify_atoms, search_peak
 
 pd.set_option('display.max_columns', None)  # show all columns
 pd.set_option('display.max_rows', None)  # show all rows
@@ -52,12 +52,13 @@ def interpolated_wrapper(func):
 
 
 class PostDOS(Figure):
-    def __init__(self, dos_files: list, pos_files: list, LORBIT=12, xlabel="Energy (eV)",
+    def __init__(self, dos_files: list, pos_files: list, LORBIT=12, align=None, xlabel="Energy (eV)",
                  ylabel="Density of States (a.u.)", **kargs):
         super(PostDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
 
         self.managers = [DOSData(dos_file=dos_file, pos_file=pos_file, LORBIT=LORBIT) for dos_file, pos_file in
                          zip(dos_files, pos_files)]
+        self.align = align
 
     @plot_wrapper
     def plot(self, selector: dict):
@@ -85,6 +86,33 @@ class PostDOS(Figure):
         for key in selector.keys():
             for line_argument in selector[key]:
                 DOSdata[key].append(self.managers[int(key)].get_data(**line_argument))
+
+        # Align the DOS
+        if self.align is not None:
+            if len(self.align) == len(self.managers):
+                logger.info(" +" + "-".center(80, "-") + "+")
+                logger.info(" |" + f"Align DOS relative to the first system".center(80, " ") + "|")
+                logger.info(" |" + "-".center(80, "-") + "|")
+                for index, item in enumerate(self.align):
+                    if len(item) == 2:
+                        if index == 0:
+                            reference = self.managers[index].atom_list[item[0] + 1][item[1] + '_up']
+                            refer_extremes = search_peak(reference)
+                        current = self.managers[index].atom_list[item[0] + 1][item[1] + '_up']
+                        current_extremes = search_peak(current)
+                        diff_extreme = current_extremes[0] - refer_extremes[0]
+                        for dos_line in DOSdata[str(index)]:
+                            dos_line.energy -= diff_extreme
+                        logger.info("|" + f" Align {index + 1}".center(10) + "|"
+                                    + f"atom: {item[0]} orbital: {item[1]}".center(24) + "|"
+                                    + f"ε_ref: {current_extremes[0]:.4f} eV".center(22)
+                                    + f"Δε: {diff_extreme:+.4f} eV".center(22) + "|")
+                    else:
+                        raise TypeError(f"<align> should specify the atom and orbital at the same time, e.g. (10, 's')")
+
+                logger.info("|" + "-".center(80, "-") + "|")
+            else:
+                logger.warning(f"The number of `align` is not equal to that of the files, ignore it.")
 
         for key in selector.keys():
             for index, line_argument in enumerate(selector[key]):

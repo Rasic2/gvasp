@@ -3,6 +3,8 @@ import os
 import sys
 from pathlib import Path
 
+from pandas import Series
+
 logger = logging.getLogger(__name__)
 
 
@@ -57,3 +59,15 @@ def identify_atoms(atoms, elements):
         logger.warning("The specification of atoms have repeat items, we will only use once for it!")
 
     return list(set_atoms)
+
+
+def search_peak(dos_data: Series, tol: float = 0.0001):
+    extremes = []
+    for index, value in enumerate(dos_data):
+        if 0 < index < len(dos_data) - 1:
+            before_value = dos_data.values[index - 1]
+            after_value = dos_data.values[index + 1]
+            if value > before_value + tol and value > after_value + tol:
+                extremes.append(index)
+    energy_extremes = dos_data.index[extremes].values
+    return energy_extremes

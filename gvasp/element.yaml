@@ -150,6 +150,26 @@ Element Cl:
         Element S: 1.990
         Element Cl: 2.142
 
+Element K:
+    formula: K
+    number: 19
+    period: 4
+    group: 1
+    color: '#8F41D3'
+    _default_bonds:
+        Element H: 3.21942
+        Element N: 3.41942
+        Element O: 3.25142
+        Element F: 3.11142
+        Element P: 3.44942
+        Element S: 3.79285
+        Element Cl: 3.65976
+        Element As: 3.94942
+        Element Se: 4.00186
+        Element Br: 3.85130
+        Element Te: 4.23284
+        Element I: 4.11717
+
 Element Ti:
     formula: Ti
     number: 22

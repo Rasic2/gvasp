@@ -145,7 +145,7 @@ xsd/
 !/conda/bld.bat
 !/conda/build.sh
 !/conda/meta.yaml
-/tests/NEB-0912/
+/tests/xyzhang/NEB-0912/
 /tests/zyguo/W_element/
 /tests/Template/
 /tests/LOCPOT/
@@ -167,3 +167,4 @@ xsd/
 /tests/entropy/
 /tests/dos_align/
 /tests/zqshi/
+/tests/xyzhang/
