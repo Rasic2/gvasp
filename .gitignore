@@ -146,7 +146,7 @@ xsd/
 !/conda/build.sh
 !/conda/meta.yaml
 /tests/NEB-0912/
-/tests/W_element/
+/tests/zyguo/W_element/
 /tests/Template/
 /tests/LOCPOT/
 /tests/figure.svg
@@ -157,12 +157,13 @@ xsd/
 /tests/submit.script
 /tests/charge_visularize/
 /tests/displacement/
-/tests/center/
+/tests/ypzhang/center/
 /tests/carbonylation/
 /tests/fill_alpha/
-/tests/Pt_ypzhang/
-/tests/k_222_zyguo/
+/tests/ypzhang/
+/tests/zyguo/
 /tests/electrostatic/
-/tests/output/
+/tests/zyguo/output/
 /tests/entropy/
 /tests/dos_align/
+/tests/zqshi/

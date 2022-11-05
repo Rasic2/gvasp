@@ -743,23 +743,36 @@ class DOSCAR(MetaFile):
                 DATA = DataFrame(data, index=energy_list, columns=columns)
                 DATA['up'] = 0.0
                 DATA['down'] = 0.0
+
+                # LORBIT = 12, sum projected-orbitals, e.g., px+py+pz = p
                 for orbital in orbitals:
                     DATA[orbital + '_up'] = 0.0
                     DATA[orbital + '_down'] = 0.0
                     orbital_p_up = [item for item in DATA.columns.values if
-                                    item.startswith(orbital) and item.endswith('up') and item != '{}_up'.format(
-                                        orbital) and item != 'up']
+                                    item.startswith(orbital) and item.endswith('up') and item != f'{orbital}_up'
+                                    and item != 'up']
                     orbital_p_down = [item for item in DATA.columns.values if
-                                      item.startswith(orbital) and item.endswith('down') and item != '{}_down'.format(
-                                          orbital) and item != 'down']
+                                      item.startswith(orbital) and item.endswith('down') and item != f'{orbital}_down'
+                                      and item != 'down']
                     for item in orbital_p_up:
                         DATA[f'{orbital}_up'] += DATA[item]
                     for item in orbital_p_down:
                         DATA[f'{orbital}_down'] += DATA[item]
                     DATA['up'] += DATA[f'{orbital}_up']
                     DATA['down'] += DATA[f'{orbital}_down']
+
+                # for both LORBIT=10/12
                 DATA['up'] += DATA['s_up']
                 DATA['down'] += DATA['s_down']
+
+                # LORBIT = 10
+                if self.LORBIT == 10:
+                    for item in columns:
+                        if item.endswith("up") and not item.startswith("s"):
+                            DATA['up'] += DATA[item]
+                        elif item.endswith("down") and not item.startswith("s"):
+                            DATA['down'] += DATA[item]
+
                 atom_data.append(DATA)
 
             self.TDOS = Total_Dos  # DataFrame(NDOS, 2)
