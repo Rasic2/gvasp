@@ -8,6 +8,11 @@ Element C:
     U: 0.0
     J: 0.0
 
+Element N:
+    orbital: -1
+    U: 0.0
+    J: 0.0
+
 Element O:
     orbital: -1
     U: 0.0
