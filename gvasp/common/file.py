@@ -104,10 +104,18 @@ class ARCFile(MetaFile):
 class SubmitFile(MetaFile):
 
     @property
-    def run_command(self):
+    def run_line(self):
         for line in self.strings:
             if "mpirun" in line:
                 return line
+        return
+
+    @property
+    def finish_line(self):
+        for line in self.strings:
+            if "finish" in line:
+                return line
+
         return
 
 

@@ -64,6 +64,7 @@ class BaseTask(metaclass=abc.ABCMeta):
 
         # set submit template
         self.submit = self.Scheduler if self._search_suffix(".submit") is None else self._search_suffix(".submit")
+        self.finish = None
 
     @staticmethod
     def get_all_parents():
@@ -250,6 +251,7 @@ class BaseTask(metaclass=abc.ABCMeta):
          generate job.submit automatically
          """
         content = SubmitFile(self.submit).strings
+        self.finish = SubmitFile(self.submit).finish_line
 
         with open("submit.script", "w") as g:
             for line in content:
@@ -329,7 +331,7 @@ class OptTask(BaseTask, Animatable):
          """
         super(OptTask, self)._generate_submit(low=low, analysis=analysis, gamma=gamma)
 
-        run_command = SubmitFile(self.submit).run_command
+        run_command = SubmitFile(self.submit).run_line
         with open("submit.script", "a+") as g:
             if low:
                 g.write("\n"
@@ -345,7 +347,9 @@ class OptTask(BaseTask, Animatable):
                         "mv CONTCAR CONTCAR_300 \n"
                         f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
                         f"\n"
-                        f"{run_command}")
+                        f"{run_command}"
+                        f"\n"
+                        f"{self.finish}")
 
     @staticmethod
     def movie(name="movie.arc"):
@@ -967,7 +971,7 @@ class SequentialTask(object):
             low_string = "low first, " if low else ""
             analysis_string = "apply analysis" if analysis else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + analysis_string + RESET)
-            run_command = SubmitFile("submit.script").run_command
+            run_command = SubmitFile("submit.script").run_line
             with open("submit.script", "a+") as g:
                 g.write("\n"
                         "#----------/Charge Option/----------# \n"
@@ -992,7 +996,7 @@ class SequentialTask(object):
         if self.end == "wf":
             low_string = "low first, " if low else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + RESET)
-            run_command = SubmitFile("submit.script").run_command
+            run_command = SubmitFile("submit.script").run_line
             with open("submit.script", "a+") as g:
                 g.write("\n"
                         "#----------/WorkFunc Option/----------# \n"
@@ -1013,7 +1017,7 @@ class SequentialTask(object):
                         f"{run_command}")
 
         if self.end == "dos":
-            run_command = SubmitFile("submit.script").run_command
+            run_command = SubmitFile("submit.script").run_line
             with open("submit.script", "a+") as g:
                 g.write("\n"
                         "#----------/DOS Option/----------# \n"
