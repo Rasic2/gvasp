@@ -413,11 +413,11 @@ class ChargeTask(BaseTask):
                     "  echo 'Charge Task Failed!' \n"
                     "  exit 1 \n"
                     "fi \n"
-                    "gvasp sum \n"
+                    "gvasp sum || chgsum.pl AECCAR0 AECCAR2 || return 1 \n"
                     "bader CHGCAR -ref CHGCAR_sum \n"
                     "\n"
-                    "gvasp split \n"
-                    "gvasp grd -d -1 \n")
+                    "gvasp split || chgsplit.pl CHGCAR || return 1 \n"
+                    "gvasp grd -d -1 || return 1 \n")
 
     @staticmethod
     def split():
