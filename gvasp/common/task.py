@@ -967,11 +967,13 @@ class SequentialTask(object):
         task = OptTask()
         task.generate(potential=potential, low=low, print_end=False, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect)
 
+        run_command = SubmitFile("submit.script").run_line
+        finish_command = SubmitFile("submit.script").finish_line
+
         if self.end == "chg" or self.end == "dos":
             low_string = "low first, " if low else ""
             analysis_string = "apply analysis" if analysis else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + analysis_string + RESET)
-            run_command = SubmitFile("submit.script").run_line
             with open("submit.script", "a+") as g:
                 g.write("\n"
                         "#----------/Charge Option/----------# \n"
@@ -989,14 +991,15 @@ class SequentialTask(object):
                         f"sed -i '/LCHARG/a\  LAECHG = .TRUE.' chg_cal/INCAR \n"
                         f"cd chg_cal || return \n"
                         f"\n"
-                        f"{run_command}")
+                        f"{run_command}"
+                        f"\n"
+                        f"{finish_command}")
             if analysis:
                 ChargeTask.apply_analysis()
 
         if self.end == "wf":
             low_string = "low first, " if low else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + RESET)
-            run_command = SubmitFile("submit.script").run_line
             with open("submit.script", "a+") as g:
                 g.write("\n"
                         "#----------/WorkFunc Option/----------# \n"
@@ -1014,10 +1017,11 @@ class SequentialTask(object):
                         f"sed -i '/NSW/a\  LVHAR = .TRUE.' workfunc/INCAR \n"
                         f"cd workfunc || return \n"
                         f"\n"
-                        f"{run_command}")
+                        f"{run_command}"
+                        f"\n"
+                        f"{finish_command}")
 
         if self.end == "dos":
-            run_command = SubmitFile("submit.script").run_line
             with open("submit.script", "a+") as g:
                 g.write("\n"
                         "#----------/DOS Option/----------# \n"
@@ -1040,7 +1044,9 @@ class SequentialTask(object):
                         f"sed -i '/ICHARG/a\  NEDOS = 2000' dos_cal/INCAR \n"
                         f"cd dos_cal || return \n"
                         f"\n"
-                        f"{run_command}")
+                        f"{run_command}"
+                        f"\n"
+                        f"{finish_command}")
 
         if self.end not in ['opt', 'chg', 'wf', 'dos']:
             raise TypeError(f"Unsupported Sequential Task to {self.end}, should be [opt, chg, wf, dos]")
