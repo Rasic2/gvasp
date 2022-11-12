@@ -901,13 +901,21 @@ class CHGBase(StructInfoFile):
         """
         self.structure.write_POSCAR(name=self.__class__.__name__, title=title, factor=factor)
         density_fortran = self.density.reshape(-1, order="F")
+
+        # solve residue problem
         residue = density_fortran.size % 5
-        density_fortran1 = density_fortran[:-residue].reshape(-1, 5)
-        density_fortran2 = density_fortran[-residue:].reshape(1, -1)
+        if residue:
+            density_fortran1 = density_fortran[:-residue].reshape(-1, 5)
+            density_fortran2 = density_fortran[-residue:].reshape(1, -1)
+        else:
+            density_fortran1 = density_fortran.reshape(-1, 5)
+            density_fortran2 = None
+
         with open(self.__class__.__name__, "a+") as f:
             f.write(f"{self.NGX:>5}{self.NGY:>5}{self.NGZ:>5}\n")
             np.savetxt(f, density_fortran1, fmt="%18.11E")
-            np.savetxt(f, density_fortran2, fmt="%18.11E")
+            if density_fortran2 is not None:
+                np.savetxt(f, density_fortran2, fmt="%18.11E")
 
 
 class AECCAR0(CHGBase):
