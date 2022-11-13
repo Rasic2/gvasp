@@ -42,6 +42,11 @@ def str_prec(value):
         raise ValueError(f"`{value}` can't transform to ['Low', 'Medium', 'High', 'Normal', 'Single', 'Accurate']")
 
 
+def list_mag(value):
+    """transform MAGMOM in n*m format to list"""
+    return value
+
+
 def int_float(value):
     """transform str to int (value<0) or float (value>0)"""
     return float(value) if float(value) > 0 else int(float(value))
@@ -127,6 +132,7 @@ class Parameter(object):
     LVHAR = TypeDescriptor('LVHAR', bool)
     NELECT = TypeDescriptor('NELECT', float)
     NSIM = TypeDescriptor('NSIM', int)
+    MAGMOM = TypeDescriptor('MAGMOM', list)
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -136,6 +142,9 @@ class Parameter(object):
                        {'func': str_prec,
                         'name': ['PREC', ],
                         },
+                   "_MAGParam":
+                       {'func': list_mag,
+                        'name': ['MAGMOM', ]},
                    "_intParam":
                        {'func': int,
                         'name': ['ISTART', 'IBRION', 'NSW', 'ISIF', 'NELM', 'NELMIN', 'ISPIN', 'ISMEAR', 'LDAUTYPE',
@@ -171,8 +180,8 @@ class Parameter(object):
                         }
                    }
 
-    _baseParam = ('SYSTEM', 'PREC', 'ISTART', 'ISYM', 'ENCUT', 'NELM', 'NELMIN', 'EDIFF', 'EDIFFG', 'GGA', 'ISPIN',
-                  'LWAVE', 'NPAR',)
+    _baseParam = ('SYSTEM', 'PREC', 'ISTART', 'ISYM', 'ENCUT', 'NELM', 'NELMIN', 'EDIFF', 'EDIFFG', 'ISPIN', 'MAGMOM',
+                  'GGA', 'LWAVE', 'NPAR',)
 
     _scfParam = ('AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG', 'NSIM')
 

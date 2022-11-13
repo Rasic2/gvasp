@@ -442,7 +442,7 @@ class PlotPES(Figure):
         add_text:   auxiliary func, add text
     """
 
-    def __init__(self, width=15.6, height=4, weight='bold', xlabel="Reaction coordinates", ylabel="Energy (eV)",
+    def __init__(self, width=15.6, height=4, weight='bold', xlabel="Reaction coordinate", ylabel="Energy (eV)",
                  xticks=[], bwidth=3, **kargs):
         super(PlotPES, self).__init__(width=width, height=height, weight=weight, xlabel=xlabel, ylabel=ylabel,
                                       xticks=xticks, bwidth=bwidth, **kargs)

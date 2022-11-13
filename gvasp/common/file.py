@@ -1,6 +1,6 @@
 import logging
 import math
-from collections import namedtuple
+from collections import namedtuple, Counter
 from datetime import datetime
 from functools import wraps, reduce
 from multiprocessing import Pool as ProcessPool
@@ -149,6 +149,19 @@ def formatter(parameters):
                     elif param in ['LDAUL', 'LDAUU', 'LDAUJ']:
                         with open(name, "a+") as f:
                             f.write(f"  {param} = {'  '.join(list(map(str, self.__dict__[param])))} \n")
+                    elif param == 'MAGMOM':
+                        with open(name, "a+") as f:
+                            # magmom = " ".join(
+                            #     [f"{num}*{mag}" for mag, num in list(Counter(self.__dict__['MAGMOM']).items())])
+                            magmom = [[]]
+                            for spin in self.__dict__['MAGMOM']:
+                                if spin in magmom[-1] or not len(magmom[-1]):
+                                    magmom[-1].append(spin)
+                                else:
+                                    magmom.append([])
+                                    magmom[-1].append(spin)
+                            str_magmom = " ".join(f"{len(item)}*{item[0]}" for item in magmom)
+                            f.write(f"  {param} = {str_magmom} \n")
                     else:
                         with open(name, "a+") as f:
                             f.write(f"  {param} = {self.__dict__[param]} \n")
@@ -429,8 +442,9 @@ class XSDFile(MetaFile):
         sorted_order, sorted_element, sorted_frac_coord = list(zip(*results))
         sorted_constrain = list(map(lambda x: True if x in self.constrain else False, sorted_order))
         sorted_selective_dynamics = np.array(self.selective_dynamics)[list(sorted_order)]
+        sorted_spin = np.array(self.spin)[list(sorted_order)]
         atoms = Atoms(formula=sorted_element, frac_coord=sorted_frac_coord, selective_matrix=sorted_selective_dynamics,
-                      constrain=sorted_constrain)
+                      constrain=sorted_constrain, spin=sorted_spin)
         lattice = Lattice(np.array(self.lattice))
         return Structure(atoms=atoms, lattice=lattice)
 

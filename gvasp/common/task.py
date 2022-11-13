@@ -104,7 +104,8 @@ class BaseTask(metaclass=abc.ABCMeta):
 
     @end_symbol
     @abc.abstractmethod
-    def generate(self, potential: (str, list), continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential: (str, list), continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
+                 mag=False):
         """
         generate main method, subclass should inherit or overwrite
         """
@@ -113,7 +114,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_POSCAR(continuous=continuous)
         self._generate_KPOINTS(gamma=gamma)
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        self._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self._generate_submit(gamma=gamma)
         self._generate_info(potential=potential, gamma=gamma)
 
@@ -168,7 +169,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         if gamma:
             print(f"{RED}--> Gamma-point calculation{RESET}")
 
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag=False):
         """
         generate by copy incar_template, modify the +U parameters
         """
@@ -201,6 +202,9 @@ class BaseTask(metaclass=abc.ABCMeta):
         if nelect is not None:
             t_valence = sum([num * valence for (_, num), valence in zip(self.structure.atoms.elements, self.valence)])
             self.incar.NELECT = t_valence + float(nelect)
+
+        if mag:
+            self.incar.MAGMOM = list(self.structure.atoms.spin)
 
     def _generate_KPOINTS(self, gamma):
         """
@@ -295,7 +299,7 @@ class OptTask(BaseTask, Animatable):
 
     @end_symbol
     def generate(self, potential="PAW_PBE", continuous=False, low=False, print_end=True, vdw=False, sol=False,
-                 gamma=False, nelect=None):
+                 gamma=False, nelect=None, mag=False):
         """
         rewrite BaseTask's generate
         """
@@ -304,7 +308,7 @@ class OptTask(BaseTask, Animatable):
         self._generate_POSCAR(continuous)
         self._generate_KPOINTS(gamma)
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(low=low, vdw=vdw, sol=sol, nelect=nelect)
+        self._generate_INCAR(low=low, vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self._generate_submit(low=low, gamma=gamma)
         self._generate_info(potential=potential, gamma=gamma)
         if low and print_end:
@@ -316,11 +320,11 @@ class OptTask(BaseTask, Animatable):
         super(OptTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
-    def _generate_INCAR(self, low, vdw, sol, nelect):
+    def _generate_INCAR(self, low, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
         """
-        super(OptTask, self)._generate_INCAR(vdw, sol, nelect)
+        super(OptTask, self)._generate_INCAR(vdw, sol, nelect, mag)
         self.incar._ENCUT = self.incar.ENCUT
         if low:
             self.incar.ENCUT = 300.

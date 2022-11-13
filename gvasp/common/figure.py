@@ -30,8 +30,8 @@ def plot_wrapper(func):
         plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
                    fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
-        plt.xlabel(self.xlabel, fontsize=self.fontsize + 1)
-        plt.ylabel(self.ylabel, fontsize=self.fontsize + 1)
+        plt.xlabel(self.xlabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
+        plt.ylabel(self.ylabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
         plt.title(self.title, fontsize=self.fontsize + 2)
 
     return wrapper

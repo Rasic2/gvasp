@@ -159,13 +159,14 @@ class Atom(object):
         return object.__new__(cls)
 
     def __init__(self, formula, order: (int, list) = 0, frac_coord=None, cart_coord=None, selective_matrix=None,
-                 constrain=False):
+                 constrain=False, spin=0):
         self.formula = formula
         self.order = order
         self.frac_coord = np.array(frac_coord) if frac_coord is not None else None
         self.cart_coord = np.array(cart_coord) if cart_coord is not None else None
         self.selective_matrix = np.array(selective_matrix) if selective_matrix is not None else None
         self.constrain = constrain
+        self.spin = spin
 
         # config atom from `element.yaml`
         self.number, self.period, self.group, self.color, self._default_bonds = (None, None, None, None, [])
@@ -295,6 +296,7 @@ class Atoms(Atom):
         self.cart_coord = [None] * len(self.formula) if self.cart_coord is None else self.cart_coord
         self.selective_matrix = [None] * len(self.formula) if self.selective_matrix is None else self.selective_matrix
         self.constrain = [False] * len(self.formula) if self.constrain is False else self.constrain
+        self.spin = [0] * len(self.formula) if isinstance(self.spin, int) and self.spin == 0 else self.spin
 
         self.__index_list = []  # inner index-list
         self._atom_list = []  # static atoms-list
@@ -333,7 +335,7 @@ class Atoms(Atom):
 
     def __deepcopy__(self, memo=None):
         atoms = Atoms(formula=self.formula, order=self.order, frac_coord=self.frac_coord, cart_coord=self.cart_coord,
-                      selective_matrix=self.selective_matrix, constrain=self.constrain)
+                      selective_matrix=self.selective_matrix, constrain=self.constrain, spin=self.spin)
         atoms.coordination_number = self.coordination_number
         atoms.bonds = self.bonds
         atoms._atom_list = []
@@ -357,7 +359,8 @@ class Atoms(Atom):
             for index in range(len(self.formula)):
                 atom = Atom(formula=self.formula[index], order=self.order[index],
                             frac_coord=self.frac_coord[index], cart_coord=self.cart_coord[index],
-                            selective_matrix=self.selective_matrix[index], constrain=self.constrain[index])
+                            selective_matrix=self.selective_matrix[index], constrain=self.constrain[index],
+                            spin=self.spin[index])
 
                 # update coordination number && bonds
                 atom.coordination_number = self.coordination_number[
@@ -440,12 +443,13 @@ class Atoms(Atom):
         cart_coord = [atom.cart_coord for atom in atoms]
         selective_matrix = [atom.selective_matrix for atom in atoms]
         constrain = [atom.constrain for atom in atoms]
+        spin = [atom.spin for atom in atoms]
         coordination_number = [atom.coordination_number for atom in atoms]
         bonds = [atom.bonds for atom in atoms]
 
         # update coordination number && bonds
         new_atoms = Atoms(formula=formula, order=order, frac_coord=frac_coord, cart_coord=cart_coord,
-                          selective_matrix=selective_matrix, constrain=constrain)
+                          selective_matrix=selective_matrix, constrain=constrain, spin=spin)
         new_atoms.coordination_number = coordination_number
         new_atoms.bonds = bonds
         return new_atoms

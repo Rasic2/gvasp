@@ -14,7 +14,7 @@ def colors_generator():
     """
     while True:
         yield from ['#000000', '#01545a', '#ed0345', '#ef6932', '#710162', '#017351', '#03c383', '#aad962', '#fbbf45',
-                    '#a12a5e', '#047df6', '#FFFF80']
+                    '#a12a5e', '#047df6', '#FFFF80', '#F1D1E1', '#E6FFE7']
 
 
 def get_HOME() -> Path:
