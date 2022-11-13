@@ -457,12 +457,13 @@ class WorkFuncTask(BaseTask):
     Work Function calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
+                 mag=False):
         """
         fully inherit BaseTask's generate
         """
         super(WorkFuncTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, gamma=gamma,
-                                           nelect=nelect)
+                                           nelect=nelect, mag=mag)
 
     def _generate_cdir(self, dir="workfunc", files=None):
         if files is None:
@@ -492,11 +493,13 @@ class BandTask(BaseTask):
     Band Structure calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, nelect=None, gamma=False):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, nelect=None, gamma=False,
+                 mag=False):
         """
         fully inherit BaseTask's generate
         """
-        super(BandTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, nelect=nelect)
+        super(BandTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, nelect=nelect,
+                                       mag=mag)
 
     def _generate_cdir(self, dir="band_cal", files=None):
         if files is None:
@@ -558,12 +561,13 @@ class DOSTask(BaseTask):
     Density of States (DOS) calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
+                 mag=False):
         """
         fully inherit BaseTask's generate
         """
         super(DOSTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, gamma=gamma,
-                                      nelect=nelect)
+                                      nelect=nelect, mag=mag)
 
     def _generate_cdir(self, dir="dos_cal", files=None):
         if files is None:
@@ -600,11 +604,12 @@ class FreqTask(BaseTask, Animatable):
     Frequency calculation task manager, subclass of BaseTask
     """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
+                 mag=False):
         """
         fully inherit BaseTask's generate
         """
-        super(FreqTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect)
+        super(FreqTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol, nelect):
@@ -638,11 +643,12 @@ class MDTask(BaseTask, Animatable):
      ab-initio molecular dynamics (AIMD) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
+                 mag=False):
         """
         fully inherit BaseTask's generate
         """
-        super(MDTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect)
+        super(MDTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol, nelect):
@@ -679,11 +685,12 @@ class STMTask(BaseTask):
      Scanning Tunneling Microscope (STM) image modelling calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
+                 mag=False):
         """
         fully inherit BaseTask's generate
         """
-        super(STMTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect)
+        super(STMTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol, nelect):
@@ -715,11 +722,12 @@ class ConTSTask(BaseTask, Animatable):
      Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
+                 mag=False):
         """
         fully inherit BaseTask's generate
         """
-        super(ConTSTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect)
+        super(ConTSTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
         self._generate_fort()
 
     @write_wrapper
@@ -917,11 +925,11 @@ class NEBTask(BaseTask, Animatable):
 
 
 class DimerTask(BaseTask, Animatable):
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None):
+    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None, mag=False):
         """
         fully inherit BaseTask's generate
         """
-        super(DimerTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect)
+        super(DimerTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol, nelect):
