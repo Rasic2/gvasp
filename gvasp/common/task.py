@@ -370,7 +370,7 @@ class ChargeTask(BaseTask):
 
     @end_symbol
     def generate(self, potential="PAW_PBE", continuous=False, analysis=False, vdw=False, sol=False, gamma=False,
-                 nelect=None):
+                 nelect=None, mag=False):
         """
         rewrite BaseTask's generate
         """
@@ -379,7 +379,7 @@ class ChargeTask(BaseTask):
         self._generate_POSCAR(continuous)
         self._generate_KPOINTS(gamma)
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        self._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self._generate_submit(analysis=analysis, gamma=gamma)
         self._generate_info(potential=potential, gamma=gamma)
 
@@ -389,7 +389,7 @@ class ChargeTask(BaseTask):
         super(ChargeTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -397,7 +397,7 @@ class ChargeTask(BaseTask):
             LAECHG = .TRUE.
             LCHARG = .TRUE.
         """
-        super(ChargeTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        super(ChargeTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self.incar.IBRION = 1
         self.incar.LAECHG = True
         self.incar.LCHARG = True
@@ -471,7 +471,7 @@ class WorkFuncTask(BaseTask):
         super(WorkFuncTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -482,7 +482,7 @@ class WorkFuncTask(BaseTask):
             LORBIT = 12
             NEDOS = 2000
         """
-        super(WorkFuncTask, self)._generate_INCAR(vdw, sol, nelect)
+        super(WorkFuncTask, self)._generate_INCAR(vdw, sol, nelect, mag)
         self.incar.IBRION = -1
         self.incar.NSW = 1
         self.incar.LVHAR = True
@@ -507,7 +507,7 @@ class BandTask(BaseTask):
         super(BandTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -518,7 +518,7 @@ class BandTask(BaseTask):
             LORBIT = 12
             NEDOS = 2000
         """
-        super(BandTask, self)._generate_INCAR(vdw, sol, nelect)
+        super(BandTask, self)._generate_INCAR(vdw, sol, nelect, mag)
         self.incar.ISTART = 1
         self.incar.ICHARG = 11
         self.incar.IBRION = -1
@@ -575,7 +575,7 @@ class DOSTask(BaseTask):
         super(DOSTask, self)._generate_cdir(dir=dir, files=files)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -586,7 +586,7 @@ class DOSTask(BaseTask):
             LORBIT = 12
             NEDOS = 2000
         """
-        super(DOSTask, self)._generate_INCAR(vdw, sol, nelect)
+        super(DOSTask, self)._generate_INCAR(vdw, sol, nelect, mag)
         self.incar.ISTART = 1
         self.incar.ICHARG = 11
         self.incar.IBRION = -1
@@ -612,7 +612,7 @@ class FreqTask(BaseTask, Animatable):
         super(FreqTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -622,7 +622,7 @@ class FreqTask(BaseTask, Animatable):
             NFREE = 2
             POTIM = 0.015
         """
-        super(FreqTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        super(FreqTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self.incar.IBRION = 5
         self.incar.ISYM = 0
         self.incar.NSW = 1
@@ -651,7 +651,7 @@ class MDTask(BaseTask, Animatable):
         super(MDTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -663,7 +663,7 @@ class MDTask(BaseTask, Animatable):
             TEBEG = 300.
             TEEND = 300.
         """
-        super(MDTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        super(MDTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self.incar.IBRION = 0
         self.incar.NSW = 100000
         self.incar.POTIM = 0.5
@@ -693,7 +693,7 @@ class STMTask(BaseTask):
         super(STMTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -706,7 +706,7 @@ class STMTask(BaseTask):
             LSEPB = .FALSE.
             LSEPK = .FALSE.
         """
-        super(STMTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        super(STMTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self.incar.ISTART = 1
         self.incar.IBRION = -1
         self.incar.NSW = 0
@@ -731,13 +731,13 @@ class ConTSTask(BaseTask, Animatable):
         self._generate_fort()
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
             IBRION = 1
         """
-        super(ConTSTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        super(ConTSTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self.incar.IBRION = 1
 
     def _generate_fort(self):
@@ -794,18 +794,18 @@ class NEBTask(BaseTask, Animatable):
 
     @end_symbol
     def generate(self, method="linear", check_overlap=True, potential="PAW_PBE", vdw=False, sol=False, gamma=False,
-                 nelect=None):
+                 nelect=None, mag=False):
         """
         Overwrite BaseTask's generate, add `method` and `check_overlap` parameters
         """
         self._generate_POSCAR(method=method, check_overlap=check_overlap)
         self._generate_KPOINTS(gamma)
         self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        self._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self._generate_info(potential=potential, gamma=gamma)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -818,7 +818,7 @@ class NEBTask(BaseTask, Animatable):
             MAXMOVE = 0.03
             IMAGES =
         """
-        super(NEBTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        super(NEBTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self.incar.IBRION = 3
         self.incar.POTIM = 0.
         self.incar.SPRING = -5.
@@ -932,7 +932,7 @@ class DimerTask(BaseTask, Animatable):
         super(DimerTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag)
 
     @write_wrapper
-    def _generate_INCAR(self, vdw, sol, nelect):
+    def _generate_INCAR(self, vdw, sol, nelect, mag):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
@@ -946,7 +946,7 @@ class DimerTask(BaseTask, Animatable):
             DFNMin = 0.01
             IOPT = 2     
         """
-        super(DimerTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect)
+        super(DimerTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag)
         self.incar.IBRION = 3
         self.incar.POTIM = 0.
         self.incar.ISYM = 0
