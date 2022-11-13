@@ -981,6 +981,34 @@ class CHGCAR_mag(CHGBase):
         file_bind.to_grd(name, DenCut)
 
 
+class CHGCAR_diff(CHGBase):
+
+    def line_potential(self, direction='z'):
+        """
+        Calculate Charge Density Difference along one direction, default: z-axis
+
+        Args:
+            direction (str): which axis you want to Average the CCD
+
+        Returns:
+            line_potential (np.array[:]): CCD along one axis
+
+        """
+        mapping = {'x': 0, 'y': 1, 'z': 2}
+
+        if getattr(self, 'density', None) is None:
+            self.load()
+        NGXYZ = (self.NGX, self.NGY, self.NGZ)
+
+        if mapping.get(direction, None) is None:
+            raise KeyError(f"{direction} is not supported, should be [x, y, z]")
+
+        potential_swap = np.swapaxes(self.density * self.structure.lattice.length[mapping[direction]] /
+                                     self.structure.lattice.volume, -1, mapping[direction])
+        return np.linspace(start=0, stop=self.structure.lattice.length[mapping[direction]],
+                           num=NGXYZ[mapping[direction]]), np.mean(potential_swap, axis=(0, 1))
+
+
 class CHGCAR(StructInfoFile):
     def __init__(self, name):
         super(CHGCAR, self).__init__(name=name)

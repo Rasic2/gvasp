@@ -13,7 +13,7 @@ from scipy.integrate import simps
 
 from gvasp.common.constant import COLUMNS_32
 from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
-from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT
+from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT, CHGCAR_diff
 from gvasp.common.structure import Structure
 from gvasp.common.task import NEBTask
 from gvasp.common.utils import identify_atoms, search_peak
@@ -357,6 +357,19 @@ class PlotEPotential(Figure):
     def plot(self):
         """
         Plot Electrostatic Potential
+        """
+        plt.plot(*self.lpotential)
+
+
+class PlotCCD(Figure):
+    def __init__(self, direction='z', xlabel='Position along z-axis (Å)', ylabel='Charge density (e/Å)', **kargs):
+        super(PlotCCD, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
+        self.lpotential = CHGCAR_diff(name="CHGCAR_diff").line_potential(direction=direction)
+
+    @plot_wrapper
+    def plot(self):
+        """
+        Plot Charge Density Difference
         """
         plt.plot(*self.lpotential)
 
