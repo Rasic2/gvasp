@@ -3,6 +3,7 @@ import os
 import sys
 from pathlib import Path
 
+import numpy as np
 from pandas import Series
 
 logger = logging.getLogger(__name__)
@@ -71,3 +72,23 @@ def search_peak(dos_data: Series, tol: float = 0.0001):
                 extremes.append(index)
     energy_extremes = dos_data.index[extremes].values
     return energy_extremes
+
+
+def remove_mapping(atoms: list, tol=0.01):
+    identity_atoms = []
+    for atom in atoms:
+        if not len(identity_atoms):
+            identity_atoms.append(atom)
+        else:
+            for eatom in identity_atoms:
+                if atom[0] == eatom[0]:
+                    diff = np.array(atom[1]) - np.array(eatom[1])
+                    diff = np.where(diff == 1.0, 0., diff)
+                    diff = np.where(diff == -1.0, 0., diff)
+                    if np.sum(np.abs(diff)) <= tol:
+                        break
+            else:
+                identity_atoms.append(atom)
+        pass
+
+    return identity_atoms

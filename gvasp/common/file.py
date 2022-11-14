@@ -1,6 +1,6 @@
 import logging
 import math
-from collections import namedtuple, Counter
+from collections import namedtuple
 from datetime import datetime
 from functools import wraps, reduce
 from multiprocessing import Pool as ProcessPool
@@ -14,13 +14,14 @@ import numpy as np
 from lxml import etree
 from pandas import DataFrame
 
-from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET
 from gvasp.common.base import Atoms, Lattice
+from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
 from gvasp.common.parameter import Parameter
 from gvasp.common.setting import RootDir
 from gvasp.common.structure import Structure
+from gvasp.common.utils import remove_mapping
 from gvasp.lib import dos_cython, file_bind
 
 POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
@@ -415,17 +416,42 @@ class XSDFile(MetaFile):
 
     def _parse(self):
         self._xml = etree.XML(self.strings.encode("utf-8"))
-        Atom3d = self._xml.xpath("//Atom3d[@Components]")
-        Components = self._xml.xpath("//Atom3d//@Components")
-        Name = [atom.attrib.get('Name', atom.attrib['Components']) for atom in Atom3d]
-        constrain = [index for index, name in enumerate(Name) if name.endswith("_c")]
-        FormalSpin = [int(atom.attrib.get('FormalSpin', '0')) for atom in Atom3d]
-        XYZ = [list(map(float, item.split(","))) for item in self._xml.xpath("//Atom3d//@XYZ")]
-        RestrictedProperties = [atom.attrib.get('RestrictedProperties', 'T T T') for atom in Atom3d]
-        TF = [item.replace("FractionalXYZ", "F F F").split() for item in RestrictedProperties]
-        assert len(XYZ) == len(Components) == len(Name) == len(FormalSpin) == len(
-            TF), "Size of atom's information is not match"
+        SpaceGroupName = self._xml.xpath("//SpaceGroup//@Name")[0]
+        if SpaceGroupName == "P1":
+            Atom3d = self._xml.xpath("//Atom3d[@Components]")
+            Components = self._xml.xpath("//Atom3d//@Components")
+            Name = [atom.attrib.get('Name', atom.attrib['Components']) for atom in Atom3d]
 
+            FormalSpin = [int(atom.attrib.get('FormalSpin', '0')) for atom in Atom3d]
+            XYZ = [list(map(float, item.split(","))) for item in self._xml.xpath("//Atom3d//@XYZ")]
+            RestrictedProperties = [atom.attrib.get('RestrictedProperties', 'T T T') for atom in Atom3d]
+            TF = [item.replace("FractionalXYZ", "F F F").split() for item in RestrictedProperties]
+        else:
+            Atom3d = self._xml.xpath("//MappingFamily//Atom3d")
+            IdentifyMapping = self._xml.xpath("//MappingFamily//Atom3d//..")
+
+            atoms = []
+            for atom, identify in zip(Atom3d, IdentifyMapping):
+                if atom.attrib.get('Components', None) is not None:
+                    formula = atom.attrib['Components']
+                    formal_spin = int(atom.attrib.get('FormalSpin', '0'))
+                    name = atom.attrib.get('Name', atom.attrib['Components'])
+                    restricted_property = atom.attrib.get('RestrictedProperties', 'T T T')
+                    tf = restricted_property.replace("FractionalXYZ", "F F F").split()
+
+                frac_coord = [float(value) for index, value in enumerate(identify.attrib['Constraint'].split(","))
+                              if (index + 1) % 4 == 0]
+                atoms.append((formula, frac_coord, formal_spin, name, tf))
+            identity_atoms = remove_mapping(atoms)
+            Components = [atom[0] for atom in identity_atoms]
+            XYZ = [atom[1] for atom in identity_atoms]
+            FormalSpin = [atom[2] for atom in identity_atoms]
+            Name = [atom[3] for atom in identity_atoms]
+            TF = [atom[4] for atom in identity_atoms]
+
+        assert len(XYZ) == len(Components) == len(Name) == len(FormalSpin) == len(TF)
+
+        constrain = [index for index, name in enumerate(Name) if name.endswith("_c")]
         SpaceGroup = self._xml.xpath("//SpaceGroup")[0]
         Vector = [list(map(float, SpaceGroup.attrib[key].split(","))) for key in SpaceGroup.keys() if "Vector" in key]
 
@@ -1003,8 +1029,8 @@ class CHGCAR_diff(CHGBase):
         if mapping.get(direction, None) is None:
             raise KeyError(f"{direction} is not supported, should be [x, y, z]")
 
-        potential_swap = np.swapaxes(self.density * self.structure.lattice.length[mapping[direction]] /
-                                     self.structure.lattice.volume, -1, mapping[direction])
+        potential_swap = np.swapaxes(self.density / self.structure.lattice.length[mapping[direction]], -1,
+                                     mapping[direction])
         return np.linspace(start=0, stop=self.structure.lattice.length[mapping[direction]],
                            num=NGXYZ[mapping[direction]]), np.mean(potential_swap, axis=(0, 1))
 
