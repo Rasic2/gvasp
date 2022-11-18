@@ -15,7 +15,7 @@ from lxml import etree
 from pandas import DataFrame
 
 from gvasp.common.base import Atoms, Lattice
-from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET
+from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET, HIGH_SYM
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
 from gvasp.common.parameter import Parameter
@@ -835,6 +835,8 @@ class EIGENVAL(MetaFile):
         super(EIGENVAL, self).__init__(name=name)
         self.NKPoint, self.NBand = tuple(map(int, self.strings[5].split()[1:]))
         self.KPoint_coord = None
+        self.KPoint_dist = None
+        self.KPoint_label = None
         self.energy = None
 
         self._parse()
@@ -863,6 +865,24 @@ class EIGENVAL(MetaFile):
                     sBand = []
 
         self.KPoint_coord = np.array(self.KPoint_coord)
+
+        self.KPoint_dist = []
+        self.KPoint_label = []
+        for index, k_point in enumerate(self.KPoint_coord):
+            if index == 0:
+                self.KPoint_dist.append(0.)
+            else:
+                k_before = self.KPoint_coord[index - 1]
+                dist = np.sum((k_point - k_before) ** 2) ** 0.5
+                self.KPoint_dist.append(self.KPoint_dist[-1] + dist)
+
+            for label, value in HIGH_SYM.items():
+                if np.sum((np.array(value) - k_point) ** 2) ** 0.5 <= 1E-02 and (
+                        not len(self.KPoint_label) or self.KPoint_label[-1] != label):
+                    self.KPoint_label.append(label)
+                    break
+            else:
+                self.KPoint_label.append("")
         self.energy = np.array(self.energy)
 
         return self

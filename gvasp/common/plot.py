@@ -323,14 +323,16 @@ class PlotOpt(Figure):
 
 class PlotBand(Figure):
     def __init__(self, name="EIGENVAL", title='Band Structure', **kargs):
-        super(PlotBand, self).__init__(title=title, **kargs)
         self.name = name
         if self.name.startswith("EIGENVAL"):
-            self.energy = EIGENVAL(self.name).energy
+            eigenval = EIGENVAL(self.name)
+            self.energy, self.kcoord, self.klabel = eigenval.energy, eigenval.KPoint_dist, eigenval.KPoint_label
         elif self.name.startswith("OUTCAR"):
             energy = OUTCAR(self.name).band_info
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
             self.energy = self.energy.transpose((1, 0, 2))
+
+        super(PlotBand, self).__init__(title=title, xlim=[self.kcoord[0], self.kcoord[-1]], **kargs)
 
         try:
             self.fermi = OUTCAR("OUTCAR").fermi
@@ -345,7 +347,17 @@ class PlotBand(Figure):
         """
         energy_avg = self.energy.mean(axis=-1) - self.fermi
         for band_index in range(energy_avg.shape[1]):
-            plt.plot(energy_avg[:, band_index], "-o")
+            plt.plot(self.kcoord, energy_avg[:, band_index], "-o")
+
+        pticks, plabel = list(
+            map(list, zip(*[(self.kcoord[index], self.klabel[index]) for index, label in enumerate(self.klabel) if
+                            len(label)])))
+        for line in pticks:
+            if line == 0. or line == self.kcoord[-1]:
+                continue
+            plt.vlines(line, ymin=self.ylim[0], ymax=self.ylim[1], linestyles="dashed", linewidth=2)
+
+        plt.xticks(ticks=pticks, labels=plabel)
 
 
 class PlotEPotential(Figure):
