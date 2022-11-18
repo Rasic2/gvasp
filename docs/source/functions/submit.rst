@@ -2,10 +2,10 @@
 
 .. _generate:
 
-Generate Vasp Inputs
+Generate VASP Inputs
 =================================
 
-:program:`GVasp` can help user quick generate VASP inputs (|inputs|), just need only run :file:`gvasp submit TASK [arguments]`.
+:program:`GVasp` can help user quick generate VASP inputs (|inputs|), just need to prepare a `*.xsd` file and run :file:`gvasp submit TASK [arguments]`.
 
 The following arguments can be applied in all of the tasks, while other arguments will describe in corresponding sub-topic.
 
@@ -27,6 +27,18 @@ The following arguments can be applied in all of the tasks, while other argument
       - perform charged system calculation
 
 Detailed information about the mentioned arguments can see in :ref:`opt <optimization>` task.
+
+If one want to apply the magnetic calculations, the `*.xsd` file prepared by the following steps is needed (e.g., CeO\ :sub:`2`\ -111-model).
+
+1. Select atoms you want to specify the initial `MAGMOM`;
+
+2. Modify the FormalSpin equal to the `MAGMOM`;
+
+.. image:: mag.png
+   :align: center
+
+.. note::
+    In the current version, the `*.xsd` file can't perform makeP1 operation first.
 
 .. toctree::
    :maxdepth: 1

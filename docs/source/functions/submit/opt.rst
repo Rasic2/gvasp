@@ -59,7 +59,7 @@ Certainly, if you don't like the default potential (**"PAW_PBE"**), you can also
     The potential can only specify to the member of the [**'PAW_LDA'**, **'PAW_PBE'**, **'PAW_PW91'**, **'USPP_LDA'**, **'USPP_PW91'**]
 
 .. note::
-    The -p/--potential accept one or more values, if you specify one potential, all the elements will use the same potential; and if you specify two or more potentials, the potential will auto corresponding to the element in POSCAR, noticed that the number of potential should equal to the number of elements in POSCAR
+    The -p/-\-potential accept one or more values, if you specify one potential, all the elements will use the same potential; and if you specify two or more potentials, the potential will auto corresponding to the element in POSCAR, noticed that the number of potential should equal to the number of elements in POSCAR
 
 .. _vdw:
 

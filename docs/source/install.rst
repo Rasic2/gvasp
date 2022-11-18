@@ -16,7 +16,7 @@ Conda install
     conda update gvasp -c hui_zhou -c conda-forge  # update gvasp
 
 .. note::
-    If you have trouble in installation, you can add the --force-reinstall to force reinstall the GVasp.
+    If you have trouble in installation, you can add the -\-force-reinstall to force reinstall the GVasp.
 
 Pip install
 -------------

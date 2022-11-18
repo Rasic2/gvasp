@@ -19,7 +19,7 @@ NEB method
     gvasp submit neb -ini/--ini_poscar INI_POSCAR -fni/--fni_poscar FNI_POSCAR [-i IMAGES] [-m METHOD] [-c/--cancel_check_overlap]
 
 .. note::
-    The NEB method will construct the reaction path, so one use NEB method must specify the start (**-ini/-\-ini_poscar**) and end (**-fni/-\-fni_poscar**) structure, while **-i**, **-m** and **-c** is optional arguments.
+    The NEB method will construct the reaction path, so one use NEB method must specify the start (**-ini/-\-ini_poscar**) and end (**-fni/-\-fni_poscar**) structure, while **-i**, **-m** and **-c** are optional arguments.
 
 specify images
 ---------------
