@@ -1,6 +1,12 @@
 # Directory constant
 $CondaDir = "conda"
 $RootDir = Get-Location
+$Exclued = @("bld.bat", "build.sh", "meta.yaml")
+
+# delete files first
+Set-Location $CondaDir
+Get-ChildItem -Path "." -Exclude $Exclued | Remove-Item -Force -Recurse
+Set-Location $RootDir
 
 # copy source files
 Copy-Item -r extension $CondaDir
@@ -21,7 +27,6 @@ conda-build . -c conda-forge
 conda activate
 
 # delete all files
-$Exclued = @("bld.bat", "build.sh", "meta.yaml")
 Get-ChildItem -Path "." -Exclude $Exclued | Remove-Item -Force -Recurse
 
 # back to RootDir

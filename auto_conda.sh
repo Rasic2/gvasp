@@ -1,8 +1,21 @@
 #!/usr/bin/env bash
 
+rmfile() {
+  for file in *; do
+    if [ "$file" != "bld.bat" ] && [ "$file" != "build.sh" ] && [ "$file" != "meta.yaml" ]; then
+      rm -rf $file
+    fi
+  done
+}
+
 # Directory constant
 CondaDir=conda
 RootDir=$(pwd)
+
+# delete files first
+cd $CondaDir || return
+rmfile
+cd $RootDir || return
 
 # copy source files
 cp -r extension $CondaDir
@@ -24,11 +37,7 @@ conda-build . -c conda-forge
 conda activate
 
 # delete all files
-for file in *; do
-  if [ "$file" != "bld.bat" ] && [ "$file" != "build.sh" ] && [ "$file" != "meta.yaml" ]; then
-    rm -rf $file
-  fi
-done
+rmfile
 
 # back to RootDir
 cd "$RootDir" || exit

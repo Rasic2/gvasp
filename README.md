@@ -29,7 +29,10 @@ A quick post-process for resolve or assistant the VASP calculations, which can i
 - plot interface
 - charge related work
 - band-center calculation
-- surface energy / electrostatic energy calculations
+- calculation utils
+    - surface energy calculation
+    - electrostatic energy calculation
+    - thermo-correction
 
 More detailed information can see [here](https://qvasp.readthedocs.io/en/latest/).
 

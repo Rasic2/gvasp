@@ -125,7 +125,7 @@ def main_parser() -> argparse.ArgumentParser:
 
     # calc parser
     calc_parser = subparsers.add_parser(name="calc", help="various calculation utils")
-    calc_parser.add_argument("task", type=int, help="specify task-order (0-[surface energy]; 1-[electrostatic energy])")
+    calc_parser.add_argument("task", type=int, help="specify task-order (0-[surface energy]; 1-[electrostatic energy]; 2-[thermo-correction])")
     surf_calc_group = calc_parser.add_argument_group(title='surface energy calculation')
     surf_calc_group.add_argument("-c", "--crystal_dir", type=str, help='specify crystal directory')
     surf_calc_group.add_argument("-s", "--slab_dir", type=str, help='specify slab directory')
@@ -198,7 +198,7 @@ def main(argv=None):
     if "-h" in dargv:  # print LOGO for '-h' option
         print(f"{BOLD}{LOGO}{RESET}")
 
-    args = parser.parse_args(argv)
+    args = parser.parse_args(dargv)
 
     if len(sys.argv) == 1:
         print(f"{BOLD}{LOGO}{RESET}")
