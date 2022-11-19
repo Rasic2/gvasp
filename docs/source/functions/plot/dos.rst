@@ -198,7 +198,7 @@ Not enough, if you want to compare different structures, you can modify the plot
 DOS align
 ----------
 
-In some cases, if you want to compare two or more DOS, aligning the energy levels is important to understand the difference between two systems. Usually, we select the innermost orbital of one bulk atom, e.g., bulk O atom, 2s orbital, as the reference energy level to align two or more systems. Now, GVasp can automatically perform such process and the plot.json should include the `align` items, like this
+In some cases, if you want to compare two or more DOS, aligning the energy levels is important to understand the difference between two systems. Usually, we select the innermost orbital of one bulk atom, e.g., bulk O atom, 2s orbital, as the reference energy level to align two or more systems. Now, GVasp can automatically perform such process and the plot.json should include the :code:`align` items, like this
 
 .. code-block:: json
 
