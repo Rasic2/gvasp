@@ -8,4 +8,4 @@ Output Visualize
     gvasp output
 
 .. note::
-    The name of the \*.xsd file depend on your job name in submit.script.
+    The name of the \*.xsd file depend on your job name in submit.script, and the -y/-n suffix indicate the calculation converged or not.

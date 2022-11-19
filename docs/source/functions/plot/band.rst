@@ -19,6 +19,9 @@ Just like this,
    :align: center
    :width: 400
 
+.. note::
+    In the current version, we also incorporate the high-symmetry points in the figure.
+
 For this task, the :file:`plot.json` is like this
 
 .. code-block:: json

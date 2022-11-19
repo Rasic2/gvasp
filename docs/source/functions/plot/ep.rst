@@ -11,7 +11,7 @@ For the electrostatic potential (ep), one can use :program:`GVasp` to plot it, j
 
     gvasp plot wf -j plot.json --save
 
-then, one may obtain the :file:`figure.svg` which plot the band structure.
+then, one may obtain the :file:`figure.svg` which plot the electrostatic potential.
 
 Just like this,
 

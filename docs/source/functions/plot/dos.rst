@@ -195,6 +195,25 @@ Not enough, if you want to compare different structures, you can modify the plot
                "1": [{"atoms":"O", "orbitals": ["p"], "color": "#098760"}]}
     }
 
+DOS align
+----------
+
+In some cases, if you want to compare two or more DOS, aligning the energy levels is important to understand the difference between two systems. Usually, we select the innermost orbital of one bulk atom, e.g., bulk O atom, 2s orbital, as the reference energy level to align two or more systems. Now, GVasp can automatically perform such process and the plot.json should include the `align` items, like this
+
+.. code-block:: json
+
+    {
+      "width":6,
+      "height": 4,
+      "fontsize": 10,
+      "xlim": [-35, 10],
+      "dos_file": ["DOSCAR-test", "DOSCAR-test2"],
+      "pos_file": ["CONTCAR-test", "CONTCAR-test2"],
+      "align": [(78, "s"), (81, "s")],
+      "data": {"0": [{"atoms":"O", "orbitals": ["p"], "color": "#ed0345"}],
+               "1": [{"atoms":"O", "orbitals": ["p"], "color": "#098760"}]}
+    }
+
 It's still very simple, what you need to do is modify the plot.json, run the command again, then you got it ~~
 
 .. important::

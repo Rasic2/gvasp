@@ -26,3 +26,6 @@ The center.json is like this:
     }
 
 The arguments in the center.json is similar with that in :ref:`dos-plot <dos_plot>` task.
+
+.. important::
+    If your LORBIT in INCAR is not 11 or 12, please add `"LORBIT": 10` in the center.json.
