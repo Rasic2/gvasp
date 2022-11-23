@@ -125,7 +125,8 @@ def main_parser() -> argparse.ArgumentParser:
 
     # calc parser
     calc_parser = subparsers.add_parser(name="calc", help="various calculation utils")
-    calc_parser.add_argument("task", type=int, help="specify task-order (0-[surface energy]; 1-[electrostatic energy]; 2-[thermo-correction])")
+    calc_parser.add_argument("task", type=int,
+                             help="specify task-order (0-[surface energy]; 1-[electrostatic energy]; 2-[thermo-correction])")
     surf_calc_group = calc_parser.add_argument_group(title='surface energy calculation')
     surf_calc_group.add_argument("-c", "--crystal_dir", type=str, help='specify crystal directory')
     surf_calc_group.add_argument("-s", "--slab_dir", type=str, help='specify slab directory')
@@ -133,7 +134,7 @@ def main_parser() -> argparse.ArgumentParser:
     electrostatic_calc_group.add_argument("-a", "--atoms", nargs="+", help="specify the atoms")
     electrostatic_calc_group.add_argument("-w", "--workdir", default=".", help="specify the workdir")
     thermo_calc_group = calc_parser.add_argument_group(title='thermo correction')
-    thermo_calc_group.add_argument("-t", "--temperature", type=float, help="specify the temperature")
+    thermo_calc_group.add_argument("-t", "--temperature", type=float, default=298.15, help="specify the temperature")
     calc_parser.set_defaults(which="calc")
 
     return parser
