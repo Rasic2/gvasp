@@ -416,14 +416,26 @@ class XSDFile(MetaFile):
 
     def _parse(self):
         self._xml = etree.XML(self.strings.encode("utf-8"))
-        SpaceGroupName = self._xml.xpath("//SpaceGroup//@Name")[0]
+        try:
+            SpaceGroupName = self._xml.xpath("//SpaceGroup//@Name")[0]  # Cu2O xsd file (why generate no reason)
+        except IndexError:
+            SpaceGroupName = self._xml.xpath("//SpaceGroup//@GroupName")[0]
         if SpaceGroupName == "P1":
             Atom3d = self._xml.xpath("//Atom3d[@Components]")
+            IdentifyMapping = self._xml.xpath("//MappingFamily//IdentityMapping")[0]
+            identify_coord = [float(value) for index, value in
+                              enumerate(IdentifyMapping.attrib['Constraint'].split(","))
+                              if (index + 1) % 4 == 0]
             Components = self._xml.xpath("//Atom3d//@Components")
             Name = [atom.attrib.get('Name', atom.attrib['Components']) for atom in Atom3d]
-
             FormalSpin = [int(atom.attrib.get('FormalSpin', '0')) for atom in Atom3d]
-            XYZ = [list(map(float, item.split(","))) for item in self._xml.xpath("//Atom3d//@XYZ")]
+            XYZ = []
+            for atom in Atom3d:
+                item = atom.attrib.get('XYZ', None)
+                if item is not None:
+                    XYZ.append(list(map(float, item.split(","))))
+                else:
+                    XYZ.append(identify_coord)
             RestrictedProperties = [atom.attrib.get('RestrictedProperties', 'T T T') for atom in Atom3d]
             TF = [item.replace("FractionalXYZ", "F F F").split() for item in RestrictedProperties]
         else:
@@ -439,9 +451,9 @@ class XSDFile(MetaFile):
                     restricted_property = atom.attrib.get('RestrictedProperties', 'T T T')
                     tf = restricted_property.replace("FractionalXYZ", "F F F").split()
 
-                frac_coord = [float(value) for index, value in enumerate(identify.attrib['Constraint'].split(","))
-                              if (index + 1) % 4 == 0]
-                atoms.append((formula, frac_coord, formal_spin, name, tf))
+                identify_coord = [float(value) for index, value in enumerate(identify.attrib['Constraint'].split(","))
+                                  if (index + 1) % 4 == 0]
+                atoms.append((formula, identify_coord, formal_spin, name, tf))
             identity_atoms = remove_mapping(atoms)
             Components = [atom[0] for atom in identity_atoms]
             XYZ = [atom[1] for atom in identity_atoms]

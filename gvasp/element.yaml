@@ -200,6 +200,15 @@ Element Cr:
         Element Te: 2.676
         Element I: 3.192
 
+Element Fe:
+    formula: Fe
+    number: 26
+    period: 4
+    group: 8
+    color: #817BC6
+    _default_bonds:
+        Element H: 1.92780
+
 Element Co:
     formula: Co
     number: 27
