@@ -15,6 +15,7 @@ def plot_wrapper(func):
         plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
         plt.rcParams['lines.linewidth'] = self.linewidth  # set line-width
         plt.rcParams['lines.markersize'] = 2.0
+        plt.tick_params(width=2, length=5)
         func(self, *args, **kargs)
         ax = plt.gca()
         ax.spines['bottom'].set_linewidth(self.bwidth)  # set border
