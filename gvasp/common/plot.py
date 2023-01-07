@@ -490,7 +490,7 @@ class PlotPES(Figure):
         self.texts[color].append(Text(self, x, y, text, color))
 
     @plot_wrapper
-    def plot(self, data, color, text_flag=True, style="solid_dash"):
+    def plot(self, data, color, text_flag=True, style="solid_dash", legend=None):
         """
         Main plot func of <PlotPES class>
 
@@ -499,6 +499,7 @@ class PlotPES(Figure):
             color:      specify which color you want to plot
             text_flag:  only affect `solid_dash` type
             style:      specify which style PES you want to plot, default: solid_dash
+            legend:     specify the legend, triple element: [x, y, label]
         """
         data = PESData(data)(style=style)
 
@@ -508,6 +509,9 @@ class PlotPES(Figure):
             self._plot_solid_curve(data, color)
         else:
             raise NotImplementedError("style should be `solid_dash` or `solid_curve`")
+
+        if legend is not None:
+            plt.plot(legend[0], legend[1], color=color, label=rf"{legend[2]}")
 
     def _plot_solid_dash(self, data, color, text_flag):
         for x, y in zip(data.solid_x, data.solid_y):

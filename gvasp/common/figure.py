@@ -34,6 +34,7 @@ def plot_wrapper(func):
         plt.yticks(fontsize=self.fontsize)
         plt.xlabel(self.xlabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
         plt.ylabel(self.ylabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
+        plt.legend(loc='best', fontsize=self.fontsize - 4, frameon=False)
         plt.title(self.title, fontsize=self.fontsize + 2)
 
     return wrapper
@@ -50,7 +51,7 @@ class Figure(object):
         return super(Figure, cls).__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
-                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, **kargs):
+                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, legends=None, **kargs):
         self.width = width
         self.height = height
         plt.close(1)  # close the old figure
@@ -66,6 +67,7 @@ class Figure(object):
         self.ylabel = ylabel
         self.bwidth = bwidth
         self.linewidth = linewidth
+        self.legends = legends
 
     @staticmethod
     def show():

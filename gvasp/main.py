@@ -373,12 +373,17 @@ def main(argv=None):
                     arguments['style'] = "solid_dash"
                     logger.warning(f"style argument is not exist in {args.json}, use default value")
 
+                if 'legends' not in arguments:
+                    arguments['legends'] = [None, None, None]
+                    logger.warning(f"legends argument is not exist in {args.json}, use default value")
+
                 if color_lack:
                     colors = colors_generator()
 
                 plotter = PlotPES(**arguments)
-                for selector, color in zip(arguments['data'], colors):
-                    plotter.plot(data=selector, color=color, text_flag=arguments['text_flag'], style=arguments['style'])
+                for selector, color, legend in zip(arguments['data'], colors, arguments['legends']):
+                    plotter.plot(data=selector, color=color, text_flag=arguments['text_flag'], style=arguments['style'],
+                                 legend=legend)
             elif args.task == 'neb':
                 plotter = PlotNEB(**arguments)
                 plotter.plot(color=colors)
