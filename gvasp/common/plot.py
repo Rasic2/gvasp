@@ -117,10 +117,11 @@ class PostDOS(Figure):
         for key in selector.keys():
             for index, line_argument in enumerate(selector[key]):
                 method = line_argument.get("method", "line")
+                label = line_argument.get("label", None)
                 DOSL_data = DOSdata[key][index]
                 if method == 'line':
                     plt.plot(DOSL_data.energy, DOSL_data.up, color=line_argument.get("color"))
-                    plt.plot(DOSL_data.energy, DOSL_data.down, color=line_argument.get("color"))
+                    plt.plot(DOSL_data.energy, DOSL_data.down, color=line_argument.get("color"), label=label)
                 elif method == 'dash line':
                     plt.plot(DOSL_data.energy, DOSL_data.up, '--', color=line_argument.get("color"))
                     plt.plot(DOSL_data.energy, DOSL_data.down, '--', color=line_argument.get("color"))
