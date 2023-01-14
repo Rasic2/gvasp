@@ -136,10 +136,10 @@ class BaseTask(metaclass=abc.ABCMeta):
         for element, p in zip(self.elements, potential):
             element_index = [index for index, formula in enumerate(self.structure.atoms.formula) if formula == element]
             element_tf = np.sum(
-                np.sum(self.structure.atoms.selective_matrix[element_index] == ["T", "T", "T"], axis=1) == 3)
+                np.sum(self.structure.atoms.selective_matrix[element_index] == ["F", "F", "F"], axis=1) == 3)
             print(f"{element:^10s}"
                   f"{self.structure.atoms.size[element]:>6d}"
-                  f"{element_tf:>6d}(T)   "
+                  f"{element_tf:>6d}(F)   "
                   f"{p}    "
                   f"{self.incar.LDAUL[index]:>2d}     "
                   f"{self.incar.LDAUU[index] - self.incar.LDAUJ[index]}")
