@@ -15,7 +15,7 @@ def plot_wrapper(func):
         plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
         plt.rcParams['lines.linewidth'] = self.linewidth  # set line-width
         plt.rcParams['lines.markersize'] = 2.0
-        plt.tick_params(width=2, length=5)
+        plt.tick_params(width=self.twidth, length=self.tlength)
         func(self, *args, **kargs)
         ax = plt.gca()
         ax.spines['bottom'].set_linewidth(self.bwidth)  # set border
@@ -28,7 +28,7 @@ def plot_wrapper(func):
             pass
         plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
         plt.ylim() if self.ylim is None else plt.ylim(self.ylim)
-        # self.fontsize = self.fontsize * self.fontsize / 20 * min(self.width, self.height) / 6
+        self.fontsize = self.fontsize * self.fontsize / 20 * min(self.width, self.height) / 6
         plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
                    fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -51,7 +51,7 @@ class Figure(object):
         return super(Figure, cls).__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
-                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, legends=None, **kargs):
+                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, twidth=2, tlength=5, **kargs):
         self.width = width
         self.height = height
         plt.close(1)  # close the old figure
@@ -67,7 +67,8 @@ class Figure(object):
         self.ylabel = ylabel
         self.bwidth = bwidth
         self.linewidth = linewidth
-        self.legends = legends
+        self.twidth = twidth  # tick_width
+        self.tlength = tlength  # tick_length
 
     @staticmethod
     def show():
