@@ -19,6 +19,8 @@ if "win" in sysconfig.get_platform():
 
     build_ext.get_export_symbols = get_export_symbols_fixed
 
+extra_compile_args = ["-std=c++11"] if "macosx" in sysconfig.get_platform() else []
+
 setup(
     name='gvasp',
     version='0.1.3',
@@ -46,8 +48,10 @@ setup(
                            Extension(name='gvasp.lib.path_cython', sources=['extension/path_cython.pyx'])],
                           language_level=3) +
                 [Extension(name='gvasp.lib.file_bind', sources=['extension/file_bind.cpp',
-                                                                'extension/file_lib.cpp']),
-                 Extension(name='gvasp.lib.base_bind', sources=['extension/base_bind.cpp'])],
+                                                                'extension/file_lib.cpp'],
+                           extra_compile_args=extra_compile_args),
+                 Extension(name='gvasp.lib.base_bind', sources=['extension/base_bind.cpp'],
+                           extra_compile_args=extra_compile_args)],
     include_dirs=[sysconfig.get_config_var("INCLUDE"), np.get_include(), pybind11.get_include()],
     include_package_data=True,
     package_data={"gvasp": ["*.json", "*.yaml", "INCAR", "*.submit", "*.sh"]},
