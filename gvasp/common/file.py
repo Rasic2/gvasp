@@ -209,6 +209,7 @@ class INCAR(MetaFile, Parameter):
         """
         self._write_base(name)
         self._write_scf(name)
+        self._write_hse(name)
         self._write_vdw(name)
         self._write_sol(name)
         self._write_opt(name)
@@ -221,7 +222,9 @@ class INCAR(MetaFile, Parameter):
         self._write_vtst(name)
         self._write_neb(name)
         self._write_dimer(name)
-        self._write_plusU(name)
+
+        if self.LHFCALC is not True:
+            self._write_plusU(name)
 
     @formatter(Parameter._baseParam)
     def _write_base(self, name):
@@ -232,6 +235,11 @@ class INCAR(MetaFile, Parameter):
     def _write_scf(self, name):
         with open(name, "a+") as f:
             f.write(f"#----------/SCF Parameter/----------# \n")
+
+    @formatter(Parameter._hseParam)
+    def _write_hse(self, name):
+        with open(name, "a+") as f:
+            f.write(f"#----------/HSE06 Parameter/----------# \n")
 
     @formatter(Parameter._vdwParam)
     def _write_vdw(self, name):

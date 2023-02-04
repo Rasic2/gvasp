@@ -133,10 +133,14 @@ class Parameter(object):
     NELECT = TypeDescriptor('NELECT', float)
     NSIM = TypeDescriptor('NSIM', int)
     MAGMOM = TypeDescriptor('MAGMOM', list)
+    LHFCALC = TypeDescriptor('LHFCALC', bool)
+    HFSCREEN = TypeDescriptor('HFSCREEN', float)
+    TIME = TypeDescriptor('TIME', float)
+    PRECFOCK = ValueDescriptor('PRECFOCK', ['Normal', 'Accurate', 'Fast', 'Medium', 'Single', 'Low'])
 
     _type_trans = {"_strParam":
                        {'func': str,
-                        'name': ['SYSTEM', 'GGA', 'ALGO'],
+                        'name': ['SYSTEM', 'GGA', 'ALGO', 'PRECFOCK'],
                         },
                    "_PRECParam":
                        {'func': str_prec,
@@ -155,12 +159,12 @@ class Parameter(object):
                        {'func': float,
                         'name': ['ENCUT', 'EDIFF', 'EDIFFG', 'SIGMA', 'AMIX', 'BMIX', 'AMIX_MAG', 'BMIX_MAG', 'POTIM',
                                  'DdR', 'DFNMin', 'DFNMax', 'TEBEG', 'TEEND', 'SPRING', 'MAXMOVE', 'EINT', 'NELECT',
-                                 'EB_K'],
+                                 'EB_K', 'HFSCREEN', 'TIME'],
                         },
                    "_bool_Param":
                        {'func': logic,
                         'name': ['LWAVE', 'LCHARG', 'LDAU', 'LAECHG', 'LCLIMB', 'LPARD', 'LSEPB', 'LSEPK', 'LSOL',
-                                 'LVHAR'],
+                                 'LVHAR', 'LHFCALC'],
                         },
                    "_bool_str_Param":
                        {'func': bool_str,
@@ -210,3 +214,5 @@ class Parameter(object):
     _solParam = ('LSOL', 'EB_K')
 
     _wfParam = ('LVHAR',)
+
+    _hseParam = ('LHFCALC', 'HFSCREEN', 'TIME', 'PRECFOCK')
