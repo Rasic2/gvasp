@@ -45,6 +45,8 @@ def main_parser() -> argparse.ArgumentParser:
     submit_parser.add_argument("-V", "--vdw", help=f'add vdw-correction', action='store_true')
     submit_parser.add_argument("-S", "--sol", help=f'perform solvation calculation', action='store_true')
     submit_parser.add_argument("-G", "--gamma", help=f'perform Gamma-point calculation', action='store_true')
+    submit_parser.add_argument("-H", "--hse", help=f'perform HSE06 calculation', action='store_true')
+    submit_parser.add_argument("-SP", "--static", help=f'perform static calculation', action='store_true')
     submit_parser.add_argument("-N", "--nelect", help=f'specify the system charge', type=float)
     submit_parser.add_argument("-C", "--continuous", help=f'calculation from finished job', action='store_true')
 
@@ -239,6 +241,8 @@ def main(argv=None):
                             "vdw": args.vdw,
                             "sol": args.sol,
                             "gamma": args.gamma,
+                            "hse": args.hse,
+                            "static": args.static,
                             "nelect": args.nelect}
 
             if args.task in normal_tasks.keys():
