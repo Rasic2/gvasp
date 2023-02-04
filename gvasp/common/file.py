@@ -15,13 +15,13 @@ from lxml import etree
 from pandas import DataFrame
 
 from gvasp.common.base import Atoms, Lattice
-from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET, HIGH_SYM
+from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET, HIGH_SYM, RecommendPot
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
 from gvasp.common.parameter import Parameter
 from gvasp.common.setting import RootDir
 from gvasp.common.structure import Structure
-from gvasp.common.utils import remove_mapping
+from gvasp.common.utils import remove_mapping, is_subset_recommend_pot
 from gvasp.lib import dos_cython, file_bind
 
 POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
@@ -390,15 +390,18 @@ class POTCAR(MetaFile):
         else:
             raise ParameterError(f"{potentials} and {elements} is not match")
 
-        potcar_instances = []
+        potcar_objects = []
         for potential, element in zip(potentials, elements):
-            if element == "Zr" and potential == "PAW_PBE":
-                potcar_instances.append(POTCAR(name=(Path(potdir) / potential / f"{Path(element)}_sv" / "POTCAR")))
-                logger.warning(f"{element} with {potential} has not corresponding POTCAR, use *_sv instead")
+            marker = is_subset_recommend_pot(element)
+            if potential == "PAW_PBE" and marker:
+                potcar_objects.append(POTCAR(name=(Path(potdir) / potential / f"{Path(element)}_{marker}" / "POTCAR")))
+                logger.warning(
+                    f"VASP recommend `{element} ({potential})` use *_{marker} potential "
+                    f"[https://www.vasp.at/wiki/index.php/Available_PAW_potentials#Recommended_potentials_for_DFT_calculationsss]")
             else:
-                potcar_instances.append(POTCAR(name=(Path(potdir) / potential / f"{Path(element)}" / "POTCAR")))
+                potcar_objects.append(POTCAR(name=(Path(potdir) / potential / f"{Path(element)}" / "POTCAR")))
 
-        return reduce(add, potcar_instances)
+        return reduce(add, potcar_objects)
 
     def write(self, name):
         with open(name, "w") as f:

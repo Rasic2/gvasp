@@ -6,6 +6,8 @@ from pathlib import Path
 import numpy as np
 from pandas import Series
 
+from common.constant import RecommendPot
+
 logger = logging.getLogger(__name__)
 
 
@@ -92,3 +94,14 @@ def remove_mapping(atoms: list, tol=0.01):
         pass
 
     return identity_atoms
+
+
+def is_subset_recommend_pot(element):
+    """
+    Identify an element is or not in RecommendPot
+    """
+    for key, value in RecommendPot.items():
+        if element in value:
+            return key
+    else:
+        return False
