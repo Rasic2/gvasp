@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 from pandas import Series
 
-from common.constant import RecommendPot
+from gvasp.common.constant import RecommendPot
 
 logger = logging.getLogger(__name__)
 
