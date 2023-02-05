@@ -177,6 +177,35 @@ The figure is like this:
 .. image:: dos4.svg
    :align: center
 
+specify legends
+----------------
+
+You can specify the legends like this:
+
+.. code-block:: json
+
+    {
+      "width": 8,
+      "height": 6,
+      "bwidth": 2,
+      "weight": "bold",
+      "fontsize": 22,
+      "xlim": [-1.5, 0],
+      "ylim": [-3, 3],
+      "dos_file": ["DOSCAR_clean_TS2"],
+      "pos_file": ["CONTCAR_clean_TS2"],
+      "data": {
+        "0": [{"atoms":["C"],"color": "#000000","method": "line","label": "TS C"},
+              {"atoms":[68],"color": "#047df6","method": "line","label": "TS O"},
+              {"atoms":[23],"color": "#ed0345","method": "line","label": "surf Ce"},
+              {"atoms":[22],"color": "#ef6932","method": "line","label": "sub Ce"}]}
+    }
+
+The figure is like this:
+
+.. image:: dos5.svg
+   :align: center
+
 multiple files
 ---------------
 

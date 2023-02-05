@@ -13,6 +13,7 @@ A quick post-process for resolve or assistant the VASP calculations, which can i
 - charge related work
 - band-center calculation
 - calculation utils
+
     - surface energy calculation
     - electrostatic interaction energy calculation
     - thermo-correction

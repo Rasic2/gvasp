@@ -112,5 +112,34 @@ The plot.json is like this:
 
 And we close the `text` by add :code:`text_flag = false`.
 
+specify legends
+-----------------
+
+If you want to add the legends for different reaction pathways, data like below:
+
+.. code-block:: python
+
+    data = [[0, -0.18, 0.02, -2.35, -2.26, -3.17, -3.25, -2.97, -6.76],
+            [0, -0.07, 0.33, -2.13, -2.09, -3.05, -3.04, -2.60, -6.65]]
+
+The plot figure is like this:
+
+.. image:: pes5.svg
+   :align: center
+
+The plot.json is like this:
+
+.. code-block:: json
+
+    {
+        "data" : [[0, -0.18, 0.02, -2.35, -2.26, -3.17, -3.25, -2.97, -6.76],
+                  [0, -0.07, 0.33, -2.13, -2.09, -3.05, -3.04, -2.60, -6.65]],
+        "text_flag": false,
+        "legends": [[0,0,"clean $CeO_4$-t"],
+                    [0,0,"hydro $CeO_4$-t"]]
+    }
+
+Where the legends are described by a tri-tuple (x_position, y_position, label).
+
 Here, you may known how to plot the PES with :program:`GVasp`, of course, it can do better in the future.
 

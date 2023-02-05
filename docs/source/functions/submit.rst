@@ -23,6 +23,10 @@ The following arguments can be applied in all of the tasks, while other argument
       - including the solvation effect
     * - -G/-\-gamma
       - perform the Gamma-point calculation
+    * - -H/-\-hse
+      - perform the HSE06 calculation
+    * - -SP/-\-static
+      - perform the static calculation
     * - -N/-\-nelect
       - perform charged system calculation
 

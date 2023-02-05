@@ -61,6 +61,9 @@ Certainly, if you don't like the default potential (**"PAW_PBE"**), you can also
 .. note::
     The -p/-\-potential accept one or more values, if you specify one potential, all the elements will use the same potential; and if you specify two or more potentials, the potential will auto corresponding to the element in POSCAR, noticed that the number of potential should equal to the number of elements in POSCAR
 
+.. important::
+    The VASP provide the recommend potential for some elements (see `here <https://www.vasp.at/wiki/index.php/Available_PAW_potentials#Recommended_potentials_for_DFT_calculations>`_), and we also applied them in GVasp.
+
 .. _vdw:
 
 open the vdw-correction
@@ -99,6 +102,28 @@ Use single Gamma-point and vasp_gam to perform the calculation for the large-sca
 .. code-block:: bash
 
     gvasp submit opt -G/--gamma
+
+.. _hse:
+
+perform the HSE06 calculation
+-------------------------------------
+
+Use HSE06 method rather than the PBE method to perform the calculation can run the following command:
+
+.. code-block:: bash
+
+    gvasp submit opt -H/--hse
+
+.. _static:
+
+perform the Static calculation
+-------------------------------------
+
+Perform the static calculation (NSW=1) can run the following command:
+
+.. code-block:: bash
+
+    gvasp submit opt -SP/--static
 
 .. _nelect:
 

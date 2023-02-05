@@ -18,6 +18,7 @@ Detailed arguments setting can see the **sub-topics** below.
    plot/dos
    plot/pes
    plot/neb
+   plot/argument
 
 .. note::
     We recommend user plot the figure under the **Win/MAC OS** system, because **Linux** may lack some necessary fonts by default, which can be fixed following the instruction `here <https://codenote.readthedocs.io/en/latest/language/matplotlib.html>`_.
