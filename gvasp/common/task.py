@@ -141,7 +141,7 @@ class BaseTask(metaclass=abc.ABCMeta):
                   f"{self.structure.atoms.size[element]:>6d}"
                   f"{element_tf:>6d}(F)   "
                   f"{p}    ", end="")
-            if getattr(self.incar, "LHFCALC", False) is False:
+            if self.incar.LHFCALC is None:
                 print(f"{self.incar.LDAUL[index]:>2d}     "
                       f"{self.incar.LDAUU[index] - self.incar.LDAUJ[index]}")
             else:
@@ -170,7 +170,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         if getattr(self.incar, "NELECT", None) is not None:
             print(f"{RED}--> Charged system, NELECT = {self.incar.NELECT}{RESET}")
 
-        if getattr(self.incar, "LHFCALC", False) is not False:
+        if self.incar.LHFCALC is not None:
             print(f"{RED}--> HSE06 calculation{RESET}")
 
         if gamma:

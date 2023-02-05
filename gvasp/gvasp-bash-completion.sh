@@ -13,7 +13,7 @@ _gvasp_submit_opt() {
 
   allopts_short=(-P -V -S -C -l -G -N)
   allopts_long=(--potential --vdw --sol --continuous --low --gamma --nelect)
-  allopts="-P --potential -V --vdw -S --sol -C --continuous -l --low -G --gamma -N --nelect"
+  allopts="-P --potential -V --vdw -S --sol -C --continuous -l --low -G --gamma -H --hse -SP --static -N --nelect"
 
   for ((i = 0; i < ${#allopts_short[@]}; i++)); do
     if [[ "${COMP_WORDS[*]}" =~ ${allopts_short[i]} || "${COMP_WORDS[*]}" =~ ${allopts_long[i]} ]]; then
@@ -31,7 +31,7 @@ _gvasp_submit_opt() {
   elif [[ "$pre" =~ "-" || "$ppre" =~ "-" ]]; then
     opts="$allopts"
   else
-    opts="-h --help -P --potential -V --vdw -S --sol -C --continuous -l --low -G --gamma -N --nelect"
+    opts="-h --help -P --potential -V --vdw -S --sol -C --continuous -l --low -G --gamma -H --hse -SP --static -N --nelect"
   fi
 
   COMPREPLY=($(compgen -W "$opts" -- $cur))
@@ -48,11 +48,11 @@ _gvasp_submit_chg() {
   if [[ "${COMP_WORDS[*]}" =~ "-s" || "${COMP_WORDS[*]}" =~ "--sequential" ]]; then
     allopts_short=(-P -s -V -S -C -a -l -G -N)
     allopts_long=(--potential --sequential --vdw --sol --continuous --analysis --low --gamma --nelect)
-    allopts="-P --potential -s --sequential -V --vdw -S --sol -G --gamma -N --nelect -C --continuous -a --analysis -l --low"
+    allopts="-P --potential -s --sequential -V --vdw -S --sol -G --gamma -H --hse -SP --static -N --nelect -C --continuous -a --analysis -l --low"
   else
     allopts_short=(-P -s -V -S -C -a -G -N)
     allopts_long=(--potential --sequential --vdw --sol --continuous --analysis --gamma --nelect)
-    allopts="-P --potential -s --sequential -V --vdw -S --sol -G --gamma -N --nelect -C --continuous -a --analysis"
+    allopts="-P --potential -s --sequential -V --vdw -S --sol -G --gamma -H --hse -SP --static -N --nelect -C --continuous -a --analysis"
   fi
 
   for ((i = 0; i < ${#allopts_short[@]}; i++)); do
@@ -71,7 +71,7 @@ _gvasp_submit_chg() {
   elif [[ "$pre" =~ "-" || "$ppre" =~ "-" ]]; then
     opts="$allopts"
   else
-    opts="-h --help -P --potential -V --vdw -S --sol -C --continuous -s --sequential -a --analysis -G --gamma -N --nelect"
+    opts="-h --help -P --potential -V --vdw -S --sol -C --continuous -s --sequential -a --analysis -G --gamma -H --hse -SP --static -N --nelect"
   fi
   COMPREPLY=($(compgen -W "$opts" -- $cur))
 }
@@ -476,7 +476,7 @@ _gvasp() {
   if [ -z "$command" ]; then # gvasp command completion
     COMPREPLY=()
     cur=${COMP_WORDS[COMP_CWORD]}
-    opts="config submit output movie sort plot sum split grd -h --help -v --version -l --list "
+    opts="config submit output movie sort plot sum split grd -h --help -v --version -l --list -d"
     COMPREPLY=($(compgen -W "$opts" -- $cur))
   else
     case "$command" in # gvasp subcommand completion
