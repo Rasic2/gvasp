@@ -173,7 +173,7 @@ _gvasp_submit_neb() {
     fi
   done
 
-  if [[ "$pre" =~ "-h" || "$pre" =~ "--help" || "$pre" =~ "-i" || "$pre" =~ "--images" || "$pre" =~ "-N" || "$pre" =~ "--nelect" ]]; then
+  if [[ "$pre" =~ "-h" || "$pre" =~ "--help" || "$pre" == "-i" || "$pre" =~ "--images" || "$pre" =~ "-N" || "$pre" =~ "--nelect" ]]; then
     opts=""
   elif [[ "$pre" =~ "-P" || "$pre" =~ "--potential" ]]; then
     opts="PAW_LDA PAW_PBE PAW_PW91 USPP_LDA USPP_PW91"
