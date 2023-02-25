@@ -64,6 +64,20 @@ def identify_atoms(atoms, elements):
     return list(set_atoms)
 
 
+def redefine_frac(frac):
+    """
+    Make frac_coord within [0,1]
+
+    Args:
+        frac (np.array): frac_coord input
+
+    Returns:
+        frac (np.array): frac_coord output
+    """
+
+    return frac - np.floor(frac)
+
+
 def search_peak(dos_data: Series, tol: float = 0.0001):
     extremes = []
     for index, value in enumerate(dos_data):

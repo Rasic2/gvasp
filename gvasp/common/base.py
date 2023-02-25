@@ -8,6 +8,7 @@ import numpy as np
 import yaml
 from gvasp.lib.base_bind import search_image as search_image_bind
 
+from gvasp.common.utils import redefine_frac
 from gvasp.common.setting import RootDir
 
 yaml.warnings({'YAMLLoadWarning': False})
@@ -162,7 +163,7 @@ class Atom(object):
                  constrain=False, spin=0):
         self.formula = formula
         self.order = order
-        self.frac_coord = np.array(frac_coord) if frac_coord is not None else None
+        self.frac_coord = redefine_frac(np.array(frac_coord)) if frac_coord is not None else None
         self.cart_coord = np.array(cart_coord) if cart_coord is not None else None
         self.selective_matrix = np.array(selective_matrix) if selective_matrix is not None else None
         self.constrain = constrain
