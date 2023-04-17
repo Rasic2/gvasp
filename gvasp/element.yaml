@@ -199,6 +199,25 @@ Element Cr:
         Element Br: 2.972
         Element Te: 2.676
         Element I: 3.192
+Element Mn:
+    formula: Mn
+    number: 25
+    period: 4
+    group: 7
+    color: '#9C7BC6'
+    _default_bonds:
+        Element H: 1.706
+        Element N: 2.561
+        Element O: 2.516
+        Element F: 2.410
+        Element P: 2.396
+        Element S: 2.932
+        Element Cl: 2.845
+        Element As: 2.516
+        Element Se: 2.476
+        Element Br: 3.052
+        Element Te: 2.706
+        Element I: 3.232
 
 Element Fe:
     formula: Fe

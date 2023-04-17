@@ -437,7 +437,7 @@ class XSDFile(MetaFile):
             identify_coord = [float(value) for index, value in
                               enumerate(IdentifyMapping.attrib['Constraint'].split(","))
                               if (index + 1) % 4 == 0]
-            Components = self._xml.xpath("//Atom3d//@Components")
+            Components = [item.split(",")[0] for item in self._xml.xpath("//Atom3d//@Components")]
             Name = [atom.attrib.get('Name', atom.attrib['Components']) for atom in Atom3d]
             FormalSpin = [int(atom.attrib.get('FormalSpin', '0')) for atom in Atom3d]
             XYZ = []
