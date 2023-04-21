@@ -348,8 +348,10 @@ class OptTask(BaseTask, Animatable):
         """
         super(OptTask, self)._generate_INCAR(vdw, sol, nelect, mag, hse, static)
         self.incar._ENCUT = self.incar.ENCUT
+        self.incar._PREC = self.incar.PREC
         if low:
             self.incar.ENCUT = 300.
+            self.incar.PREC = "Low"
 
     def _generate_submit(self, low=False, gamma=False, analysis=False):
         """
@@ -372,6 +374,7 @@ class OptTask(BaseTask, Animatable):
                         "cp OUTCAR OUTCAR_300 \n"
                         "mv CONTCAR CONTCAR_300 \n"
                         f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
+                        f"sed -i 's/PREC = Low/PREC = {self.incar._PREC}/' INCAR\n"
                         f"\n"
                         f"{run_command}"
                         f"\n"
