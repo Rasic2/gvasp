@@ -335,9 +335,11 @@ class KPOINTS(MetaFile):
     def min_number(structure: Structure, length=20.0):
         lattice = structure.lattice
         kpoints = np.ceil(length / lattice.length).astype(int)
-        z_max = np.max(structure.atoms.frac_coord[:, 2])
-        z_min = np.min(structure.atoms.frac_coord[:, 2])
-        if (z_max - z_min) >= 0.5:
+        structure.atoms.set_coord(lattice)
+        z_max = np.max(structure.atoms.cart_coord[:, 2])
+        z_min = np.min(structure.atoms.cart_coord[:, 2])
+        vacuum = lattice.length[2] - (z_max - z_min)
+        if (vacuum) >= 5:
             kpoints[2] = 1
         return kpoints
 
