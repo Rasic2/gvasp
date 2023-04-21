@@ -1,7 +1,7 @@
 import platform
 import time
 
-Version = "0.1.4.gamma"
+Version = "0.1.4"
 Platform = platform.platform()
 DATE = time.strftime("%Y-%m-%d", time.localtime())
 

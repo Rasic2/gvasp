@@ -1,6 +1,6 @@
 package:
   name: gvasp
-  version: 0.1.4.gamma
+  version: 0.1.4
 
 source:
   path: .
