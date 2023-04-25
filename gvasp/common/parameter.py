@@ -44,7 +44,12 @@ def str_prec(value):
 
 def list_mag(value):
     """transform MAGMOM in n*m format to list"""
-    return value
+    _magmom = []
+    for item in value.split():
+        atom_num, atom_spin = item.split("*")
+        atom_num, atom_spin = int(atom_num), float(atom_spin)
+        _magmom += [atom_spin] * atom_num
+    return _magmom
 
 
 def int_float(value):

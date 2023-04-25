@@ -214,7 +214,10 @@ class BaseTask(metaclass=abc.ABCMeta):
             self.incar.NELECT = t_valence + float(nelect)
 
         if mag:
-            self.incar.MAGMOM = list(self.structure.atoms.spin)
+            try:
+                self.incar.MAGMOM = list(self.structure.atoms.spin)
+            except TypeError:
+                logger.warning("Can't obtain the `MAGMOM` field, setting `MAG calculation` failed")
 
         if hse:
             self.incar.LHFCALC = True
@@ -258,6 +261,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         else:
             self.title = f"continuous-{self.__class__.__name__}"
             self.structure = CONTCAR("CONTCAR").structure
+            self.structure.atoms.spin = self.incar.MAGMOM
             self.elements = list(self.structure.atoms.size.keys())
             self.structure.write_POSCAR(name="POSCAR")
 

@@ -152,8 +152,6 @@ def formatter(parameters):
                             f.write(f"  {param} = {'  '.join(list(map(str, self.__dict__[param])))} \n")
                     elif param == 'MAGMOM':
                         with open(name, "a+") as f:
-                            # magmom = " ".join(
-                            #     [f"{num}*{mag}" for mag, num in list(Counter(self.__dict__['MAGMOM']).items())])
                             magmom = [[]]
                             for spin in self.__dict__['MAGMOM']:
                                 if spin in magmom[-1] or not len(magmom[-1]):
