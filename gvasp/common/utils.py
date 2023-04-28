@@ -119,3 +119,10 @@ def is_subset_recommend_pot(element):
             return key
     else:
         return False
+
+
+def str_list(_list):
+    """
+    Transform the list to strings with \s delimiter
+    """
+    return " ".join(map(str, _list))

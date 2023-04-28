@@ -306,12 +306,12 @@ class INCAR(MetaFile, Parameter):
 
 
 class KPOINTS(MetaFile):
-    def __init__(self, name, task='opt'):
+    def __init__(self, name, task='opt', parse=True):
         super(KPOINTS, self).__init__(name=name)
         self.task = task
         self.title, self.strategy, self.center, self.number, self.weight = None, None, None, None, None
 
-        self._parse()
+        self._parse() if parse else None
 
     def _parse(self):
         if self.task in ['opt']:
@@ -322,12 +322,12 @@ class KPOINTS(MetaFile):
             self.weight = list(map(float, self.strings[4].split()))
 
     def write(self, name):
-        with open(name) as f:
-            f.write(self.title)
-            f.write(self.strategy)
-            f.write(self.center)
-            f.write(self.number)
-            f.write(self.weight)
+        with open(name, 'w') as f:
+            f.write(self.title + " \n")
+            f.write(self.strategy + " \n")
+            f.write(self.center + " \n")
+            f.write(" ".join(map(str, self.number)) + " \n")
+            f.write(" ".join(map(str, self.weight)) + " \n")
 
     @staticmethod
     def min_number(structure: Structure, length=20.0):
@@ -340,6 +340,13 @@ class KPOINTS(MetaFile):
         if (vacuum) >= 5:
             kpoints[2] = 1
         return kpoints
+
+    @staticmethod
+    def from_strings(strings):
+        _kpoints = KPOINTS(name="KPOINTS", parse=False)
+        _kpoints._strings = strings
+        _kpoints._parse()
+        return _kpoints
 
 
 class POTCAR(MetaFile):
