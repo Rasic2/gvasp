@@ -25,8 +25,9 @@ logger = logging.getLogger(__name__)
 def write_wrapper(file):
     def inner(func):
         @wraps(func)
-        def wrapper(self, *args, **kargs):
-            func(self, *args, **kargs)
+        def wrapper(*args, **kargs):
+            self = args[0]
+            func(self, *args[1:], **kargs)
             if file == "INCAR":
                 self.incar.write(name=file)
             elif file == "KPOINTS":
@@ -39,8 +40,9 @@ def write_wrapper(file):
 
 def end_symbol(func):
     @wraps(func)
-    def wrapper(self, *args, **kargs):
-        func(self, *args, **kargs)
+    def wrapper(*args, **kargs):
+        self = args[0]
+        func(self, *args[1:], **kargs)
         if kargs.get("print_end", True):
             print(f"------------------------------------------------------------------")
 
@@ -130,11 +132,11 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_submit(gamma=gamma)
         self._generate_info(potential=potential)
 
-    def _generate_cdir(self, dir=None, files=None):
-        Path(dir).mkdir(exist_ok=True)
+    def _generate_cdir(self, directory=None, files=None):
+        Path(directory).mkdir(exist_ok=True)
         for file in files:
-            shutil.copy(file, dir)
-        os.chdir(dir)
+            shutil.copy(file, directory)
+        os.chdir(directory)
         self.incar = INCAR("INCAR")
 
     def _generate_info(self, potential):
@@ -347,13 +349,13 @@ class OptTask(BaseTask, Animatable):
         if low and print_end:
             print(f"{RED}low first{RESET}")
 
-    def _generate_cdir(self, dir="opt_cal", files=None, hse=False):
+    def _generate_cdir(self, directory="opt_cal", files=None, hse=False):
         if files is None:
             files = ["INCAR", "CONTCAR"]
 
         if hse:
-            dir = "hse"
-        super(OptTask, self)._generate_cdir(dir=dir, files=files)
+            directory = "hse"
+        super(OptTask, self)._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file="INCAR")
     def _generate_INCAR(self, low, vdw, sol, nelect, mag, hse, static):
@@ -368,7 +370,7 @@ class OptTask(BaseTask, Animatable):
             self.incar.PREC = "Low"
 
     @write_wrapper(file="KPOINTS")
-    def _generate_KPOINTS(self, low, gamma):
+    def _generate_KPOINTS(self, low=False, gamma=False):
         """
         Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
         """
@@ -434,10 +436,10 @@ class ChargeTask(BaseTask):
         self._generate_submit(analysis=analysis, gamma=gamma)
         self._generate_info(potential=potential)
 
-    def _generate_cdir(self, dir="chg_cal", files=None):
+    def _generate_cdir(self, directory="chg_cal", files=None):
         if files is None:
             files = ["INCAR", "CONTCAR"]
-        super(ChargeTask, self)._generate_cdir(dir=dir, files=files)
+        super(ChargeTask, self)._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file="INCAR")
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
@@ -516,10 +518,10 @@ class WorkFuncTask(BaseTask):
         super(WorkFuncTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, gamma=gamma,
                                            nelect=nelect, mag=mag, hse=hse, static=static)
 
-    def _generate_cdir(self, dir="workfunc", files=None):
+    def _generate_cdir(self, directory="workfunc", files=None):
         if files is None:
             files = ["INCAR", "CONTCAR"]
-        super(WorkFuncTask, self)._generate_cdir(dir=dir, files=files)
+        super(WorkFuncTask, self)._generate_cdir(directory=directory, files=files)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
@@ -552,10 +554,10 @@ class BandTask(BaseTask):
         super(BandTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, nelect=nelect,
                                        mag=mag, hse=hse, static=static)
 
-    def _generate_cdir(self, dir="band_cal", files=None):
+    def _generate_cdir(self, directory="band_cal", files=None):
         if files is None:
             files = ["INCAR", "CONTCAR", "CHGCAR"]
-        super(BandTask, self)._generate_cdir(dir=dir, files=files)
+        super(BandTask, self)._generate_cdir(directory=directory, files=files)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
@@ -620,10 +622,10 @@ class DOSTask(BaseTask):
         super(DOSTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, gamma=gamma,
                                       nelect=nelect, mag=mag, hse=hse, static=static)
 
-    def _generate_cdir(self, dir="dos_cal", files=None):
+    def _generate_cdir(self, directory="dos_cal", files=None):
         if files is None:
             files = ["INCAR", "CONTCAR", "CHGCAR"]
-        super(DOSTask, self)._generate_cdir(dir=dir, files=files)
+        super(DOSTask, self)._generate_cdir(directory=directory, files=files)
 
     @write_wrapper
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
