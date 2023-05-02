@@ -9,6 +9,7 @@ import traceback
 from pathlib import Path
 from typing import Iterable
 
+from gvasp.common.error import ArgsNotRegisteredError
 from gvasp.common.calculator import surface_energy, electrostatic_energy, thermo_adsorbent
 from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW, LOGO, BOLD
 from gvasp.common.figure import Figure
@@ -158,7 +159,7 @@ def main_permission():
             os.chmod(Path(RootDir) / file, stat.S_IRUSR)
 
 
-def exception_format(func):
+def main_format_debug(func):
     def wrapper(*args, **kwargs):
         if len(args):
             try:
@@ -184,7 +185,25 @@ def exception_format(func):
     return wrapper
 
 
-@exception_format
+def main_args_check(args):
+    """
+    Check Args is or not supported for specified task
+
+    Args:
+        args (argparse.Namespace): command-line args
+
+    """
+    
+    acceptable_args = {"submit-con-TS": []}
+    bool_args = [key for key, value in args.__dict__.items() if value is True]
+    args_key = args.which + "-" + args.task if 'task' in args else args.which
+
+    for arg in bool_args:
+        if arg not in acceptable_args[args_key]:
+            raise ArgsNotRegisteredError(f"`{args_key} task` doesn't have [{arg}] argument!!!")
+
+
+@main_format_debug
 def main(argv=None):
     init_root_logger(name="gvasp")
 
@@ -203,6 +222,8 @@ def main(argv=None):
         print(f"{BOLD}{LOGO}{RESET}")
 
     args = parser.parse_args(dargv)
+
+    main_args_check(args)
 
     if len(sys.argv) == 1:
         print(f"{BOLD}{LOGO}{RESET}")
