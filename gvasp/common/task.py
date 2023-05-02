@@ -15,7 +15,7 @@ from gvasp.common.base import Atom
 from gvasp.common.constant import GREEN, YELLOW, RESET, RED
 from gvasp.common.error import XSDFileNotFoundError, TooManyXSDFileError, ConstrainError
 from gvasp.common.file import POSCAR, OUTCAR, ARCFile, XSDFile, KPOINTS, POTCAR, XDATCAR, CHGCAR, AECCAR0, AECCAR2, \
-    CHGCAR_mag, INCAR, SubmitFile, CONTCAR
+    CHGCAR_mag, INCAR, SubmitFile, CONTCAR, Fort188File
 from gvasp.common.setting import WorkDir, ConfigManager
 from gvasp.neb.path import IdppPath, LinearPath
 
@@ -776,24 +776,57 @@ class ConTSTask(BaseTask, Animatable):
      Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
      """
 
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
+    @end_symbol
+    def generate(self, potential="PAW_PBE", continuous=False, low=False, print_end=True, vdw=False, sol=False,
+                 gamma=False, nelect=None, mag=False, hse=False, static=False):
         """
-        fully inherit BaseTask's generate
+        rewrite BaseTask's generate
         """
-        super(ConTSTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag,
-                                        hse=hse, static=static)
+        if continuous:
+            self._generate_cdir()
+        self._generate_POSCAR(continuous)
+        self._generate_KPOINTS(low=low, gamma=gamma)
+        self._generate_POTCAR(potential=potential)
+        self._generate_INCAR(low=low, vdw=vdw, sol=sol, nelect=nelect, mag=mag, hse=hse, static=static)
+        self._generate_submit(low=low, gamma=gamma)
+        self._generate_info(potential=potential)
+
+        if low and print_end:
+            print(f"{RED}low first{RESET}")
+
         self._generate_fort()
 
+    def _generate_cdir(self, directory="ts_cal", files=None):
+        if files is None:
+            files = ["INCAR", "CONTCAR", "fort.188"]
+
+        super(ConTSTask, self)._generate_cdir(directory=directory, files=files)
+
     @write_wrapper(file="INCAR")
-    def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
+    def _generate_INCAR(self, low, vdw, sol, nelect, mag, hse, static):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
             IBRION = 1
         """
-        super(ConTSTask, self)._generate_INCAR(vdw=vdw, sol=sol, nelect=nelect, mag=mag, hse=hse, static=static)
+        super(ConTSTask, self)._generate_INCAR(vdw, sol, nelect, mag, hse, static)
         self.incar.IBRION = 1
+
+        self.incar._ENCUT = self.incar.ENCUT
+        self.incar._PREC = self.incar.PREC
+        if low:
+            self.incar.ENCUT = 300.
+            self.incar.PREC = "Low"
+
+    @write_wrapper(file="KPOINTS")
+    def _generate_KPOINTS(self, low=False, gamma=False):
+        """
+        Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
+        """
+        super(ConTSTask, self)._generate_KPOINTS(gamma=gamma)
+        self._kpoints = copy.deepcopy(self.kpoints)
+        if low:
+            self.kpoints.number = [1, 1, 1]
 
     def _generate_fort(self):
         constrain_atom = [atom for atom in self.structure.atoms if atom.constrain]
@@ -812,6 +845,42 @@ class ConTSTask(BaseTask, Animatable):
 
         print(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
               f"distance = {distance:.4f}")
+
+    def _generate_submit(self, low=False, gamma=False, analysis=False):
+        """
+         generate job.submit automatically
+         """
+        super(ConTSTask, self)._generate_submit(low=low, analysis=analysis, gamma=gamma)
+
+        run_command = SubmitFile(self.submit).run_line
+        run_command_std = run_command.replace("EXEC", "{EXEC/vasp_gam/vasp_std}")
+
+        fort188 = Fort188File("fort.188")
+        constrain = fort188.constrain
+
+        with open("submit.script", "a+") as g:
+            if low:
+                g.write("\n"
+                        "#----------/Low Option/----------# \n"
+                        "success=`grep accuracy OUTCAR | wc -l` \n"
+                        "if [ $success -ne 1 ];then \n"
+                        "  echo 'Con-TS Task Failed!' \n"
+                        "  exit 1 \n"
+                        "fi \n"
+                        "cp POSCAR POSCAR_300 \n"
+                        "cp CONTCAR CONTCAR_300 \n"
+                        "cp fort.188 fort.188_300 \n"
+                        "cp OUTCAR OUTCAR_300 \n"
+                        "mv CONTCAR POSCAR \n"
+                        "dis=`grep 'distance after opt' OUTCAR | tail -1 | awk '{print $NF}'` \n"
+                        f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
+                        f"sed -i 's/PREC = Low/PREC = {self.incar._PREC}/' INCAR\n"
+                        f"sed -i 's/1 1 1/{str_list(self._kpoints.number)}/' KPOINTS\n"
+                        f'sed -i "6c\{constrain[0]} {constrain[1]} $dis" fort.188\n'
+                        f"\n"
+                        f"{run_command_std}"
+                        f"\n"
+                        f"{self.finish}")
 
     @staticmethod
     def movie(name="movie.arc"):

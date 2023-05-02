@@ -193,8 +193,8 @@ def main_args_check(args):
         args (argparse.Namespace): command-line args
 
     """
-    
-    acceptable_args = {"submit-con-TS": []}
+
+    acceptable_args = {"submit-con-TS": ["low"]}
     bool_args = [key for key, value in args.__dict__.items() if value is True]
     args_key = args.which + "-" + args.task if 'task' in args else args.which
 
@@ -253,8 +253,7 @@ def main(argv=None):
             print(f"5. Reset Done")
 
         elif args.which == 'submit':  # submit task
-            normal_tasks = {"con-TS": ConTSTask().generate,
-                            "freq": FreqTask().generate,
+            normal_tasks = {"freq": FreqTask().generate,
                             "md": MDTask().generate,
                             "stm": STMTask().generate,
                             "dimer": DimerTask().generate}
@@ -292,6 +291,9 @@ def main(argv=None):
                 else:
                     logger.info(f"generate `dos` task")
                     DOSTask().generate(continuous=args.continuous, **normal_kargs)
+            elif args.task == "con-TS":
+                logger.info(f"generate `con-TS` task")
+                ConTSTask().generate(continuous=args.continuous, low=args.low, **normal_kargs)
             elif args.task == "neb":
                 if args.ini_poscar is None or args.fni_poscar is None:
                     raise AttributeError(None, "ini_poscar and fni_poscar arguments must be set!")

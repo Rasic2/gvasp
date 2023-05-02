@@ -120,6 +120,13 @@ class SubmitFile(MetaFile):
         return
 
 
+class Fort188File(MetaFile):
+
+    @property
+    def constrain(self):
+        return self.strings[5].split()
+
+
 def formatter(parameters):
     """
     formatter wrapper: format the INCAR parameters
