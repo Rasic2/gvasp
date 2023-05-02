@@ -1,6 +1,7 @@
 import copy
 from collections import Counter
 from itertools import groupby
+from math import cos, sin
 from pathlib import Path
 from typing import List, Any
 
@@ -33,6 +34,16 @@ class Lattice(object):
 
     def __repr__(self):
         return f"{self.matrix}"
+
+    @property
+    def strings(self) -> str:
+        """
+        Transform a Lattice instance to string
+
+        Returns:
+            strings (str): Lattice instance in string format
+        """
+        return "".join([" ".join([f"{ii:>9.6f}" for ii in item]) + "\n" for item in self.matrix])
 
     @property
     def length(self) -> np.ndarray:
@@ -78,6 +89,27 @@ class Lattice(object):
         return np.linalg.inv(self.matrix)
 
     @staticmethod
+    def arc_lattice(lattice):
+        """
+        Construct a Arc Lattice instance from lattice
+
+        Args:
+            lattice (Lattice): Lattice instance
+
+        Returns:
+            arc lattice (Lattice): Lattice instance
+        """
+        la, lb, lc = lattice.length
+        alpha, beta, gamma = lattice.angle / 180. * np.pi
+        matrix = np.array([[la, 0., 0.],
+                           [lb * cos(gamma), lb * sin(gamma), 0.],
+                           [lc * cos(beta), lc * (cos(alpha) - cos(beta) * cos(gamma)) / sin(gamma),
+                            lc * (1 + 2 * cos(gamma) * cos(beta) * cos(alpha) - cos(alpha) ** 2 - cos(beta) ** 2 - cos(
+                                gamma) ** 2) ** 0.5 / sin(gamma)]
+                           ])
+        return Lattice(matrix)
+
+    @staticmethod
     def from_string(string):
         """
         Construct a Lattice instance from string
@@ -112,16 +144,6 @@ class Lattice(object):
         with open(name) as f:
             cfg = f.readlines()
         return Lattice.from_string(cfg[2:5])
-
-    @property
-    def strings(self) -> str:
-        """
-        Transform a Lattice instance to string
-
-        Returns:
-            strings (str): Lattice instance in string format
-        """
-        return "".join([" ".join([f"{ii:>9.6f}" for ii in item]) + "\n" for item in self.matrix])
 
 
 class Atom(object):
