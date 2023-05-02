@@ -788,13 +788,12 @@ class ConTSTask(BaseTask, Animatable):
         self._generate_KPOINTS(low=low, gamma=gamma)
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR(low=low, vdw=vdw, sol=sol, nelect=nelect, mag=mag, hse=hse, static=static)
+        self._generate_fort()
         self._generate_submit(low=low, gamma=gamma)
         self._generate_info(potential=potential)
 
         if low and print_end:
             print(f"{RED}low first{RESET}")
-
-        self._generate_fort()
 
     def _generate_cdir(self, directory="ts_cal", files=None):
         if files is None:
@@ -843,8 +842,8 @@ class ConTSTask(BaseTask, Animatable):
             f.write(f"{constrain_atom[0].order + 1} {constrain_atom[1].order + 1} {distance:.4f}\n")
             f.write("0 \n")
 
-        print(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
-              f"distance = {distance:.4f}")
+        logger.info(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
+                    f"distance = {distance:.4f}")
 
     def _generate_submit(self, low=False, gamma=False, analysis=False):
         """
