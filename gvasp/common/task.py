@@ -307,28 +307,37 @@ class BaseTask(metaclass=abc.ABCMeta):
             os.remove("temp.sh")
 
 
-class OutputTask(object):
-    @staticmethod
-    def output(name):
-        """
-        Transform the results to .xsd file
-        """
-
-        XSDFile.write(contcar="CONTCAR", outcar="OUTCAR", name=name)
-
-
 class Animatable(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
     def movie(name):
         """
+        Abstractmethod: Generate the *.arc file to be loaded by Material Studio
+
+        Args:
+            name (str): the name of the output *.arc file
+
+        """
+        pass
+
+
+class XDATMovie(Animatable):
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__name__ == 'XDATMovie':
+            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
+        return super(XDATMovie, cls).__new__(cls)
+
+    @staticmethod
+    def movie(name="movie.arc"):
+        """
         make arc file to visualize the optimization steps
         """
         XDATCAR("XDATCAR").movie(name=name)
 
 
-class OptTask(BaseTask, Animatable):
+class OptTask(BaseTask, XDATMovie):
     """
     Optimization task manager, subclass of BaseTask
     """
@@ -408,13 +417,6 @@ class OptTask(BaseTask, Animatable):
                         f"{run_command_std}"
                         f"\n"
                         f"{self.finish}")
-
-    @staticmethod
-    def movie(name="movie.arc"):
-        """
-        fully inherit BaseTask's movie
-        """
-        Animatable.movie(name=name)
 
 
 class ChargeTask(BaseTask):
@@ -690,7 +692,7 @@ class FreqTask(BaseTask, Animatable):
         outcar.animation_freq(freq=freq)
 
 
-class MDTask(BaseTask, Animatable):
+class MDTask(BaseTask, XDATMovie):
     """
      ab-initio molecular dynamics (AIMD) calculation task manager, subclass of BaseTask
      """
@@ -724,13 +726,6 @@ class MDTask(BaseTask, Animatable):
         self.incar.MDALGO = 2
         self.incar.TEBEG = 300.
         self.incar.TEEND = 300.
-
-    @staticmethod
-    def movie(name="movie.arc"):
-        """
-        fully inherit BaseTask's movie
-        """
-        super().movie(name=name)
 
 
 class STMTask(BaseTask):
@@ -771,7 +766,7 @@ class STMTask(BaseTask):
         self.incar.LSEPK = False
 
 
-class ConTSTask(BaseTask, Animatable):
+class ConTSTask(BaseTask, XDATMovie):
     """
      Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
      """
@@ -880,13 +875,6 @@ class ConTSTask(BaseTask, Animatable):
                         f"{run_command_std}"
                         f"\n"
                         f"{self.finish}")
-
-    @staticmethod
-    def movie(name="movie.arc"):
-        """
-        fully inherit BaseTask's movie
-        """
-        super().movie(name=name)
 
 
 class NEBTask(BaseTask, Animatable):
@@ -1047,7 +1035,7 @@ class NEBTask(BaseTask, Animatable):
         ARCFile.write(name=name, structure=structures, lattice=structures[0].lattice)
 
 
-class DimerTask(BaseTask, Animatable):
+class DimerTask(BaseTask, XDATMovie):
     def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
                  mag=False, hse=False, static=False):
         """
@@ -1081,10 +1069,6 @@ class DimerTask(BaseTask, Animatable):
         self.incar.DFNMax = 1.
         self.incar.DFNMin = 0.01
         self.incar.IOPT = 2
-
-    @staticmethod
-    def movie(name="movie.arc"):
-        super().movie(name=name)
 
 
 class SequentialTask(object):
@@ -1189,3 +1173,18 @@ class SequentialTask(object):
 
         if self.end not in ['opt', 'chg', 'wf', 'dos']:
             raise TypeError(f"Unsupported Sequential Task to {self.end}, should be [opt, chg, wf, dos]")
+
+
+class OutputTask(object):
+    @staticmethod
+    def output(name):
+        """
+        Transform the results to .xsd file
+        """
+
+        XSDFile.write(contcar="CONTCAR", outcar="OUTCAR", name=name)
+
+
+if __name__ == '__main__':
+    xdatmovie = XDATMovie()
+    pass
