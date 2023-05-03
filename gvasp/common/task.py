@@ -130,6 +130,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_KPOINTS(low=low, gamma=gamma, points=points)
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR(low=low, vdw=vdw, sol=sol, nelect=nelect, mag=mag, hse=hse, static=static)
+        self._generate_fort()
         self._generate_submit(low=low, analysis=analysis, gamma=gamma)
         self._generate_info(potential=potential)
         if low and print_end:
@@ -310,6 +311,13 @@ class BaseTask(metaclass=abc.ABCMeta):
             os.system("bash temp.sh")
             os.remove("temp.sh")
 
+    def _generate_fort(self):
+        """
+        Only Valid for Con-TS Task
+
+        """
+        pass
+
 
 class Animatable(metaclass=abc.ABCMeta):
 
@@ -390,11 +398,11 @@ class OptTask(NormalTask, XDATMovie):
         if low:
             self.kpoints.number = [1, 1, 1]
 
-    def _generate_submit(self, low=False, gamma=False, analysis=False):
+    def _generate_submit(self, low=False, **kargs):
         """
          generate job.submit automatically
          """
-        super(OptTask, self)._generate_submit(low=low, analysis=analysis, gamma=gamma)
+        super(OptTask, self)._generate_submit(low=low, **kargs)
 
         run_command = SubmitFile(self.submit).run_line
         run_command_std = run_command.replace("EXEC", "{EXEC/vasp_gam/vasp_std}")
@@ -420,12 +428,93 @@ class OptTask(NormalTask, XDATMovie):
                         f"{self.finish}")
 
 
+class ConTSTask(OptTask, XDATMovie):
+    """
+     Constrain transition state (Con-TS) calculation task manager, subclass of NormalTask
+     """
+
+    def _generate_cdir(self, directory="ts_cal", files=None, **kargs):
+        if files is None:
+            files = ["INCAR", "CONTCAR", "fort.188"]
+
+        super(ConTSTask, self)._generate_cdir(directory=directory, files=files)
+
+    @write_wrapper(file="INCAR")
+    def _generate_INCAR(self, low=False, **kargs):
+        """
+        Inherit OptTask's _generate_INCAR, modify parameters and rewrite to INCAR
+        parameters setting:
+            IBRION = 1
+        """
+        super(ConTSTask, self)._generate_INCAR(low=low, **kargs)
+        self.incar.IBRION = 1
+
+    def _generate_fort(self):
+        """
+        Implement <_generate_fort method> => generate the fort.188 file
+
+        """
+
+        constrain_atom = [atom for atom in self.structure.atoms if atom.constrain]
+        if len(constrain_atom) != 2:
+            raise ConstrainError("Number of constrain atoms should equal to 2")
+
+        distance = Atom.distance(constrain_atom[0], constrain_atom[1], lattice=self.structure.lattice)
+        with open("fort.188", "w") as f:
+            f.write("1 \n")
+            f.write("3 \n")
+            f.write("6 \n")
+            f.write("3 \n")
+            f.write("0.03 \n")
+            f.write(f"{constrain_atom[0].order + 1} {constrain_atom[1].order + 1} {distance:.4f}\n")
+            f.write("0 \n")
+
+        logger.info(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
+                    f"distance = {distance:.4f}")
+
+    def _generate_submit(self, low=False, **kargs):
+        """
+         generate job.submit automatically
+         """
+        super(OptTask, self)._generate_submit(low=low, **kargs)
+
+        run_command = SubmitFile(self.submit).run_line
+        run_command_std = run_command.replace("EXEC", "{EXEC/vasp_gam/vasp_std}")
+
+        fort188 = Fort188File("fort.188")
+        constrain = fort188.constrain
+
+        with open("submit.script", "a+") as g:
+            if low:
+                g.write("\n"
+                        "#----------/Low Option/----------# \n"
+                        "success=`grep accuracy OUTCAR | wc -l` \n"
+                        "if [ $success -ne 1 ];then \n"
+                        "  echo 'Con-TS Task Failed!' \n"
+                        "  exit 1 \n"
+                        "fi \n"
+                        "cp POSCAR POSCAR_300 \n"
+                        "cp CONTCAR CONTCAR_300 \n"
+                        "cp fort.188 fort.188_300 \n"
+                        "cp OUTCAR OUTCAR_300 \n"
+                        "mv CONTCAR POSCAR \n"
+                        "dis=`grep 'distance after opt' OUTCAR | tail -1 | awk '{print $NF}'` \n"
+                        f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
+                        f"sed -i 's/PREC = Low/PREC = {self.incar._PREC}/' INCAR\n"
+                        f"sed -i 's/1 1 1/{str_list(self._kpoints.number)}/' KPOINTS\n"
+                        f'sed -i "6c\{constrain[0]} {constrain[1]} $dis" fort.188\n'
+                        f"\n"
+                        f"{run_command_std}"
+                        f"\n"
+                        f"{self.finish}")
+
+
 class ChargeTask(NormalTask):
     """
     Charge calculation task manager, subclass of NormalTask
     """
 
-    def _generate_cdir(self, directory="chg_cal", files=None, hse=False):
+    def _generate_cdir(self, directory="chg_cal", files=None, **kargs):
         if files is None:
             files = ["INCAR", "CONTCAR"]
         super(ChargeTask, self)._generate_cdir(directory=directory, files=files)
@@ -702,117 +791,6 @@ class STMTask(NormalTask):
         self.incar.EINT = 5.
         self.incar.LSEPB = False
         self.incar.LSEPK = False
-
-
-class ConTSTask(BaseTask, XDATMovie):
-    """
-     Constrain transition state (Con-TS) calculation task manager, subclass of BaseTask
-     """
-
-    @end_symbol
-    def generate(self, potential="PAW_PBE", continuous=False, low=False, print_end=True, vdw=False, sol=False,
-                 gamma=False, nelect=None, mag=False, hse=False, static=False):
-        """
-        rewrite BaseTask's generate
-        """
-        if continuous:
-            self._generate_cdir()
-        self._generate_POSCAR(continuous)
-        self._generate_KPOINTS(low=low, gamma=gamma)
-        self._generate_POTCAR(potential=potential)
-        self._generate_INCAR(low=low, vdw=vdw, sol=sol, nelect=nelect, mag=mag, hse=hse, static=static)
-        self._generate_fort()
-        self._generate_submit(low=low, gamma=gamma)
-        self._generate_info(potential=potential)
-
-        if low and print_end:
-            print(f"{RED}low first{RESET}")
-
-    def _generate_cdir(self, directory="ts_cal", files=None, hse=False):
-        if files is None:
-            files = ["INCAR", "CONTCAR", "fort.188"]
-
-        super(ConTSTask, self)._generate_cdir(directory=directory, files=files)
-
-    @write_wrapper(file="INCAR")
-    def _generate_INCAR(self, low=False, **kargs):
-        """
-        Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
-        parameters setting:
-            IBRION = 1
-        """
-        super(ConTSTask, self)._generate_INCAR(low=low, **kargs)
-        self.incar.IBRION = 1
-
-        self.incar._ENCUT = self.incar.ENCUT
-        self.incar._PREC = self.incar.PREC
-        if low:
-            self.incar.ENCUT = 300.
-            self.incar.PREC = "Low"
-
-    @write_wrapper(file="KPOINTS")
-    def _generate_KPOINTS(self, low=False, gamma=False):
-        """
-        Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
-        """
-        super(ConTSTask, self)._generate_KPOINTS(gamma=gamma)
-        self._kpoints = copy.deepcopy(self.kpoints)
-        if low:
-            self.kpoints.number = [1, 1, 1]
-
-    def _generate_fort(self):
-        constrain_atom = [atom for atom in self.structure.atoms if atom.constrain]
-        if len(constrain_atom) != 2:
-            raise ConstrainError("Number of constrain atoms should equal to 2")
-
-        distance = Atom.distance(constrain_atom[0], constrain_atom[1], lattice=self.structure.lattice)
-        with open("fort.188", "w") as f:
-            f.write("1 \n")
-            f.write("3 \n")
-            f.write("6 \n")
-            f.write("3 \n")
-            f.write("0.03 \n")
-            f.write(f"{constrain_atom[0].order + 1} {constrain_atom[1].order + 1} {distance:.4f}\n")
-            f.write("0 \n")
-
-        logger.info(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
-                    f"distance = {distance:.4f}")
-
-    def _generate_submit(self, low=False, gamma=False, analysis=False):
-        """
-         generate job.submit automatically
-         """
-        super(ConTSTask, self)._generate_submit(low=low, analysis=analysis, gamma=gamma)
-
-        run_command = SubmitFile(self.submit).run_line
-        run_command_std = run_command.replace("EXEC", "{EXEC/vasp_gam/vasp_std}")
-
-        fort188 = Fort188File("fort.188")
-        constrain = fort188.constrain
-
-        with open("submit.script", "a+") as g:
-            if low:
-                g.write("\n"
-                        "#----------/Low Option/----------# \n"
-                        "success=`grep accuracy OUTCAR | wc -l` \n"
-                        "if [ $success -ne 1 ];then \n"
-                        "  echo 'Con-TS Task Failed!' \n"
-                        "  exit 1 \n"
-                        "fi \n"
-                        "cp POSCAR POSCAR_300 \n"
-                        "cp CONTCAR CONTCAR_300 \n"
-                        "cp fort.188 fort.188_300 \n"
-                        "cp OUTCAR OUTCAR_300 \n"
-                        "mv CONTCAR POSCAR \n"
-                        "dis=`grep 'distance after opt' OUTCAR | tail -1 | awk '{print $NF}'` \n"
-                        f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
-                        f"sed -i 's/PREC = Low/PREC = {self.incar._PREC}/' INCAR\n"
-                        f"sed -i 's/1 1 1/{str_list(self._kpoints.number)}/' KPOINTS\n"
-                        f'sed -i "6c\{constrain[0]} {constrain[1]} $dis" fort.188\n'
-                        f"\n"
-                        f"{run_command_std}"
-                        f"\n"
-                        f"{self.finish}")
 
 
 class NEBTask(BaseTask, Animatable):
