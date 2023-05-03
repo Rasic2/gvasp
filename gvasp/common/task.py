@@ -32,6 +32,9 @@ def write_wrapper(file):
                 self.incar.write(name=file)
             elif file == "KPOINTS":
                 self.kpoints.write(name=file)
+            elif file == "submit.script":
+                with open(file, "w") as f:
+                    f.write(self.submit.submit2write)
 
         return wrapper
 
@@ -76,7 +79,8 @@ class BaseTask(metaclass=abc.ABCMeta):
             self.UValue = yaml.safe_load(f.read())
 
         # set submit template
-        self.submit = self.Scheduler if self._search_suffix(".submit") is None else self._search_suffix(".submit")
+        self._submit = self.Scheduler if self._search_suffix(".submit") is None else self._search_suffix(".submit")
+        self.submit = SubmitFile(self._submit)
         self.finish = None
 
     @staticmethod
@@ -177,7 +181,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         print(f"{GREEN}Job Name: {self.title}{RESET}")
         print(f"{YELLOW}INCAR template: {self._incar}{RESET}")
         print(f"{YELLOW}UValue template: {self.UValuePath}{RESET}")
-        print(f"{YELLOW}Submit template: {self.submit}{RESET}")
+        print(f"{YELLOW}Submit template: {self._submit}{RESET}")
 
         if getattr(self.incar, "IVDW", None) is not None:
             print(f"{RED}--> VDW-correction: IVDW = {self.incar.IVDW}{RESET}")
@@ -291,25 +295,22 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.valence = potcar.valence
         potcar.write(name="POTCAR")
 
-    def _generate_submit(self, gamma=False, low=False, **kargs):
+    @write_wrapper(file="submit.script")
+    def _generate_submit(self, gamma=False, **kargs):
         """
          generate job.submit automatically
          """
-        content = SubmitFile(self.submit).strings
-        self.finish = SubmitFile(self.submit).finish_line
+        kpoints = getattr(self, '_kpoints', self.kpoints)
+        gamma = True if kpoints.number == [1, 1, 1] else gamma
 
-        with open("submit.script", "w") as g:
-            for line in content:
-                if line.startswith("#SBATCH -J"):
-                    g.write(f"#SBATCH -J {self.title} \n")
-                else:
-                    g.write(line)
-
-        if gamma or low:
-            with open("temp.sh", "w") as f:
-                f.write("sed -i 's/vasp_std/vasp_gam/g' submit.script \n")
-            os.system("bash temp.sh")
-            os.remove("temp.sh")
+        self.submit.title = self.title
+        self.submit.task = self.__class__.__name__.replace("Task", "")
+        self.submit.incar = self.incar
+        self.submit.kpoints = kpoints
+        self.submit = self.submit.build
+        self.submit.vasp_line = self.submit.vasp_gam_line if gamma else self.submit.vasp_std_line
+        self.submit.submit2write = self.submit.pipe(['head_lines', '\n', 'env_lines', '\n', 'vasp_line',
+                                                     'run_line', '\n', 'finish_line', '\n'])
 
     def _generate_fort(self):
         """
@@ -398,34 +399,22 @@ class OptTask(NormalTask, XDATMovie):
         if low:
             self.kpoints.number = [1, 1, 1]
 
+    @write_wrapper(file="submit.script")
     def _generate_submit(self, low=False, **kargs):
         """
-         generate job.submit automatically
+         Rewrite NormalTask's _generate_submit
          """
         super(OptTask, self)._generate_submit(low=low, **kargs)
 
-        run_command = SubmitFile(self.submit).run_line
-        run_command_std = run_command.replace("EXEC", "{EXEC/vasp_gam/vasp_std}")
-        with open("submit.script", "a+") as g:
-            if low:
-                g.write("\n"
-                        "#----------/Low Option/----------# \n"
-                        "success=`grep accuracy OUTCAR | wc -l` \n"
-                        "if [ $success -ne 1 ];then \n"
-                        "  echo 'Optimization Task Failed!' \n"
-                        "  exit 1 \n"
-                        "fi \n"
-                        "cp POSCAR POSCAR_300 \n"
-                        "cp CONTCAR POSCAR \n"
-                        "cp OUTCAR OUTCAR_300 \n"
-                        "mv CONTCAR CONTCAR_300 \n"
-                        f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
-                        f"sed -i 's/PREC = Low/PREC = {self.incar._PREC}/' INCAR\n"
-                        f"sed -i 's/1 1 1/{str_list(self._kpoints.number)}/' KPOINTS\n"
-                        f"\n"
-                        f"{run_command_std}"
-                        f"\n"
-                        f"{self.finish}")
+        if low:
+            self.submit.submit2write = self.submit.pipe(['head_lines', '\n', 'env_lines', '\n',
+                                                         f'#{"/Low Option/".center(50, "-")}# \n',
+                                                         'vasp_gam_line', 'run_line', '\n',
+                                                         f'#{"/Normal Prepare/".center(50, "-")}# \n',
+                                                         'check_success_lines', 'backup_lines', 'modify_lines', '\n',
+                                                         f'#{"/Normal Option/".center(50, "-")}# \n',
+                                                         'vasp_line', 'run_line', '\n',
+                                                         'finish_line', '\n'])
 
 
 class ConTSTask(OptTask, XDATMovie):
@@ -474,39 +463,14 @@ class ConTSTask(OptTask, XDATMovie):
 
     def _generate_submit(self, low=False, **kargs):
         """
-         generate job.submit automatically
-         """
-        super(OptTask, self)._generate_submit(low=low, **kargs)
+         Add constrain information to OptTask._generate_submit
 
-        run_command = SubmitFile(self.submit).run_line
-        run_command_std = run_command.replace("EXEC", "{EXEC/vasp_gam/vasp_std}")
+         """
 
         fort188 = Fort188File("fort.188")
-        constrain = fort188.constrain
+        self.submit.constrain = fort188.constrain
 
-        with open("submit.script", "a+") as g:
-            if low:
-                g.write("\n"
-                        "#----------/Low Option/----------# \n"
-                        "success=`grep accuracy OUTCAR | wc -l` \n"
-                        "if [ $success -ne 1 ];then \n"
-                        "  echo 'Con-TS Task Failed!' \n"
-                        "  exit 1 \n"
-                        "fi \n"
-                        "cp POSCAR POSCAR_300 \n"
-                        "cp CONTCAR CONTCAR_300 \n"
-                        "cp fort.188 fort.188_300 \n"
-                        "cp OUTCAR OUTCAR_300 \n"
-                        "mv CONTCAR POSCAR \n"
-                        "dis=`grep 'distance after opt' OUTCAR | tail -1 | awk '{print $NF}'` \n"
-                        f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n"
-                        f"sed -i 's/PREC = Low/PREC = {self.incar._PREC}/' INCAR\n"
-                        f"sed -i 's/1 1 1/{str_list(self._kpoints.number)}/' KPOINTS\n"
-                        f'sed -i "6c\{constrain[0]} {constrain[1]} $dis" fort.188\n'
-                        f"\n"
-                        f"{run_command_std}"
-                        f"\n"
-                        f"{self.finish}")
+        super(ConTSTask, self)._generate_submit(low=low, **kargs)
 
 
 class ChargeTask(NormalTask):
@@ -533,6 +497,7 @@ class ChargeTask(NormalTask):
         self.incar.LAECHG = True
         self.incar.LCHARG = True
 
+    @write_wrapper(file="submit.script")
     def _generate_submit(self, analysis=False, gamma=False, low=False):
         """
          generate job.submit automatically
