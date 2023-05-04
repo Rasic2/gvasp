@@ -114,7 +114,7 @@ class SubmitFile(MetaFile):
         self.head_lines, self.env_lines, self.run_line, self.finish_line = None, None, None, None
         self.vasp_std_line, self.vasp_gam_line = None, None
 
-        self.submit2write = ""
+        self.submit2write = []
 
     @property
     def build(self):

@@ -34,7 +34,7 @@ def write_wrapper(file):
                 self.kpoints.write(name=file)
             elif file == "submit.script":
                 with open(file, "w") as f:
-                    f.write(self.submit.submit2write)
+                    f.write(self.submit.pipe(self.submit.submit2write))
 
         return wrapper
 
@@ -137,7 +137,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_fort()
         self._generate_submit(low=low, analysis=analysis, gamma=gamma)
         self._generate_info(potential=potential)
-        if low and print_end:
+        if low and print_end and self.__class__.__name__ in ['OptTask', 'ConTSTask']:
             print(f"{RED}low first{RESET}")
 
     def _generate_cdir(self, directory=None, files=None, **kargs):
@@ -309,8 +309,8 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.submit.kpoints = kpoints
         self.submit = self.submit.build
         self.submit.vasp_line = self.submit.vasp_gam_line if gamma else self.submit.vasp_std_line
-        self.submit.submit2write = self.submit.pipe(['head_lines', '\n', 'env_lines', '\n', 'vasp_line',
-                                                     'run_line', '\n', 'finish_line', '\n'])
+        self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n', 'vasp_line',
+                                    'run_line', '\n', 'finish_line']
 
     def _generate_fort(self):
         """
@@ -407,14 +407,14 @@ class OptTask(NormalTask, XDATMovie):
         super(OptTask, self)._generate_submit(low=low, **kargs)
 
         if low:
-            self.submit.submit2write = self.submit.pipe(['head_lines', '\n', 'env_lines', '\n',
-                                                         f'#{"/Low Option/".center(50, "-")}# \n',
-                                                         'vasp_gam_line', 'run_line', '\n',
-                                                         f'#{"/Normal Prepare/".center(50, "-")}# \n',
-                                                         'check_success_lines', 'backup_lines', 'modify_lines', '\n',
-                                                         f'#{"/Normal Option/".center(50, "-")}# \n',
-                                                         'vasp_line', 'run_line', '\n',
-                                                         'finish_line', '\n'])
+            self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n',
+                                        f'#{"/Low Option/".center(50, "-")}# \n',
+                                        'vasp_gam_line', 'run_line', '\n',
+                                        f'#{"/Normal Prepare/".center(50, "-")}# \n',
+                                        'check_success_lines', 'backup_lines', 'modify_lines', '\n',
+                                        f'#{"/Normal Option/".center(50, "-")}# \n',
+                                        'vasp_line', 'run_line', '\n',
+                                        'finish_line']
 
 
 class ConTSTask(OptTask, XDATMovie):
@@ -505,12 +505,14 @@ class ChargeTask(NormalTask):
         super(ChargeTask, self)._generate_submit(gamma=gamma)
 
         if analysis:
-            self.apply_analysis()
+            ChargeTask.apply_analysis(self.submit)
 
-    def apply_analysis(self):
-        self.submit.submit2write += self.submit.pipe([f'#{"/Charge Analysis Option/".center(50, "-")}# \n',
-                                                      'check_success_lines', 'bader_lines', '\n', 'spin_lines', '\n',
-                                                      'finish_line', '\n'])
+    @staticmethod
+    def apply_analysis(submit):
+        submit.submit2write.remove('finish_line')
+        submit.submit2write += [f'#{"/Charge Analysis Option/".center(50, "-")}# \n',
+                                'check_success_lines', 'bader_lines', '\n', 'spin_lines', '\n',
+                                'finish_line']
 
     @staticmethod
     def split():
