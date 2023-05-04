@@ -114,6 +114,8 @@ class SubmitFile(MetaFile):
         self.head_lines, self.env_lines, self.run_line, self.finish_line = None, None, None, None
         self.vasp_std_line, self.vasp_gam_line = None, None
 
+        self.submit2write = ""
+
     @property
     def build(self):
         _head, _env = [], []
@@ -172,6 +174,20 @@ class SubmitFile(MetaFile):
         if self.task == "ConTS":
             _lines.insert(0, "dis=`grep 'distance after opt' OUTCAR | tail -1 | awk '{print $NF}'` \n")
             _lines.insert(-1, f'sed -i "6c\{self.constrain[0]} {self.constrain[1]} $dis" fort.188\n')
+
+        return "".join(_lines)
+
+    @property
+    def bader_lines(self):
+        _lines = ["gvasp sum || chgsum.pl AECCAR0 AECCAR2 || return 1 \n",
+                  "bader CHGCAR -ref CHGCAR_sum \n"]
+
+        return "".join(_lines)
+
+    @property
+    def spin_lines(self):
+        _lines = ["gvasp split || chgsplit.pl CHGCAR || return 1 \n",
+                  "gvasp grd -d -1 || return 1 \n"]
 
         return "".join(_lines)
 

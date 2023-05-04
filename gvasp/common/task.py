@@ -505,23 +505,12 @@ class ChargeTask(NormalTask):
         super(ChargeTask, self)._generate_submit(gamma=gamma)
 
         if analysis:
-            ChargeTask.apply_analysis()
+            self.apply_analysis()
 
-    @staticmethod
-    def apply_analysis():
-        with open("submit.script", "a+") as g:
-            g.write("\n"
-                    "#----------/Charge Analysis Option/----------#\n"
-                    "success=`grep accuracy OUTCAR | wc -l` \n"
-                    "if [ $success -ne 1 ];then \n"
-                    "  echo 'Charge Task Failed!' \n"
-                    "  exit 1 \n"
-                    "fi \n"
-                    "gvasp sum || chgsum.pl AECCAR0 AECCAR2 || return 1 \n"
-                    "bader CHGCAR -ref CHGCAR_sum \n"
-                    "\n"
-                    "gvasp split || chgsplit.pl CHGCAR || return 1 \n"
-                    "gvasp grd -d -1 || return 1 \n")
+    def apply_analysis(self):
+        self.submit.submit2write += self.submit.pipe([f'#{"/Charge Analysis Option/".center(50, "-")}# \n',
+                                                      'check_success_lines', 'bader_lines', '\n', 'spin_lines', '\n',
+                                                      'finish_line', '\n'])
 
     @staticmethod
     def split():
@@ -964,8 +953,9 @@ class SequentialTask(object):
         task.generate(potential=potential, low=low, print_end=False, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect,
                       hse=hse, static=static)
 
-        run_command = SubmitFile("submit.script").run_line
-        finish_command = SubmitFile("submit.script").finish_line
+        submit = SubmitFile("submit.script").build
+        run_command = submit.run_line
+        finish_command = submit.finish_line
 
         if self.end == "chg" or self.end == "dos":
             low_string = "low first, " if low else ""
