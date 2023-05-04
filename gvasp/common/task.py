@@ -408,11 +408,11 @@ class OptTask(NormalTask, XDATMovie):
 
         if low:
             self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n',
-                                        f'#{"/Low Option/".center(50, "-")}# \n',
+                                        f'#{"/Low Calculation/".center(50, "-")}# \n',
                                         'vasp_gam_line', 'run_line', '\n',
                                         f'#{"/Normal Prepare/".center(50, "-")}# \n',
                                         'check_success_lines', 'backup_lines', 'modify_lines', '\n',
-                                        f'#{"/Normal Option/".center(50, "-")}# \n',
+                                        f'#{"/Normal Calculation/".center(50, "-")}# \n',
                                         'vasp_line', 'run_line', '\n',
                                         'finish_line']
 
@@ -509,10 +509,17 @@ class ChargeTask(NormalTask):
 
     @staticmethod
     def apply_analysis(submit):
-        submit.submit2write.remove('finish_line')
-        submit.submit2write += [f'#{"/Charge Analysis Option/".center(50, "-")}# \n',
-                                'check_success_lines', 'bader_lines', '\n', 'spin_lines', '\n',
-                                'finish_line']
+        try:
+            submit.submit2write.remove('finish_line')
+        except ValueError:
+            pass
+
+        submit._task, submit.task = submit.task, "Charge"
+        _check_success_lines = submit.pipe(['check_success_lines'])
+        submit.task = submit._task
+        submit.submit2write += [f'#{"/Charge Analysis Calculation/".center(50, "-")}# \n',
+                                f'{_check_success_lines}',
+                                'bader_lines', '\n', 'spin_lines', '\n', 'finish_line']
 
     @staticmethod
     def split():
@@ -947,95 +954,74 @@ class SequentialTask(object):
             end: specify the end task, optional: [opt, chg, dos]
         """
         self.end = end
+        self.submit = None
 
     @end_symbol
+    @write_wrapper(file="submit.script")
     def generate(self, potential="PAW_PBE", low=False, analysis=False, vdw=False, sol=False, gamma=False, nelect=None,
                  hse=False, static=False):
         task = OptTask()
         task.generate(potential=potential, low=low, print_end=False, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect,
                       hse=hse, static=static)
-
-        submit = SubmitFile("submit.script").build
-        run_command = submit.run_line
-        finish_command = submit.finish_line
+        self.submit = task.submit
 
         if self.end == "chg" or self.end == "dos":
             low_string = "low first, " if low else ""
             analysis_string = "apply analysis" if analysis else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + analysis_string + RESET)
-            with open("submit.script", "a+") as g:
-                g.write("\n"
-                        "#----------/Charge Option/----------# \n"
-                        "success=`grep accuracy OUTCAR | wc -l` \n"
-                        "if [ $success -ne 1 ];then \n"
-                        "  echo 'Optimization Task Failed!' \n"
-                        "  exit 1 \n"
-                        "fi \n"
-                        "mkdir chg_cal \n"
-                        "cp OUTCAR OUTCAR_backup \n"
-                        "cp INCAR KPOINTS POTCAR chg_cal \n"
-                        "cp CONTCAR chg_cal/POSCAR \n"
-                        f"sed -i '/IBRION/c\  IBRION = 1' chg_cal/INCAR \n"
-                        f"sed -i '/LCHARG/c\  LCHARG = .TRUE.' chg_cal/INCAR \n"
-                        f"sed -i '/LCHARG/a\  LAECHG = .TRUE.' chg_cal/INCAR \n"
-                        f"cd chg_cal || return \n"
-                        f"\n"
-                        f"{run_command}"
-                        f"\n"
-                        f"{finish_command}")
+            self.submit.submit2write.remove("finish_line")
+            self.submit.submit2write += [f'#{"/Charge Calculation/".center(50, "-")}# \n',
+                                         'check_success_lines',
+                                         "mkdir chg_cal \n",
+                                         "cp OUTCAR OUTCAR_backup \n",
+                                         "cp INCAR KPOINTS POTCAR chg_cal \n",
+                                         "cp CONTCAR chg_cal/POSCAR \n",
+                                         f"sed -i '/IBRION/c\  IBRION = 1' chg_cal/INCAR \n",
+                                         f"sed -i '/LCHARG/c\  LCHARG = .TRUE.' chg_cal/INCAR \n",
+                                         f"sed -i '/LCHARG/a\  LAECHG = .TRUE.' chg_cal/INCAR \n",
+                                         f"cd chg_cal || return \n", '\n',
+                                         "vasp_line", 'run_line', '\n', 'finish_line']
+
             if analysis:
-                ChargeTask.apply_analysis()
+                ChargeTask.apply_analysis(self.submit)
 
         if self.end == "wf":
             low_string = "low first, " if low else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + RESET)
-            with open("submit.script", "a+") as g:
-                g.write("\n"
-                        "#----------/WorkFunc Option/----------# \n"
-                        "success=`grep accuracy OUTCAR | wc -l` \n"
-                        "if [ $success -ne 1 ];then \n"
-                        "  echo 'Optimization Task Failed!' \n"
-                        "  exit 1 \n"
-                        "fi \n"
-                        "mkdir workfunc \n"
-                        "cp OUTCAR OUTCAR_backup \n"
-                        "cp INCAR KPOINTS POTCAR workfunc \n"
-                        "cp CONTCAR workfunc/POSCAR \n"
-                        f"sed -i '/IBRION/c\  IBRION = -1' workfunc/INCAR \n"
-                        f"sed -i '/NSW/c\  NSW = 1' workfunc/INCAR \n"
-                        f"sed -i '/NSW/a\  LVHAR = .TRUE.' workfunc/INCAR \n"
-                        f"cd workfunc || return \n"
-                        f"\n"
-                        f"{run_command}"
-                        f"\n"
-                        f"{finish_command}")
+            self.submit.submit2write.remove("finish_line")
+            self.submit.submit2write += [f'#{"/WorkFunc Calculation/".center(50, "-")}# \n',
+                                         'check_success_lines',
+                                         "mkdir workfunc \n",
+                                         "cp OUTCAR OUTCAR_backup \n",
+                                         "cp INCAR KPOINTS POTCAR workfunc \n",
+                                         "cp CONTCAR workfunc/POSCAR \n",
+                                         f"sed -i '/IBRION/c\  IBRION = -1' workfunc/INCAR \n",
+                                         f"sed -i '/NSW/c\  NSW = 1' workfunc/INCAR \n",
+                                         f"sed -i '/NSW/a\  LVHAR = .TRUE.' workfunc/INCAR \n",
+                                         f"cd workfunc || return \n", '\n',
+                                         "vasp_line", 'run_line', '\n', 'finish_line']
 
         if self.end == "dos":
-            with open("submit.script", "a+") as g:
-                g.write("\n"
-                        "#----------/DOS Option/----------# \n"
-                        "success=`grep accuracy OUTCAR | wc -l` \n"
-                        "if [ $success -ne 1 ];then \n"
-                        "  echo 'Charge Task Failed!' \n"
-                        "  exit 1 \n"
-                        "fi \n"
-                        "mkdir dos_cal \n"
-                        "cp OUTCAR OUTCAR_backup \n"
-                        "cp INCAR KPOINTS POTCAR CHGCAR dos_cal \n"
-                        "cp CONTCAR dos_cal/POSCAR \n"
-                        f"sed -i '/ISTART/c\  ISTART = 1' dos_cal/INCAR \n"
-                        f"sed -i '/NSW/c\  NSW = 1' dos_cal/INCAR \n"
-                        f"sed -i '/IBRION/c\  IBRION = -1' dos_cal/INCAR \n"
-                        f"sed -i '/LCHARG/c\  LCHARG = .FALSE.' dos_cal/INCAR \n"
-                        f"sed -i '/LCHARG/a\  LAECHG = .FALSE.' dos_cal/INCAR \n"
-                        f"sed -i '/+U/i\  ICHARG = 11' dos_cal/INCAR \n"
-                        f"sed -i '/ICHARG/a\  LORBIT = 12' dos_cal/INCAR \n"
-                        f"sed -i '/ICHARG/a\  NEDOS = 2000' dos_cal/INCAR \n"
-                        f"cd dos_cal || return \n"
-                        f"\n"
-                        f"{run_command}"
-                        f"\n"
-                        f"{finish_command}")
+            self.submit.submit2write.remove("finish_line")
+            self.submit._task, self.submit.task = self.submit.task, "Charge"
+            _check_success_lines = self.submit.pipe(['check_success_lines'])
+            self.submit.task = self.submit._task
+            self.submit.submit2write += [f'#{"/DOS Calculation/".center(50, "-")}# \n',
+                                         f'{_check_success_lines}',
+                                         "mkdir dos_cal \n",
+                                         "cp OUTCAR OUTCAR_backup \n",
+                                         "cp INCAR KPOINTS POTCAR CHGCAR dos_cal \n",
+                                         "cp CONTCAR dos_cal/POSCAR \n",
+                                         f"sed -i '/ISTART/c\  ISTART = 1' dos_cal/INCAR \n",
+                                         f"sed -i '/NSW/c\  NSW = 1' dos_cal/INCAR \n",
+                                         f"sed -i '/IBRION/c\  IBRION = -1' dos_cal/INCAR \n",
+                                         f"sed -i '/LCHARG/c\  LCHARG = .FALSE.' dos_cal/INCAR \n",
+                                         f"sed -i '/LCHARG/a\  LAECHG = .FALSE.' dos_cal/INCAR \n",
+                                         f"sed -i '/+U/i\  ICHARG = 11' dos_cal/INCAR \n",
+                                         f"sed -i '/ICHARG/a\  LORBIT = 12' dos_cal/INCAR \n",
+                                         f"sed -i '/ICHARG/a\  NEDOS = 2000' dos_cal/INCAR \n",
+                                         f"cd dos_cal || return \n", '\n',
+                                         "vasp_line", 'run_line', '\n', 'finish_line']
 
         if self.end not in ['opt', 'chg', 'wf', 'dos']:
             raise TypeError(f"Unsupported Sequential Task to {self.end}, should be [opt, chg, wf, dos]")
