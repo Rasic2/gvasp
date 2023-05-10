@@ -216,16 +216,20 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    dargv = argv[1:] if argv[0] == "-d" else argv
+    if len(argv) >= 2 and argv[0] == "-d":
+        dargv = argv[1:]
+    else:
+        dargv = argv
 
     if "-h" in dargv:  # print LOGO for '-h' option
         print(f"{BOLD}{LOGO}{RESET}")
 
     args = parser.parse_args(dargv)
 
-    main_args_check(args)
+    if getattr(args, "which", None) is not None and args.which != "calc":
+        main_args_check(args)
 
-    if len(sys.argv) == 1:
+    if len(sys.argv) == 1 or not len(argv):
         print(f"{BOLD}{LOGO}{RESET}")
         parser.print_help()
 
