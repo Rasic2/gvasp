@@ -34,7 +34,11 @@ def plot_wrapper(func):
         plt.yticks(fontsize=self.fontsize)
         plt.xlabel(self.xlabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
         plt.ylabel(self.ylabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
-        plt.legend(loc='best', fontsize=self.fontsize - 4, frameon=False)
+
+        legends = plt.gca().axes.get_legend_handles_labels()
+        if len(legends[0]):
+            plt.legend(loc='best', fontsize=self.fontsize - 4, frameon=False)
+        
         plt.title(self.title, fontsize=self.fontsize + 2)
 
     return wrapper
