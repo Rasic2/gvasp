@@ -19,6 +19,9 @@ jobs:
       - name: Modify config
         run: |
           python tests/modify_config.py
+      - name: Add font
+        run: |
+          python tests/add_font.py
       - name: Copy files
         run: |
           cp tests/XDATCAR .

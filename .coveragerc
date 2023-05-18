@@ -1,5 +1,6 @@
 [run]
 omit =
 	./setup.py
+	tests/add_font.py
 	tests/modify_config.py
 	tests/utils.py
