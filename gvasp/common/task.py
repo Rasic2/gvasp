@@ -117,8 +117,8 @@ class BaseTask(metaclass=abc.ABCMeta):
 
     @end_symbol
     @abc.abstractmethod
-    def generate(self, potential: (str, list), continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
+    def generate(self, potential: (str, list) = "PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False,
+                 nelect=None, mag=False, hse=False, static=False):
         """
         generate main method, subclass should inherit or overwrite
         """
@@ -337,6 +337,20 @@ class XDATMovie(Animatable):
         XDATCAR("XDATCAR").movie(name=name)
 
 
+class NormalTask(BaseTask):
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__name__ == 'NormalTask':
+            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
+        return super(NormalTask, cls).__new__(cls)
+
+    def generate(self, *args, **kargs):
+        """
+        fully inherit BaseTask's generate
+        """
+        super(NormalTask, self).generate(*args, **kargs)
+
+
 class OptTask(BaseTask, XDATMovie):
     """
     Optimization task manager, subclass of BaseTask
@@ -508,18 +522,10 @@ class ChargeTask(BaseTask):
         CHGCAR_mag("CHGCAR_mag").to_grd(name=name, DenCut=Dencut)
 
 
-class WorkFuncTask(BaseTask):
+class WorkFuncTask(NormalTask):
     """
-    Work Function calculation task manager, subclass of BaseTask
+    Work Function calculation task manager, subclass of NormalTask
     """
-
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
-        """
-        fully inherit BaseTask's generate
-        """
-        super(WorkFuncTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, gamma=gamma,
-                                           nelect=nelect, mag=mag, hse=hse, static=static)
 
     def _generate_cdir(self, directory="workfunc", files=None):
         if files is None:
@@ -541,18 +547,10 @@ class WorkFuncTask(BaseTask):
         self.incar.LVHAR = True
 
 
-class BandTask(BaseTask):
+class BandTask(NormalTask):
     """
-    Band Structure calculation task manager, subclass of BaseTask
+    Band Structure calculation task manager, subclass of NormalTask
     """
-
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, nelect=None, gamma=False,
-                 mag=False, hse=False, static=False):
-        """
-        fully inherit BaseTask's generate
-        """
-        super(BandTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, nelect=nelect,
-                                       mag=mag, hse=hse, static=static)
 
     def _generate_cdir(self, directory="band_cal", files=None):
         if files is None:
@@ -609,18 +607,10 @@ class BandTask(BaseTask):
                 f.write("\n")
 
 
-class DOSTask(BaseTask):
+class DOSTask(NormalTask):
     """
-    Density of States (DOS) calculation task manager, subclass of BaseTask
+    Density of States (DOS) calculation task manager, subclass of NormalTask
     """
-
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
-        """
-        fully inherit BaseTask's generate
-        """
-        super(DOSTask, self).generate(potential=potential, continuous=continuous, vdw=vdw, sol=sol, gamma=gamma,
-                                      nelect=nelect, mag=mag, hse=hse, static=static)
 
     def _generate_cdir(self, directory="dos_cal", files=None):
         if files is None:
@@ -652,18 +642,10 @@ class DOSTask(BaseTask):
             del self.incar.LAECHG
 
 
-class FreqTask(BaseTask, Animatable):
+class FreqTask(NormalTask, Animatable):
     """
-    Frequency calculation task manager, subclass of BaseTask
+    Frequency calculation task manager, subclass of NormalTask
     """
-
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
-        """
-        fully inherit BaseTask's generate
-        """
-        super(FreqTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag,
-                                       hse=hse, static=static)
 
     @write_wrapper(file="INCAR")
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
@@ -692,18 +674,10 @@ class FreqTask(BaseTask, Animatable):
         outcar.animation_freq(freq=freq)
 
 
-class MDTask(BaseTask, XDATMovie):
+class MDTask(NormalTask, XDATMovie):
     """
-     ab-initio molecular dynamics (AIMD) calculation task manager, subclass of BaseTask
+     ab-initio molecular dynamics (AIMD) calculation task manager, subclass of NormalTask
      """
-
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
-        """
-        fully inherit BaseTask's generate
-        """
-        super(MDTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag,
-                                     hse=hse, static=static)
 
     @write_wrapper(file="INCAR")
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
@@ -728,18 +702,10 @@ class MDTask(BaseTask, XDATMovie):
         self.incar.TEEND = 300.
 
 
-class STMTask(BaseTask):
+class STMTask(NormalTask):
     """
-     Scanning Tunneling Microscope (STM) image modelling calculation task manager, subclass of BaseTask
+     Scanning Tunneling Microscope (STM) image modelling calculation task manager, subclass of NormalTask
      """
-
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
-        """
-        fully inherit BaseTask's generate
-        """
-        super(STMTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag,
-                                      hse=hse, static=static)
 
     @write_wrapper(file="INCAR")
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
@@ -1035,14 +1001,7 @@ class NEBTask(BaseTask, Animatable):
         ARCFile.write(name=name, structure=structures, lattice=structures[0].lattice)
 
 
-class DimerTask(BaseTask, XDATMovie):
-    def generate(self, potential="PAW_PBE", continuous=False, vdw=False, sol=False, gamma=False, nelect=None,
-                 mag=False, hse=False, static=False):
-        """
-        fully inherit BaseTask's generate
-        """
-        super(DimerTask, self).generate(potential=potential, vdw=vdw, sol=sol, gamma=gamma, nelect=nelect, mag=mag,
-                                        hse=hse, static=static)
+class DimerTask(NormalTask, XDATMovie):
 
     @write_wrapper(file="INCAR")
     def _generate_INCAR(self, vdw, sol, nelect, mag, hse, static):
@@ -1183,8 +1142,3 @@ class OutputTask(object):
         """
 
         XSDFile.write(contcar="CONTCAR", outcar="OUTCAR", name=name)
-
-
-if __name__ == '__main__':
-    xdatmovie = XDATMovie()
-    pass
