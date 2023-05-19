@@ -1079,6 +1079,10 @@ class CHGCAR_diff(CHGBase):
         if mapping.get(direction, None) is None:
             raise KeyError(f"{direction} is not supported, should be [x, y, z]")
 
+        # TODO: python: malloc.c:2617: sysmalloc: Assertion failed for linux system (win success).
+        #               `(old_top == initial_top (av) && old_size == 0) || ((unsigned long) (old_size) >= MINSIZE &&
+        #               prev_inuse (old_top) && ((unsigned long) old_end & (pagesize - 1)) == 0)'
+        #  Guess the `file_bind.so` file error
         potential_swap = np.swapaxes(self.density / self.structure.lattice.length[mapping[direction]], -1,
                                      mapping[direction])
         return np.linspace(start=0, stop=self.structure.lattice.length[mapping[direction]],
