@@ -194,13 +194,13 @@ def main_args_check(args):
 
     """
 
-    acceptable_args = {"submit-con-TS": ["low"]}
+    not_acceptable_args = {}
     bool_args = [key for key, value in args.__dict__.items() if value is True]
     args_key = args.which + "-" + args.task if 'task' in args else args.which
 
     for arg in bool_args:
-        if arg not in acceptable_args[args_key]:
-            raise ArgsNotRegisteredError(f"`{args_key} task` doesn't have [{arg}] argument!!!")
+        if args_key in not_acceptable_args.keys() and arg in not_acceptable_args[args_key]:
+            raise ArgsNotRegisteredError(f"`{args_key} task` doesn't accept [{arg}] argument!!!")
 
 
 @main_format_debug
