@@ -529,12 +529,9 @@ class WorkFuncTask(BaseTask):
         """
         Inherit BaseTask's _generate_INCAR, modify parameters and write to INCAR
         parameters setting:
-            ISTART = 1
-            ICHARG = 11
             IBRION = -1
             NSW = 1
-            LORBIT = 12
-            NEDOS = 2000
+            LVHAR = .TRUE.
         """
         super(WorkFuncTask, self)._generate_INCAR(vdw, sol, nelect, mag, hse, static)
         self.incar.IBRION = -1
