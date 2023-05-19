@@ -1,3 +1,4 @@
 [run]
 omit =
 	tests/modify_config.py
+	tests/utils.py
