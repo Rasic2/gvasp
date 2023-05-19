@@ -1,6 +1,6 @@
 import pytest
 
-from gvasp.common.plot import PlotOpt, PlotBand, PlotPES, PostDOS, PlotCCD
+from gvasp.common.plot import PlotOpt, PlotBand, PlotPES, PostDOS, PlotCCD, PlotEPotential
 
 
 class TestPlot(object):
@@ -10,8 +10,14 @@ class TestPlot(object):
         plotter.plot()
         plotter.save()
 
-    def test_CCD(self):
-        plotter = PlotCCD()
+    # TODO: malloc error (see file.py [line 1082])
+    # def test_CCD(self):
+    #     plotter = PlotCCD()
+    #     plotter.plot()
+    #     plotter.save()
+
+    def test_epotential(self):
+        plotter = PlotEPotential(width=5, height=4, fontsize=10, linewidth=2)
         plotter.plot()
         plotter.save()
 

@@ -148,7 +148,7 @@ xsd/
 /tests/xyzhang/NEB-0912/
 /tests/zyguo/W_element/
 /tests/Template/
-/tests/LOCPOT/
+/tests/LOCPOT_/
 /tests/figure.svg
 /tests/performance/
 /tests/anatase_band/
@@ -170,7 +170,7 @@ xsd/
 /tests/mag-tag/
 /tests/chgdiff/
 /tests/P1xsd/
-/tests/DrThesis/
+/project/DrThesis/
 /tests/sort/
 /tests/bump2version/
 /tests/test_sym/INCAR
@@ -183,3 +183,4 @@ xsd/
 /tests/test_mag/POSCAR
 /tests/test_mag/POTCAR
 /tests/test_mag/submit.script
+/project/
