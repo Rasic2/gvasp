@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH -J methane 
+#SBATCH -p vip_15
+#SBATCH -w cb1005
+#SBATCH -N 1
+#SBATCH -c 96
+#SBATCH -o %x.out
+#SBATCH -e %x.err
+
+source /public1/soft/intel/2020/compilers_and_libraries_2020.4.304/linux/bin/compilervars.sh intel64
+
+EXEC=/public1/home/sc81049/soft/vasp+vtst/bin/vasp_std
+mpirun -np $SLURM_JOB_CPUS_PER_NODE $EXEC >print-out 2>&1
+
+echo "[`date '+%Y-%m-%d %H:%M:%S'`] `pwd`" >> $HOME/finish

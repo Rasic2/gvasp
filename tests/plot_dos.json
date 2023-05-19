@@ -1,0 +1,19 @@
+{
+  "dos_file": [
+    "DOSCAR_dos"
+  ],
+  "pos_file": [
+    "CONTCAR_dos"
+  ],
+  "data": {
+    "0": [
+      {
+        "color": "#ed0345"
+      },
+      {
+        "atoms": "C",
+        "color": "#000000"
+      }
+    ]
+  }
+}

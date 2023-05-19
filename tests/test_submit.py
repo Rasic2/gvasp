@@ -1,6 +1,5 @@
 import os
 import shutil
-import sys
 from pathlib import Path
 
 import pytest
@@ -20,81 +19,80 @@ def file_cleaner(func):
     return wrapper
 
 
-def block_print(func):
-    def wrapper(self, *args, **kwargs):
-        sys.stdout = open(os.devnull, 'w')
-        func(self, *args, **kwargs)
-        sys.stdout.close()
-        sys.stdout = sys.__stdout__
-
-    return wrapper
-
-
 class TestSubmitTask(object):
 
-    @block_print
     def test_opt(self):
         task = OptTask()
         task.generate(vdw=True, sol=True)
 
-    @block_print
+    def test_opt_hse(self):
+        task = OptTask()
+        task.generate(hse=True)
+
     def test_chg(self):
         task = ChargeTask()
         task.generate(vdw=True, sol=True, continuous=True)
         os.chdir("../")
+        shutil.rmtree("chg_cal")
 
-    @block_print
     @file_cleaner
     def test_band(self):
         task = BandTask()
         task.generate(vdw=True, sol=True, continuous=True)
         os.chdir("../")
+        shutil.rmtree("band_cal")
 
-    @block_print
     @file_cleaner
     def test_wf(self):
         task = WorkFuncTask()
         task.generate(vdw=True, sol=True)
 
-    @block_print
     @file_cleaner
     def test_dos(self):
         task = DOSTask()
         task.generate(vdw=True, sol=True)
 
-    @block_print
     @file_cleaner
-    def test_sequential(self):
+    def test_sequential_dos(self):
         task = SequentialTask(end='dos')
         task.generate(low=True, analysis=True, vdw=True, sol=True)
 
-    @block_print
+    @file_cleaner
+    def test_sequential_wf(self):
+        task = SequentialTask(end='wf')
+        task.generate(low=True, analysis=True, vdw=True, sol=True)
+
     @file_cleaner
     def test_freq(self):
         task = FreqTask()
         task.generate(vdw=True, sol=True)
 
-    @block_print
     @file_cleaner
     def test_md(self):
         task = MDTask()
         task.generate(vdw=True, sol=True)
 
-    @block_print
     @file_cleaner
     def test_stm(self):
         task = STMTask()
         task.generate(vdw=True, sol=True)
 
-    @block_print
     @file_cleaner
     def test_conTS(self):
         task = ConTSTask()
-        task.generate(vdw=True, sol=True)
+        task.generate(vdw=True, sol=True, low=True)
 
-    @block_print
     @file_cleaner
-    def test_neb(self):
+    def test_neb_linear(self):
+        task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
+                       fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
+        task.generate(method="linear", vdw=True, sol=True)
+
+        for dir in NEBTask._search_neb_dir():
+            shutil.rmtree(dir)
+
+    @file_cleaner
+    def test_neb_idpp(self):
         task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
                        fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
         task.generate(method="idpp", vdw=True, sol=True)
@@ -102,7 +100,6 @@ class TestSubmitTask(object):
         for dir in NEBTask._search_neb_dir():
             shutil.rmtree(dir)
 
-    @block_print
     @file_cleaner
     def test_dimer(self):
         task = DimerTask()

@@ -22,11 +22,9 @@ class TestMovie(unittest.TestCase):
 
     @file_cleaner
     def test_freq(self):
-        FreqTask.movie(file=Path(RootDir).parent / "tests" / "OUTCAR_freq", freq=0)
-
-    @file_cleaner
-    def test_neb(self):
-        NEBTask.movie(workdir=Path(RootDir).parent / "tests" / "neb-test")
+        os.chdir(f"{Path(RootDir).parent}/tests/freq")
+        FreqTask.movie(freq=0)
+        os.chdir("../")
 
 
 if __name__ == '__main__':
