@@ -259,7 +259,8 @@ class BaseTask(metaclass=abc.ABCMeta):
         generate POSCAR from only one *.xsd file, and register `self.structure` and `self.elements`
         """
         if not continuous:
-            xsd_files = list(WorkDir.glob("*.xsd"))
+            CurrentDir = Path.cwd()  # added for pytest
+            xsd_files = list(set(list(CurrentDir.glob("*.xsd")) + list(WorkDir.glob("*.xsd"))))
             if not len(xsd_files):
                 raise XSDFileNotFoundError("*.xsd file is not found, please check workdir")
             elif len(xsd_files) > 1:
