@@ -20,7 +20,8 @@ import sys
 
 sys.path.insert(0, os.path.abspath('../../gvasp'))
 
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon', 'sphinxcontrib.inkscapeconverter']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon', 'sphinxcontrib.inkscapeconverter',
+              'sphinxcontrib.jquery']
 
 templates_path = ['_templates']
 exclude_patterns = []

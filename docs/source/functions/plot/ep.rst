@@ -9,7 +9,7 @@ For the electrostatic potential (ep), one can use :program:`GVasp` to plot it, j
 
 .. code-block:: bash
 
-    gvasp plot wf -j plot.json --save
+    gvasp plot ep -j plot.json --save
 
 then, one may obtain the :file:`figure.svg` which plot the electrostatic potential.
 
