@@ -364,9 +364,15 @@ class PlotBand(Figure):
 
 
 class PlotEPotential(Figure):
-    def __init__(self, direction='z', title='Local Potential', xlabel='Position (Å)', ylabel='Energy (eV)', **kargs):
+    def __init__(self, direction='z', output=True, title='Local Potential', xlabel='Position (Å)', ylabel='Energy (eV)',
+                 **kargs):
         super(PlotEPotential, self).__init__(title=title, xlabel=xlabel, ylabel=ylabel, **kargs)
         self.lpotential = LOCPOT(name="LOCPOT").line_potential(direction=direction)
+
+        if output:
+            pos, value = self.lpotential
+            lpotential2col = np.concatenate((pos.reshape(-1, 1), value.reshape(-1, 1)), axis=1)
+            np.savetxt("VLINE", lpotential2col, fmt='%.6f', delimiter="\t")
 
     @plot_wrapper
     def plot(self):
