@@ -860,7 +860,7 @@ class NEBTask(BaseTask, Animatable):
         Search neb task directories from workdir
         """
         if workdir is None:
-            workdir = WorkDir
+            workdir = Path.cwd()
 
         neb_dirs = []
 
