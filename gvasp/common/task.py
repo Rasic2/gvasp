@@ -134,7 +134,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self._generate_KPOINTS(low=low, gamma=gamma, points=points)
         self._generate_POTCAR(potential=potential)
         self._generate_INCAR(low=low, vdw=vdw, sol=sol, nelect=nelect, mag=mag, hse=hse, static=static)
-        self._generate_fort()
+        self._generate_fort(continuous=continuous)
         self._generate_submit(low=low, analysis=analysis, gamma=gamma)
         self._generate_info(potential=potential)
         if low and print_end and self.__class__.__name__ in ['OptTask', 'ConTSTask']:
@@ -312,7 +312,7 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n', 'vasp_line',
                                     'run_line', '\n', 'finish_line']
 
-    def _generate_fort(self):
+    def _generate_fort(self, continuous=False):
         """
         Only Valid for Con-TS Task
 
@@ -424,7 +424,12 @@ class ConTSTask(OptTask, XDATMovie):
 
     def _generate_cdir(self, directory="ts_cal", files=None, **kargs):
         if files is None:
-            files = ["INCAR", "CONTCAR", "fort.188"]
+            files = ["INCAR", "CONTCAR"]
+
+        check_files = ["fort.188", "OUTCAR"]
+        for file in check_files:
+            if not Path(file).exists():
+                raise FileNotFoundError(f"{file} is not exist, continuous task failed!")
 
         super(ConTSTask, self)._generate_cdir(directory=directory, files=files)
 
@@ -438,28 +443,37 @@ class ConTSTask(OptTask, XDATMovie):
         super(ConTSTask, self)._generate_INCAR(low=low, **kargs)
         self.incar.IBRION = 1
 
-    def _generate_fort(self):
+    def _generate_fort(self, continuous=False):
         """
         Implement <_generate_fort method> => generate the fort.188 file
 
         """
 
-        constrain_atom = [atom for atom in self.structure.atoms if atom.constrain]
-        if len(constrain_atom) != 2:
-            raise ConstrainError("Number of constrain atoms should equal to 2")
+        if not continuous:
+            constrain_atom = [atom for atom in self.structure.atoms if atom.constrain]
+            if len(constrain_atom) != 2:
+                raise ConstrainError(
+                    f"Number of constrain atoms should equal to 2, but this is `{len(constrain_atom)}`")
 
-        distance = Atom.distance(constrain_atom[0], constrain_atom[1], lattice=self.structure.lattice)
-        with open("fort.188", "w") as f:
-            f.write("1 \n")
-            f.write("3 \n")
-            f.write("6 \n")
-            f.write("3 \n")
-            f.write("0.03 \n")
-            f.write(f"{constrain_atom[0].order + 1} {constrain_atom[1].order + 1} {distance:.4f}\n")
-            f.write("0 \n")
+            distance = Atom.distance(constrain_atom[0], constrain_atom[1], lattice=self.structure.lattice)
+            with open("fort.188", "w") as f:
+                f.write("1 \n")
+                f.write("3 \n")
+                f.write("6 \n")
+                f.write("3 \n")
+                f.write("0.03 \n")
+                f.write(f"{constrain_atom[0].order + 1} {constrain_atom[1].order + 1} {distance:.4f}\n")
+                f.write("0 \n")
 
-        logger.info(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
-                    f"distance = {distance:.4f}")
+            logger.info(f"Constrain Information: {constrain_atom[0].order + 1}-{constrain_atom[1].order + 1}, "
+                        f"distance = {distance:.4f}")
+        else:
+            fort188 = Fort188File("../fort.188")
+            outcar = OUTCAR("../OUTCAR")
+            fort188.constrain = fort188.constrain[:2] + [str(outcar.last_condist)]
+            fort188.write()
+            logger.info(f"Constrain Information: {fort188.constrain[0]}-{fort188.constrain[1]}, "
+                        f"distance = {float(fort188.constrain[2]):.4f}")
 
     def _generate_submit(self, low=False, **kargs):
         """

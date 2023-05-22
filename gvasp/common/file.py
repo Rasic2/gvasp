@@ -208,6 +208,14 @@ class Fort188File(MetaFile):
     def constrain(self):
         return self.strings[5].split()
 
+    @constrain.setter
+    def constrain(self, info: list):
+        self.strings[5] = " ".join(info) + "\n"
+
+    def write(self, name="fort.188"):
+        with open(name, "w") as f:
+            f.writelines(self.strings)
+
 
 def formatter(parameters):
     """
@@ -1333,6 +1341,7 @@ class OUTCAR(MetaFile):
         self.lattice = list(self.lattice)[0] if len(self.lattice) == 1 else self.lattice
         self._frequency = [i for i in range(len(self.strings)) if "Hz" in self.strings[i]]
         self._neb = [line for line in self.strings if "NEB:" in line]
+        self._fort = [line for line in self.strings if "fort.1881" in line]
         self.spin, self.bands, self.kpoints, self.fermi, self.steps = None, None, None, None, None
         self.energy, self.force, self.mag = None, None, None
         self.last_energy, self.last_force, self.last_mag = None, None, None
@@ -1351,6 +1360,10 @@ class OUTCAR(MetaFile):
         self.tangent, self.last_tangent = 0., 0.
         if len(self._neb):
             self._parse_neb()
+
+        self.condist, self.last_condist = 0., 0.
+        if len(self._fort):
+            self._parse_fort()
 
     def _parse_base(self):
         self.spin = [int(line.split()[2]) for line in self.strings if "ISPIN" in line][0]
@@ -1454,6 +1467,10 @@ class OUTCAR(MetaFile):
     def _parse_neb(self):
         self.tangent = [float(line.split()[-1]) for line in self.strings if line.find("tangent") != -1]
         self.last_tangent = self.tangent[-1]
+
+    def _parse_fort(self):
+        self.condist = [float(line.split()[-1]) for line in self.strings if line.find("distance after opt") != -1]
+        self.last_condist = self.condist[-1]
 
     def bandgap(self, cutoff=0.01):
         """
