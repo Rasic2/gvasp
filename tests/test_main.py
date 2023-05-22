@@ -13,6 +13,9 @@ class TestMain(object):
     def test_help(self):
         main([])
 
+        with pytest.raises(SystemExit):
+            main(["-h"])
+
     def test_list(self):
         main(["-l"])
 
@@ -114,6 +117,27 @@ class TestMain(object):
     @change_dir(directory="plot_center")
     def test_band_center(self):
         main(["band-center", "-j", "center.json"])
+
+    def test_sum(self):
+        main(["sum"])
+        os.remove("CHGCAR_sum")
+
+    def test_split(self):
+        main(["split"])
+        os.remove("CHGCAR_tot")
+
+    def test_grd(self):
+        main(["grd"])
+        os.remove("CHGCAR_mag")
+        os.remove("vasp.grd")
+
+    @change_dir(directory="electrostatic")
+    def test_electrostatic(self):
+        main(['calc', "1", "-a", "Ce"])
+
+    @change_dir(directory="entropy")
+    def test_entropy(self):
+        main(['calc', "2", "-t", "298.15"])
 
 
 if __name__ == '__main__':

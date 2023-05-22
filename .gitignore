@@ -188,3 +188,4 @@ xsd/
 /tests/P1xsd/__init__.py
 /tests/continuous/opt_cal/
 /tests/INCAR
+/tests/continuous/hse/

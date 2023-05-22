@@ -1,14 +1,23 @@
 import logging
 import os
+import shutil
 from pathlib import Path
 
 import pytest
 
-from gvasp.common.error import PotDirNotExistError, ParameterError
-from gvasp.common.file import MetaFile, XDATCAR, StructInfoFile, CellFile, POSCAR, SubmitFile, XSDFile, INCAR, POTCAR
+from gvasp.common.error import PotDirNotExistError, ParameterError, AnimationError, FrequencyError
+from gvasp.common.file import EIGENVAL, OUTCAR
+from gvasp.common.file import MODECAR
+from gvasp.common.file import MetaFile, XDATCAR, StructInfoFile, CellFile, POSCAR, SubmitFile, XSDFile, INCAR, POTCAR, \
+    CHGBase, AECCAR0, AECCAR2
 from gvasp.common.setting import RootDir
+from tests.utils import change_dir
 
 logger = logging.getLogger("TestLogger")
+
+
+def setup_module():
+    os.chdir(f"{Path(RootDir).parent}/tests")
 
 
 class TestMetaFile(object):
@@ -94,5 +103,54 @@ class TestPOTCAR(object):
         POTCAR.cat(["PAW_PBE"], ["W"], potdir=pot_directory)
 
 
+class TestCHGBase(object):
+    def test_new(self):
+        with pytest.raises(TypeError):
+            CHGBase(name="AECCAR0")
+
+    def test_add(self):
+        aeccar0 = AECCAR0("AECCAR0")
+        aeccar2 = AECCAR2("AECCAR2")
+
+        aeccar0 = aeccar0.load()
+        aeccar0 + aeccar2
+        aeccar2.density = None
+        aeccar2 + aeccar0
+
+
+class TestEIGENVAL(object):
+    def test_band_write(self):
+        EIGENVAL("EIGENVAL").write()
+        shutil.rmtree("band_data")
+
+
+class TestOUTCAR(object):
+    def test_animation_freq(self):
+        with pytest.raises(AnimationError):
+            outcar = OUTCAR("OUTCAR")
+            outcar.animation_freq()
+
+        with pytest.raises(FrequencyError):
+            outcar = OUTCAR("freq/OUTCAR")
+            outcar.animation_freq(freq=-1)
+
+            outcar = OUTCAR("freq/OUTCAR")
+            outcar.animation_freq(freq="i")
+
+    def test_bandgap(self):
+        OUTCAR("OUTCAR").bandgap()
+
+
+class TestMODECAR:
+
+    @change_dir(directory="freq")
+    def test_from_freq(self):
+        MODECAR.write_from_freq(freq=5, scale=0.6, outcar="OUTCAR")
+
+    def test_from_POSCAR(self):
+        MODECAR.write_from_POSCAR(f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
+                                  f"{Path(RootDir).parent}/tests/POSCAR_FS_sort")
+
+
 if __name__ == '__main__':
-    pytest.main([__file__, "--color=yes"])
+    pytest.main([__file__, "-s", "--color=yes"])

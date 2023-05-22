@@ -37,5 +37,23 @@ class TestAtom(object):
         logger.info(self.atom_1.atom_type)
 
 
+class TestAtoms(object):
+    structure = CONTCAR("CONTCAR").structure
+    atoms = structure.atoms
+
+    def test_repr(self):
+        logger.info(self.atoms)
+
+    def test_contains(self):
+        atom = self.atoms[0]
+        logger.info(atom in self.atoms)
+
+    def test_atom_type(self):
+        logger.info(self.atoms.atom_type)
+
+    def test_perturb(self):
+        self.atoms.perturb(lattice=self.structure.lattice)
+
+
 if __name__ == '__main__':
     pytest.main([__file__])

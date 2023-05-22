@@ -1,6 +1,15 @@
+import os
+
 import pytest
 
-from gvasp.common.plot import PlotPES, PlotCCD
+from gvasp.common.plot import PlotPES
+from gvasp.common.plot import PostDOS
+from tests.utils import change_dir
+
+
+@pytest.fixture()
+def change_test_dir(request, monkeypatch):
+    monkeypatch.chdir(request.fspath.dirname)
 
 
 class TestPlot(object):
@@ -29,5 +38,76 @@ class TestPlot(object):
         plotter.save()
 
 
+class TestPlotDOS(object):
+    selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760"}],
+                "1": [{"atoms": 81, "orbitals": ["s"], "color": "#ed0345"}]}
+
+    dos_files = ["DOSCAR_N_doped_A_101_0e_Na", "DOSCAR_N_doped_A_101_0e_K"]
+    pos_files = ["CONTCAR_N_doped_A_101_0e_Na", "CONTCAR_N_doped_A_101_0e_K"]
+
+    @change_dir("dos")
+    def test_align(self, change_test_dir):
+        poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(78, "s"), (81, "s")])
+        poster.plot(selector=self.selector)
+        poster.save()
+        os.remove("figure.svg")
+
+    @change_dir("dos")
+    def test_align_error(self, change_test_dir):
+        with pytest.raises(TypeError):
+            poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(78,), (81, "s")])
+            poster.plot(selector=self.selector)
+
+    @change_dir("dos")
+    def test_align_warning(self, change_test_dir):
+        poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(81, "s")])
+        poster.plot(selector=self.selector)
+
+    @change_dir("dos")
+    def test_method(self, change_test_dir):
+        poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files)
+
+        selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760", "method": "dash line"}]}
+        poster.plot(selector=selector)
+
+        selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760", "method": "fill"}]}
+        poster.plot(selector=selector)
+
+        selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760", "method": "output"}]}
+        poster.plot(selector=selector)
+        os.remove("DOS_F0_L0")
+
+    @change_dir("plot_center")
+    def test_center(self, change_test_dir):
+        selector = {
+            "atoms": "Pt",
+            "orbitals": "d",
+            "xlim": [-15, 0]
+        }
+
+        poster = PostDOS(dos_files=["DOSCAR"], pos_files=["CONTCAR"], LORBIT=10)
+        poster.center(selector)
+
+    @change_dir("plot_center")
+    def test_center_atoms_None(self, change_test_dir):
+        selector = {
+            "orbitals": "d",
+            "xlim": [-15, 0]
+        }
+
+        poster = PostDOS(dos_files=["DOSCAR"], pos_files=["CONTCAR"], LORBIT=10)
+        poster.center(selector)
+
+    @change_dir("plot_center")
+    def test_center_orbitals_None(self, change_test_dir):
+        selector = {
+            "atoms": "Pt",
+            "xlim": [-15, 0]
+        }
+
+        poster = PostDOS(dos_files=["DOSCAR"], pos_files=["CONTCAR"], LORBIT=10)
+        poster.center(selector)
+
+
 if __name__ == '__main__':
-    pytest.main([__file__])
+    pytest.main([__file__, "-s"])
