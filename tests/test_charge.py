@@ -2,10 +2,15 @@ import os
 
 import pytest
 
+from gvasp.common.file import AECCAR0
 from gvasp.common.task import ChargeTask
 
 
 class TestCharge():
+
+    def test_load(self):
+        AECCAR0("AECCAR0").load()
+
     def test_sum(self):
         ChargeTask.sum()
         os.remove("CHGCAR_sum")

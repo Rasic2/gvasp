@@ -160,11 +160,8 @@ xsd/
 /tests/ypzhang/center/
 /tests/carbonylation/
 /tests/fill_alpha/
-/tests/ypzhang/
 /tests/zyguo/
-/tests/electrostatic/
 /tests/zyguo/output/
-/tests/entropy/
 /tests/dos_align/
 /tests/zqshi/
 /tests/xyzhang/
@@ -176,3 +173,13 @@ xsd/
 /tests/DrThesis/
 /tests/sort/
 /tests/bump2version/
+/tests/test_sym/INCAR
+/tests/test_sym/KPOINTS
+/tests/test_sym/POSCAR
+/tests/test_sym/POTCAR
+/tests/test_sym/submit.script
+/tests/test_mag/INCAR
+/tests/test_mag/KPOINTS
+/tests/test_mag/POSCAR
+/tests/test_mag/POTCAR
+/tests/test_mag/submit.script

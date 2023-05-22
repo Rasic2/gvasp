@@ -1,0 +1,8 @@
+{
+  "pos_file": "CONTCAR",
+  "dos_file": "DOSCAR",
+  "atoms": "Pt",
+  "LORBIT": 10,
+  "orbitals": "d",
+  "xlim": [-15, 0]
+}

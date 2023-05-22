@@ -1,12 +1,17 @@
-import unittest
+import pytest
 
-from gvasp.common.plot import PlotOpt, PlotBand, PlotPES, PlotNEB, PostDOS
+from gvasp.common.plot import PlotOpt, PlotBand, PlotPES, PostDOS, PlotCCD
 
 
-class TestPlot(unittest.TestCase):
+class TestPlot(object):
 
     def test_opt(self):
         plotter = PlotOpt("OUTCAR")
+        plotter.plot()
+        plotter.save()
+
+    def test_CCD(self):
+        plotter = PlotCCD()
         plotter.plot()
         plotter.save()
 
@@ -57,4 +62,4 @@ class TestPlot(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    pytest.main([__file__])

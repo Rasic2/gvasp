@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="latin1"?>
+<!DOCTYPE XSD []>
+<XSD Version="20.1" WrittenBy="Materials Studio 20.1">
+	<AtomisticTreeRoot ID="1" NumProperties="62" NumChildren="1" Name="Fe" UserID="147">
+		<Property Name="AngleAxisType" DefinedOn="AngleBetweenPlanesBender" Type="Enumerated"/>
+		<Property Name="AngleEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="BeadDocumentID" DefinedOn="MesoMoleculeSet" Type="String"/>
+		<Property Name="BendBendEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="BendTorsionBendEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="BondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="EFGAsymmetry" DefinedOn="Atom" Type="Double"/>
+		<Property Name="EFGQuadrupolarCoupling" DefinedOn="Atom" Type="Double"/>
+		<Property Name="ElectrostaticEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="FaceMillerIndex" DefinedOn="GrowthFace" Type="MillerIndex"/>
+		<Property Name="FacetTransparency" DefinedOn="GrowthFace" Type="Float"/>
+		<Property Name="FermiLevel" DefinedOn="ScalarFieldBase" Type="Double"/>
+		<Property Name="Force" DefinedOn="Matter" Type="CoDirection"/>
+		<Property Name="FrameFilter" DefinedOn="Trajectory" Type="String"/>
+		<Property Name="HarmonicForceConstant" DefinedOn="HarmonicRestraint" Type="Double"/>
+		<Property Name="HarmonicMinimum" DefinedOn="HarmonicRestraint" Type="Double"/>
+		<Property Name="HydrogenBondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="ImportOrder" DefinedOn="Bondable" Type="UnsignedInteger"/>
+		<Property Name="InversionEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="IsBackboneAtom" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="IsChiralCenter" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="IsOutOfPlane" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="IsRepeatArrowVisible" DefinedOn="ElectrodeWire" Type="Boolean"/>
+		<Property Name="KineticEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="LineExtentPadding" DefinedOn="BestFitLineMonitor" Type="Double"/>
+		<Property Name="LinkageGroupName" DefinedOn="Linkage" Type="String"/>
+		<Property Name="ListIdentifier" DefinedOn="PropertyList" Type="String"/>
+		<Property Name="NMRShielding" DefinedOn="Atom" Type="Double"/>
+		<Property Name="NonBondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="NormalMode" DefinedOn="Bondable" Type="Direction"/>
+		<Property Name="NormalModeFrequency" DefinedOn="Bondable" Type="Double"/>
+		<Property Name="NumScanSteps" DefinedOn="LinearScan" Type="UnsignedInteger"/>
+		<Property Name="OrbitalCutoffRadius" DefinedOn="Bondable" Type="Double"/>
+		<Property Name="PlaneExtentPadding" DefinedOn="BestFitPlaneMonitor" Type="Double"/>
+		<Property Name="PotentialEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="QuantizationValue" DefinedOn="ScalarFieldBase" Type="Double"/>
+		<Property Name="RelativeVelocity" DefinedOn="Matter" Type="Direction"/>
+		<Property Name="RepeatArrowScale" DefinedOn="ElectrodeWire" Type="Float"/>
+		<Property Name="RestraintEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="ScanEnd" DefinedOn="LinearScan" Type="Double"/>
+		<Property Name="ScanStart" DefinedOn="LinearScan" Type="Double"/>
+		<Property Name="SeparatedStretchStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="ServerDipoleMoment" DefinedOn="MatterGroupProperties" Type="Direction"/>
+		<Property Name="SimulationStep" DefinedOn="Trajectory" Type="Integer"/>
+		<Property Name="SpinQuantizationDirection" DefinedOn="Atom" Type="Direction"/>
+		<Property Name="Stiffness" DefinedOn="SymmetryMatterHessian" Type="Matrix6x6"/>
+		<Property Name="StretchBendStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="StretchStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="StretchTorsionStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="Temperature" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="ThreeBodyNonBondEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="TorsionBendBendEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="TorsionEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="TorsionStretchEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="TotalEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="Units" DefinedOn="ScalarFieldBase" Type="String"/>
+		<Property Name="ValenceCrossTermEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="ValenceDiagonalEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="VanDerWaalsEnergy" DefinedOn="ClassicalEnergyHolder" Type="Double"/>
+		<Property Name="_ServerAtomNames" DefinedOn="IndexProvider" Type="String"/>
+		<Property Name="_Stress" DefinedOn="MatterSymmetrySystem" Type="Matrix"/>
+		<Property Name="_TrajectoryStress" DefinedOn="MatterSymmetrySystem" Type="Matrix"/>
+		<SymmetrySystem ID="2" Mapping="3" Children="4,5,6,7" Normalized="1" Name="Fe" UserID="147" XYZ="1.43158644547542e-016,-5.37675528023007e-017,-1.72757104104515e-016" OverspecificationTolerance="0.2">
+			<MappingSet ID="8" SymmetryDefinition="7" ActiveSystem="2" NumFamilies="4" OwnsTotalConstraintMapping="1" TotalConstraintMapping="3">
+				<MappingFamily ID="9" NumImageMappings="0">
+					<IdentityMapping ID="10" Element="1,0,0,0,0,1,0,0,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" DefectObjects="7,11" NumDefects="2">
+						<SpaceGroup ID="7" Parent="2" Children="11" Name="IM-3M" DisplayStyle="Solid" XYZ="-4.10349938731074e-016,1.54119313352515e-016,4.95190963205182e-016" AVector="2.8664,0,6.19605589103861e-016" BVector="0,2.8664,-2.04492966999651e-015" CVector="-4.44089209850063e-016,2.22044604925031e-015,2.8664" Color="187,51,255,255" OrientationBase="C along Z, B in YZ plane" Centering="3D Body-Centered" Lattice="3D Cubic" GroupName="IM-3M" Operators="1,0,0,0,0,1,0,0,0,0,1,0:-1,0,0,0,0,-1,0,0,0,0,1,0:-1,0,0,0,0,1,0,0,0,0,-1,0:1,0,0,0,0,-1,0,0,0,0,-1,0:0,0,1,0,1,0,0,0,0,1,0,0:0,0,1,0,-1,0,0,0,0,-1,0,0:0,0,-1,0,-1,0,0,0,0,1,0,0:0,0,-1,0,1,0,0,0,0,-1,0,0:0,1,0,0,0,0,1,0,1,0,0,0:0,-1,0,0,0,0,1,0,-1,0,0,0:0,1,0,0,0,0,-1,0,-1,0,0,0:0,-1,0,0,0,0,-1,0,1,0,0,0:0,1,0,0,1,0,0,0,0,0,-1,0:0,-1,0,0,-1,0,0,0,0,0,-1,0:0,1,0,0,-1,0,0,0,0,0,1,0:0,-1,0,0,1,0,0,0,0,0,1,0:1,0,0,0,0,0,1,0,0,-1,0,0:-1,0,0,0,0,0,1,0,0,1,0,0:-1,0,0,0,0,0,-1,0,0,-1,0,0:1,0,0,0,0,0,-1,0,0,1,0,0:0,0,1,0,0,1,0,0,-1,0,0,0:0,0,1,0,0,-1,0,0,1,0,0,0:0,0,-1,0,0,1,0,0,1,0,0,0:0,0,-1,0,0,-1,0,0,-1,0,0,0:-1,0,0,0,0,-1,0,0,0,0,-1,0:1,0,0,0,0,1,0,0,0,0,-1,0:1,0,0,0,0,-1,0,0,0,0,1,0:-1,0,0,0,0,1,0,0,0,0,1,0:0,0,-1,0,-1,0,0,0,0,-1,0,0:0,0,-1,0,1,0,0,0,0,1,0,0:0,0,1,0,1,0,0,0,0,-1,0,0:0,0,1,0,-1,0,0,0,0,1,0,0:0,-1,0,0,0,0,-1,0,-1,0,0,0:0,1,0,0,0,0,-1,0,1,0,0,0:0,-1,0,0,0,0,1,0,1,0,0,0:0,1,0,0,0,0,1,0,-1,0,0,0:0,-1,0,0,-1,0,0,0,0,0,1,0:0,1,0,0,1,0,0,0,0,0,1,0:0,-1,0,0,1,0,0,0,0,0,-1,0:0,1,0,0,-1,0,0,0,0,0,-1,0:-1,0,0,0,0,0,-1,0,0,1,0,0:1,0,0,0,0,0,-1,0,0,-1,0,0:1,0,0,0,0,0,1,0,0,1,0,0:-1,0,0,0,0,0,1,0,0,-1,0,0:0,0,-1,0,0,-1,0,0,1,0,0,0:0,0,-1,0,0,1,0,0,-1,0,0,0:0,0,1,0,0,-1,0,0,-1,0,0,0:0,0,1,0,0,1,0,0,1,0,0,0:1,0,0,0.5,0,1,0,0.5,0,0,1,0.5:-1,0,0,0.5,0,-1,0,0.5,0,0,1,0.5:-1,0,0,0.5,0,1,0,0.5,0,0,-1,0.5:1,0,0,0.5,0,-1,0,0.5,0,0,-1,0.5:0,0,1,0.5,1,0,0,0.5,0,1,0,0.5:0,0,1,0.5,-1,0,0,0.5,0,-1,0,0.5:0,0,-1,0.5,-1,0,0,0.5,0,1,0,0.5:0,0,-1,0.5,1,0,0,0.5,0,-1,0,0.5:0,1,0,0.5,0,0,1,0.5,1,0,0,0.5:0,-1,0,0.5,0,0,1,0.5,-1,0,0,0.5:0,1,0,0.5,0,0,-1,0.5,-1,0,0,0.5:0,-1,0,0.5,0,0,-1,0.5,1,0,0,0.5:0,1,0,0.5,1,0,0,0.5,0,0,-1,0.5:0,-1,0,0.5,-1,0,0,0.5,0,0,-1,0.5:0,1,0,0.5,-1,0,0,0.5,0,0,1,0.5:0,-1,0,0.5,1,0,0,0.5,0,0,1,0.5:1,0,0,0.5,0,0,1,0.5,0,-1,0,0.5:-1,0,0,0.5,0,0,1,0.5,0,1,0,0.5:-1,0,0,0.5,0,0,-1,0.5,0,-1,0,0.5:1,0,0,0.5,0,0,-1,0.5,0,1,0,0.5:0,0,1,0.5,0,1,0,0.5,-1,0,0,0.5:0,0,1,0.5,0,-1,0,0.5,1,0,0,0.5:0,0,-1,0.5,0,1,0,0.5,1,0,0,0.5:0,0,-1,0.5,0,-1,0,0.5,-1,0,0,0.5:-1,0,0,0.5,0,-1,0,0.5,0,0,-1,0.5:1,0,0,0.5,0,1,0,0.5,0,0,-1,0.5:1,0,0,0.5,0,-1,0,0.5,0,0,1,0.5:-1,0,0,0.5,0,1,0,0.5,0,0,1,0.5:0,0,-1,0.5,-1,0,0,0.5,0,-1,0,0.5:0,0,-1,0.5,1,0,0,0.5,0,1,0,0.5:0,0,1,0.5,1,0,0,0.5,0,-1,0,0.5:0,0,1,0.5,-1,0,0,0.5,0,1,0,0.5:0,-1,0,0.5,0,0,-1,0.5,-1,0,0,0.5:0,1,0,0.5,0,0,-1,0.5,1,0,0,0.5:0,-1,0,0.5,0,0,1,0.5,1,0,0,0.5:0,1,0,0.5,0,0,1,0.5,-1,0,0,0.5:0,-1,0,0.5,-1,0,0,0.5,0,0,1,0.5:0,1,0,0.5,1,0,0,0.5,0,0,1,0.5:0,-1,0,0.5,1,0,0,0.5,0,0,-1,0.5:0,1,0,0.5,-1,0,0,0.5,0,0,-1,0.5:-1,0,0,0.5,0,0,-1,0.5,0,1,0,0.5:1,0,0,0.5,0,0,-1,0.5,0,-1,0,0.5:1,0,0,0.5,0,0,1,0.5,0,1,0,0.5:-1,0,0,0.5,0,0,1,0.5,0,-1,0,0.5:0,0,-1,0.5,0,-1,0,0.5,1,0,0,0.5:0,0,-1,0.5,0,1,0,0.5,-1,0,0,0.5:0,0,1,0.5,0,-1,0,0.5,-1,0,0,0.5:0,0,1,0.5,0,1,0,0.5,1,0,0,0.5" DisplayRange="0,1,0,1,0,1" LineThickness="2" CylinderRadius="0.2" LabelAxes="1" ActiveSystem="2" ITNumber="229" LongName="I 4/M -3 2/M" Qualifier="Origin-1" SchoenfliesName="OH-9" System="Cubic" Class="m -3 m"/>
+						<ReciprocalLattice3D ID="11" Parent="7" XYZ="-4.10349938731074e-016,1.54119313352515e-016,4.95190963205182e-016" Visible="0"/>
+					</IdentityMapping>
+					<MappingRepairs NumRepairs="0"/>
+				</MappingFamily>
+				<MappingFamily ID="12" NumImageMappings="9">
+					<IdentityMapping ID="13" Element="1,0,0,0,0,1,0,0,0,0,1,0" Constraint="0,0,0,0,0,0,0,0,0,0,0,0" MappedObjects="4" NumImages="1">
+						<Atom3d ID="4" Mapping="13" Parent="2" Name="FE1" UserID="1" DisplayStyle="Ball and Stick" Connections="ci(14):5,5+14,6,7+19" Components="Fe" FormalCharge="0/1"/>
+					</IdentityMapping>
+					<ImageMapping ID="26" Element="1,0,0,1,0,1,0,0,0,0,1,0" Constraint="0,0,0,1,0,0,0,0,0,0,0,0" MappedObjects="27" NumImages="1">
+						<Atom3d ID="27" Mapping="26" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="28" Element="1,0,0,0,0,1,0,1,0,0,1,0" Constraint="0,0,0,0,0,0,0,1,0,0,0,0" MappedObjects="29" NumImages="1">
+						<Atom3d ID="29" Mapping="28" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="30" Element="1,0,0,1,0,1,0,1,0,0,1,0" Constraint="0,0,0,1,0,0,0,1,0,0,0,0" MappedObjects="31" NumImages="1">
+						<Atom3d ID="31" Mapping="30" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="32" Element="1,0,0,0,0,1,0,0,0,0,1,1" Constraint="0,0,0,0,0,0,0,0,0,0,0,1" MappedObjects="33" NumImages="1">
+						<Atom3d ID="33" Mapping="32" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="34" Element="1,0,0,1,0,1,0,0,0,0,1,1" Constraint="0,0,0,1,0,0,0,0,0,0,0,1" MappedObjects="35" NumImages="1">
+						<Atom3d ID="35" Mapping="34" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="36" Element="1,0,0,0,0,1,0,1,0,0,1,1" Constraint="0,0,0,0,0,0,0,1,0,0,0,1" MappedObjects="37" NumImages="1">
+						<Atom3d ID="37" Mapping="36" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="38" Element="1,0,0,1,0,1,0,1,0,0,1,1" Constraint="0,0,0,1,0,0,0,1,0,0,0,1" MappedObjects="39" NumImages="1">
+						<Atom3d ID="39" Mapping="38" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="40" Element="1,0,0,-0.5,0,1,0,-0.5,0,0,1,-0.5" Constraint="0,0,0,-0.5,0,0,0,-0.5,0,0,0,-0.5" MappedObjects="41" NumImages="1">
+						<Atom3d ID="41" Mapping="40" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="42" Element="1,0,0,0.5,0,1,0,0.5,0,0,1,0.5" Constraint="0,0,0,0.5,0,0,0,0.5,0,0,0,0.5" MappedObjects="43" NumImages="1">
+						<Atom3d ID="43" Mapping="42" ImageOf="4"/>
+					</ImageMapping>
+					<MappingRepairs NumRepairs="0"/>
+				</MappingFamily>
+				<MappingFamily ID="44" NumImageMappings="41">
+					<IdentityMapping ID="45" Element="1,0,0,0,0,1,0,0,0,0,1,0" Constraint="0,0,0,0.5,0,0,0,0,0,0,0,0" MappedObjects="5" NumImages="1">
+						<Bond ID="5" Mapping="45" Parent="2" Connects="4,27"/>
+					</IdentityMapping>
+					<ImageMapping ID="46" Element="1,0,0,-1,0,1,0,0,0,0,1,0" Constraint="0,0,0,-0.5,0,0,0,0,0,0,0,0" MappedObjects="14" NumImages="1">
+						<Bond ID="14" Mapping="46" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="47" Element="1,0,0,1,0,1,0,0,0,0,1,0" Constraint="0,0,0,1.5,0,0,0,0,0,0,0,0" MappedObjects="48" NumImages="1">
+						<Bond ID="48" Mapping="47" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="49" Element="1,0,0,-1,0,1,0,1,0,0,1,0" Constraint="0,0,0,-0.5,0,0,0,1,0,0,0,0" MappedObjects="50" NumImages="1">
+						<Bond ID="50" Mapping="49" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="51" Element="1,0,0,0,0,1,0,1,0,0,1,0" Constraint="0,0,0,0.5,0,0,0,1,0,0,0,0" MappedObjects="52" NumImages="1">
+						<Bond ID="52" Mapping="51" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="53" Element="1,0,0,1,0,1,0,1,0,0,1,0" Constraint="0,0,0,1.5,0,0,0,1,0,0,0,0" MappedObjects="54" NumImages="1">
+						<Bond ID="54" Mapping="53" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="55" Element="1,0,0,-1,0,1,0,0,0,0,1,1" Constraint="0,0,0,-0.5,0,0,0,0,0,0,0,1" MappedObjects="56" NumImages="1">
+						<Bond ID="56" Mapping="55" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="57" Element="1,0,0,0,0,1,0,0,0,0,1,1" Constraint="0,0,0,0.5,0,0,0,0,0,0,0,1" MappedObjects="58" NumImages="1">
+						<Bond ID="58" Mapping="57" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="59" Element="1,0,0,1,0,1,0,0,0,0,1,1" Constraint="0,0,0,1.5,0,0,0,0,0,0,0,1" MappedObjects="60" NumImages="1">
+						<Bond ID="60" Mapping="59" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="61" Element="1,0,0,-1,0,1,0,1,0,0,1,1" Constraint="0,0,0,-0.5,0,0,0,1,0,0,0,1" MappedObjects="62" NumImages="1">
+						<Bond ID="62" Mapping="61" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="63" Element="1,0,0,0,0,1,0,1,0,0,1,1" Constraint="0,0,0,0.5,0,0,0,1,0,0,0,1" MappedObjects="64" NumImages="1">
+						<Bond ID="64" Mapping="63" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="65" Element="1,0,0,1,0,1,0,1,0,0,1,1" Constraint="0,0,0,1.5,0,0,0,1,0,0,0,1" MappedObjects="66" NumImages="1">
+						<Bond ID="66" Mapping="65" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="67" Element="0,0,1,0,1,0,0,-1,0,1,0,0" Constraint="0,0,0,0,0,0,0,-0.5,0,0,0,0" MappedObjects="16" NumImages="1">
+						<Bond ID="16" Mapping="67" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="68" Element="0,0,1,1,1,0,0,-1,0,1,0,0" Constraint="0,0,0,1,0,0,0,-0.5,0,0,0,0" MappedObjects="69" NumImages="1">
+						<Bond ID="69" Mapping="68" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="70" Element="0,0,1,0,1,0,0,0,0,1,0,0" Constraint="0,0,0,0,0,0,0,0.5,0,0,0,0" MappedObjects="15" NumImages="1">
+						<Bond ID="15" Mapping="70" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="71" Element="0,0,1,1,1,0,0,0,0,1,0,0" Constraint="0,0,0,1,0,0,0,0.5,0,0,0,0" MappedObjects="72" NumImages="1">
+						<Bond ID="72" Mapping="71" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="73" Element="0,0,1,0,1,0,0,1,0,1,0,0" Constraint="0,0,0,0,0,0,0,1.5,0,0,0,0" MappedObjects="74" NumImages="1">
+						<Bond ID="74" Mapping="73" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="75" Element="0,0,1,1,1,0,0,1,0,1,0,0" Constraint="0,0,0,1,0,0,0,1.5,0,0,0,0" MappedObjects="76" NumImages="1">
+						<Bond ID="76" Mapping="75" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="77" Element="0,0,1,0,1,0,0,-1,0,1,0,1" Constraint="0,0,0,0,0,0,0,-0.5,0,0,0,1" MappedObjects="78" NumImages="1">
+						<Bond ID="78" Mapping="77" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="79" Element="0,0,1,1,1,0,0,-1,0,1,0,1" Constraint="0,0,0,1,0,0,0,-0.5,0,0,0,1" MappedObjects="80" NumImages="1">
+						<Bond ID="80" Mapping="79" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="81" Element="0,0,1,0,1,0,0,0,0,1,0,1" Constraint="0,0,0,0,0,0,0,0.5,0,0,0,1" MappedObjects="82" NumImages="1">
+						<Bond ID="82" Mapping="81" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="83" Element="0,0,1,1,1,0,0,0,0,1,0,1" Constraint="0,0,0,1,0,0,0,0.5,0,0,0,1" MappedObjects="84" NumImages="1">
+						<Bond ID="84" Mapping="83" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="85" Element="0,0,1,0,1,0,0,1,0,1,0,1" Constraint="0,0,0,0,0,0,0,1.5,0,0,0,1" MappedObjects="86" NumImages="1">
+						<Bond ID="86" Mapping="85" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="87" Element="0,0,1,1,1,0,0,1,0,1,0,1" Constraint="0,0,0,1,0,0,0,1.5,0,0,0,1" MappedObjects="88" NumImages="1">
+						<Bond ID="88" Mapping="87" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="89" Element="0,1,0,0,0,0,1,0,1,0,0,-1" Constraint="0,0,0,0,0,0,0,0,0,0,0,-0.5" MappedObjects="18" NumImages="1">
+						<Bond ID="18" Mapping="89" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="90" Element="0,1,0,1,0,0,1,0,1,0,0,-1" Constraint="0,0,0,1,0,0,0,0,0,0,0,-0.5" MappedObjects="91" NumImages="1">
+						<Bond ID="91" Mapping="90" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="92" Element="0,1,0,0,0,0,1,1,1,0,0,-1" Constraint="0,0,0,0,0,0,0,1,0,0,0,-0.5" MappedObjects="93" NumImages="1">
+						<Bond ID="93" Mapping="92" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="94" Element="0,1,0,1,0,0,1,1,1,0,0,-1" Constraint="0,0,0,1,0,0,0,1,0,0,0,-0.5" MappedObjects="95" NumImages="1">
+						<Bond ID="95" Mapping="94" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="96" Element="0,1,0,0,0,0,1,0,1,0,0,0" Constraint="0,0,0,0,0,0,0,0,0,0,0,0.5" MappedObjects="17" NumImages="1">
+						<Bond ID="17" Mapping="96" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="97" Element="0,1,0,1,0,0,1,0,1,0,0,0" Constraint="0,0,0,1,0,0,0,0,0,0,0,0.5" MappedObjects="98" NumImages="1">
+						<Bond ID="98" Mapping="97" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="99" Element="0,1,0,0,0,0,1,1,1,0,0,0" Constraint="0,0,0,0,0,0,0,1,0,0,0,0.5" MappedObjects="100" NumImages="1">
+						<Bond ID="100" Mapping="99" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="101" Element="0,1,0,1,0,0,1,1,1,0,0,0" Constraint="0,0,0,1,0,0,0,1,0,0,0,0.5" MappedObjects="102" NumImages="1">
+						<Bond ID="102" Mapping="101" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="103" Element="0,1,0,0,0,0,1,0,1,0,0,1" Constraint="0,0,0,0,0,0,0,0,0,0,0,1.5" MappedObjects="104" NumImages="1">
+						<Bond ID="104" Mapping="103" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="105" Element="0,1,0,1,0,0,1,0,1,0,0,1" Constraint="0,0,0,1,0,0,0,0,0,0,0,1.5" MappedObjects="106" NumImages="1">
+						<Bond ID="106" Mapping="105" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="107" Element="0,1,0,0,0,0,1,1,1,0,0,1" Constraint="0,0,0,0,0,0,0,1,0,0,0,1.5" MappedObjects="108" NumImages="1">
+						<Bond ID="108" Mapping="107" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="109" Element="0,1,0,1,0,0,1,1,1,0,0,1" Constraint="0,0,0,1,0,0,0,1,0,0,0,1.5" MappedObjects="110" NumImages="1">
+						<Bond ID="110" Mapping="109" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="111" Element="1,0,0,-0.5,0,1,0,0.5,0,0,1,0.5" Constraint="0,0,0,0,0,0,0,0.5,0,0,0,0.5" MappedObjects="112" NumImages="1">
+						<Bond ID="112" Mapping="111" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="113" Element="1,0,0,0.5,0,1,0,0.5,0,0,1,0.5" Constraint="0,0,0,1,0,0,0,0.5,0,0,0,0.5" MappedObjects="114" NumImages="1">
+						<Bond ID="114" Mapping="113" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="115" Element="0,0,1,0.5,1,0,0,-0.5,0,1,0,0.5" Constraint="0,0,0,0.5,0,0,0,0,0,0,0,0.5" MappedObjects="116" NumImages="1">
+						<Bond ID="116" Mapping="115" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="117" Element="0,0,1,0.5,1,0,0,0.5,0,1,0,0.5" Constraint="0,0,0,0.5,0,0,0,1,0,0,0,0.5" MappedObjects="118" NumImages="1">
+						<Bond ID="118" Mapping="117" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="119" Element="0,1,0,0.5,0,0,1,0.5,1,0,0,-0.5" Constraint="0,0,0,0.5,0,0,0,0.5,0,0,0,0" MappedObjects="120" NumImages="1">
+						<Bond ID="120" Mapping="119" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="121" Element="0,1,0,0.5,0,0,1,0.5,1,0,0,0.5" Constraint="0,0,0,0.5,0,0,0,0.5,0,0,0,1" MappedObjects="122" NumImages="1">
+						<Bond ID="122" Mapping="121" ImageOf="5"/>
+					</ImageMapping>
+					<MappingRepairs NumRepairs="0"/>
+				</MappingFamily>
+				<MappingFamily ID="123" NumImageMappings="63">
+					<IdentityMapping ID="124" Element="1,0,0,0,0,1,0,0,0,0,1,0" Constraint="0,0,0,-0.25,0,0,0,-0.25,0,0,0,-0.25" MappedObjects="6" NumImages="1">
+						<Bond ID="6" Mapping="124" Parent="2" Connects="41,4"/>
+					</IdentityMapping>
+					<ImageMapping ID="125" Element="1,0,0,1,0,1,0,0,0,0,1,0" Constraint="0,0,0,0.75,0,0,0,-0.25,0,0,0,-0.25" MappedObjects="126" NumImages="1">
+						<Bond ID="126" Mapping="125" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="127" Element="1,0,0,0,0,1,0,1,0,0,1,0" Constraint="0,0,0,-0.25,0,0,0,0.75,0,0,0,-0.25" MappedObjects="128" NumImages="1">
+						<Bond ID="128" Mapping="127" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="129" Element="1,0,0,1,0,1,0,1,0,0,1,0" Constraint="0,0,0,0.75,0,0,0,0.75,0,0,0,-0.25" MappedObjects="130" NumImages="1">
+						<Bond ID="130" Mapping="129" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="131" Element="1,0,0,0,0,1,0,0,0,0,1,1" Constraint="0,0,0,-0.25,0,0,0,-0.25,0,0,0,0.75" MappedObjects="132" NumImages="1">
+						<Bond ID="132" Mapping="131" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="133" Element="1,0,0,1,0,1,0,0,0,0,1,1" Constraint="0,0,0,0.75,0,0,0,-0.25,0,0,0,0.75" MappedObjects="134" NumImages="1">
+						<Bond ID="134" Mapping="133" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="135" Element="1,0,0,0,0,1,0,1,0,0,1,1" Constraint="0,0,0,-0.25,0,0,0,0.75,0,0,0,0.75" MappedObjects="136" NumImages="1">
+						<Bond ID="136" Mapping="135" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="137" Element="1,0,0,1,0,1,0,1,0,0,1,1" Constraint="0,0,0,0.75,0,0,0,0.75,0,0,0,0.75" MappedObjects="138" NumImages="1">
+						<Bond ID="138" Mapping="137" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="139" Element="-1,0,0,0,0,-1,0,0,0,0,1,0" Constraint="0,0,0,0.25,0,0,0,0.25,0,0,0,-0.25" MappedObjects="19" NumImages="1">
+						<Bond ID="19" Mapping="139" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="140" Element="-1,0,0,1,0,-1,0,0,0,0,1,0" Constraint="0,0,0,1.25,0,0,0,0.25,0,0,0,-0.25" MappedObjects="141" NumImages="1">
+						<Bond ID="141" Mapping="140" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="142" Element="-1,0,0,0,0,-1,0,1,0,0,1,0" Constraint="0,0,0,0.25,0,0,0,1.25,0,0,0,-0.25" MappedObjects="143" NumImages="1">
+						<Bond ID="143" Mapping="142" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="144" Element="-1,0,0,1,0,-1,0,1,0,0,1,0" Constraint="0,0,0,1.25,0,0,0,1.25,0,0,0,-0.25" MappedObjects="145" NumImages="1">
+						<Bond ID="145" Mapping="144" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="146" Element="-1,0,0,0,0,-1,0,0,0,0,1,1" Constraint="0,0,0,0.25,0,0,0,0.25,0,0,0,0.75" MappedObjects="147" NumImages="1">
+						<Bond ID="147" Mapping="146" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="148" Element="-1,0,0,1,0,-1,0,0,0,0,1,1" Constraint="0,0,0,1.25,0,0,0,0.25,0,0,0,0.75" MappedObjects="149" NumImages="1">
+						<Bond ID="149" Mapping="148" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="150" Element="-1,0,0,0,0,-1,0,1,0,0,1,1" Constraint="0,0,0,0.25,0,0,0,1.25,0,0,0,0.75" MappedObjects="151" NumImages="1">
+						<Bond ID="151" Mapping="150" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="152" Element="-1,0,0,1,0,-1,0,1,0,0,1,1" Constraint="0,0,0,1.25,0,0,0,1.25,0,0,0,0.75" MappedObjects="153" NumImages="1">
+						<Bond ID="153" Mapping="152" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="154" Element="-1,0,0,0,0,1,0,0,0,0,-1,0" Constraint="0,0,0,0.25,0,0,0,-0.25,0,0,0,0.25" MappedObjects="20" NumImages="1">
+						<Bond ID="20" Mapping="154" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="155" Element="-1,0,0,1,0,1,0,0,0,0,-1,0" Constraint="0,0,0,1.25,0,0,0,-0.25,0,0,0,0.25" MappedObjects="156" NumImages="1">
+						<Bond ID="156" Mapping="155" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="157" Element="-1,0,0,0,0,1,0,1,0,0,-1,0" Constraint="0,0,0,0.25,0,0,0,0.75,0,0,0,0.25" MappedObjects="158" NumImages="1">
+						<Bond ID="158" Mapping="157" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="159" Element="-1,0,0,1,0,1,0,1,0,0,-1,0" Constraint="0,0,0,1.25,0,0,0,0.75,0,0,0,0.25" MappedObjects="160" NumImages="1">
+						<Bond ID="160" Mapping="159" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="161" Element="-1,0,0,0,0,1,0,0,0,0,-1,1" Constraint="0,0,0,0.25,0,0,0,-0.25,0,0,0,1.25" MappedObjects="162" NumImages="1">
+						<Bond ID="162" Mapping="161" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="163" Element="-1,0,0,1,0,1,0,0,0,0,-1,1" Constraint="0,0,0,1.25,0,0,0,-0.25,0,0,0,1.25" MappedObjects="164" NumImages="1">
+						<Bond ID="164" Mapping="163" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="165" Element="-1,0,0,0,0,1,0,1,0,0,-1,1" Constraint="0,0,0,0.25,0,0,0,0.75,0,0,0,1.25" MappedObjects="166" NumImages="1">
+						<Bond ID="166" Mapping="165" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="167" Element="-1,0,0,1,0,1,0,1,0,0,-1,1" Constraint="0,0,0,1.25,0,0,0,0.75,0,0,0,1.25" MappedObjects="168" NumImages="1">
+						<Bond ID="168" Mapping="167" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="169" Element="1,0,0,0,0,-1,0,0,0,0,-1,0" Constraint="0,0,0,-0.25,0,0,0,0.25,0,0,0,0.25" MappedObjects="21" NumImages="1">
+						<Bond ID="21" Mapping="169" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="170" Element="1,0,0,1,0,-1,0,0,0,0,-1,0" Constraint="0,0,0,0.75,0,0,0,0.25,0,0,0,0.25" MappedObjects="171" NumImages="1">
+						<Bond ID="171" Mapping="170" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="172" Element="1,0,0,0,0,-1,0,1,0,0,-1,0" Constraint="0,0,0,-0.25,0,0,0,1.25,0,0,0,0.25" MappedObjects="173" NumImages="1">
+						<Bond ID="173" Mapping="172" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="174" Element="1,0,0,1,0,-1,0,1,0,0,-1,0" Constraint="0,0,0,0.75,0,0,0,1.25,0,0,0,0.25" MappedObjects="175" NumImages="1">
+						<Bond ID="175" Mapping="174" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="176" Element="1,0,0,0,0,-1,0,0,0,0,-1,1" Constraint="0,0,0,-0.25,0,0,0,0.25,0,0,0,1.25" MappedObjects="177" NumImages="1">
+						<Bond ID="177" Mapping="176" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="178" Element="1,0,0,1,0,-1,0,0,0,0,-1,1" Constraint="0,0,0,0.75,0,0,0,0.25,0,0,0,1.25" MappedObjects="179" NumImages="1">
+						<Bond ID="179" Mapping="178" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="180" Element="1,0,0,0,0,-1,0,1,0,0,-1,1" Constraint="0,0,0,-0.25,0,0,0,1.25,0,0,0,1.25" MappedObjects="181" NumImages="1">
+						<Bond ID="181" Mapping="180" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="182" Element="1,0,0,1,0,-1,0,1,0,0,-1,1" Constraint="0,0,0,0.75,0,0,0,1.25,0,0,0,1.25" MappedObjects="183" NumImages="1">
+						<Bond ID="183" Mapping="182" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="184" Element="0,1,0,0,1,0,0,0,0,0,-1,0" Constraint="0,0,0,-0.25,0,0,0,-0.25,0,0,0,0.25" MappedObjects="22" NumImages="1">
+						<Bond ID="22" Mapping="184" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="185" Element="0,1,0,1,1,0,0,0,0,0,-1,0" Constraint="0,0,0,0.75,0,0,0,-0.25,0,0,0,0.25" MappedObjects="186" NumImages="1">
+						<Bond ID="186" Mapping="185" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="187" Element="0,1,0,0,1,0,0,1,0,0,-1,0" Constraint="0,0,0,-0.25,0,0,0,0.75,0,0,0,0.25" MappedObjects="188" NumImages="1">
+						<Bond ID="188" Mapping="187" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="189" Element="0,1,0,1,1,0,0,1,0,0,-1,0" Constraint="0,0,0,0.75,0,0,0,0.75,0,0,0,0.25" MappedObjects="190" NumImages="1">
+						<Bond ID="190" Mapping="189" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="191" Element="0,1,0,0,1,0,0,0,0,0,-1,1" Constraint="0,0,0,-0.25,0,0,0,-0.25,0,0,0,1.25" MappedObjects="192" NumImages="1">
+						<Bond ID="192" Mapping="191" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="193" Element="0,1,0,1,1,0,0,0,0,0,-1,1" Constraint="0,0,0,0.75,0,0,0,-0.25,0,0,0,1.25" MappedObjects="194" NumImages="1">
+						<Bond ID="194" Mapping="193" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="195" Element="0,1,0,0,1,0,0,1,0,0,-1,1" Constraint="0,0,0,-0.25,0,0,0,0.75,0,0,0,1.25" MappedObjects="196" NumImages="1">
+						<Bond ID="196" Mapping="195" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="197" Element="0,1,0,1,1,0,0,1,0,0,-1,1" Constraint="0,0,0,0.75,0,0,0,0.75,0,0,0,1.25" MappedObjects="198" NumImages="1">
+						<Bond ID="198" Mapping="197" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="199" Element="0,-1,0,0,-1,0,0,0,0,0,-1,0" Constraint="0,0,0,0.25,0,0,0,0.25,0,0,0,0.25" MappedObjects="23" NumImages="1">
+						<Bond ID="23" Mapping="199" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="200" Element="0,-1,0,1,-1,0,0,0,0,0,-1,0" Constraint="0,0,0,1.25,0,0,0,0.25,0,0,0,0.25" MappedObjects="201" NumImages="1">
+						<Bond ID="201" Mapping="200" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="202" Element="0,-1,0,0,-1,0,0,1,0,0,-1,0" Constraint="0,0,0,0.25,0,0,0,1.25,0,0,0,0.25" MappedObjects="203" NumImages="1">
+						<Bond ID="203" Mapping="202" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="204" Element="0,-1,0,1,-1,0,0,1,0,0,-1,0" Constraint="0,0,0,1.25,0,0,0,1.25,0,0,0,0.25" MappedObjects="205" NumImages="1">
+						<Bond ID="205" Mapping="204" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="206" Element="0,-1,0,0,-1,0,0,0,0,0,-1,1" Constraint="0,0,0,0.25,0,0,0,0.25,0,0,0,1.25" MappedObjects="207" NumImages="1">
+						<Bond ID="207" Mapping="206" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="208" Element="0,-1,0,1,-1,0,0,0,0,0,-1,1" Constraint="0,0,0,1.25,0,0,0,0.25,0,0,0,1.25" MappedObjects="209" NumImages="1">
+						<Bond ID="209" Mapping="208" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="210" Element="0,-1,0,0,-1,0,0,1,0,0,-1,1" Constraint="0,0,0,0.25,0,0,0,1.25,0,0,0,1.25" MappedObjects="211" NumImages="1">
+						<Bond ID="211" Mapping="210" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="212" Element="0,-1,0,1,-1,0,0,1,0,0,-1,1" Constraint="0,0,0,1.25,0,0,0,1.25,0,0,0,1.25" MappedObjects="213" NumImages="1">
+						<Bond ID="213" Mapping="212" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="214" Element="0,1,0,0,-1,0,0,0,0,0,1,0" Constraint="0,0,0,-0.25,0,0,0,0.25,0,0,0,-0.25" MappedObjects="24" NumImages="1">
+						<Bond ID="24" Mapping="214" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="215" Element="0,1,0,1,-1,0,0,0,0,0,1,0" Constraint="0,0,0,0.75,0,0,0,0.25,0,0,0,-0.25" MappedObjects="216" NumImages="1">
+						<Bond ID="216" Mapping="215" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="217" Element="0,1,0,0,-1,0,0,1,0,0,1,0" Constraint="0,0,0,-0.25,0,0,0,1.25,0,0,0,-0.25" MappedObjects="218" NumImages="1">
+						<Bond ID="218" Mapping="217" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="219" Element="0,1,0,1,-1,0,0,1,0,0,1,0" Constraint="0,0,0,0.75,0,0,0,1.25,0,0,0,-0.25" MappedObjects="220" NumImages="1">
+						<Bond ID="220" Mapping="219" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="221" Element="0,1,0,0,-1,0,0,0,0,0,1,1" Constraint="0,0,0,-0.25,0,0,0,0.25,0,0,0,0.75" MappedObjects="222" NumImages="1">
+						<Bond ID="222" Mapping="221" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="223" Element="0,1,0,1,-1,0,0,0,0,0,1,1" Constraint="0,0,0,0.75,0,0,0,0.25,0,0,0,0.75" MappedObjects="224" NumImages="1">
+						<Bond ID="224" Mapping="223" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="225" Element="0,1,0,0,-1,0,0,1,0,0,1,1" Constraint="0,0,0,-0.25,0,0,0,1.25,0,0,0,0.75" MappedObjects="226" NumImages="1">
+						<Bond ID="226" Mapping="225" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="227" Element="0,1,0,1,-1,0,0,1,0,0,1,1" Constraint="0,0,0,0.75,0,0,0,1.25,0,0,0,0.75" MappedObjects="228" NumImages="1">
+						<Bond ID="228" Mapping="227" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="229" Element="0,-1,0,0,1,0,0,0,0,0,1,0" Constraint="0,0,0,0.25,0,0,0,-0.25,0,0,0,-0.25" MappedObjects="25" NumImages="1">
+						<Bond ID="25" Mapping="229" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="230" Element="0,-1,0,1,1,0,0,0,0,0,1,0" Constraint="0,0,0,1.25,0,0,0,-0.25,0,0,0,-0.25" MappedObjects="231" NumImages="1">
+						<Bond ID="231" Mapping="230" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="232" Element="0,-1,0,0,1,0,0,1,0,0,1,0" Constraint="0,0,0,0.25,0,0,0,0.75,0,0,0,-0.25" MappedObjects="233" NumImages="1">
+						<Bond ID="233" Mapping="232" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="234" Element="0,-1,0,1,1,0,0,1,0,0,1,0" Constraint="0,0,0,1.25,0,0,0,0.75,0,0,0,-0.25" MappedObjects="235" NumImages="1">
+						<Bond ID="235" Mapping="234" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="236" Element="0,-1,0,0,1,0,0,0,0,0,1,1" Constraint="0,0,0,0.25,0,0,0,-0.25,0,0,0,0.75" MappedObjects="237" NumImages="1">
+						<Bond ID="237" Mapping="236" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="238" Element="0,-1,0,1,1,0,0,0,0,0,1,1" Constraint="0,0,0,1.25,0,0,0,-0.25,0,0,0,0.75" MappedObjects="239" NumImages="1">
+						<Bond ID="239" Mapping="238" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="240" Element="0,-1,0,0,1,0,0,1,0,0,1,1" Constraint="0,0,0,0.25,0,0,0,0.75,0,0,0,0.75" MappedObjects="241" NumImages="1">
+						<Bond ID="241" Mapping="240" ImageOf="6"/>
+					</ImageMapping>
+					<ImageMapping ID="242" Element="0,-1,0,1,1,0,0,1,0,0,1,1" Constraint="0,0,0,1.25,0,0,0,0.75,0,0,0,0.75" MappedObjects="243" NumImages="1">
+						<Bond ID="243" Mapping="242" ImageOf="6"/>
+					</ImageMapping>
+					<MappingRepairs NumRepairs="0"/>
+				</MappingFamily>
+				<InfiniteMapping ID="3" Element="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="2"/>
+			</MappingSet>
+		</SymmetrySystem>
+	</AtomisticTreeRoot>
+</XSD>

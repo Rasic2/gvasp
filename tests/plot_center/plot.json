@@ -1,0 +1,13 @@
+{
+  "width":12,
+  "height": 4,
+  "fontsize": 10,
+  "xlim": [-10,5],
+  "LORBIT": 10,
+  "dos_file": ["DOSCAR"],
+  "pos_file": ["CONTCAR"],
+  "data": {"0": [{"atoms":"41-80","orbitals": ["s"], "color": "#ed0345"},
+                 {"atoms":"41-80","orbitals": ["p"], "color": "#098760"},
+                 {"atoms":"41-80","orbitals": ["d"], "color": "#66ccff"}]}
+}
+

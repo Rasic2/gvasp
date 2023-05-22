@@ -2,6 +2,7 @@ import os
 import unittest
 from pathlib import Path
 
+from gvasp.common.setting import RootDir
 from gvasp.common.task import OptTask, FreqTask, NEBTask
 
 
@@ -21,11 +22,11 @@ class TestMovie(unittest.TestCase):
 
     @file_cleaner
     def test_freq(self):
-        FreqTask.movie(file=Path(".") / "tests" / "OUTCAR_freq", freq=0)
+        FreqTask.movie(file=Path(RootDir).parent / "tests" / "OUTCAR_freq", freq=0)
 
     @file_cleaner
     def test_neb(self):
-        NEBTask.movie(workdir=Path(".") / "tests" / "neb-test")
+        NEBTask.movie(workdir=Path(RootDir).parent / "tests" / "neb-test")
 
 
 if __name__ == '__main__':
