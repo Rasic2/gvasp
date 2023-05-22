@@ -200,4 +200,4 @@ After these two steps, the GVasp generate the inputs will apply your templates.
 - matplotlib
 - bash-completion
 
-Copyright © 2022 `Hui Zhou` All rights reserved.
+Copyright © 2022-2023 `Hui Zhou` All rights reserved.
