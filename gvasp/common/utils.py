@@ -35,7 +35,10 @@ def get_HOME() -> Path:
 
 def identify_atoms(atoms, elements):
     """Calculate the real index for the atoms"""
-    if not isinstance(atoms, list):
+
+    if atoms is None:
+        atoms = range(1, len(elements))
+    elif not isinstance(atoms, list):
         atoms = [atoms]
 
     inner_atoms = []

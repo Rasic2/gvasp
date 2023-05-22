@@ -141,21 +141,23 @@ class PostDOS(Figure):
         total_dos = manager.total_dos
         atom_list = manager.atom_list
 
-        atoms = identify_atoms(selector["atoms"], elements)
+        atoms = identify_atoms(selector.get("atoms", None), elements)
         orbitals = selector.get("orbitals", None)
         xlim = selector["xlim"]
 
         y = 0
         rang = (total_dos.index.values < xlim[1]) & (total_dos.index.values > xlim[0])
-        if atoms is None:
+        if len(atoms) == len(elements) - 1:
             y += total_dos.loc[rang, 'tot_up']
             y -= total_dos.loc[rang, 'tot_down']
+            orbitals = "All"
         elif orbitals is not None:
             for atom in atoms:
                 for orbital in orbitals:
                     y += atom_list[atom].loc[rang, f'{orbital}_up']
                     y -= atom_list[atom].loc[rang, f'{orbital}_down']
         else:
+            orbitals = "All"
             for atom in atoms:
                 y += atom_list[atom].loc[rang, 'up']
                 y -= atom_list[atom].loc[rang, 'down']
