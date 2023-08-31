@@ -15,7 +15,7 @@ from lxml import etree
 from pandas import DataFrame
 
 from gvasp.common.base import Atoms, Lattice
-from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET, HIGH_SYM
+from gvasp.common.constant import COLUMNS_2_32, COLUMNS_2_8, ORBITALS, RED, RESET, HIGH_SYM, COLUMNS_1_4, COLUMNS_1_16
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
 from gvasp.common.parameter import Parameter
@@ -889,72 +889,102 @@ class XDATCAR(StructInfoFile):
 
 
 class DOSCAR(MetaFile):
-    def __init__(self, name, LORBIT=12):
+    def __init__(self, name, ISPIN=2, LORBIT=12):
         super(DOSCAR, self).__init__(name=name)
+        self.ISPIN = ISPIN
         self.LORBIT = LORBIT
         self.NAtom = int(self.strings[0].split()[0])
         self.Emax, self.Emin, self.NDOS, self.fermi = tuple(map(float, self.strings[5].split()[:4]))
         self.NDOS = int(self.NDOS)
 
+        if self.LORBIT not in [10, 12]:
+            logger.error(f"LORBIT = {self.LORBIT} is not supported in this version!")
+            exit(1)
+
     def load(self):
         def merge_dos(energy_list, Total_up, Total_down, atom_list, length):
             """TODO:  need  optimize, deprecate DataFrame"""
             atom_data = [energy_list]
-            Total_Dos = DataFrame(index=energy_list, columns=['tot_up', 'tot_down'], dtype='object')
-            Total_Dos['tot_up'] = Total_up
-            Total_Dos['tot_down'] = Total_down
 
-            if self.LORBIT == 10:
-                columns = COLUMNS_8[:length]
-                orbitals = []
-            elif self.LORBIT == 12:
-                columns = COLUMNS_32[:length]
-                orbitals = ORBITALS[1:int(math.sqrt(length / 2))]
-            else:
-                logger.error(f"LORBIT = {self.LORBIT} is not supported in this version!")
-                exit(1)
+            # ISPIN = 2
+            if self.ISPIN == 2:
 
-            for data in atom_list:
-                DATA = DataFrame(data, index=energy_list, columns=columns)
-                DATA['up'] = 0.0
-                DATA['down'] = 0.0
+                Total_Dos = DataFrame(index=energy_list, columns=['tot_up', 'tot_down'], dtype='object')
+                Total_Dos['tot_up'] = Total_up
+                Total_Dos['tot_down'] = Total_down
 
-                # LORBIT = 12, sum projected-orbitals, e.g., px+py+pz = p
-                for orbital in orbitals:
-                    DATA[orbital + '_up'] = 0.0
-                    DATA[orbital + '_down'] = 0.0
-                    orbital_p_up = [item for item in DATA.columns.values if
-                                    item.startswith(orbital) and item.endswith('up') and item != f'{orbital}_up'
-                                    and item != 'up']
-                    orbital_p_down = [item for item in DATA.columns.values if
-                                      item.startswith(orbital) and item.endswith('down') and item != f'{orbital}_down'
-                                      and item != 'down']
-                    for item in orbital_p_up:
-                        DATA[f'{orbital}_up'] += DATA[item]
-                    for item in orbital_p_down:
-                        DATA[f'{orbital}_down'] += DATA[item]
-                    DATA['up'] += DATA[f'{orbital}_up']
-                    DATA['down'] += DATA[f'{orbital}_down']
-
-                # for both LORBIT=10/12
-                DATA['up'] += DATA['s_up']
-                DATA['down'] += DATA['s_down']
-
-                # LORBIT = 10
                 if self.LORBIT == 10:
-                    for item in columns:
-                        if item.endswith("up") and not item.startswith("s"):
-                            DATA['up'] += DATA[item]
-                        elif item.endswith("down") and not item.startswith("s"):
-                            DATA['down'] += DATA[item]
+                    columns = COLUMNS_2_8[:length]
+                    orbitals = []
+                elif self.LORBIT == 12:
+                    columns = COLUMNS_2_32[:length]
+                    orbitals = ORBITALS[1:int(math.sqrt(length / 2))]
+
+                for data in atom_list:
+                    DATA = DataFrame(data, index=energy_list, columns=columns)
+                    DATA['up'] = 0.0
+                    DATA['down'] = 0.0
+
+                    # LORBIT = 12, sum projected-orbitals, e.g., px+py+pz = p
+                    for orbital in orbitals:
+                        DATA[orbital + '_up'] = 0.0
+                        DATA[orbital + '_down'] = 0.0
+                        orbital_p_up = [item for item in DATA.columns.values if
+                                        item.startswith(orbital) and item.endswith('up') and item != f'{orbital}_up'
+                                        and item != 'up']
+                        orbital_p_down = [item for item in DATA.columns.values if
+                                          item.startswith(orbital) and item.endswith(
+                                              'down') and item != f'{orbital}_down'
+                                          and item != 'down']
+                        for item in orbital_p_up:
+                            DATA[f'{orbital}_up'] += DATA[item]
+                        for item in orbital_p_down:
+                            DATA[f'{orbital}_down'] += DATA[item]
+                        DATA['up'] += DATA[f'{orbital}_up']
+                        DATA['down'] += DATA[f'{orbital}_down']
+
+                    # for both LORBIT=10/12
+                    DATA['up'] += DATA['s_up']
+                    DATA['down'] += DATA['s_down']
+
+                    # LORBIT = 10
+                    if self.LORBIT == 10:
+                        for item in columns:
+                            if item.endswith("up") and not item.startswith("s"):
+                                DATA['up'] += DATA[item]
+                            elif item.endswith("down") and not item.startswith("s"):
+                                DATA['down'] += DATA[item]
+
+                    atom_data.append(DATA)
+
+            # ISPIN = 1
+            elif self.ISPIN == 1:
+
+                Total_Dos = DataFrame(index=energy_list, columns=['tot'], dtype='object')
+                Total_Dos['tot'] = Total_up
+
+                if self.LORBIT == 10:
+                    columns = COLUMNS_1_4[:length]
+                    orbitals = []
+                elif self.LORBIT == 12:
+                    columns = COLUMNS_1_16[:length]
+                    orbitals = []
+
+                for data in atom_list:
+                    DATA = DataFrame(data, index=energy_list, columns=columns)
+                    DATA['up'] = 0.0
+                    DATA['down'] = 0.0
 
                 atom_data.append(DATA)
 
-            self.TDOS = Total_Dos  # DataFrame(NDOS, 2)
+            self.TDOS = Total_Dos  # DataFrame(NDOS, 2) / DataFrame(NDOS, 1)
             self.LDOS = atom_data  # energy + List(NAtom, NDOS, NOrbital+8)
+
+            print(self.LDOS)
+            exit()
             return self
 
-        return merge_dos(*dos_cython.load(self.strings, self.NDOS, self.fermi))
+        return merge_dos(*dos_cython.load(self.strings, self.NDOS, self.ISPIN, self.fermi))
 
 
 class EIGENVAL(MetaFile):

@@ -11,7 +11,7 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 
-from gvasp.common.constant import COLUMNS_32
+from gvasp.common.constant import COLUMNS_2_32
 from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
 from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT, CHGCAR_diff
 from gvasp.common.structure import Structure
@@ -52,12 +52,12 @@ def interpolated_wrapper(func):
 
 
 class PostDOS(Figure):
-    def __init__(self, dos_files: list, pos_files: list, LORBIT=12, align=None, xlabel="Energy (eV)",
+    def __init__(self, dos_files: list, pos_files: list, ISPIN=2, LORBIT=12, align=None, xlabel="Energy (eV)",
                  ylabel="Density of States (a.u.)", **kargs):
         super(PostDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
 
-        self.managers = [DOSData(dos_file=dos_file, pos_file=pos_file, LORBIT=LORBIT) for dos_file, pos_file in
-                         zip(dos_files, pos_files)]
+        self.managers = [DOSData(dos_file=dos_file, pos_file=pos_file, ISPIN=ISPIN, LORBIT=LORBIT) for
+                         dos_file, pos_file in zip(dos_files, pos_files)]
         self.align = align
 
     @plot_wrapper
@@ -202,11 +202,11 @@ class DOSData():
         doscar_parse:   parse DOSCAR data
     """
 
-    def __init__(self, dos_file, pos_file, LORBIT=12):
+    def __init__(self, dos_file, pos_file, ISPIN=2, LORBIT=12):
         self.dos_file = dos_file
         self.pos_file = pos_file
         self.elements = DOSData.parse_contcar(self.pos_file)
-        self.total_dos, self.atom_list = DOSData.parse_doscar(self.dos_file, LORBIT)
+        self.total_dos, self.atom_list = DOSData.parse_doscar(self.dos_file, ISPIN, LORBIT)
 
         self.atoms, self.orbitals, self.method, self.avgflag = None, None, None, None
 
@@ -238,7 +238,7 @@ class DOSData():
             plus_tot = defaultdict(list)
             plus_tot = DataFrame(plus_tot, index=self.atom_list[0],
                                  columns=['up', 'down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down'] +
-                                         COLUMNS_32, dtype='object')
+                                         COLUMNS_2_32, dtype='object')
             plus_tot.iloc[:, :] = 0.0
             for atom in self.atoms:
                 for column in plus_tot.columns.values:
@@ -286,7 +286,7 @@ class DOSData():
         return elements
 
     @staticmethod
-    def parse_doscar(name, LORBIT):
+    def parse_doscar(name, ISPIN, LORBIT):
         """
         read DOSCAR file, obtain the TDOS && LDOS.
 
@@ -297,7 +297,7 @@ class DOSData():
             TDOS:       DataFrame(NDOS, 2)
             LDOS:       energy_list + List(NAtom * DataFrame(NDOS, NOrbital+8))
         """
-        dos_instance = DOSCAR(name=name, LORBIT=LORBIT).load()
+        dos_instance = DOSCAR(name=name, ISPIN=ISPIN, LORBIT=LORBIT).load()
         return dos_instance.TDOS, dos_instance.LDOS
 
 

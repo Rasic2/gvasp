@@ -437,17 +437,21 @@ def main(argv=None):
                 arguments['pos_file'] = "CONTCAR"
             if "dos_file" not in arguments:
                 arguments['dos_file'] = "DOSCAR"
+            if "ISPIN" not in arguments:
+                arguments['ISPIN'] = 2
             if "LORBIT" not in arguments:
                 arguments['LORBIT'] = 12
 
             dos_files, pos_files = [arguments['dos_file']], [arguments['pos_file']]
+            ISPIN = arguments['ISPIN']
             LORBIT = arguments['LORBIT']
 
             del arguments['dos_file']
             del arguments['pos_file']
+            del arguments['ISPIN']
             del arguments['LORBIT']
 
-            post_dos = PostDOS(dos_files=dos_files, pos_files=pos_files, LORBIT=LORBIT)
+            post_dos = PostDOS(dos_files=dos_files, pos_files=pos_files, LORBIT=LORBIT, ISPIN=ISPIN)
             post_dos.center(arguments)
 
         elif args.which == 'sum':  # sum task

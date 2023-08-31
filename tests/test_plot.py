@@ -108,6 +108,17 @@ class TestPlotDOS(object):
         poster = PostDOS(dos_files=["DOSCAR"], pos_files=["CONTCAR"], LORBIT=10)
         poster.center(selector)
 
+    @change_dir("plot_center")
+    def test_center_ispin(self, change_test_dir):
+        selector = {
+            "ispin": 1,
+            "atoms": "Pt",
+            "xlim": [-15, 0]
+        }
+
+        poster = PostDOS(dos_files=["DOSCAR_ispin"], pos_files=["CONTCAR_ispin"], LORBIT=10)
+        poster.center(selector)
+
 
 if __name__ == '__main__':
     pytest.main([__file__, "-s"])

@@ -1,6 +1,9 @@
 {
+  "pos_file": "CONTCAR_ispin",
+  "dos_file": "DOSCAR_ispin",
   "atoms": "Pt",
-  "LORBIT": 10,
+  "LORBIT": 12,
+  "ISPIN": 1,
   "orbitals": "d",
   "xlim": [-15, 0]
 }

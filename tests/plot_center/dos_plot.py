@@ -1,7 +1,7 @@
 from gvasp.common.plot import DOSData
 from gvasp.main import main
 
-main(["plot", "dos", "-j", "plot.json", "--show"])
+main(["-d", "band-center", "-j", "center.json", ])
 
 # plotter = PlotDOS(dos_file="DOSCAR", pos_file="CONTCAR", xlim=[-10, 5])
 # plotter.plot(atoms="Pt", orbitals=["s"], color="#ed0345")
