@@ -1,7 +1,7 @@
 import platform
 import time
 
-Version = "0.1.4"
+Version = "0.1.5.alpha"
 Platform = platform.platform()
 DATE = time.strftime("%Y-%m-%d", time.localtime())
 
