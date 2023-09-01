@@ -11,6 +11,7 @@ from pandas import DataFrame
 from scipy import interpolate
 from scipy.integrate import simps
 
+from gvasp.common.descriptor import ValueDescriptor
 from gvasp.common.constant import COLUMNS_2_32
 from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
 from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT, CHGCAR_diff
@@ -52,12 +53,15 @@ def interpolated_wrapper(func):
 
 
 class PostDOS(Figure):
+    ISPIN = ValueDescriptor("ISPIN", [1, 2])
+
     def __init__(self, dos_files: list, pos_files: list, ISPIN=2, LORBIT=12, align=None, xlabel="Energy (eV)",
                  ylabel="Density of States (a.u.)", **kargs):
         super(PostDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
 
         self.managers = [DOSData(dos_file=dos_file, pos_file=pos_file, ISPIN=ISPIN, LORBIT=LORBIT) for
                          dos_file, pos_file in zip(dos_files, pos_files)]
+        self.ISPIN = ISPIN
         self.align = align
 
     @plot_wrapper
@@ -147,20 +151,33 @@ class PostDOS(Figure):
 
         y = 0
         rang = (total_dos.index.values < xlim[1]) & (total_dos.index.values > xlim[0])
-        if len(atoms) == len(elements) - 1:
-            y += total_dos.loc[rang, 'tot_up']
-            y -= total_dos.loc[rang, 'tot_down']
-            orbitals = "All"
-        elif orbitals is not None:
-            for atom in atoms:
-                for orbital in orbitals:
-                    y += atom_list[atom].loc[rang, f'{orbital}_up']
-                    y -= atom_list[atom].loc[rang, f'{orbital}_down']
-        else:
-            orbitals = "All"
-            for atom in atoms:
-                y += atom_list[atom].loc[rang, 'up']
-                y -= atom_list[atom].loc[rang, 'down']
+        if self.ISPIN == 2:
+            if len(atoms) == len(elements) - 1:
+                y += total_dos.loc[rang, 'tot_up']
+                y -= total_dos.loc[rang, 'tot_down']
+                orbitals = "All"
+            elif orbitals is not None:
+                for atom in atoms:
+                    for orbital in orbitals:
+                        y += atom_list[atom].loc[rang, f'{orbital}_up']
+                        y -= atom_list[atom].loc[rang, f'{orbital}_down']
+            else:
+                orbitals = "All"
+                for atom in atoms:
+                    y += atom_list[atom].loc[rang, 'up']
+                    y -= atom_list[atom].loc[rang, 'down']
+        elif self.ISPIN == 1:
+            if len(atoms) == len(elements) - 1:
+                y += total_dos.loc[rang, 'tot']
+                orbitals = "All"
+            elif orbitals is not None:
+                for atom in atoms:
+                    for orbital in orbitals:
+                        y += atom_list[atom].loc[rang, f'{orbital}']
+            else:
+                orbitals = "All"
+                for atom in atoms:
+                    y += atom_list[atom].loc[rang, 'tot']
         e_count = simps(y.values, y.index.values)  # Simpson Integration method for obtain the electrons' num
         dos = simps([a * b for a, b in zip(y.values, y.index.values)], y.index.values)
 
