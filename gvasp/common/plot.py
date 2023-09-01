@@ -152,32 +152,33 @@ class PostDOS(Figure):
         y = 0
         rang = (total_dos.index.values < xlim[1]) & (total_dos.index.values > xlim[0])
         if self.ISPIN == 2:
-            if len(atoms) == len(elements) - 1:
+            if len(atoms) == len(elements) - 1 and orbitals is None:
+                orbitals = "All"
                 y += total_dos.loc[rang, 'tot_up']
                 y -= total_dos.loc[rang, 'tot_down']
-                orbitals = "All"
-            elif orbitals is not None:
-                for atom in atoms:
-                    for orbital in orbitals:
-                        y += atom_list[atom].loc[rang, f'{orbital}_up']
-                        y -= atom_list[atom].loc[rang, f'{orbital}_down']
-            else:
+            elif orbitals is None:
                 orbitals = "All"
                 for atom in atoms:
                     y += atom_list[atom].loc[rang, 'up']
                     y -= atom_list[atom].loc[rang, 'down']
-        elif self.ISPIN == 1:
-            if len(atoms) == len(elements) - 1:
-                y += total_dos.loc[rang, 'tot']
-                orbitals = "All"
-            elif orbitals is not None:
+            else:
                 for atom in atoms:
                     for orbital in orbitals:
-                        y += atom_list[atom].loc[rang, f'{orbital}']
-            else:
+                        y += atom_list[atom].loc[rang, f'{orbital}_up']
+                        y -= atom_list[atom].loc[rang, f'{orbital}_down']
+        elif self.ISPIN == 1:
+            if len(atoms) == len(elements) - 1 and orbitals is None:
+                orbitals = "All"
+                y += total_dos.loc[rang, 'tot']
+            elif orbitals is None:
                 orbitals = "All"
                 for atom in atoms:
                     y += atom_list[atom].loc[rang, 'tot']
+            else:
+                for atom in atoms:
+                    for orbital in orbitals:
+                        y += atom_list[atom].loc[rang, f'{orbital}']
+
         e_count = simps(y.values, y.index.values)  # Simpson Integration method for obtain the electrons' num
         dos = simps([a * b for a, b in zip(y.values, y.index.values)], y.index.values)
 

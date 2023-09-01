@@ -983,7 +983,8 @@ class DOSCAR(MetaFile):
                     # LORBIT = 12, sum projected-orbitals, e.g., px+py+pz = p
                     for orbital in orbitals:
                         DATA[orbital] = 0.0
-                        orbital_p = [item for item in DATA.columns.values if item.startswith(orbital)]
+                        orbital_p = [item for item in DATA.columns.values if
+                                     item.startswith(orbital) and item != f'{orbital}']
 
                         for item in orbital_p:
                             DATA[f'{orbital}'] += DATA[item]
