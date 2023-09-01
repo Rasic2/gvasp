@@ -116,7 +116,7 @@ class TestPlotDOS(object):
             "xlim": [-15, 0]
         }
 
-        poster = PostDOS(dos_files=["DOSCAR_ispin"], pos_files=["CONTCAR_ispin"], LORBIT=10)
+        poster = PostDOS(dos_files=["DOSCAR_ispin"], pos_files=["CONTCAR_ispin"], LORBIT=12)
         poster.center(selector)
 
 
