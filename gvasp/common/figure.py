@@ -5,6 +5,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy import interpolate
 
+from gvasp.common.descriptor import ValueDescriptor
+
 logger = logging.getLogger(__name__)
 
 
@@ -37,8 +39,8 @@ def plot_wrapper(func):
 
         legends = plt.gca().axes.get_legend_handles_labels()
         if len(legends[0]):
-            plt.legend(loc='best', fontsize=self.fontsize - 4, frameon=False)
-        
+            plt.legend(loc=self.lloc, fontsize=self.fontsize - 4, frameon=False)
+
         plt.title(self.title, fontsize=self.fontsize + 2)
 
     return wrapper
@@ -48,6 +50,9 @@ class Figure(object):
     """
     Plot-type class' parent, unify the figure format
     """
+    lloc = ValueDescriptor("lloc",
+                           ['best', 'upper right', 'upper left', 'lower left', 'lower right', 'right', 'center left',
+                            'center right', 'lower center', 'upper center', 'center'])
 
     def __new__(cls, *args, **kwargs):
         if cls is Figure:
@@ -55,7 +60,8 @@ class Figure(object):
         return super(Figure, cls).__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
-                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, twidth=2, tlength=5, **kargs):
+                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, twidth=2, tlength=5, lloc="best",
+                 **kargs):
         self.width = width
         self.height = height
         plt.close(1)  # close the old figure
@@ -73,6 +79,7 @@ class Figure(object):
         self.linewidth = linewidth
         self.twidth = twidth  # tick_width
         self.tlength = tlength  # tick_length
+        self.lloc = lloc  # legend_loc
 
     @staticmethod
     def show():
