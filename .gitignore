@@ -189,3 +189,6 @@ xsd/
 /tests/continuous/opt_cal/
 /tests/INCAR
 /tests/continuous/hse/
+/node_modules/
+/package.json
+/package-lock.json
