@@ -78,6 +78,12 @@ class TestPlotDOS(object):
         os.remove("DOS_F0_L0")
 
     @change_dir("plot_center")
+    def test_ispin(self, change_test_dir):
+        selector = {"0": [{"atoms": "Pt", "orbitals": ["s"], "color": "#ed0345", "method": "line"}]}
+        poster = PostDOS(dos_files=["DOSCAR_ispin"], pos_files=["CONTCAR_ispin"], ISPIN=1)
+        poster.plot(selector=selector)
+
+    @change_dir("plot_center")
     def test_center(self, change_test_dir):
         selector = {
             "atoms": "Pt",

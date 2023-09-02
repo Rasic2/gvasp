@@ -17,13 +17,11 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 ORBITALS = ['s', 'p', 'd', 'f']
-COLUMNS_1_4 = ['s', 'p', 'd', 'f']
-COLUMNS_2_8 = ['s_up', 's_down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down']
-COLUMNS_1_16 = ['s', 'py', 'pz', 'px', 'dxy', 'dyz', 'dz2', 'dxz', 'dx2', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7']
-COLUMNS_2_32 = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'px_down', 'dxy_up', 'dxy_down',
-                'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
-                'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
-                'f6_down', 'f7_up', 'f7_down']
+COLUMNS_8 = ['s_up', 's_down', 'p_up', 'p_down', 'd_up', 'd_down', 'f_up', 'f_down']
+COLUMNS_32 = ['s_up', 's_down', 'py_up', 'py_down', 'pz_up', 'pz_down', 'px_up', 'px_down', 'dxy_up', 'dxy_down',
+              'dyz_up', 'dyz_down', 'dz2_up', 'dz2_down', 'dxz_up', 'dxz_down', 'dx2_up', 'dx2_down', 'f1_up',
+              'f1_down', 'f2_up', 'f2_down', 'f3_up', 'f3_down', 'f4_up', 'f4_down', 'f5_up', 'f5_down', 'f6_up',
+              'f6_down', 'f7_up', 'f7_down']
 
 RecommendPot = {
     "sv": ["Li", "K", "Ca", "Sc", "Ti", "V", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Cs", "Ba", "W", "Fr", "Ra"],
