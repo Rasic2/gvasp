@@ -3,6 +3,7 @@ on: push
 jobs:
   GVaspTests:
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
