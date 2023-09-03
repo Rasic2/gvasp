@@ -1352,7 +1352,7 @@ class OUTCAR(MetaFile):
     def __init__(self, name):
         super(OUTCAR, self).__init__(name=name)
 
-        element_name = [line.split()[3] for line in self.strings if "TITEL" in line]
+        element_name = [line.split()[3].split("_")[0] for line in self.strings if "TITEL" in line]
         element_count = [list(map(int, line.split()[4:])) for line in self.strings if "ions per" in line][0]
         self.element = sum([[name] * count for name, count in zip(element_name, element_count)], [])
         self.lattice = {Lattice.from_string(self.strings[index + 1:index + 4]) for index, line in
