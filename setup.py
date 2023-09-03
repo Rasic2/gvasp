@@ -23,7 +23,7 @@ extra_compile_args = ["-std=c++11"] if "macosx" in sysconfig.get_platform() else
 
 setup(
     name='gvasp',
-    version='0.1.5.alpha',
+    version='0.1.5.beta',
     license='GPL-3.0',
     author='hui_zhou',
     author_email='1051987201@qq.com',
