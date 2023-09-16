@@ -9,8 +9,8 @@
 project = 'GVasp'
 copyright = '2022, Hui Zhou'
 author = 'Hui Zhou'
-version = '0.1.5.beta'
-release = '0.1.5.beta'
+version = '0.1.5.pre'
+release = '0.1.5.pre'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
