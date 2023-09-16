@@ -112,7 +112,7 @@ class SubmitFile(MetaFile):
         self.incar = None
         self.kpoints = None
         self.constrain = [None, None]
-        self.head_lines, self.env_lines, self.run_line, self.finish_line = None, None, None, None
+        self.head_lines, self.env_lines, self.run_line, self.finish_line = None, None, None, ""
         self.vasp_std_line, self.vasp_gam_line = None, None
 
         self.submit2write = []
@@ -127,14 +127,14 @@ class SubmitFile(MetaFile):
                     _head.append(f"#SBATCH -J {self.title} \n")
                 else:
                     _head.append(line)
-            elif "source" in line:
+            elif "source" in line or "module" in line:
                 _env.append(line)
             elif "EXEC=" in line:
                 _vasp_line = line
             elif "mpirun" in line:
                 self.run_line = line
             elif "finish" in line:
-                self.finish_line = line
+                self.finish_line += line
 
         if "vasp_std" in _vasp_line:
             self.vasp_std_line, self.vasp_gam_line = _vasp_line, _vasp_line.replace("vasp_std", "vasp_gam")

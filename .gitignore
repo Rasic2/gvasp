@@ -129,6 +129,7 @@ tests/con-TS
 xsd/
 *.incar
 *.submit
+!/tests/module/gzy.vtst.conTS.submit
 /tests/OUTCAR_opt
 /tests/neb/OUTCAR
 /extension/dos_cython.cpp

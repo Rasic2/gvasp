@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH -J H2 
+#SBATCH -p standard
+#SBATCH -N 1
+#SBATCH -c 32
+#SBATCH -o %x.out
+#SBATCH -e %x.err
+
+module load intel
+module load mpi
+
+EXEC=$HOME/software/vasp.5.4.1-vtst-conTS/bin/vasp_std
+
+mpirun -np $SLURM_JOB_CPUS_PER_NODE $EXEC > print-out 2>&1
+
+echo `date` >> ~/finish
+echo `pwd` >> ~/finish
+
