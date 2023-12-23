@@ -90,7 +90,9 @@ class ARCFile(MetaFile):
             f.write("!BIOSYM archive 3\n")
             f.write("PBC=ON\n")
             for frame in range(len(structure)):
-                atoms = structure[frame].atoms.set_coord(Lattice.arc_lattice(lattice))
+                structure[frame].atoms.set_coord(lattice)  # first set frac_coord
+                structure[frame].atoms.cart_coord = structure[frame].atoms.count * [None]  # then clear cart_coord
+                atoms = structure[frame].atoms.set_coord(Lattice.arc_lattice(lattice))  # set coord from arc_lattice
                 f.write("Auto Generated CAR File\n")
                 f.write(f'!DATE {datetime.now().strftime("%a %b %d %H:%M:%S  %Y")}\n')
                 f.write(f"PBC   {a:.5f}  {b:.5f}  {c:.5f}  {alpha:.5f}  {beta:.5f}  {gamma:.5f} (P1)\n")
