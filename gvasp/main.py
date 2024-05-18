@@ -407,7 +407,7 @@ def main(argv=None):
                     logger.warning(f"style argument is not exist in {args.json}, use default value")
 
                 if 'legends' not in arguments:
-                    arguments['legends'] = [None, None, None]
+                    arguments['legends'] = [None] * len(arguments['data'])
                     logger.warning(f"legends argument is not exist in {args.json}, use default value")
 
                 if color_lack:
