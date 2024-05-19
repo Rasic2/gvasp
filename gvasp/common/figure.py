@@ -30,7 +30,7 @@ def plot_wrapper(func):
             pass
         plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
         plt.ylim() if self.ylim is None else plt.ylim(self.ylim)
-        self.fontsize = self.fontsize * self.fontsize / 20 * min(self.width, self.height) / 6
+        self.fontsize = self.fontsize * self.fontsize / 20 * max(min(self.width, self.height), 6) / 6
         plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
                    fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
