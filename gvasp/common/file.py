@@ -90,7 +90,9 @@ class ARCFile(MetaFile):
             f.write("!BIOSYM archive 3\n")
             f.write("PBC=ON\n")
             for frame in range(len(structure)):
-                atoms = structure[frame].atoms.set_coord(Lattice.arc_lattice(lattice))
+                structure[frame].atoms.set_coord(lattice)  # first set frac_coord
+                structure[frame].atoms.cart_coord = structure[frame].atoms.count * [None]  # then clear cart_coord
+                atoms = structure[frame].atoms.set_coord(Lattice.arc_lattice(lattice))  # set coord from arc_lattice
                 f.write("Auto Generated CAR File\n")
                 f.write(f'!DATE {datetime.now().strftime("%a %b %d %H:%M:%S  %Y")}\n')
                 f.write(f"PBC   {a:.5f}  {b:.5f}  {c:.5f}  {alpha:.5f}  {beta:.5f}  {gamma:.5f} (P1)\n")
@@ -112,7 +114,7 @@ class SubmitFile(MetaFile):
         self.incar = None
         self.kpoints = None
         self.constrain = [None, None]
-        self.head_lines, self.env_lines, self.run_line, self.finish_line = None, None, None, None
+        self.head_lines, self.env_lines, self.run_line, self.finish_line = None, None, None, ""
         self.vasp_std_line, self.vasp_gam_line = None, None
 
         self.submit2write = []
@@ -127,14 +129,14 @@ class SubmitFile(MetaFile):
                     _head.append(f"#SBATCH -J {self.title} \n")
                 else:
                     _head.append(line)
-            elif "source" in line:
+            elif "source" in line or "module" in line:
                 _env.append(line)
             elif "EXEC=" in line:
                 _vasp_line = line
             elif "mpirun" in line:
                 self.run_line = line
             elif "finish" in line:
-                self.finish_line = line
+                self.finish_line += line
 
         if "vasp_std" in _vasp_line:
             self.vasp_std_line, self.vasp_gam_line = _vasp_line, _vasp_line.replace("vasp_std", "vasp_gam")

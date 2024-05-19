@@ -3,6 +3,7 @@
 
 ### Bug Fixes
 
+* keyError with W_sv potential for freq ([b761a9a](https://github.com/Rasic2/gvasp/commit/b761a9af75cb280702b490967cba0079db4e96e3))
 * Namespace don't have <which> indicator ([2080030](https://github.com/Rasic2/gvasp/commit/20800305421cccec0ccb6335d63eee2b256a9e32))
 * screen [matplotlib.legend][WARNING] by check the number of legends ([2879430](https://github.com/Rasic2/gvasp/commit/2879430ab97679ec83513cda2cba2e0b785df08d))
 
