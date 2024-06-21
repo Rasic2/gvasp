@@ -12,19 +12,19 @@ build:
 requirements:
   build:
     - vs2019_win-64          # [win]
-    - {{ compiler('c') }}    # [linux]
-    - {{ compiler('cxx') }}  # [linux]
+    - {{ compiler('c') }}    # [linux,osx]
+    - {{ compiler('cxx') }}  # [linux,osx]
 
   host:
     - python
     - pybind11
-    - numpy
+    - numpy >=1.19
     - Cython
     - setuptools
 
   run:
     - python
-    - numpy
+    - numpy >=1.19
     - pybind11
     - Cython
     - lxml
