@@ -29,10 +29,10 @@ def interpolated_wrapper(func):
     def wrapper(self):
         DOSL_data = namedtuple("DOSL_data", ("energy", "up", "down"))
         x_out, y_out = [], []
-        for x, y, number in func(self):
+        for x, y, number, magnification in func(self):
             x_arr = np.array(x)
             y_arr = np.array(y)
-            x_new = np.linspace(np.min(x_arr), np.max(x_arr), len(x) * 100)
+            x_new = np.linspace(np.min(x_arr), np.max(x_arr), len(x) * magnification)
             f = interpolate.interp1d(x_arr, y_arr, kind='cubic')
             y_new = f(x_new)
 
@@ -205,11 +205,12 @@ class DOSData():
         doscar_parse:   parse DOSCAR data
     """
 
-    def __init__(self, dos_file, pos_file, ISPIN=2, LORBIT=12):
+    def __init__(self, dos_file, pos_file, ISPIN=2, LORBIT=12, magnification=100):
         self.dos_file = dos_file
         self.pos_file = pos_file
         self.elements = DOSData.parse_contcar(self.pos_file)
         self.total_dos, self.atom_list = DOSData.parse_doscar(self.dos_file, ISPIN, LORBIT)
+        self.magnification = magnification
 
         self.atoms, self.orbitals, self.method, self.avgflag = None, None, None, None
 
@@ -233,7 +234,7 @@ class DOSData():
         def TDOS_data(self):
             """Get Total DOS"""
             for column in self.total_dos.columns.values:
-                yield self.total_dos.index.values, list(self.total_dos[column].values), 1
+                yield self.total_dos.index.values, list(self.total_dos[column].values), 1, self.magnification
 
         @interpolated_wrapper
         def LDOS_data(self):
@@ -258,7 +259,7 @@ class DOSData():
                 orbitals = [np.sum(orbitals_up, axis=0), np.sum(orbitals_down, axis=0)]
 
             for orbital_value in orbitals:
-                yield plus_tot.index.values, orbital_value, len(self.atoms)
+                yield plus_tot.index.values, orbital_value, len(self.atoms), self.magnification
 
         """Main Content of get_data func"""
         if self.atoms is None:
