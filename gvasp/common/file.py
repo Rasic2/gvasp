@@ -162,7 +162,7 @@ class SubmitFile(MetaFile):
         if len(_post_process):
             self.post_process_lines = "".join(self.strings[_post_process[0]:_post_process[1] + 1])
         else:
-            self.pre_process_lines = "# User-defined Post-Process \n# End Post-Process\n"
+            self.post_process_lines = "# User-defined Post-Process \n# End Post-Process\n"
 
         return self
 
