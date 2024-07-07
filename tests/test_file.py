@@ -58,6 +58,9 @@ class TestSubmitFile(object):
     def test_build(self):
         name = "temp_submit"
         with open(name, "w") as f:
+            f.write("# User-defined Pre-Process\n")
+            f.write("a=1\n")
+            f.write("# End Pre-Process\n")
             f.write("EXEC=/public1/home/sc81049/soft/vasp+vtst/bin/vasp_gam\n")
         submit_file = SubmitFile(name=name).build
         os.remove(name)

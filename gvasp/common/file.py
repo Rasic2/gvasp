@@ -115,6 +115,7 @@ class SubmitFile(MetaFile):
         self.kpoints = None
         self.constrain = [None, None]
         self.head_lines, self.env_lines, self.run_line, self.finish_line = None, None, None, ""
+        self.pre_process_lines, self.post_process_lines = None, None
         self.vasp_std_line, self.vasp_gam_line = None, None
 
         self.submit2write = []
@@ -123,7 +124,8 @@ class SubmitFile(MetaFile):
     def build(self):
         _head, _env = [], []
         _vasp_line = ""
-        for line in self.strings:
+        _pre_process, _post_process = [], []
+        for index, line in enumerate(self.strings):
             if line.startswith("#SBATCH") or line.startswith("#!"):
                 if line.startswith("#SBATCH -J"):
                     _head.append(f"#SBATCH -J {self.title} \n")
@@ -137,6 +139,13 @@ class SubmitFile(MetaFile):
                 self.run_line = line
             elif "finish" in line:
                 self.finish_line += line
+            elif "Pre-Process" in line:
+                _pre_process.append(index)
+            elif "Post-Process" in line:
+                _post_process.append(index)
+
+        assert len(_pre_process) == 0 or (len(_pre_process) == 2 and _pre_process[1] > _pre_process[0])
+        assert len(_post_process) == 0 or (len(_post_process) == 2 and _post_process[1] > _post_process[0])
 
         if "vasp_std" in _vasp_line:
             self.vasp_std_line, self.vasp_gam_line = _vasp_line, _vasp_line.replace("vasp_std", "vasp_gam")
@@ -145,6 +154,15 @@ class SubmitFile(MetaFile):
 
         self.head_lines = "".join(_head)
         self.env_lines = "".join(_env)
+
+        if len(_pre_process):
+            self.pre_process_lines = "".join(self.strings[_pre_process[0]:_pre_process[1] + 1])
+        else:
+            self.pre_process_lines = "# User-defined Pre-Process \n# End Pre-Process\n"
+        if len(_post_process):
+            self.post_process_lines = "".join(self.strings[_post_process[0]:_post_process[1] + 1])
+        else:
+            self.pre_process_lines = "# User-defined Post-Process \n# End Post-Process\n"
 
         return self
 

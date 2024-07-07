@@ -309,8 +309,8 @@ class BaseTask(metaclass=abc.ABCMeta):
         self.submit.kpoints = kpoints
         self.submit = self.submit.build
         self.submit.vasp_line = self.submit.vasp_gam_line if gamma else self.submit.vasp_std_line
-        self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n', 'vasp_line',
-                                    'run_line', '\n', 'finish_line']
+        self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n', 'pre_process_lines', '\n', 'vasp_line',
+                                    'run_line', '\n', 'post_process_lines', '\n', 'finish_line']
 
     def _generate_fort(self, continuous=False):
         """
@@ -407,13 +407,13 @@ class OptTask(NormalTask, XDATMovie):
         super(OptTask, self)._generate_submit(low=low, **kargs)
 
         if low:
-            self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n',
+            self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n', 'pre_process_lines', '\n',
                                         f'#{"/Low Calculation/".center(50, "-")}# \n',
                                         'vasp_gam_line', 'run_line', '\n',
                                         f'#{"/Normal Prepare/".center(50, "-")}# \n',
                                         'check_success_lines', 'backup_lines', 'modify_lines', '\n',
                                         f'#{"/Normal Calculation/".center(50, "-")}# \n',
-                                        'vasp_line', 'run_line', '\n',
+                                        'vasp_line', 'run_line', '\n', 'post_process_lines', '\n',
                                         'finish_line']
 
 
@@ -524,7 +524,7 @@ class ChargeTask(NormalTask):
     @staticmethod
     def apply_analysis(submit):
         try:
-            submit.submit2write.remove('finish_line')
+            submit.submit2write = submit.submit2write[:-3]
         except ValueError:
             pass
 
@@ -533,7 +533,7 @@ class ChargeTask(NormalTask):
         submit.task = submit._task
         submit.submit2write += [f'#{"/Charge Analysis Calculation/".center(50, "-")}# \n',
                                 f'{_check_success_lines}',
-                                'bader_lines', '\n', 'spin_lines', '\n', 'finish_line']
+                                'bader_lines', '\n', 'spin_lines', '\n', 'post_process_lines', '\n', 'finish_line']
 
     @staticmethod
     def split():
@@ -983,7 +983,7 @@ class SequentialTask(object):
             low_string = "low first, " if low else ""
             analysis_string = "apply analysis" if analysis else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + analysis_string + RESET)
-            self.submit.submit2write.remove("finish_line")
+            self.submit.submit2write = self.submit.submit2write[:-3]
             self.submit.submit2write += [f'#{"/Charge Calculation/".center(50, "-")}# \n',
                                          'check_success_lines',
                                          "mkdir chg_cal \n",
@@ -994,7 +994,7 @@ class SequentialTask(object):
                                          f"sed -i '/LCHARG/c\  LCHARG = .TRUE.' chg_cal/INCAR \n",
                                          f"sed -i '/LCHARG/a\  LAECHG = .TRUE.' chg_cal/INCAR \n",
                                          f"cd chg_cal || return \n", '\n',
-                                         "vasp_line", 'run_line', '\n', 'finish_line']
+                                         "vasp_line", 'run_line', '\n', 'post_process_lines', '\n', 'finish_line']
 
             if analysis:
                 ChargeTask.apply_analysis(self.submit)
@@ -1002,7 +1002,7 @@ class SequentialTask(object):
         if self.end == "wf":
             low_string = "low first, " if low else ""
             print(f"{RED}Sequential Task: opt => {self.end}, " + low_string + RESET)
-            self.submit.submit2write.remove("finish_line")
+            self.submit.submit2write = self.submit.submit2write[:-3]
             self.submit.submit2write += [f'#{"/WorkFunc Calculation/".center(50, "-")}# \n',
                                          'check_success_lines',
                                          "mkdir workfunc \n",
@@ -1013,10 +1013,10 @@ class SequentialTask(object):
                                          f"sed -i '/NSW/c\  NSW = 1' workfunc/INCAR \n",
                                          f"sed -i '/NSW/a\  LVHAR = .TRUE.' workfunc/INCAR \n",
                                          f"cd workfunc || return \n", '\n',
-                                         "vasp_line", 'run_line', '\n', 'finish_line']
+                                         "vasp_line", 'run_line', '\n', 'post_process_lines', '\n', 'finish_line']
 
         if self.end == "dos":
-            self.submit.submit2write.remove("finish_line")
+            self.submit.submit2write = self.submit.submit2write[:-3]
             self.submit._task, self.submit.task = self.submit.task, "Charge"
             _check_success_lines = self.submit.pipe(['check_success_lines'])
             self.submit.task = self.submit._task
@@ -1035,7 +1035,7 @@ class SequentialTask(object):
                                          f"sed -i '/ICHARG/a\  LORBIT = 12' dos_cal/INCAR \n",
                                          f"sed -i '/ICHARG/a\  NEDOS = 2000' dos_cal/INCAR \n",
                                          f"cd dos_cal || return \n", '\n',
-                                         "vasp_line", 'run_line', '\n', 'finish_line']
+                                         "vasp_line", 'run_line', '\n', 'post_process_lines', '\n', 'finish_line']
 
         if self.end not in ['opt', 'chg', 'wf', 'dos']:
             raise TypeError(f"Unsupported Sequential Task to {self.end}, should be [opt, chg, wf, dos]")
