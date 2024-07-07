@@ -1,4 +1,4 @@
-# [](https://github.com/Rasic2/gvasp/compare/v0.1.4...v) (2024-05-19)
+# [v0.1.5](https://github.com/Rasic2/gvasp/compare/v0.1.4...v0.1.5) (2024-07-07)
 
 
 ### Bug Fixes
@@ -8,13 +8,16 @@
 * line-count > 3 not plot && fontsize problem for small width ([b7918bd](https://github.com/Rasic2/gvasp/commit/b7918bd9a935f0113f871a97ae0eceee86516f50))
 * Namespace don't have <which> indicator ([2080030](https://github.com/Rasic2/gvasp/commit/20800305421cccec0ccb6335d63eee2b256a9e32))
 * screen [matplotlib.legend][WARNING] by check the number of legends ([2879430](https://github.com/Rasic2/gvasp/commit/2879430ab97679ec83513cda2cba2e0b785df08d))
+* TypeError: sequence item 9: expected str instance, NoneType found ([3979ec9](https://github.com/Rasic2/gvasp/commit/3979ec97e2019a7798d5308581b50bca6fc00ca4))
 
 
 ### Features
 
+* add magnification param in DOSData ([8d77f05](https://github.com/Rasic2/gvasp/commit/8d77f054a824a78cefa37c5aca600be394cc32d9))
 * add support for module in *.submit template ([b0ce3d0](https://github.com/Rasic2/gvasp/commit/b0ce3d06d2743061310d19c72bb863409b7c1b22))
 * add support for module in *.submit template ([245fce3](https://github.com/Rasic2/gvasp/commit/245fce33fa52cbe7734a58807cbad3c7d1319681))
 * add support for PlotDOS with ISPIN=1 ([30cb318](https://github.com/Rasic2/gvasp/commit/30cb31867fd527a6e7b494f2a4c731690eb6bf02))
+* add User-defined Pre/Post-Proceee in submit.script ([c8698be](https://github.com/Rasic2/gvasp/commit/c8698bef74d00bfe5a5e8876f105a2516d674a6e))
 * make legend location adjustable ([945c9d3](https://github.com/Rasic2/gvasp/commit/945c9d3b3a9b18552511072f37dd39e287e64305))
 
 
