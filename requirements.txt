@@ -9,3 +9,4 @@ scipy
 pytest
 seekpath
 sphinxcontrib-svg2pdfconverter
+sphinxcontrib.jquery
