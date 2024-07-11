@@ -10,3 +10,4 @@ pytest
 seekpath
 sphinxcontrib-svg2pdfconverter
 sphinxcontrib.jquery
+sphinx_rtd_theme
