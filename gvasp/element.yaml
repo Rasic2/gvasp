@@ -366,6 +366,27 @@ Element Zr:
         Element Te: 3.170
         Element I: 3.190
 
+Element Pd:
+    formula: Pd
+    number: 46
+    period: 5
+    group: 10
+    color: '#006986'
+    _default_bonds:
+        Element H: 1.51998
+        Element C: 2.33649
+        Element N: 2.40451
+        Element O: 2.39849
+        Element F: 2.34649
+        Element P: 2.56998
+        Element S: 2.69649
+        Element Cl: 2.65649
+        Element As: 2.34998
+        Element Se: 2.26998
+        Element Br: 2.80649
+        Element Te: 2.52998
+        Element I: 2.96649
+
 Element Sn:
     formula: Sn
     number: 50
