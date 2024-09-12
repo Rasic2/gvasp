@@ -329,12 +329,13 @@ class PlotOpt(Figure):
 
 
 class PlotBand(Figure):
-    def __init__(self, name="EIGENVAL", title='Band Structure', **kargs):
+    def __init__(self, name="EIGENVAL", type="EIGENVAL", title='Band Structure', **kargs):
         self.name = name
-        if self.name.startswith("EIGENVAL"):
+        self.type = type
+        if self.type == "EIGENVAL":
             eigenval = EIGENVAL(self.name)
             self.energy, self.kcoord, self.klabel = eigenval.energy, eigenval.KPoint_dist, eigenval.KPoint_label
-        elif self.name.startswith("OUTCAR"):
+        elif self.type == "OUTCAR":
             energy = OUTCAR(self.name).band_info
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
             self.energy = self.energy.transpose((1, 0, 2))
