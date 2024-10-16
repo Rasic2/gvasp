@@ -407,6 +407,26 @@ Element Sn:
         Element Te: 2.916
         Element I: 3.522
 
+Element La:
+    formula: La
+    number: 57
+    period: 6
+    group: 3
+    color: '#70DEFF'
+    _default_bonds:
+        Element H: 2.77293
+        Element N: 3.05293
+        Element O: 2.90983
+        Element F: 2.79293
+        Element P: 3.32293
+        Element S: 3.35593
+        Element Cl: 3.33452
+        Element As: 3.51293
+        Element Se: 3.45293
+        Element Br: 3.43293
+        Element Te: 3.65293
+        Element I: 3.64293
+
 Element Ce:
     formula: Ce
     number: 58
