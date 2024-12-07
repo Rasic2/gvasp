@@ -13,6 +13,21 @@ Element H:
         Element Cl: 1.500
         Element I: 1.610
 
+Element B:
+    formula: B
+    number: 5
+    period: 2
+    group: 13
+    color: '#FFFFFF'
+    _default_bonds:
+        Element N: 1.200
+        Element O: 2.100
+        Element F: 1.100
+        Element P: 1.420
+        Element S: 1.340
+        Element Cl: 1.500
+        Element I: 1.610
+
 Element C:
     formula: C
     number: 6
@@ -175,6 +190,15 @@ Element Ti:
     number: 22
     period: 4
     group: 4
+    color: '#C0C3C6'
+    _default_bonds:
+        Element F: 2.862
+
+Element V:
+    formula: V
+    number: 23
+    period: 4
+    group: 5
     color: '#C0C3C6'
     _default_bonds:
         Element F: 2.862
