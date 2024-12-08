@@ -320,9 +320,12 @@ def main(argv=None):
                     print(f"Cancel neb task")
 
         elif args.which == 'output':  # output task
-            with open("submit.script", "r") as f:
-                content = f.readlines()
-            name = content[1].split()[2]
+            if Path("submit.script").exists():
+                with open("submit.script", "r") as f:
+                    content = f.readlines()
+                name = content[1].split()[2]
+            else:
+                name = Path.cwd().stem
             OutputTask.output(name=f"{name}.xsd")
 
         elif args.which == 'movie':  # movie task
