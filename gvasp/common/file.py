@@ -707,7 +707,7 @@ class XSDFile(MetaFile):
         atoms_num = structure.atoms.count
         energy = outcar.last_energy
         force = outcar.last_force if outcar.last_force is not None else 0
-        mag = outcar.last_mag
+        mag = outcar.last_mag if outcar.last_force is not None else 0
         SymmetrySystem = doc.createElement("SymmetrySystem")
         SymmetrySystem.setAttribute("ID", "2")
         SymmetrySystem.setAttribute("Mapping", "3")
