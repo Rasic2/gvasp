@@ -1502,7 +1502,7 @@ class OUTCAR(MetaFile):
             self.kpoint_info = namedtuple("KPoint_info", ("up", "down"))(spin_up, spin_down)
             self.band_info = namedtuple("Band_info", ("up", "down"))(transform_band(spin_up), transform_band(spin_down))
         else:
-            raise NotImplementedError("Non-spin polarized calculation has not been implemented")
+            logger.warning("Non-spin polarized calculation may have error, please check!!")
 
     def _parse_neb(self):
         self.tangent = [float(line.split()[-1]) for line in self.strings if line.find("tangent") != -1]
