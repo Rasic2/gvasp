@@ -185,6 +185,15 @@ Element K:
         Element Te: 4.23284
         Element I: 4.11717
 
+Element Sc:
+    formula: Sc
+    number: 21
+    period: 4
+    group: 3
+    color: '#C0C3C6'
+    _default_bonds:
+        Element F: 2.862
+
 Element Ti:
     formula: Ti
     number: 22
@@ -223,6 +232,7 @@ Element Cr:
         Element Br: 2.972
         Element Te: 2.676
         Element I: 3.192
+
 Element Mn:
     formula: Mn
     number: 25
@@ -370,6 +380,15 @@ Element Br:
         Element Cl: 2.332
         Element Br: 2.290
 
+Element Y:
+    formula: Y
+    number: 39
+    period: 5
+    group: 3
+    color: '#96E1E1'
+    _default_bonds:
+        Element H: 2.290
+
 Element Zr:
     formula: Zr
     number: 40
@@ -389,6 +408,42 @@ Element Zr:
         Element Br: 2.980
         Element Te: 3.170
         Element I: 3.190
+
+Element Nb:
+    formula: Nb
+    number: 41
+    period: 5
+    group: 5
+    color: '#96E1E1'
+    _default_bonds:
+        Element H: 2.290
+
+Element Mo:
+    formula: Mo
+    number: 42
+    period: 5
+    group: 6
+    color: '#96E1E1'
+    _default_bonds:
+        Element H: 2.290
+
+Element Ru:
+    formula: Ru
+    number: 44
+    period: 5
+    group: 8
+    color: '#006986'
+    _default_bonds:
+        Element H: 1.51998
+
+Element Rh:
+    formula: Rh
+    number: 45
+    period: 5
+    group: 9
+    color: '#006986'
+    _default_bonds:
+        Element H: 1.51998
 
 Element Pd:
     formula: Pd
@@ -410,6 +465,24 @@ Element Pd:
         Element Br: 2.80649
         Element Te: 2.52998
         Element I: 2.96649
+
+Element Ag:
+    formula: Ag
+    number: 47
+    period: 5
+    group: 11
+    color: '#006986'
+    _default_bonds:
+        Element H: 1.51998
+
+Element Cd:
+    formula: Cd
+    number: 48
+    period: 5
+    group: 12
+    color: '#006986'
+    _default_bonds:
+        Element H: 1.51998
 
 Element Sn:
     formula: Sn
@@ -471,6 +544,24 @@ Element Ce:
         Element Te: 3.226
         Element I: 3.624
 
+Element Hf:
+    formula: Hf
+    number: 72
+    period: 6
+    group: 4
+    color: '#2794D6'
+    _default_bonds:
+        Element H: 1.809
+
+Element Ta:
+    formula: Ta
+    number: 73
+    period: 6
+    group: 5
+    color: '#2794D6'
+    _default_bonds:
+        Element H: 1.809
+
 Element W:
     formula: W
     number: 74
@@ -490,6 +581,33 @@ Element W:
         Element Br: 2.499
         Element Te: 2.759
         Element I: 2.709
+
+Element Re:
+    formula: Re
+    number: 75
+    period: 6
+    group: 7
+    color: #185B91
+    _default_bonds:
+        Element H: 1.44998
+
+Element Os:
+    formula: Os
+    number: 76
+    period: 6
+    group: 8
+    color: #185B91
+    _default_bonds:
+        Element H: 1.44998
+
+Element Ir:
+    formula: Ir
+    number: 77
+    period: 6
+    group: 9
+    color: #185B91
+    _default_bonds:
+        Element H: 1.44998
 
 Element Pt:
     formula: Pt
@@ -531,6 +649,15 @@ Element Au:
         Element Br: 2.776
         Element Te: 2.459
         Element I: 3.212
+
+Element Hg:
+    formula: Hg
+    number: 80
+    period: 6
+    group: 12
+    color: '#FFD124'
+    _default_bonds:
+        Element H: 1.419
 
 Element Bi:
     formula: Bi
