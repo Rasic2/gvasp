@@ -95,6 +95,15 @@ Element Na:
     _default_bonds:
         Element O: 2.956
 
+Element Mg:
+    formula: Mg
+    number: 12
+    period: 3
+    group: 2
+    color: '#AA5EF2'
+    _default_bonds:
+        Element O: 2.956
+
 Element Al:
     formula: Al
     number: 13

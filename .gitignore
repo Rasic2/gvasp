@@ -193,3 +193,8 @@ xsd/
 /node_modules/
 /package.json
 /package-lock.json
+
+/tests/dipole_input/*
+!/tests/dipole_input/gzy.incar
+!/tests/dipole_input/*.py
+!/tests/dipole_input/*.xsd

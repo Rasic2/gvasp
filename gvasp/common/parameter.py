@@ -142,6 +142,7 @@ class Parameter(object):
     HFSCREEN = TypeDescriptor('HFSCREEN', float)
     TIME = TypeDescriptor('TIME', float)
     PRECFOCK = ValueDescriptor('PRECFOCK', ['Normal', 'Accurate', 'Fast', 'Medium', 'Single', 'Low'])
+    IDIPOL = ValueDescriptor("IDIPOL", [1, 2, 3, 4])
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -158,7 +159,7 @@ class Parameter(object):
                        {'func': int,
                         'name': ['ISTART', 'IBRION', 'NSW', 'ISIF', 'NELM', 'NELMIN', 'ISPIN', 'ISMEAR', 'LDAUTYPE',
                                  'LDAUPRINT', 'LMAXMIX', 'NPAR', 'ISYM', 'ICHAIN', 'DRotMax', 'IOPT', 'ICHARG',
-                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD', "IVDW", "NSIM"]
+                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD', "IVDW", "NSIM", "IDIPOL"]
                         },
                    "_floatParam":
                        {'func': float,
@@ -215,6 +216,8 @@ class Parameter(object):
     _plusUParam = ('LDAU', 'LDAUTYPE', 'LDAUL', 'LDAUU', 'LDAUJ', 'LDAUPRINT', 'LMAXMIX')
 
     _vdwParam = ('IVDW',)
+
+    _dipoleParam = ('IDIPOL',)
 
     _solParam = ('LSOL', 'EB_K')
 
