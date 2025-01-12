@@ -8,7 +8,7 @@ def change_test_dir(request, monkeypatch):
     monkeypatch.chdir(request.fspath.dirname)
 
 
-class TestSubmitMag(object):
+class TestSubmitDipole(object):
 
     def test_opt_mag(self, change_test_dir):
         task = OptTask()
