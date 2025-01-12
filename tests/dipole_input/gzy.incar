@@ -11,7 +11,7 @@
   LWAVE = .FALSE. 
   NPAR = 4
   IDIPOL = 3
-  #LDIPOL = .TRUE. 
+  LDIPOL = .TRUE.
 #----------/SCF Parameter/----------# 
   AMIX = 0.4 
   BMIX = 0.2 
