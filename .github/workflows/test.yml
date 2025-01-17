@@ -1,4 +1,4 @@
-name: Codecov
+name: RunTest
 on: push
 jobs:
   GVaspTests:
@@ -40,7 +40,6 @@ jobs:
           pip install pytest-cov
           pytest --cov=./ --cov-report=xml --cov-config=./.coveragerc
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
-          version: "v0.1.15"
           token: ${{ secrets.CODECOV_TOKEN }}
