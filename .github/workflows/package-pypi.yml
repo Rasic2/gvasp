@@ -1,10 +1,6 @@
 name: Publish Python Package
 
-on:
-  push:
-    branches:
-      - release  # 自动触发的分支
-  workflow_dispatch:  # 添加这一行以支持手动触发
+on: push
 
 jobs:
   build-linux:
@@ -35,6 +31,7 @@ jobs:
         run: cibuildwheel --output-dir dist
 
       - name: Publish package to PyPI
+        if: github.ref == 'refs/heads/release'
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
@@ -70,6 +67,7 @@ jobs:
         run: cibuildwheel --output-dir dist
 
       - name: Publish package to PyPI
+        if: github.ref == 'refs/heads/release'
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
