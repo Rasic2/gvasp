@@ -173,7 +173,7 @@ class Atom(object):
     """
 
     _config_file = Path(f"{RootDir}/element.yaml")
-    _attributes_yaml = ['number', 'period', 'group', 'color', '_default_bonds']
+    _attributes_yaml = ['number', '_default_bonds']
     _load = False
     _attrs = None
 
@@ -192,7 +192,7 @@ class Atom(object):
         self.spin = spin
 
         # config atom from `element.yaml`
-        self.number, self.period, self.group, self.color, self._default_bonds = (None, None, None, None, [])
+        self.number, self._default_bonds = (None, [])
         self.__initialize_attrs()
 
         # atom_type property
