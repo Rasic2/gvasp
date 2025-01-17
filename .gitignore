@@ -134,10 +134,11 @@ xsd/
 /tests/neb/OUTCAR
 /extension/dos_cython.cpp
 /extension/path_cython.c
-/conda
+/conda/*
 !/conda/bld.bat
 !/conda/build.sh
 !/conda/meta.yaml
+!/conda/conda_build_config.yaml
 /tests/xyzhang/NEB-0912/
 /tests/zyguo/W_element/
 /tests/LOCPOT_/

@@ -1,0 +1,12 @@
+name: gvasp
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      - numpy
+      - pybind11
+      - Cython
+      - setuptools_scm==8.1.0

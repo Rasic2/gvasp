@@ -1,0 +1,111 @@
+name: Conda Package Build
+
+on: push
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # 确保完整克隆，获取所有历史记录和标签
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          python-version: 3.9
+
+      - name: Copy & Delete files
+        run: |
+          cp conda/* .
+          rm -rf conda/ docs/ tests/ scripts/ 
+
+      - name: Create conda environment
+        run: conda env create -f environment.yml
+
+      - name: Set up conda environment
+        run: echo "CONDA_ENV=gvasp" >> $GITHUB_ENV
+
+      - name: Get latest Git tag
+        run: |
+          # 获取最近的 Git 标签并去掉前面的 'v'
+          tag=$(git describe --tags --abbrev=0)
+          version=${tag#v}
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Install conda-build & Build conda package
+        run: |
+          conda init
+          source ~/.bashrc
+          conda activate $CONDA_ENV
+          conda install conda conda-build anaconda-client
+          conda-build purge
+          version=${{ env.version }} conda-build . -c conda-forge
+
+      - name: Upload conda package
+        env:
+          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
+        run: |
+          conda init
+          source ~/.bashrc
+          conda activate $CONDA_ENV
+          PACKAGE_PATH=$(version=${{ env.version }} conda-build . --output)
+          anaconda upload $PACKAGE_PATH
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # 确保完整克隆，获取所有历史记录和标签
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          auto-update-conda: true
+          python-version: 3.9
+
+      - name: Copy & Delete files
+        run: |
+          cp conda/* .
+          rm -rf conda/ docs/ tests/ scripts/ 
+
+      - name: Create conda environment
+        run: conda env create -f environment.yml
+
+      - name: Set up conda environment
+        run: echo "CONDA_ENV=gvasp" >> $GITHUB_ENV
+
+      - name: Get latest Git tag
+        run: |
+          # 获取最近的 Git 标签并去掉前面的 'v'
+          tag=$(git describe --tags --abbrev=0)
+          version=${tag#v}
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Install conda-build & Build conda package
+        run: |
+          conda init
+          source ~/.bash_profile
+          conda activate $CONDA_ENV
+          conda install conda conda-build anaconda-client
+          conda config --set subdir osx-arm64
+          conda-build purge
+          version=${{ env.version }} conda-build . -c conda-forge
+
+      - name: Upload conda package
+        env:
+          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
+        run: |
+          conda init
+          source ~/.bash_profile
+          conda activate $CONDA_ENV
+          PACKAGE_PATH=$(version=${{ env.version }} conda-build . --output)
+          anaconda upload $PACKAGE_PATH
