@@ -1,0 +1,69 @@
+name: "Conda Build Steps"
+description: "Shared steps for building conda packages"
+
+inputs:
+  shell-profile:
+    description: "Shell profile file to source"
+    required: true
+  conda-subdir:
+    description: "Conda subdir configuration for MacOS"
+    required: false
+  ANACONDA_API_TOKEN:
+    description: "Token for anaconda login"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        miniconda-version: "latest"
+        auto-update-conda: true
+        python-version: 3.9
+
+    - name: Copy & Delete files
+      run: |
+        cp conda/* .
+        rm -rf conda/ docs/ tests/ scripts/
+      shell: bash
+
+    - name: Create conda environment
+      run: conda env create -f environment.yml
+      shell: bash
+
+    - name: Set up conda environment
+      run: echo "CONDA_ENV=gvasp" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Get latest Git tag
+      run: |
+        tag=$(git describe --tags --abbrev=0)
+        version=${tag#v}
+        echo "PACKAGE_VERSION=$version" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Install conda-build & Build conda package
+      run: |
+        conda init
+        source ${{ inputs.shell-profile }}
+        conda activate $CONDA_ENV
+        conda install conda conda-build anaconda-client
+        if [ "${{ inputs.conda-subdir }}" ]; then
+          conda config --set subdir ${{ inputs.conda-subdir }}
+        fi
+        conda-build purge
+        version=${{ env.PACKAGE_VERSION }} conda-build . -c conda-forge
+      shell: bash
+
+    - name: Upload conda package
+      if: github.ref == 'refs/heads/release'
+      env:
+        ANACONDA_API_TOKEN: ${{ inputs.ANACONDA_API_TOKEN }}
+      run: |
+        conda init
+        source ${{ inputs.shell-profile }}
+        conda activate $CONDA_ENV
+        PACKAGE_PATH=$(version=${{ env.PACKAGE_VERSION }} conda-build . --output)
+        anaconda upload $PACKAGE_PATH
+      shell: bash
