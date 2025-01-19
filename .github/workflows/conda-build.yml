@@ -47,6 +47,7 @@ jobs:
           version=${{ env.version }} conda-build . -c conda-forge
 
       - name: Upload conda package
+        if: github.ref == 'refs/heads/release'
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
@@ -101,6 +102,7 @@ jobs:
           version=${{ env.version }} conda-build . -c conda-forge
 
       - name: Upload conda package
+        if: github.ref == 'refs/heads/release'
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
