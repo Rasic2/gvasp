@@ -1,56 +1,90 @@
-# [v0.1.5](https://github.com/Rasic2/gvasp/compare/v0.1.4...v0.1.5) (2024-07-07)
+# Changelog
+
+## [v0.1.6.alpha](https://github.com/Rasic2/gvasp/tree/v0.1.6.alpha) (2024-10-16)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.5...v0.1.6.alpha)
+
+## [v0.1.5](https://github.com/Rasic2/gvasp/tree/v0.1.5) (2024-07-07)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.5.pre...v0.1.5)
+
+## [v0.1.5.pre](https://github.com/Rasic2/gvasp/tree/v0.1.5.pre) (2024-06-27)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.5.beta...v0.1.5.pre)
+
+**Closed issues:**
+
+- About the visualization process [\#9](https://github.com/Rasic2/gvasp/issues/9)
+
+**Merged pull requests:**
+
+- Update main.py for PES [\#10](https://github.com/Rasic2/gvasp/pull/10) ([XianyangZhang](https://github.com/XianyangZhang))
+- Bump codecov/codecov-action from 3 to 4 [\#8](https://github.com/Rasic2/gvasp/pull/8) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/setup-python from 4 to 5 [\#7](https://github.com/Rasic2/gvasp/pull/7) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/checkout from 3 to 4 [\#6](https://github.com/Rasic2/gvasp/pull/6) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v0.1.5.beta](https://github.com/Rasic2/gvasp/tree/v0.1.5.beta) (2023-09-03)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.5.alpha...v0.1.5.beta)
+
+**Merged pull requests:**
+
+- Bump actions/checkout from 2 to 3 [\#5](https://github.com/Rasic2/gvasp/pull/5) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/setup-python from 2 to 4 [\#4](https://github.com/Rasic2/gvasp/pull/4) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v0.1.5.alpha](https://github.com/Rasic2/gvasp/tree/v0.1.5.alpha) (2023-09-01)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.4...v0.1.5.alpha)
+
+## [v0.1.4](https://github.com/Rasic2/gvasp/tree/v0.1.4) (2023-04-21)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.4.beta...v0.1.4)
+
+## [v0.1.4.beta](https://github.com/Rasic2/gvasp/tree/v0.1.4.beta) (2023-04-21)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.4.alpha...v0.1.4.beta)
+
+## [v0.1.4.alpha](https://github.com/Rasic2/gvasp/tree/v0.1.4.alpha) (2023-02-09)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.3...v0.1.4.alpha)
+
+## [v0.1.3](https://github.com/Rasic2/gvasp/tree/v0.1.3) (2022-11-19)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.2...v0.1.3)
+
+## [v0.1.2](https://github.com/Rasic2/gvasp/tree/v0.1.2) (2022-10-31)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.1...v0.1.2)
+
+## [v0.1.1](https://github.com/Rasic2/gvasp/tree/v0.1.1) (2022-10-03)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.0...v0.1.1)
+
+## [v0.1.0](https://github.com/Rasic2/gvasp/tree/v0.1.0) (2022-09-30)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.0.3...v0.1.0)
+
+**Closed issues:**
+
+- @grd cannot generate normal .grd file [\#3](https://github.com/Rasic2/gvasp/issues/3)
+- home path [\#2](https://github.com/Rasic2/gvasp/issues/2)
+
+## [v0.0.3](https://github.com/Rasic2/gvasp/tree/v0.0.3) (2022-09-12)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.0.2...v0.0.3)
+
+**Closed issues:**
+
+- nebmovie sequence problem [\#1](https://github.com/Rasic2/gvasp/issues/1)
+
+## [v0.0.2](https://github.com/Rasic2/gvasp/tree/v0.0.2) (2022-09-03)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.0.1...v0.0.2)
+
+## [v0.0.1](https://github.com/Rasic2/gvasp/tree/v0.0.1) (2022-08-05)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/50269e1755c8b3ab1e759fe1ec747fc930145745...v0.0.1)
 
 
-### Bug Fixes
 
-* keyError with W_sv potential for freq ([cb32fec](https://github.com/Rasic2/gvasp/commit/cb32feca090e3cb981687d1502c45eb5be132b30))
-* keyError with W_sv potential for freq ([b761a9a](https://github.com/Rasic2/gvasp/commit/b761a9af75cb280702b490967cba0079db4e96e3))
-* line-count > 3 not plot && fontsize problem for small width ([b7918bd](https://github.com/Rasic2/gvasp/commit/b7918bd9a935f0113f871a97ae0eceee86516f50))
-* Namespace don't have <which> indicator ([2080030](https://github.com/Rasic2/gvasp/commit/20800305421cccec0ccb6335d63eee2b256a9e32))
-* screen [matplotlib.legend][WARNING] by check the number of legends ([2879430](https://github.com/Rasic2/gvasp/commit/2879430ab97679ec83513cda2cba2e0b785df08d))
-* TypeError: sequence item 9: expected str instance, NoneType found ([3979ec9](https://github.com/Rasic2/gvasp/commit/3979ec97e2019a7798d5308581b50bca6fc00ca4))
-
-
-### Features
-
-* add magnification param in DOSData ([8d77f05](https://github.com/Rasic2/gvasp/commit/8d77f054a824a78cefa37c5aca600be394cc32d9))
-* add support for module in *.submit template ([b0ce3d0](https://github.com/Rasic2/gvasp/commit/b0ce3d06d2743061310d19c72bb863409b7c1b22))
-* add support for module in *.submit template ([245fce3](https://github.com/Rasic2/gvasp/commit/245fce33fa52cbe7734a58807cbad3c7d1319681))
-* add support for PlotDOS with ISPIN=1 ([30cb318](https://github.com/Rasic2/gvasp/commit/30cb31867fd527a6e7b494f2a4c731690eb6bf02))
-* add User-defined Pre/Post-Proceee in submit.script ([c8698be](https://github.com/Rasic2/gvasp/commit/c8698bef74d00bfe5a5e8876f105a2516d674a6e))
-* make legend location adjustable ([945c9d3](https://github.com/Rasic2/gvasp/commit/945c9d3b3a9b18552511072f37dd39e287e64305))
-
-
-
-## [0.1.4](https://github.com/Rasic2/gvasp/compare/v0.1.3...v0.1.4) (2023-04-21)
-
-
-
-## [0.1.3](https://github.com/Rasic2/gvasp/compare/v0.1.2...v0.1.3) (2022-11-19)
-
-
-
-## [0.1.2](https://github.com/Rasic2/gvasp/compare/v0.1.1...v0.1.2) (2022-10-31)
-
-
-
-## [0.1.1](https://github.com/Rasic2/gvasp/compare/v0.1.0...v0.1.1) (2022-10-03)
-
-
-
-# [0.1.0](https://github.com/Rasic2/gvasp/compare/v0.0.3...v0.1.0) (2022-09-30)
-
-
-
-## [0.0.3](https://github.com/Rasic2/gvasp/compare/v0.0.2...v0.0.3) (2022-09-12)
-
-
-
-## [0.0.2](https://github.com/Rasic2/gvasp/compare/v0.0.1...v0.0.2) (2022-09-03)
-
-
-
-## 0.0.1 (2022-08-05)
-
-
-
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
