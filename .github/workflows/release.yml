@@ -19,7 +19,7 @@ permissions:
   contents: read
 
 jobs:
-  update_release_draft:
+  update-release-draft:
     permissions:
       # write permission is required to create a github release
       contents: write
@@ -35,8 +35,8 @@ jobs:
 
       # Drafts your next Release notes as Pull Requests are merged into "master"
       - uses: release-drafter/release-drafter@v6
-        with:
-          config-name: ./workflows/release-drafter.yml
+          #with:
+          # config-name: ./workflows/release.yml
         #   disable-autolabeler: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
