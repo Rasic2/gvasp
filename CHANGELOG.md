@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.6.beta](https://github.com/Rasic2/gvasp/tree/v0.1.6.beta) (2025-01-22)
+
+[Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.6.alpha...v0.1.6.beta)
+
 ## [v0.1.6.alpha](https://github.com/Rasic2/gvasp/tree/v0.1.6.alpha) (2024-10-16)
 
 [Full Changelog](https://github.com/Rasic2/gvasp/compare/v0.1.5...v0.1.6.alpha)
