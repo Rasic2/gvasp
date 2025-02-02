@@ -9,7 +9,8 @@
   EDIFFG = -0.05 
   ISPIN = 2 
   GGA = PE 
-  LWAVE = .FALSE. 
+  LWAVE = .FALSE.
+
 #----------/SCF Parameter/----------# 
   AMIX = 0.2 
   BMIX = 0.0001 
