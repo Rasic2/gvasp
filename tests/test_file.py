@@ -62,6 +62,10 @@ class TestSubmitFile(object):
             f.write("a=1\n")
             f.write("# End Pre-Process\n")
             f.write("EXEC=/public1/home/sc81049/soft/vasp+vtst/bin/vasp_gam\n")
+            f.write("# User-defined Post-Process\n")
+            f.write("a=1\n")
+            f.write("# End Post-Process\n")
+
         submit_file = SubmitFile(name=name).build
         os.remove(name)
 
