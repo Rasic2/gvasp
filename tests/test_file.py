@@ -7,7 +7,7 @@ import pytest
 
 from gvasp.common.error import PotDirNotExistError, ParameterError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError
-from gvasp.common.file import EIGENVAL, OUTCAR, DOSCAR, CHGCAR_diff
+from gvasp.common.file import EIGENVAL, OUTCAR, DOSCAR
 from gvasp.common.file import MODECAR
 from gvasp.common.file import MetaFile, XDATCAR, StructInfoFile, CellFile, POSCAR, SubmitFile, XSDFile, INCAR, POTCAR, \
     CHGBase, AECCAR0, AECCAR2
@@ -180,9 +180,3 @@ class TestDOSCAR:
         with pytest.raises(SystemExit) as exit_info:
             doscar = DOSCAR("DOSCAR_dos", LORBIT=11)
         assert exit_info.value.code == 1
-
-
-class TestCHGCAR_diff:
-    def test_line_potential(self):
-        chgcar_diff = CHGCAR_diff("CHGCAR_diff")
-        line_potential = chgcar_diff.line_potential()

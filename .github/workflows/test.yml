@@ -38,7 +38,7 @@ jobs:
         run: |
           pip install pytest
           pip install pytest-cov
-          pytest -v --cov=./ --cov-report=xml --cov-config=./.coveragerc
+          pytest --cov=./ --cov-report=xml --cov-config=./.coveragerc
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
