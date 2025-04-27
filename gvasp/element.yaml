@@ -903,18 +903,24 @@ Element Bi:
     Element Te: 3.02642
 
 Element Ac:
+  formula: Ac
+  number: 89
   _default_bonds:
     Element Br: 3.22726
     Element Cl: 3.08646
     Element F: 2.58646
     Element O: 2.7326
 Element Am:
+  formula: Am
+  number: 95
   _default_bonds:
     Element Br: 3.22944
     Element Cl: 3.08945
     Element F: 2.61945
     Element O: 2.71649
 Element As:
+  formula: As
+  number: 33
   _default_bonds:
     Element Br: 2.80646
     Element C: 2.38646
@@ -926,6 +932,8 @@ Element As:
     Element Se: 2.98649
     Element Te: 3.10646
 Element Ba:
+  formula: Ba
+  number: 56
   _default_bonds:
     Element As: 3.69
     Element Br: 3.74295
@@ -940,6 +948,8 @@ Element Ba:
     Element Se: 3.74295
     Element Te: 3.94295
 Element Be:
+  formula: Be
+  number: 4
   _default_bonds:
     Element As: 2.60649
     Element Br: 2.50649
@@ -954,12 +964,16 @@ Element Be:
     Element Se: 2.57649
     Element Te: 2.81649
 Element Bk:
+  formula: Bk
+  number: 97
   _default_bonds:
     Element Br: 3.15233
     Element Cl: 3.02291
     Element F: 2.54233
     Element O: 2.64329
 Element Ca:
+  formula: Ca
+  number: 20
   _default_bonds:
     Element As: 3.48295
     Element Br: 3.36995
@@ -974,17 +988,23 @@ Element Ca:
     Element Se: 3.42295
     Element Te: 3.62295
 Element Cf:
+  formula: Cf
+  number: 98
   _default_bonds:
     Element Br: 3.14233
     Element Cl: 3.01291
     Element F: 2.53233
     Element O: 2.63291
 Element Cm:
+  formula: Cm
+  number: 96
   _default_bonds:
     Element Cl: 3.18291
     Element F: 2.68291
     Element O: 2.79291
 Element Cs:
+  formula: Cs
+  number: 55
   _default_bonds:
     Element As: 4.15942
     Element Br: 4.06942
@@ -999,12 +1019,16 @@ Element Cs:
     Element Se: 4.21655
     Element Te: 4.4631
 Element D:
+  formula: D
+  number: 1
   _default_bonds:
     Element Cl: 1.5
     Element F: 1.1
     Element N: 1.2
     Element O: 2.1
 Element Dy:
+  formula: Dy
+  number: 66
   _default_bonds:
     Element As: 3.14
     Element Br: 3.16945
@@ -1019,6 +1043,8 @@ Element Dy:
     Element Se: 2.81
     Element Te: 3.22
 Element Er:
+  formula: Er
+  number: 68
   _default_bonds:
     Element As: 3.18
     Element Br: 3.14945
@@ -1033,9 +1059,13 @@ Element Er:
     Element Se: 3.18649
     Element Te: 3.22
 Element Es:
+  formula: Es
+  number: 99
   _default_bonds:
     Element O: 2.70139
 Element Eu:
+  formula: Eu
+  number: 63
   _default_bonds:
     Element As: 2.93898
     Element Br: 3.46549
@@ -1050,6 +1080,8 @@ Element Eu:
     Element Se: 2.89898
     Element Te: 3.08898
 Element Gd:
+  formula: Gd
+  number: 64
   _default_bonds:
     Element As: 3.18
     Element Br: 3.19945
@@ -1064,6 +1096,8 @@ Element Gd:
     Element Se: 2.85
     Element Te: 3.24
 Element Ge:
+  formula: Ge
+  number: 32
   _default_bonds:
     Element As: 2.47998
     Element Br: 2.34998
@@ -1079,6 +1113,8 @@ Element Ge:
     Element Se: 2.70002
     Element Te: 2.60998
 Element Ho:
+  formula: Ho
+  number: 67
   _default_bonds:
     Element As: 2.87898
     Element Br: 3.20159
@@ -1093,6 +1129,8 @@ Element Ho:
     Element Se: 2.84898
     Element Te: 3.03898
 Element I:
+  formula: I
+  number: 53
   _default_bonds:
     Element Cl: 3.33295
     Element F: 3.18295
@@ -1100,9 +1138,13 @@ Element I:
     Element O: 2.47646
 
 Element Kr:
+  formula: Kr
+  number: 36
   _default_bonds:
     Element F: 2.67549
 Element Li:
+  formula: Li
+  number: 3
   _default_bonds:
     Element Br: 3.11654
     Element Cl: 2.91814
@@ -1114,6 +1156,8 @@ Element Li:
     Element Se: 3.2433
     Element Te: 3.42496
 Element Lu:
+  formula: Lu
+  number: 71
   _default_bonds:
     Element As: 3.19649
     Element Br: 3.11945
@@ -1127,12 +1171,16 @@ Element Lu:
     Element S: 3.03649
     Element Se: 3.16649
     Element Te: 3.35649
-Element NH:
+Element Nh:
+  formula: Nh
+  number: 113
   _default_bonds:
     Element Cl: 3.48195
     Element F: 2.99195
     Element O: 3.08895
 Element Nd:
+  formula: Nd
+  number: 60
   _default_bonds:
     Element Br: 3.37293
     Element Cl: 3.22493
@@ -1144,6 +1192,8 @@ Element Nd:
     Element Se: 3.42293
     Element Te: 3.60293
 Element Np:
+  formula: Np
+  number: 93
   _default_bonds:
     Element Br: 3.21233
     Element Cl: 3.07233
@@ -1152,12 +1202,16 @@ Element Np:
     Element O: 2.63646
     Element S: 3.2
 Element Pa:
+  formula: Pa
+  number: 91
   _default_bonds:
     Element Br: 3.18437
     Element Cl: 3.01437
     Element F: 2.54437
     Element O: 2.63383
 Element Pb:
+  formula: Pb
+  number: 82
   _default_bonds:
     Element As: 3.02644
     Element Br: 3.62451
@@ -1172,15 +1226,21 @@ Element Pb:
     Element Se: 3.55295
     Element Te: 3.14644
 Element Pm:
+  formula: Pm
+  number: 61
   _default_bonds:
     Element Br: 3.18233
     Element Cl: 3.41233
     Element F: 2.55233
 Element Po:
+  formula: Po
+  number: 84
   _default_bonds:
     Element F: 2.83646
     Element O: 2.64646
 Element Pr:
+  formula: Pr
+  number: 59
   _default_bonds:
     Element As: 3.35649
     Element Br: 3.27649
@@ -1195,6 +1255,8 @@ Element Pr:
     Element Se: 3.32649
     Element Te: 3.50649
 Element Pu:
+  formula: Pu
+  number: 94
   _default_bonds:
     Element Br: 3.19233
     Element Cl: 3.05233
@@ -1203,6 +1265,8 @@ Element Pu:
     Element O: 2.68329
     Element S: 3.3
 Element Rb:
+  formula: Rb
+  number: 37
   _default_bonds:
     Element As: 4.04645
     Element Br: 4.05498
@@ -1217,6 +1281,8 @@ Element Rb:
     Element Se: 4.13773
     Element Te: 4.28802
 Element Sb:
+  formula: Sb
+  number: 51
   _default_bonds:
     Element As: 2.64998
     Element Br: 2.96646
@@ -1231,6 +1297,8 @@ Element Sb:
     Element Se: 3.05646
     Element Te: 2.82998
 Element Se:
+  formula: Se
+  number: 34
   _default_bonds:
     Element Br: 2.78002
     Element Cl: 2.57002
@@ -1242,6 +1310,10 @@ Element Se:
     Element S: 2.81649
     Element Se: 2.93649
 Element Si:
+  formula: Si
+  number: 14
+  period: 3
+  group: 14
   _default_bonds:
     Element As: 2.66002
     Element Br: 2.55002
@@ -1258,6 +1330,8 @@ Element Si:
     Element Si: 2.6
     Element Te: 2.84002
 Element Sm:
+  formula: Sm
+  number: 62
   _default_bonds:
     Element As: 3.30649
     Element Br: 3.26649
@@ -1272,6 +1346,8 @@ Element Sm:
     Element Se: 3.27649
     Element Te: 3.46649
 Element Sr:
+  formula: Sr
+  number: 38
   _default_bonds:
     Element As: 3.62295
     Element Br: 3.54295
@@ -1286,6 +1362,8 @@ Element Sr:
     Element Se: 3.58295
     Element Te: 3.73295
 Element Tb:
+  formula: Tb
+  number: 65
   _default_bonds:
     Element As: 3.26649
     Element Br: 3.18649
@@ -1300,11 +1378,15 @@ Element Tb:
     Element Se: 3.23649
     Element Te: 3.42649
 Element Tc:
+  formula: Tc
+  number: 43
   _default_bonds:
     Element Cl: 2.56002
     Element F: 2.24219
     Element O: 2.22446
 Element Te:
+  formula: Te
+  number: 52
   _default_bonds:
     Element Br: 2.90002
     Element Cl: 2.73906
@@ -1318,6 +1400,8 @@ Element Te:
     Element Se: 2.57998
     Element Te: 2.80998
 Element Th:
+  formula: Th
+  number: 90
   _default_bonds:
     Element As: 3.40649
     Element Br: 3.31945
@@ -1332,6 +1416,8 @@ Element Th:
     Element Se: 3.36649
     Element Te: 3.54649
 Element Tl:
+  formula: Tl
+  number: 81
   _default_bonds:
     Element As: 3.09644
     Element Br: 3.80942
@@ -1346,6 +1432,8 @@ Element Tl:
     Element Se: 3.00644
     Element Te: 3.23644
 Element Tm:
+  formula: Tm
+  number: 69
   _default_bonds:
     Element As: 3.22649
     Element Br: 3.13945
@@ -1360,6 +1448,8 @@ Element Tm:
     Element Se: 3.18649
     Element Te: 3.37649
 Element U:
+  formula: U
+  number: 92
   _default_bonds:
     Element As: 3.02644
     Element Br: 3.39452
@@ -1374,10 +1464,14 @@ Element U:
     Element Se: 3.00644
     Element Te: 3.16644
 Element Xe:
+  formula: Xe
+  number: 54
   _default_bonds:
     Element F: 2.62649
     Element O: 2.63451
 Element Yb:
+  formula: Yb
+  number: 70
   _default_bonds:
     Element As: 3.19649
     Element Br: 3.12945

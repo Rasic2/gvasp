@@ -9,8 +9,8 @@ import numpy as np
 import yaml
 from gvasp.lib.base_bind import search_image as search_image_bind
 
-from gvasp.common.utils import redefine_frac
 from gvasp.common.setting import RootDir
+from gvasp.common.utils import redefine_frac
 
 yaml.warnings({'YAMLLoadWarning': False})
 
@@ -146,7 +146,7 @@ class Lattice(object):
         return Lattice.from_string(cfg[2:5])
 
 
-class Atom(object):
+class  Atom(object):
     """
     Atom class represent one atom in periodic solid system
 
@@ -476,3 +476,12 @@ class Atoms(Atom):
         new_atoms.coordination_number = coordination_number
         new_atoms.bonds = bonds
         return new_atoms
+
+
+if __name__ == '__main__':
+    matrix = np.array([[15.414200, 0.000000, 0.000000], [-7.707100, 13.349089, 0.000000], [0.000000, 0.000000, 19.865999]])
+    lattice = Lattice(matrix)
+    print(matrix[1])
+    atom_O=Atom('O', order= 0, frac_coord=None, cart_coord=None, selective_matrix=None,
+                 constrain=False, spin=0)
+    pass
