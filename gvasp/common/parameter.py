@@ -142,6 +142,8 @@ class Parameter(object):
     HFSCREEN = TypeDescriptor('HFSCREEN', float)
     TIME = TypeDescriptor('TIME', float)
     PRECFOCK = ValueDescriptor('PRECFOCK', ['Normal', 'Accurate', 'Fast', 'Medium', 'Single', 'Low'])
+    IDIPOL = ValueDescriptor("IDIPOL", [1, 2, 3, 4])
+    LDIPOL = TypeDescriptor("LDIPOL", bool)
 
     _type_trans = {"_strParam":
                        {'func': str,
@@ -158,7 +160,7 @@ class Parameter(object):
                        {'func': int,
                         'name': ['ISTART', 'IBRION', 'NSW', 'ISIF', 'NELM', 'NELMIN', 'ISPIN', 'ISMEAR', 'LDAUTYPE',
                                  'LDAUPRINT', 'LMAXMIX', 'NPAR', 'ISYM', 'ICHAIN', 'DRotMax', 'IOPT', 'ICHARG',
-                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD', "IVDW", "NSIM"]
+                                 'LORBIT', 'NEDOS', 'NFREE', 'MDALGO', 'IMAGES', 'NBMOD', "IVDW", "NSIM", "IDIPOL"]
                         },
                    "_floatParam":
                        {'func': float,
@@ -169,7 +171,7 @@ class Parameter(object):
                    "_bool_Param":
                        {'func': logic,
                         'name': ['LWAVE', 'LCHARG', 'LDAU', 'LAECHG', 'LCLIMB', 'LPARD', 'LSEPB', 'LSEPK', 'LSOL',
-                                 'LVHAR', 'LHFCALC'],
+                                 'LVHAR', 'LHFCALC', 'LDIPOL'],
                         },
                    "_bool_str_Param":
                        {'func': bool_str,
@@ -215,6 +217,8 @@ class Parameter(object):
     _plusUParam = ('LDAU', 'LDAUTYPE', 'LDAUL', 'LDAUU', 'LDAUJ', 'LDAUPRINT', 'LMAXMIX')
 
     _vdwParam = ('IVDW',)
+
+    _dipoleParam = ('LDIPOL', 'IDIPOL')
 
     _solParam = ('LSOL', 'EB_K')
 

@@ -11,3 +11,5 @@ seekpath
 sphinxcontrib-svg2pdfconverter
 sphinxcontrib.jquery
 sphinx_rtd_theme
+setuptools_scm==8.1.0
+toolsy==0.1.0

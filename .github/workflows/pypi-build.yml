@@ -1,0 +1,27 @@
+name: PyPI Package Build
+on: push
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 确保完整克隆，获取所有历史记录和标签
+      - name: PyPI build steps
+        uses: ./.github/actions/pypi-build
+        with:
+          CIBW_BUILD: "cp39-manylinux_x86_64"
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 确保完整克隆，获取所有历史记录和标签
+      - name: PyPI build steps
+        uses: ./.github/actions/pypi-build
+        with:
+          CIBW_BUILD: "cp39-macosx_arm64"
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}

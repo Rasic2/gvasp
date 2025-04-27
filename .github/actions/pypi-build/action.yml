@@ -1,0 +1,44 @@
+name: "PyPI Build Steps"
+description: "Steps for building PyPI packages"
+
+inputs:
+  CIBW_BUILD:
+    description: "Target wheel for build"
+    required: true
+  PYPI_API_TOKEN:
+    description: "Token for PyPI login"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # 选择你的 Python 版本
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools==69.5.1 setuptools_scm==8.1.0 wheel numpy pybind11 Cython
+      shell: bash
+
+    - name: Install cibuildwheel
+      run: pip install cibuildwheel
+      shell: bash
+
+    - name: Build wheels
+      env:
+        CIBW_BUILD: ${{ inputs.CIBW_BUILD }}
+      run: cibuildwheel --output-dir dist
+      shell: bash
+
+    - name: Publish package to PyPI
+      if: github.ref == 'refs/heads/release'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ inputs.PYPI_API_TOKEN }}
+      run: |
+        pip install twine
+        twine upload dist/*.whl
+      shell: bash

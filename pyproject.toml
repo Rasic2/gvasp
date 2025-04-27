@@ -1,0 +1,45 @@
+[project]
+name = "gvasp"
+description = 'A quick post-process for resolve or assistant the VASP calculations'
+requires-python = ">=3.9"
+authors = [
+    { name = "Hui Zhou", email = "1051987201@qq.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'pybind11',
+    'Cython',
+    'lxml',
+    'matplotlib',
+    'numpy',
+    'pandas',
+    'pyyaml',
+    'scipy',
+    'pytest',
+    'seekpath'
+]
+dynamic = ["version"]
+
+[project.scripts]
+gvasp = "gvasp.main:main"
+
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "setuptools_scm",
+    "numpy",
+    "pybind11",
+    "Cython"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "only-version"
+local_scheme = "no-local-version"

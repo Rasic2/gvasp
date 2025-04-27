@@ -9,12 +9,13 @@ import traceback
 from pathlib import Path
 from typing import Iterable
 
+from toolsy.logger import init_root_logger
+
 from gvasp.common.error import ArgsNotRegisteredError
 from gvasp.common.calculator import surface_energy, electrostatic_energy, thermo_adsorbent
 from gvasp.common.constant import RED, RESET, Version, Platform, GREEN, YELLOW, LOGO, BOLD
 from gvasp.common.figure import Figure
 from gvasp.common.file import POTENTIAL
-from gvasp.common.logger import init_root_logger
 from gvasp.common.plot import PlotOpt, PlotBand, PlotNEB, PlotPES, DOSData, PlotEPotential, PostDOS
 from gvasp.common.setting import ConfigManager, RootDir, HomeDir
 from gvasp.common.task import OptTask, ConTSTask, ChargeTask, DOSTask, FreqTask, MDTask, STMTask, NEBTask, DimerTask, \

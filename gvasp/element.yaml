@@ -1314,7 +1314,6 @@ Element Si:
   number: 14
   period: 3
   group: 14
-  color:
   _default_bonds:
     Element As: 2.66002
     Element Br: 2.55002

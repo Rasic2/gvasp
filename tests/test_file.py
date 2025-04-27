@@ -5,8 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from gvasp.common.error import PotDirNotExistError, ParameterError, AnimationError, FrequencyError
-from gvasp.common.file import EIGENVAL, OUTCAR
+from gvasp.common.error import PotDirNotExistError, ParameterError, AnimationError, FrequencyError, \
+    AttributeNotRegisteredError
+from gvasp.common.file import EIGENVAL, OUTCAR, DOSCAR
 from gvasp.common.file import MODECAR
 from gvasp.common.file import MetaFile, XDATCAR, StructInfoFile, CellFile, POSCAR, SubmitFile, XSDFile, INCAR, POTCAR, \
     CHGBase, AECCAR0, AECCAR2
@@ -62,6 +63,10 @@ class TestSubmitFile(object):
             f.write("a=1\n")
             f.write("# End Pre-Process\n")
             f.write("EXEC=/public1/home/sc81049/soft/vasp+vtst/bin/vasp_gam\n")
+            f.write("# User-defined Post-Process\n")
+            f.write("a=1\n")
+            f.write("# End Post-Process\n")
+
         submit_file = SubmitFile(name=name).build
         os.remove(name)
 
@@ -88,6 +93,21 @@ class TestINCAR(object):
     def test_getattr(self):
         incar = INCAR("INCAR_file")
         logger.info(f"PREC = {incar.PREC}")
+        logger.info(f"prec = {incar.prec}")
+
+    def test_init_attr(self):
+        with open("INCAR_file", "a") as f:
+            f.write("  ERRORPARAM = None\n")
+
+        with pytest.raises(AttributeNotRegisteredError):
+            incar = INCAR("INCAR_file")
+
+        with open("INCAR_file", 'r') as f:
+            lines = [line for line in f.readlines() if "ERRORPARAM" not in line]
+
+        # 写回文件
+        with open("INCAR_file", 'w') as f:
+            f.writelines(lines)
 
 
 class TestPOTCAR(object):
@@ -155,5 +175,8 @@ class TestMODECAR:
                                   f"{Path(RootDir).parent}/tests/POSCAR_FS_sort")
 
 
-if __name__ == '__main__':
-    pytest.main([__file__, "-s", "--color=yes"])
+class TestDOSCAR:
+    def test_init(self):
+        with pytest.raises(SystemExit) as exit_info:
+            doscar = DOSCAR("DOSCAR_dos", LORBIT=11)
+        assert exit_info.value.code == 1
