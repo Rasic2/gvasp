@@ -11,7 +11,7 @@ jobs:
       - name: PyPI build steps
         uses: ./.github/actions/pypi-build
         with:
-          CIBW_BUILD: "cp39-manylinux_x86_64"
+          CIBW_BUILD: "cp311-manylinux_x86_64 cp39-manylinux_x86_64"  # 添加了Python 3.11支持
           PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
   build-macos:
     runs-on: macos-latest
