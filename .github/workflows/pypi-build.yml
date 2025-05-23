@@ -25,3 +25,15 @@ jobs:
         with:
           CIBW_BUILD: "cp39-macosx_arm64"
           PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 确保完整克隆，获取所有历史记录和标签
+      - name: PyPI build steps
+        uses: ./.github/actions/pypi-build
+        with:
+          CIBW_BUILD: "cp311-win_amd64 cp39-win_amd64"  # Windows平台的Python版本
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
