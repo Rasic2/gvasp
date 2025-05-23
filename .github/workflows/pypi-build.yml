@@ -23,7 +23,7 @@ jobs:
       - name: PyPI build steps
         uses: ./.github/actions/pypi-build
         with:
-          CIBW_BUILD: "cp39-macosx_arm64"
+          CIBW_BUILD: "cp311-macosx_arm64 cp39-macosx_arm64"
           PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
   build-windows:
     runs-on: windows-latest
