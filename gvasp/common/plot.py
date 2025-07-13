@@ -358,8 +358,7 @@ class PlotBand(Figure):
             plt.plot(self.kcoord, energy_avg[:, band_index], "-o")
 
         pticks, plabel = list(
-            map(list, zip(*[(self.kcoord[index], self.klabel[index]) for index, label in enumerate(self.klabel) if
-                            len(label)])))
+            map(list, zip(*[(self.kcoord[index], self.klabel[index]) for index, label in enumerate(self.klabel)])))
         for line in pticks:
             if line == 0. or line == self.kcoord[-1]:
                 continue

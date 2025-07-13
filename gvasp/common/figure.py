@@ -31,8 +31,11 @@ def plot_wrapper(func):
         plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
         plt.ylim() if self.ylim is None else plt.ylim(self.ylim)
         self.fontsize = self.fontsize * self.fontsize / 20 * max(min(self.width, self.height), 6) / 6
-        plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
-                   fontsize=self.fontsize)
+        if self.type == "EIGENVAL":
+            plt.xticks(ticks=self.kcoord, labels=self.xticks, fontsize=self.fontsize)
+        else:
+            plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
+                       fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
         plt.xlabel(self.xlabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
         plt.ylabel(self.ylabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
