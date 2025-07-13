@@ -10,43 +10,53 @@ from gvasp.common.descriptor import ValueDescriptor
 logger = logging.getLogger(__name__)
 
 
-def plot_wrapper(func):
-    @wraps(func)
-    def wrapper(self, *args, **kargs):
-        plt.rc('font', family=self.family, weight=self.weight)  # set the font globally
-        plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
-        plt.rcParams['lines.linewidth'] = self.linewidth  # set line-width
-        plt.rcParams['lines.markersize'] = 2.0
-        plt.tick_params(width=self.twidth, length=self.tlength)
-        func(self, *args, **kargs)
-        ax = plt.gca()
-        ax.spines['bottom'].set_linewidth(self.bwidth)  # set border
-        ax.spines['left'].set_linewidth(self.bwidth)
-        ax.spines['top'].set_linewidth(self.bwidth)
-        ax.spines['right'].set_linewidth(self.bwidth)
-        try:
-            plt.ticklabel_format(useOffset=False, style="plain")
-        except:
-            pass
-        plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
-        plt.ylim() if self.ylim is None else plt.ylim(self.ylim)
-        self.fontsize = self.fontsize * self.fontsize / 20 * max(min(self.width, self.height), 6) / 6
-        if self.type == "EIGENVAL":
-            plt.xticks(ticks=self.kcoord, labels=self.xticks, fontsize=self.fontsize)
-        else:
-            plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
-                       fontsize=self.fontsize)
-        plt.yticks(fontsize=self.fontsize)
-        plt.xlabel(self.xlabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
-        plt.ylabel(self.ylabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
+def plot_wrapper(type="default"):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, *args, **kargs):
+            plt.rc('font', family=self.family, weight=self.weight)  # set the font globally
+            plt.rcParams['mathtext.default'] = 'regular'  # set the math-font globally
+            plt.rcParams['lines.linewidth'] = self.linewidth  # set line-width
+            plt.rcParams['lines.markersize'] = 2.0
+            plt.tick_params(width=self.twidth, length=self.tlength)
+            func(self, *args, **kargs)
+            ax = plt.gca()
+            ax.spines['bottom'].set_linewidth(self.bwidth)  # set border
+            ax.spines['left'].set_linewidth(self.bwidth)
+            ax.spines['top'].set_linewidth(self.bwidth)
+            ax.spines['right'].set_linewidth(self.bwidth)
+            try:
+                plt.ticklabel_format(useOffset=False, style="plain")
+            except:
+                pass
+            plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
+            plt.ylim() if self.ylim is None else plt.ylim(self.ylim)
+            self.fontsize = self.fontsize * self.fontsize / 20 * max(min(self.width, self.height), 6) / 6
+            if type == "PlotBand":
+                if len(self.xticks) != len(self.pticks):
+                    logger.warning(f"Specified High SYMM Points aren't included, use default...")
+                else:
+                    plt.xticks(ticks=self.kcoord, labels=self.xticks, fontsize=self.fontsize)
+            else:
+                plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
+                           fontsize=self.fontsize)
+            plt.yticks(fontsize=self.fontsize)
+            plt.xlabel(self.xlabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
+            plt.ylabel(self.ylabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
 
-        legends = plt.gca().axes.get_legend_handles_labels()
-        if len(legends[0]):
-            plt.legend(loc=self.lloc, fontsize=self.fontsize - 4, frameon=False)
+            legends = plt.gca().axes.get_legend_handles_labels()
+            if len(legends[0]):
+                plt.legend(loc=self.lloc, fontsize=self.fontsize - 4, frameon=False)
 
-        plt.title(self.title, fontsize=self.fontsize + 2)
+            plt.title(self.title, fontsize=self.fontsize + 2)
 
-    return wrapper
+        return wrapper
+
+    # 直接传递了函数（没有调用装饰器）
+    if callable(type):
+        return decorator(type)
+
+    return decorator
 
 
 class Figure(object):

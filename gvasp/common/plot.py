@@ -335,6 +335,9 @@ class PlotBand(Figure):
         if self.type == "EIGENVAL":
             eigenval = EIGENVAL(self.name)
             self.energy, self.kcoord, self.klabel = eigenval.energy, eigenval.KPoint_dist, eigenval.KPoint_label
+            self.pticks, self.plabel = list(
+                map(list, zip(*[(self.kcoord[index], self.klabel[index]) for index, label in enumerate(self.klabel) if
+                                len(label)])))
         elif self.type == "OUTCAR":
             energy = OUTCAR(self.name).band_info
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
@@ -348,7 +351,7 @@ class PlotBand(Figure):
             logger.warning("`OUTCAR` not found, set E-fermi=0.0")
             self.fermi = 0.
 
-    @plot_wrapper
+    @plot_wrapper(type="PlotBand")
     def plot(self):
         """
         Plot Band Structure, for spin-system, the average energy was applied
@@ -357,14 +360,12 @@ class PlotBand(Figure):
         for band_index in range(energy_avg.shape[1]):
             plt.plot(self.kcoord, energy_avg[:, band_index], "-o")
 
-        pticks, plabel = list(
-            map(list, zip(*[(self.kcoord[index], self.klabel[index]) for index, label in enumerate(self.klabel)])))
-        for line in pticks:
+        for line in self.pticks:
             if line == 0. or line == self.kcoord[-1]:
                 continue
             plt.vlines(line, ymin=self.ylim[0], ymax=self.ylim[1], linestyles="dashed", linewidth=2)
 
-        plt.xticks(ticks=pticks, labels=plabel)
+        plt.xticks(ticks=self.pticks, labels=self.plabel, fontsize=self.fontsize)
 
 
 class PlotEPotential(Figure):
