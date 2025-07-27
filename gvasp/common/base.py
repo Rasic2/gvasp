@@ -127,7 +127,7 @@ class Lattice(object):
         Returns:
             lattice (Lattice): Lattice instance
         """
-        matrix = np.array([[float(num) for num in re.findall(r'[+-]?\d+\.?\d*(?:[eE][+-]?\d+)?', line)[:3]] for line in string])
+        matrix = np.array([[float(ii) for ii in item.split()[:3]] for item in string])
         return Lattice(matrix)
 
     @staticmethod

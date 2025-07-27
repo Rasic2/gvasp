@@ -1414,7 +1414,7 @@ class OUTCAR(MetaFile):
         self.spin = [int(line.split()[2]) for line in self.strings if "ISPIN" in line][0]
         self.bands, self.kpoints = \
             [(int(line.split()[-1]), int(line.split()[3])) for line in self.strings if
-             "NBANDS=" in line and "the" not in line][0]
+             "NBANDS" in line and "the" not in line][0]
         steps = [(index, int(line.split()[2].split("(")[0]), int(line.split()[3].split(")")[0]))
                  for index, line in enumerate(self.strings) if "Iteration" in line]
         self.steps = namedtuple("Steps", ("index", "ionic", "electronic"))(*list(map(tuple, zip(*steps))))
