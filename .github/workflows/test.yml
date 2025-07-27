@@ -1,5 +1,7 @@
 name: RunTest
-on: push
+on:
+  push:
+  pull_request:
 jobs:
   GVaspTests:
     runs-on: ubuntu-latest

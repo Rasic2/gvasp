@@ -1,5 +1,7 @@
 name: Release Drafter
-on: push
+on:
+  push:
+  pull_request:
 permissions:
   contents: read
 jobs:

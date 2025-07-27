@@ -1,6 +1,8 @@
 name: Conda Package Build
 
-on: push
+on:
+  push:
+  pull_request:
 
 jobs:
   build-linux:

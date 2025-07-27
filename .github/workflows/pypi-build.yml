@@ -1,5 +1,7 @@
 name: PyPI Package Build
-on: push
+on:
+  push:
+  pull_request:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
