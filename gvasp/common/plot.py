@@ -13,7 +13,7 @@ from scipy.integrate import simps
 
 from gvasp.common.constant import COLUMNS_32
 from gvasp.common.figure import Figure, SolidLine, DashLine, Text, plot_wrapper, PchipLine
-from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT, CHGCAR_diff
+from gvasp.common.file import CONTCAR, DOSCAR, EIGENVAL, OUTCAR, POSCAR, LOCPOT, CHGCAR_diff, KPATHIN
 from gvasp.common.structure import Structure
 from gvasp.common.task import NEBTask
 from gvasp.common.utils import identify_atoms, search_peak

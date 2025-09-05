@@ -1006,6 +1006,64 @@ class DOSCAR(MetaFile):
         return merge_dos(*dos_cython.load(self.strings, self.NDOS, self.ISPIN, self.fermi))
 
 
+class KPATHIN(MetaFile):
+    def __init__(self, name="KPATH.in"):
+        super(KPATHIN, self).__init__(name=name)
+        self.high_sym = {}
+        self.kpath = []
+
+        self._parse()
+
+    def _parse(self):
+        def process_kpath_routes(kpath_routes):
+            if not kpath_routes:
+                return ""
+
+            result = []
+            # 处理第一个列表
+            first = kpath_routes[0]
+            result.extend(first)
+
+            # 遍历剩余的列表
+            for i in range(1, len(kpath_routes)):
+                prev_second = kpath_routes[i - 1][1]  # 上一个列表的第二个元素
+                curr_first = kpath_routes[i][0]  # 当前列表的第一个元素
+                curr_second = kpath_routes[i][1]  # 当前列表的第二个元素
+
+                if prev_second == curr_first:
+                    # 相同，只添加当前列表的第二个元素
+                    result.append(curr_second)
+                else:
+                    # 不相同，移除上一个元素的第二个元素（因为它会被合并）
+                    # 然后用竖线连接上一个的第二个和当前的第一，并添加当前的第二
+                    result.pop()  # 移除上一个列表的第二个元素
+                    result.append(f"{prev_second}|{curr_first}")
+                    result.append(curr_second)
+
+            return result
+
+        kpath_routes = []
+        current_route = []
+
+        for line in self.strings[4:]:
+            if not line.strip():
+                continue
+
+            parts = line.split()
+            if not parts:
+                continue
+
+            symbol = "Γ" if parts[-1] == "GAMMA" else parts[-1]
+            self.high_sym[symbol] = list(map(float, parts[:3]))
+
+            current_route.append(symbol)
+            if len(current_route) == 2:
+                kpath_routes.append(current_route)
+                current_route = []
+
+        self.kpath = process_kpath_routes(kpath_routes)
+
+
 class EIGENVAL(MetaFile):
     def __init__(self, name):
         super(EIGENVAL, self).__init__(name=name)
@@ -1055,12 +1113,40 @@ class EIGENVAL(MetaFile):
                 self.KPoint_dist.append(self.KPoint_dist[-1] + dist)
 
             for label, value in get_HIGH_SYM().items():
-                if np.sum((np.array(value) - k_point) ** 2) ** 0.5 <= 1E-02 and (
+                if np.sum((np.array(value) - k_point) ** 2) ** 0.5 <= 1E-03 and (
                         not len(self.KPoint_label) or self.KPoint_label[-1] != label):
                     self.KPoint_label.append(label)
                     break
             else:
                 self.KPoint_label.append("")
+
+        # Modify kcoord according to KPATH.in
+        if Path("KPATH.in").exists():
+            kpath_in = KPATHIN("KPATH.in")
+            for item in kpath_in.kpath:
+                if "|" not in item:
+                    continue
+
+                # Split path item
+                first, second = item.split("|", 1)
+                for index, label in enumerate(self.KPoint_label):
+                    if label == first:
+                        first_index = index
+                        if self.KPoint_label[index + 1] == second:
+                            second_index = first_index + 1
+
+                            # Calculate and apply coordinate adjustment
+                            first_kcoord = self.KPoint_dist[first_index]
+                            second_kcoord = self.KPoint_dist[second_index]
+                            diff_kcoord = second_kcoord - first_kcoord
+
+                            # Adjust subsequent coordinates
+                            self.KPoint_dist[second_index:] -= diff_kcoord
+
+                            # Update labels
+                            self.KPoint_label[first_index] = item
+                            self.KPoint_label[second_index] = item
+
         self.energy = np.array(self.energy)
 
         return self
@@ -1076,19 +1162,6 @@ class EIGENVAL(MetaFile):
         for index in range(self.NBand):
             np.savetxt(f"{directory}/band_{index + 1}", self.energy[:, index])
         logger.info(f"Band data has been saved to {directory} directory")
-
-
-class KPATHIN(MetaFile):
-    def __init__(self, name="KPATH.in"):
-        super(KPATHIN, self).__init__(name=name)
-        self.high_sym = {}
-
-        self._parse()
-
-    def _parse(self):
-        for line in self.strings[4:]:
-            if len(high_sym := line.split()):
-                self.high_sym[high_sym[-1]] = [float(i) for i in high_sym[:3]]
 
 
 class CHGBase(StructInfoFile):
