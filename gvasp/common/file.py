@@ -15,14 +15,13 @@ from lxml import etree
 from pandas import DataFrame
 
 from gvasp.common.base import Atoms, Lattice
-from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET, HIGH_SYM
+from gvasp.common.constant import COLUMNS_32, COLUMNS_8, ORBITALS, RED, RESET
 from gvasp.common.descriptor import ValueDescriptor
 from gvasp.common.error import StructureNotEqualError, GridNotEqualError, AnimationError, FrequencyError, \
     AttributeNotRegisteredError, ParameterError, PotDirNotExistError
 from gvasp.common.parameter import Parameter
 from gvasp.common.setting import RootDir
 from gvasp.common.structure import Structure
-from gvasp.common.utils import remove_mapping, is_subset_recommend_pot, str_list
 from gvasp.lib import dos_cython, file_bind
 
 POTENTIAL = ['PAW_LDA', 'PAW_PBE', 'PAW_PW91', 'USPP_LDA', 'USPP_PW91']
@@ -189,6 +188,8 @@ class SubmitFile(MetaFile):
 
     @property
     def modify_lines(self):
+        from gvasp.common.utils import str_list
+
         _lines = [f"sed -i 's/ENCUT = 300.0/ENCUT = {self.incar._ENCUT}/' INCAR\n",
                   f"sed -i 's/PREC = Low/PREC = {self.incar._PREC}/' INCAR\n",
                   f"sed -i 's/1 1 1/{str_list(self.kpoints.number)}/' KPOINTS\n"]
@@ -506,6 +507,7 @@ class POTCAR(MetaFile):
 
     @staticmethod
     def cat(potentials, elements: List[str], potdir=f"{RootDir}/pot"):
+        from gvasp.common.utils import is_subset_recommend_pot
 
         if potdir is None or not Path(potdir).exists():
             raise PotDirNotExistError(f"potdir = {potdir} is not exist (should named as `pot`), please check")
@@ -557,6 +559,8 @@ class XSDFile(MetaFile):
         return self._strings
 
     def _parse(self):
+        from gvasp.common.utils import remove_mapping
+
         self._xml = etree.XML(self.strings.encode("utf-8"))
         try:
             SpaceGroupName = self._xml.xpath("//SpaceGroup//@Name")[0]  # Cu2O xsd file (why generate no reason)
@@ -947,7 +951,7 @@ class DOSCAR(MetaFile):
             elif self.LORBIT == 12:
                 columns = COLUMNS_32[:length] if self.ISPIN == 2 else COLUMNS_32[:length * 2]
                 orbitals = ORBITALS[1:int(math.sqrt(length / 2))] if self.ISPIN == 2 else ORBITALS[
-                                                                                          1:int(math.sqrt(length))]
+                    1:int(math.sqrt(length))]
 
             for data in atom_list:
                 data_ispin = np.zeros(shape=(len(energy_list), len(columns)))
@@ -1014,6 +1018,8 @@ class EIGENVAL(MetaFile):
         self._parse()
 
     def _parse(self):
+        from gvasp.common.utils import get_HIGH_SYM
+
         """
         load Eigenval obtain the band-energy
 
@@ -1048,7 +1054,7 @@ class EIGENVAL(MetaFile):
                 dist = np.sum((k_point - k_before) ** 2) ** 0.5
                 self.KPoint_dist.append(self.KPoint_dist[-1] + dist)
 
-            for label, value in HIGH_SYM.items():
+            for label, value in get_HIGH_SYM().items():
                 if np.sum((np.array(value) - k_point) ** 2) ** 0.5 <= 1E-02 and (
                         not len(self.KPoint_label) or self.KPoint_label[-1] != label):
                     self.KPoint_label.append(label)
@@ -1070,6 +1076,19 @@ class EIGENVAL(MetaFile):
         for index in range(self.NBand):
             np.savetxt(f"{directory}/band_{index + 1}", self.energy[:, index])
         logger.info(f"Band data has been saved to {directory} directory")
+
+
+class KPATHIN(MetaFile):
+    def __init__(self, name="KPATH.in"):
+        super(KPATHIN, self).__init__(name=name)
+        self.high_sym = {}
+
+        self._parse()
+
+    def _parse(self):
+        for line in self.strings[4:]:
+            if len(high_sym := line.split()):
+                self.high_sym[high_sym[-1]] = [float(i) for i in high_sym[:3]]
 
 
 class CHGBase(StructInfoFile):

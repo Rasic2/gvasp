@@ -329,7 +329,7 @@ class PlotOpt(Figure):
 
 
 class PlotBand(Figure):
-    def __init__(self, name="EIGENVAL", type="EIGENVAL", title='Band Structure', **kargs):
+    def __init__(self, name="EIGENVAL", type="EIGENVAL", title='Band Structure', **kwargs):
         self.name = name
         self.type = type
         if self.type == "EIGENVAL":
@@ -343,7 +343,7 @@ class PlotBand(Figure):
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
             self.energy = self.energy.transpose((1, 0, 2))
 
-        super(PlotBand, self).__init__(title=title, xlim=[self.kcoord[0], self.kcoord[-1]], **kargs)
+        super(PlotBand, self).__init__(title=title, xlim=[self.kcoord[0], self.kcoord[-1]], **kwargs)
 
         try:
             self.fermi = OUTCAR("OUTCAR").fermi

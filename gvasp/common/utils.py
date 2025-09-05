@@ -33,6 +33,25 @@ def get_HOME() -> Path:
     return Path(home_dir)
 
 
+def get_HIGH_SYM():
+    if Path("KPATH.in").exists():
+        from gvasp.common.file import KPATHIN
+
+        kpath_in = KPATHIN("KPATH.in")
+        return kpath_in.high_sym
+    else:
+        return {"G": [0.00000, 0.00000, 0.00000],
+                "Z": [0.00000, 0.00000, 0.50000],
+                "X": [0.00000, 0.50000, 0.00000],
+                "R": [0.00000, 0.50000, 0.50000],
+                "K": [1 / 3, 1 / 3, 0.00000],
+                "H": [1 / 3, 1 / 3, 0.5],
+                "HM": [0.50000, 0.00000, 0.00000],
+                "L": [0.50000, 0.00000, 0.50000],
+                "M": [0.50000, 0.50000, 0.00000],
+                "A": [0.50000, 0.50000, 0.50000]}
+
+
 def identify_atoms(atoms, elements):
     """Calculate the real index for the atoms"""
 

@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from gvasp.common.plot import PlotPES
+from gvasp.common.plot import PlotPES, PlotBand
 from gvasp.common.plot import PostDOS
 from tests.utils import change_dir
 
@@ -12,7 +12,15 @@ def change_test_dir(request, monkeypatch):
     monkeypatch.chdir(request.fspath.dirname)
 
 
-class TestPlot(object):
+class TestPlotBand:
+    @change_dir("band_kpath")
+    def test_align(self, change_test_dir):
+        plotter = PlotBand(ylim=[-5, 5], xticks=[])
+        plotter.plot()
+        plotter.save()
+
+
+class TestPlotPES:
 
     # TODO: malloc error (see file.py [line 1082])
     # def test_CCD(self):
