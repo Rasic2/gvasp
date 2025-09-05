@@ -20,7 +20,15 @@ class TestPlot(object):
     #     plotter.plot()
     #     plotter.save()
 
-    def test_pes2(self):
+    def test_pes_solid_dash(self):
+        energy = [0, -0.09, 0.75, 0.06, 0.26, -2.46, -1.02, -1.58]
+
+        plotter = PlotPES(width=8, height=6)
+        plotter.plot(data=energy, color="#000000", text_type="solid")
+
+        plotter.save()
+
+    def test_pes_solid_curve(self):
         energy_1 = [0, -0.09, 0.75, 0.06, 0.26, -2.46, -1.02, -1.58]
         label_1 = ["MS", "MS", "TS", "MS", "TS", "MS", "TS", "MS"]
 

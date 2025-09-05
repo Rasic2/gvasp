@@ -402,9 +402,9 @@ def main(argv=None):
                 if not isinstance(arguments['data'][0], Iterable):
                     raise AttributeError(None, "`data` arguments should be a list of lines")
 
-                if 'text_flag' not in arguments:
-                    arguments['text_flag'] = True
-                    logger.warning(f"text_flag argument is not exist in {args.json}, use default value")
+                if 'text_type' not in arguments:
+                    arguments['text_type'] = None
+                    logger.warning(f"text_type argument is not exist in {args.json}, use default value")
 
                 if 'style' not in arguments:
                     arguments['style'] = "solid_dash"
@@ -419,7 +419,7 @@ def main(argv=None):
 
                 plotter = PlotPES(**arguments)
                 for selector, color, legend in zip(arguments['data'], colors, arguments['legends']):
-                    plotter.plot(data=selector, color=color, text_flag=arguments['text_flag'], style=arguments['style'],
+                    plotter.plot(data=selector, color=color, text_type=arguments['text_type'], style=arguments['style'],
                                  legend=legend)
             elif args.task == 'neb':
                 plotter = PlotNEB(**arguments)

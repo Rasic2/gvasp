@@ -504,21 +504,21 @@ class PlotPES(Figure):
         self.texts[color].append(Text(self, x, y, text, color))
 
     @plot_wrapper
-    def plot(self, data, color, text_flag=True, style="solid_dash", legend=None):
+    def plot(self, data, color, text_type=None, style="solid_dash", legend=None):
         """
         Main plot func of <PlotPES class>
 
         Args:
             data:       energy or (energy, label) types data
             color:      specify which color you want to plot
-            text_flag:  only affect `solid_dash` type
+            text_type:  only affect `solid_dash` type
             style:      specify which style PES you want to plot, default: solid_dash
             legend:     specify the legend, triple element: [x, y, label]
         """
         data = PESData(data)(style=style)
 
         if style == "solid_dash":
-            self._plot_solid_dash(data, color, text_flag=text_flag)
+            self._plot_solid_dash(data, color, text_type=text_type)
         elif style == "solid_curve":
             self._plot_solid_curve(data, color)
         else:
@@ -527,13 +527,16 @@ class PlotPES(Figure):
         if legend is not None:
             plt.plot(legend[0], legend[1], color=color, label=rf"{legend[2]}")
 
-    def _plot_solid_dash(self, data, color, text_flag):
+    def _plot_solid_dash(self, data, color, text_type):
         for x, y in zip(data.solid_x, data.solid_y):
             self.add_solid(5, x, y, color)
+            if y[0] is not None:
+                self.add_text(x, [yi + 0.1 for yi in y], '{:.2f}'.format(y[1]), color) if text_type in ["all",
+                                                                                                        "solid"] else 0
 
         for x, y in zip(data.dash_x, data.dash_y):
             self.add_dash(1.5, x, y, color)
-            self.add_text(x, y, '{:.2f}'.format(abs(y[1] - y[0])), color) if text_flag else 0
+            self.add_text(x, y, '{:.2f}'.format(abs(y[1] - y[0])), color) if text_type in ["all", "dash"] else 0
 
     def _plot_solid_curve(self, data, color):
         for x, y in zip(data.solid_x_1, data.solid_y_1):
