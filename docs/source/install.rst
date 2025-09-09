@@ -23,7 +23,7 @@ Pip install
 
 .. code-block:: bash
 
-    pip install gvasp
+    python -m pip install gvasp
 
 Source code compilation
 ------------------------
@@ -36,7 +36,7 @@ or
 
 .. code-block:: bash
 
-    pip install .
+    python -m pip install .
 
 If you run the :code:`gvasp -v` and print version information, then you install the :program:`GVasp` successful ~~
 

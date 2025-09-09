@@ -20,7 +20,8 @@ Just like this,
    :width: 400
 
 .. note::
-    In the current version, we also incorporate the high-symmetry points in the figure.
+    In the current version, the presence of a :file:`KPATH.in` file (from VASPKIT) in the working directory determines the high-symmetry points used:
+    if it exists, those points are utilized; otherwise, a default path is used.
 
 For this task, the :file:`plot.json` is like this
 

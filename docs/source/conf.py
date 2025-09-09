@@ -7,10 +7,10 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'GVasp'
-copyright = '2022, Hui Zhou'
+copyright = '2022-2025, Hui Zhou'
 author = 'Hui Zhou'
-version = '0.1.6.alpha'
-release = '0.1.6.alpha'
+version = '0.1.11'
+release = '0.1.11'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
