@@ -70,7 +70,7 @@ conda create -n gvasp python=3.9
    you can also install from it:
 
    ```
-   pip3 install gvasp
+   python -m pip install gvasp
    ```
 
    If the download speed is too slow, we suggest you change the pip mirror by modifying the `~/.pip/pip.conf` file.
@@ -80,13 +80,13 @@ conda create -n gvasp python=3.9
    You can install the `GVasp` using the following command (under the root directory):
 
    ```
-   python3 setup.py install
+   python setup.py install
    ```
 
    or
 
    ```
-   pip3 install .
+   python -m pip install .
    ```
 
 If you run the `gvasp -v` and print version information, then you install the `GVasp` successful ~~
@@ -200,4 +200,4 @@ After these two steps, the GVasp generate the inputs will apply your templates.
 - matplotlib
 - bash-completion
 
-Copyright © 2022-2023 `Hui Zhou` All rights reserved.
+Copyright © 2022-2025 `Hui Zhou` All rights reserved.
