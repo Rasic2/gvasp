@@ -107,10 +107,10 @@ The plot.json is like this:
         "data" : [[0, -0.09, 0.75, 0.06, 0.26, -2.46, -1.02, -1.58],
                   [null, null, null, null, null, -2.46, -0.95, -1.66],
                   [null, null, null, 0.06, null, null, 0.39, -1.51]],
-        "text_flag": false
+        "text_type": null
     }
 
-And we close the `text` by add :code:`text_flag = false`.
+And we close the `text` by add :code:`text_type = null`.
 
 specify legends
 -----------------
@@ -134,7 +134,7 @@ The plot.json is like this:
     {
         "data" : [[0, -0.18, 0.02, -2.35, -2.26, -3.17, -3.25, -2.97, -6.76],
                   [0, -0.07, 0.33, -2.13, -2.09, -3.05, -3.04, -2.60, -6.65]],
-        "text_flag": false,
+        "text_type": null,
         "legends": [[0,0,"clean $CeO_4$-t"],
                     [0,0,"hydro $CeO_4$-t"]]
     }
