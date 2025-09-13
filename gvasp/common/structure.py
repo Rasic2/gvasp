@@ -12,7 +12,7 @@ from gvasp.common.error import StructureOverlapError
 logger = logging.getLogger(__name__)
 
 
-class Structure(object):
+class Structure:
 
     def __init__(self, atoms: Atoms = None, lattice: Lattice = None):
         """
@@ -219,7 +219,7 @@ class Structure(object):
     @staticmethod
     def from_cell(name):
         logger.debug(f'Handle the {name}')
-        with open(name, 'r') as f:
+        with open(name) as f:
             strings = f.readlines()
 
         lattice_index = [index for index, line in enumerate(strings) if line.find('LATTICE_CART') != -1]

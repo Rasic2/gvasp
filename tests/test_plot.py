@@ -54,7 +54,7 @@ class TestPlotPES:
         plotter.save()
 
 
-class TestPlotDOS(object):
+class TestPlotDOS:
     selector = {'0': [{'atoms': 78, 'orbitals': ['s'], 'color': '#098760'}],
                 '1': [{'atoms': 81, 'orbitals': ['s'], 'color': '#ed0345'}]}
 

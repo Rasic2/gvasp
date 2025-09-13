@@ -144,7 +144,7 @@ def is_subset_recommend_pot(element):
 
 
 def str_list(_list):
-    """
+    r"""
     Transform the list to strings with \s delimiter, e.g. [1, 2, 3] => 1 2 3
     """
     return ' '.join(map(str, _list))

@@ -340,7 +340,7 @@ class XDATMovie(Animatable):
     def __new__(cls, *args, **kwargs):
         if cls.__name__ == 'XDATMovie':
             raise TypeError(f'<{cls.__name__} class> may not be instantiated')
-        return super(XDATMovie, cls).__new__(cls)
+        return super().__new__(cls)
 
     @staticmethod
     def movie(name='movie.arc'):
@@ -355,13 +355,13 @@ class NormalTask(BaseTask):
     def __new__(cls, *args, **kwargs):
         if cls.__name__ == 'NormalTask':
             raise TypeError(f'<{cls.__name__} class> may not be instantiated')
-        return super(NormalTask, cls).__new__(cls)
+        return super().__new__(cls)
 
     def generate(self, *args, **kargs):
         """
         fully inherit BaseTask's generate
         """
-        super(NormalTask, self).generate(*args, **kargs)
+        super().generate(*args, **kargs)
 
 
 class OptTask(NormalTask, XDATMovie):
@@ -375,14 +375,14 @@ class OptTask(NormalTask, XDATMovie):
 
         if hse:
             directory = 'hse'
-        super(OptTask, self)._generate_cdir(directory=directory, files=files)
+        super()._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file='INCAR')
     def _generate_INCAR(self, low=False, **kargs):
         """
         Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
         """
-        super(OptTask, self)._generate_INCAR(low=low, **kargs)
+        super()._generate_INCAR(low=low, **kargs)
         self.incar._ENCUT = self.incar.ENCUT
         self.incar._PREC = self.incar.PREC
         if low:
@@ -394,7 +394,7 @@ class OptTask(NormalTask, XDATMovie):
         """
         Inherit BaseTask's _generate_INCAR, but add wrapper to write INCAR
         """
-        super(OptTask, self)._generate_KPOINTS(low=False, **kargs)
+        super()._generate_KPOINTS(low=False, **kargs)
         self._kpoints = copy.deepcopy(self.kpoints)
         if low:
             self.kpoints.number = [1, 1, 1]
@@ -404,7 +404,7 @@ class OptTask(NormalTask, XDATMovie):
         """
          Rewrite NormalTask's _generate_submit
          """
-        super(OptTask, self)._generate_submit(low=low, **kargs)
+        super()._generate_submit(low=low, **kargs)
 
         if low:
             self.submit.submit2write = ['head_lines', '\n', 'env_lines', '\n', 'pre_process_lines', '\n',
@@ -431,7 +431,7 @@ class ConTSTask(OptTask, XDATMovie):
             if not Path(file).exists():
                 raise FileNotFoundError(f'{file} is not exist, continuous task failed!')
 
-        super(ConTSTask, self)._generate_cdir(directory=directory, files=files)
+        super()._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file='INCAR')
     def _generate_INCAR(self, low=False, **kargs):
@@ -440,7 +440,7 @@ class ConTSTask(OptTask, XDATMovie):
         parameters setting:
             IBRION = 1
         """
-        super(ConTSTask, self)._generate_INCAR(low=low, **kargs)
+        super()._generate_INCAR(low=low, **kargs)
         self.incar.IBRION = 1
 
     def _generate_fort(self, continuous=False):
@@ -484,7 +484,7 @@ class ConTSTask(OptTask, XDATMovie):
         fort188 = Fort188File('fort.188')
         self.submit.constrain = fort188.constrain
 
-        super(ConTSTask, self)._generate_submit(low=low, **kargs)
+        super()._generate_submit(low=low, **kargs)
 
 
 class ChargeTask(NormalTask):
@@ -495,7 +495,7 @@ class ChargeTask(NormalTask):
     def _generate_cdir(self, directory='chg_cal', files=None, **kargs):
         if files is None:
             files = ['INCAR', 'CONTCAR']
-        super(ChargeTask, self)._generate_cdir(directory=directory, files=files)
+        super()._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file='INCAR')
     def _generate_INCAR(self, **kargs):
@@ -506,7 +506,7 @@ class ChargeTask(NormalTask):
             LAECHG = .TRUE.
             LCHARG = .TRUE.
         """
-        super(ChargeTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.IBRION = 1
         self.incar.LAECHG = True
         self.incar.LCHARG = True
@@ -516,7 +516,7 @@ class ChargeTask(NormalTask):
         """
          generate job.submit automatically
          """
-        super(ChargeTask, self)._generate_submit(gamma=gamma)
+        super()._generate_submit(gamma=gamma)
 
         if analysis:
             ChargeTask.apply_analysis(self.submit)
@@ -568,7 +568,7 @@ class WorkFuncTask(NormalTask):
     def _generate_cdir(self, directory='workfunc', files=None, hse=False):
         if files is None:
             files = ['INCAR', 'CONTCAR']
-        super(WorkFuncTask, self)._generate_cdir(directory=directory, files=files)
+        super()._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file='INCAR')
     def _generate_INCAR(self, **kargs):
@@ -579,7 +579,7 @@ class WorkFuncTask(NormalTask):
             NSW = 1
             LVHAR = .TRUE.
         """
-        super(WorkFuncTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.IBRION = -1
         self.incar.NSW = 1
         self.incar.LVHAR = True
@@ -593,7 +593,7 @@ class BandTask(NormalTask):
     def _generate_cdir(self, directory='band_cal', files=None, hse=False):
         if files is None:
             files = ['INCAR', 'CONTCAR', 'CHGCAR']
-        super(BandTask, self)._generate_cdir(directory=directory, files=files)
+        super()._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file='INCAR')
     def _generate_INCAR(self, **kargs):
@@ -607,7 +607,7 @@ class BandTask(NormalTask):
             LORBIT = 12
             NEDOS = 2000
         """
-        super(BandTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.ISTART = 1
         self.incar.ICHARG = 11
         self.incar.IBRION = -1
@@ -653,7 +653,7 @@ class DOSTask(NormalTask):
     def _generate_cdir(self, directory='dos_cal', files=None, hse=False):
         if files is None:
             files = ['INCAR', 'CONTCAR', 'CHGCAR']
-        super(DOSTask, self)._generate_cdir(directory=directory, files=files)
+        super()._generate_cdir(directory=directory, files=files)
 
     @write_wrapper(file='INCAR')
     def _generate_INCAR(self, **kargs):
@@ -667,7 +667,7 @@ class DOSTask(NormalTask):
             LORBIT = 12
             NEDOS = 2000
         """
-        super(DOSTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.ISTART = 1
         self.incar.ICHARG = 11
         self.incar.IBRION = -1
@@ -696,7 +696,7 @@ class FreqTask(NormalTask, Animatable):
             NFREE = 2
             POTIM = 0.015
         """
-        super(FreqTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.IBRION = 5
         self.incar.ISYM = 0
         self.incar.NSW = 1
@@ -730,7 +730,7 @@ class MDTask(NormalTask, XDATMovie):
             TEBEG = 300.
             TEEND = 300.
         """
-        super(MDTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.IBRION = 0
         self.incar.NSW = 100000
         self.incar.POTIM = 0.5
@@ -759,7 +759,7 @@ class STMTask(NormalTask):
             LSEPB = .FALSE.
             LSEPK = .FALSE.
         """
-        super(STMTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.ISTART = 1
         self.incar.IBRION = -1
         self.incar.NSW = 0
@@ -776,7 +776,7 @@ class NEBTask(BaseTask, Animatable):
      """
 
     def __init__(self, ini_poscar=None, fni_poscar=None, images=4):
-        super(NEBTask, self).__init__()
+        super().__init__()
 
         self.ini_poscar = ini_poscar
         self.fni_poscar = fni_poscar
@@ -822,7 +822,7 @@ class NEBTask(BaseTask, Animatable):
             MAXMOVE = 0.03
             IMAGES =
         """
-        super(NEBTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.IBRION = 3
         self.incar.POTIM = 0.
         self.incar.SPRING = -5.
@@ -943,9 +943,9 @@ class DimerTask(NormalTask, XDATMovie):
             DRotMax = 10
             DFNMax = 1.
             DFNMin = 0.01
-            IOPT = 2     
+            IOPT = 2
         """
-        super(DimerTask, self)._generate_INCAR(**kargs)
+        super()._generate_INCAR(**kargs)
         self.incar.IBRION = 3
         self.incar.POTIM = 0.
         self.incar.ISYM = 0
@@ -957,7 +957,7 @@ class DimerTask(NormalTask, XDATMovie):
         self.incar.IOPT = 2
 
 
-class SequentialTask(object):
+class SequentialTask:
     """
     Apply Sequential Task from `opt => chg` or `opt => dos`
     """
@@ -1041,7 +1041,7 @@ class SequentialTask(object):
             raise TypeError(f'Unsupported Sequential Task to {self.end}, should be [opt, chg, wf, dos]')
 
 
-class OutputTask(object):
+class OutputTask:
     @staticmethod
     def output(name):
         """

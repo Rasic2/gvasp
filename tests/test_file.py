@@ -21,7 +21,7 @@ def setup_module():
     os.chdir(f'{Path(RootDir).parent}/tests')
 
 
-class TestMetaFile(object):
+class TestMetaFile:
     file = XDATCAR('XDATCAR')
 
     def test_new(self):
@@ -38,24 +38,24 @@ class TestMetaFile(object):
         logger.info(self.file.type)
 
 
-class TestStructInfoFile(object):
+class TestStructInfoFile:
     def test_new(self):
         with pytest.raises(TypeError):
             StructInfoFile('XDATCAR')
 
 
-class TestCellFile(object):
+class TestCellFile:
     def test_to_POSCAR(self):
         cell_file = CellFile(name='CuO-HAc.cell')
         cell_file.to_POSCAR()
 
 
-class TestPOSCAR(object):
+class TestPOSCAR:
     def test_dist(self):
         logger.info(POSCAR.dist('POSCAR_IS_sort', 'POSCAR_FS_sort'))
 
 
-class TestSubmitFile(object):
+class TestSubmitFile:
     def test_build(self):
         name = 'temp_submit'
         with open(name, 'w') as f:
@@ -73,7 +73,7 @@ class TestSubmitFile(object):
         assert 'vasp_gam' in submit_file.vasp_gam_line
 
 
-class TestXSDFile(object):
+class TestXSDFile:
 
     def test_parse(self):
         XSDFile(name=Path(RootDir).parent / 'tests' / 'P1xsd' / 'Fe' / 'Fe.xsd')
@@ -89,7 +89,7 @@ class TestXSDFile(object):
         os.remove('output-y.xsd')
 
 
-class TestINCAR(object):
+class TestINCAR:
     def test_getattr(self):
         incar = INCAR('INCAR_file')
         logger.info(f'PREC = {incar.PREC}')
@@ -102,7 +102,7 @@ class TestINCAR(object):
         with pytest.raises(AttributeNotRegisteredError):
             incar = INCAR('INCAR_file')
 
-        with open('INCAR_file', 'r') as f:
+        with open('INCAR_file') as f:
             lines = [line for line in f.readlines() if 'ERRORPARAM' not in line]
 
         # 写回文件
@@ -110,7 +110,7 @@ class TestINCAR(object):
             f.writelines(lines)
 
 
-class TestPOTCAR(object):
+class TestPOTCAR:
     def test_cat(self):
         pot_directory = Path(RootDir).parent / 'tests' / 'pot'
 
@@ -126,7 +126,7 @@ class TestPOTCAR(object):
         POTCAR.cat(['PAW_PBE'], ['W'], potdir=pot_directory)
 
 
-class TestCHGBase(object):
+class TestCHGBase:
     def test_new(self):
         with pytest.raises(TypeError):
             CHGBase(name='AECCAR0')
@@ -141,13 +141,13 @@ class TestCHGBase(object):
         aeccar2 + aeccar0
 
 
-class TestEIGENVAL(object):
+class TestEIGENVAL:
     def test_band_write(self):
         EIGENVAL('EIGENVAL').write()
         shutil.rmtree('band_data')
 
 
-class TestOUTCAR(object):
+class TestOUTCAR:
     def test_animation_freq(self):
         with pytest.raises(AnimationError):
             outcar = OUTCAR('OUTCAR')

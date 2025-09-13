@@ -9,7 +9,7 @@ from gvasp.common.base import Lattice
 logger = logging.getLogger('TestLogger')
 
 
-class TestLattice(object):
+class TestLattice:
     def test_repr(self):
         lattice = Lattice(np.array([[7.707464, 0.000000, 0.000000],
                                     [-3.853732, 6.674860, 0.000000],
@@ -20,7 +20,7 @@ class TestLattice(object):
         Lattice.from_POSCAR('CONTCAR')
 
 
-class TestAtom(object):
+class TestAtom:
     atom_1 = CONTCAR('CONTCAR').structure.atoms[0]
     atom_2 = CONTCAR('CONTCAR').structure.atoms[1]
 
@@ -37,7 +37,7 @@ class TestAtom(object):
         logger.info(self.atom_1.atom_type)
 
 
-class TestAtoms(object):
+class TestAtoms:
     structure = CONTCAR('CONTCAR').structure
     atoms = structure.atoms
 

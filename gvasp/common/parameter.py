@@ -67,7 +67,7 @@ def list_float(values):
     return list(map(float, values.split()))
 
 
-class Parameter(object):
+class Parameter:
     """
     Parameters manager, register parameter && check theirs type
     """

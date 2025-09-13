@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J H2 
+#SBATCH -J H2
 #SBATCH -p standard
 #SBATCH -N 1
 #SBATCH -c 32

@@ -11,12 +11,12 @@ from gvasp.common.structure import Structure
 from gvasp.lib.path_cython import _get_funcs_and_forces as _get_funcs_and_forces_cython
 
 
-class BasePath(object):
+class BasePath:
 
     def __new__(cls, *args, **kwargs):
         if cls is BasePath:
             raise TypeError(f'<{cls.__name__} class> may not be instantiated')
-        return super(BasePath, cls).__new__(cls)
+        return super().__new__(cls)
 
     def __init__(self):
         self.path = None
@@ -33,7 +33,7 @@ class BasePath(object):
 
 class LinearPath(BasePath):
     def __init__(self, ini_poscar, fni_poscar, images):
-        super(LinearPath, self).__init__()
+        super().__init__()
         self.ini_structure = Structure.from_POSCAR(ini_poscar)
         self.fni_structure = Structure.from_POSCAR(fni_poscar)
         self.images = images
@@ -61,7 +61,7 @@ class IdppPath(BasePath):
         Args:
             structures (list): Initial guess of the NEB path (including initial and final end-point structures).
         """
-        super(IdppPath, self).__init__()
+        super().__init__()
 
         lattice = structures[0].lattice
         atoms_num = structures[0].atoms.count

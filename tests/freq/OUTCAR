@@ -10,11 +10,11 @@
 
 
  INCAR:
- POTCAR:   PAW_PBE C 08Apr2002                    
- POTCAR:   PAW_PBE O 08Apr2002                    
- POTCAR:    PAW_PBE Ce 23Dec2003                  
+ POTCAR:   PAW_PBE C 08Apr2002
+ POTCAR:   PAW_PBE O 08Apr2002
+ POTCAR:    PAW_PBE Ce 23Dec2003
 
- ----------------------------------------------------------------------------- 
+ -----------------------------------------------------------------------------
 |                                                                             |
 |           W    W    AA    RRRRR   N    N  II  N    N   GGGG   !!!           |
 |           W    W   A  A   R    R  NN   N  II  NN   N  G    G  !!!           |
@@ -33,39 +33,39 @@
 |      Unfortunately you need to use the default for GW and RPA calculations. |
 |      (for HF NCORE is supported but not extensively tested yet)             |
 |                                                                             |
- ----------------------------------------------------------------------------- 
+ -----------------------------------------------------------------------------
 
- POTCAR:   PAW_PBE C 08Apr2002                    
-   VRHFIN =C: s2p2                                                              
-   LEXCH  = PE                                                                  
-   EATOM  =   147.1560 eV,   10.8157 Ry                                         
-                                                                                
-   TITEL  = PAW_PBE C 08Apr2002                                                 
-   LULTRA =        F    use ultrasoft PP ?                                      
-   IUNSCR =        0    unscreen: 0-lin 1-nonlin 2-no                           
-   RPACOR =     .000    partial core radius                                     
-   POMASS =   12.011; ZVAL   =    4.000    mass and valenz                      
-   RCORE  =    1.500    outmost cutoff radius                                   
-   RWIGS  =    1.630; RWIGS  =     .863    wigner-seitz radius (au A)           
-   ENMAX  =  400.000; ENMIN  =  300.000 eV                                      
-   ICORE  =        2    local potential                                         
-   LCOR   =        T    correct aug charges                                     
-   LPAW   =        T    paw PP                                                  
-   EAUG   =  644.873                                                            
-   DEXC   =     .000                                                            
-   RMAX   =    2.266    core radius for proj-oper                               
-   RAUG   =    1.300    factor for augmentation sphere                          
-   RDEP   =    1.501    radius for radial grids                                 
-   RDEPT  =    1.300    core radius for aug-charge                              
-   QCUT   =   -5.516; QGAM   =   11.032    optimization parameters              
-                                                                                
-   Description                                                                  
-     l     E      TYP  RCUT    TYP  RCUT                                        
-     0   .000     23  1.200                                                     
-     0   .000     23  1.200                                                     
-     1   .000     23  1.500                                                     
-     1  2.500     23  1.500                                                     
-     2   .000      7  1.500                                                     
+ POTCAR:   PAW_PBE C 08Apr2002
+   VRHFIN =C: s2p2
+   LEXCH  = PE
+   EATOM  =   147.1560 eV,   10.8157 Ry
+
+   TITEL  = PAW_PBE C 08Apr2002
+   LULTRA =        F    use ultrasoft PP ?
+   IUNSCR =        0    unscreen: 0-lin 1-nonlin 2-no
+   RPACOR =     .000    partial core radius
+   POMASS =   12.011; ZVAL   =    4.000    mass and valenz
+   RCORE  =    1.500    outmost cutoff radius
+   RWIGS  =    1.630; RWIGS  =     .863    wigner-seitz radius (au A)
+   ENMAX  =  400.000; ENMIN  =  300.000 eV
+   ICORE  =        2    local potential
+   LCOR   =        T    correct aug charges
+   LPAW   =        T    paw PP
+   EAUG   =  644.873
+   DEXC   =     .000
+   RMAX   =    2.266    core radius for proj-oper
+   RAUG   =    1.300    factor for augmentation sphere
+   RDEP   =    1.501    radius for radial grids
+   RDEPT  =    1.300    core radius for aug-charge
+   QCUT   =   -5.516; QGAM   =   11.032    optimization parameters
+
+   Description
+     l     E      TYP  RCUT    TYP  RCUT
+     0   .000     23  1.200
+     0   .000     23  1.200
+     1   .000     23  1.500
+     1  2.500     23  1.500
+     2   .000      7  1.500
   local pseudopotential read in
   atomic valenz-charges read in
   non local Contribution for L=           0  read in
@@ -77,40 +77,40 @@
   non local Contribution for L=           1  read in
     real space projection operators read in
     PAW grid and wavefunctions read in
- 
+
    number of l-projection  operators is LMAX  =           4
    number of lm-projection operators is LMMAX =           8
- 
- POTCAR:   PAW_PBE O 08Apr2002                    
-   VRHFIN =O: s2p4                                                              
-   LEXCH  = PE                                                                  
-   EATOM  =   432.3788 eV,   31.7789 Ry                                         
-                                                                                
-   TITEL  = PAW_PBE O 08Apr2002                                                 
-   LULTRA =        F    use ultrasoft PP ?                                      
-   IUNSCR =        0    unscreen: 0-lin 1-nonlin 2-no                           
-   RPACOR =     .000    partial core radius                                     
-   POMASS =   16.000; ZVAL   =    6.000    mass and valenz                      
-   RCORE  =    1.520    outmost cutoff radius                                   
-   RWIGS  =    1.550; RWIGS  =     .820    wigner-seitz radius (au A)           
-   ENMAX  =  400.000; ENMIN  =  300.000 eV                                      
-   ICORE  =        2    local potential                                         
-   LCOR   =        T    correct aug charges                                     
-   LPAW   =        T    paw PP                                                  
-   EAUG   =  605.392                                                            
-   DEXC   =     .000                                                            
-   RMAX   =    2.264    core radius for proj-oper                               
-   RAUG   =    1.300    factor for augmentation sphere                          
-   RDEP   =    1.550    radius for radial grids                                 
-   QCUT   =   -5.520; QGAM   =   11.041    optimization parameters              
-                                                                                
-   Description                                                                  
-     l     E      TYP  RCUT    TYP  RCUT                                        
-     0   .000     23  1.200                                                     
-     0  -.700     23  1.200                                                     
-     1   .000     23  1.520                                                     
-     1   .600     23  1.520                                                     
-     2   .000      7  1.500                                                     
+
+ POTCAR:   PAW_PBE O 08Apr2002
+   VRHFIN =O: s2p4
+   LEXCH  = PE
+   EATOM  =   432.3788 eV,   31.7789 Ry
+
+   TITEL  = PAW_PBE O 08Apr2002
+   LULTRA =        F    use ultrasoft PP ?
+   IUNSCR =        0    unscreen: 0-lin 1-nonlin 2-no
+   RPACOR =     .000    partial core radius
+   POMASS =   16.000; ZVAL   =    6.000    mass and valenz
+   RCORE  =    1.520    outmost cutoff radius
+   RWIGS  =    1.550; RWIGS  =     .820    wigner-seitz radius (au A)
+   ENMAX  =  400.000; ENMIN  =  300.000 eV
+   ICORE  =        2    local potential
+   LCOR   =        T    correct aug charges
+   LPAW   =        T    paw PP
+   EAUG   =  605.392
+   DEXC   =     .000
+   RMAX   =    2.264    core radius for proj-oper
+   RAUG   =    1.300    factor for augmentation sphere
+   RDEP   =    1.550    radius for radial grids
+   QCUT   =   -5.520; QGAM   =   11.041    optimization parameters
+
+   Description
+     l     E      TYP  RCUT    TYP  RCUT
+     0   .000     23  1.200
+     0  -.700     23  1.200
+     1   .000     23  1.520
+     1   .600     23  1.520
+     2   .000      7  1.500
   local pseudopotential read in
   atomic valenz-charges read in
   non local Contribution for L=           0  read in
@@ -122,45 +122,45 @@
   non local Contribution for L=           1  read in
     real space projection operators read in
     PAW grid and wavefunctions read in
- 
+
    number of l-projection  operators is LMAX  =           4
    number of lm-projection operators is LMMAX =           8
- 
- POTCAR:    PAW_PBE Ce 23Dec2003                  
-   VRHFIN =Ce : [core=Kr 4d10]                                                  
-   LEXCH  = PE                                                                  
-   EATOM  =  1063.0861 eV,   78.1346 Ry                                         
-                                                                                
-   TITEL  = PAW_PBE Ce 23Dec2003                                                
-   LULTRA =        F    use ultrasoft PP ?                                      
-   IUNSCR =        1    unscreen: 0-lin 1-nonlin 2-no                           
-   RPACOR =    1.800    partial core radius                                     
-   POMASS =  140.115; ZVAL   =   12.000    mass and valenz                      
-   RCORE  =    2.700    outmost cutoff radius                                   
-   RWIGS  =    2.500; RWIGS  =    1.323    wigner-seitz radius (au A)           
-   ENMAX  =  273.042; ENMIN  =  204.781 eV                                      
-   RCLOC  =    1.810    cutoff for local pot                                    
-   LCOR   =        T    correct aug charges                                     
-   LPAW   =        T    paw PP                                                  
-   EAUG   =  580.196                                                            
-   DEXC   =     .000                                                            
-   RMAX   =    2.790    core radius for proj-oper                               
-   RAUG   =    1.300    factor for augmentation sphere                          
-   RDEP   =    2.810    radius for radial grids                                 
-   QCUT   =   -4.480; QGAM   =    8.959    optimization parameters              
-                                                                                
-   Description                                                                  
-     l     E      TYP  RCUT    TYP  RCUT                                        
-     0   .000     23  1.500                                                     
-     0   .000     23  2.300                                                     
-     0   .000     23  1.500                                                     
-     0   .000     23  2.300                                                     
-     1   .000     23  2.000                                                     
-     1  3.000     23  2.300                                                     
-     2   .000     23  2.500                                                     
-     2  1.000     23  2.500                                                     
-     3   .000     23  2.700                                                     
-     3  -.430     23  2.700                                                     
+
+ POTCAR:    PAW_PBE Ce 23Dec2003
+   VRHFIN =Ce : [core=Kr 4d10]
+   LEXCH  = PE
+   EATOM  =  1063.0861 eV,   78.1346 Ry
+
+   TITEL  = PAW_PBE Ce 23Dec2003
+   LULTRA =        F    use ultrasoft PP ?
+   IUNSCR =        1    unscreen: 0-lin 1-nonlin 2-no
+   RPACOR =    1.800    partial core radius
+   POMASS =  140.115; ZVAL   =   12.000    mass and valenz
+   RCORE  =    2.700    outmost cutoff radius
+   RWIGS  =    2.500; RWIGS  =    1.323    wigner-seitz radius (au A)
+   ENMAX  =  273.042; ENMIN  =  204.781 eV
+   RCLOC  =    1.810    cutoff for local pot
+   LCOR   =        T    correct aug charges
+   LPAW   =        T    paw PP
+   EAUG   =  580.196
+   DEXC   =     .000
+   RMAX   =    2.790    core radius for proj-oper
+   RAUG   =    1.300    factor for augmentation sphere
+   RDEP   =    2.810    radius for radial grids
+   QCUT   =   -4.480; QGAM   =    8.959    optimization parameters
+
+   Description
+     l     E      TYP  RCUT    TYP  RCUT
+     0   .000     23  1.500
+     0   .000     23  2.300
+     0   .000     23  1.500
+     0   .000     23  2.300
+     1   .000     23  2.000
+     1  3.000     23  2.300
+     2   .000     23  2.500
+     2  1.000     23  2.500
+     3   .000     23  2.700
+     3  -.430     23  2.700
   local pseudopotential read in
   partial core-charges read in
   atomic valenz-charges read in
@@ -181,17 +181,17 @@
   non local Contribution for L=           3  read in
     real space projection operators read in
     PAW grid and wavefunctions read in
- 
+
    number of l-projection  operators is LMAX  =           8
    number of lm-projection operators is LMMAX =          32
- 
+
  Optimization of the real space projectors (new method)
 
  maximal supplied QI-value         = 25.13
- optimisation between [QCUT,QGAM] = [ 10.05, 20.36] = [ 28.30,116.06] Ry 
+ optimisation between [QCUT,QGAM] = [ 10.05, 20.36] = [ 28.30,116.06] Ry
  Optimized for a Real-space Cutoff    1.38 Angstroem
 
-   l    n(q)    QCUT    max X(q) W(low)/X(q) W(high)/X(q)  e(spline) 
+   l    n(q)    QCUT    max X(q) W(low)/X(q) W(high)/X(q)  e(spline)
    0      8    10.053     5.582    0.33E-04    0.15E-04    0.75E-07
    0      8    10.053    69.432    0.23E-03    0.38E-03    0.25E-06
    1      8    10.053     2.780    0.76E-04    0.11E-03    0.15E-06
@@ -199,10 +199,10 @@
  Optimization of the real space projectors (new method)
 
  maximal supplied QI-value         = 24.76
- optimisation between [QCUT,QGAM] = [ 10.15, 20.30] = [ 28.85,115.39] Ry 
+ optimisation between [QCUT,QGAM] = [ 10.15, 20.30] = [ 28.85,115.39] Ry
  Optimized for a Real-space Cutoff    1.51 Angstroem
 
-   l    n(q)    QCUT    max X(q) W(low)/X(q) W(high)/X(q)  e(spline) 
+   l    n(q)    QCUT    max X(q) W(low)/X(q) W(high)/X(q)  e(spline)
    0      9    10.150     4.192    0.32E-04    0.13E-04    0.13E-06
    0      9    10.150     8.473    0.18E-03    0.20E-03    0.43E-06
    1      9    10.150     2.474    0.32E-04    0.33E-04    0.64E-07
@@ -210,10 +210,10 @@
  Optimization of the real space projectors (new method)
 
  maximal supplied QI-value         = 13.98
- optimisation between [QCUT,QGAM] = [ 10.21, 20.42] = [ 29.18,116.73] Ry 
+ optimisation between [QCUT,QGAM] = [ 10.21, 20.42] = [ 29.18,116.73] Ry
  Optimized for a Real-space Cutoff    1.65 Angstroem
 
-   l    n(q)    QCUT    max X(q) W(low)/X(q) W(high)/X(q)  e(spline) 
+   l    n(q)    QCUT    max X(q) W(low)/X(q) W(high)/X(q)  e(spline)
    0     10    10.208     5.428    0.38E-05    0.42E-05    0.42E-07
    0     10    10.208     9.711    0.26E-04    0.16E-04    0.24E-06
    1     10    10.208     2.967    0.40E-05    0.16E-04    0.22E-07
@@ -231,15 +231,15 @@
   PAW_PBE Ce 23Dec2003                  :
  energy of atom  3       EATOM=-1063.0861
  kinetic energy error for atom=    0.0451 (will be added to EATOM!!)
- 
- 
- POSCAR: AutoCreatByScript: C O Ce               
+
+
+ POSCAR: AutoCreatByScript: C O Ce
   positions in direct lattice
   No initial velocities read in
  exchange correlation table for  LEXCH =        8
    RHO(1)=    0.500       N(1)  =     2000
    RHO(2)=  100.500       N(2)  =     4000
- 
+
 
 
 --------------------------------------------------------------------------------------------------------
@@ -375,43 +375,43 @@
  108  0.000  0.553  0.456-  59 2.22  56 2.27  70 2.31  69 2.31  72 2.38  71 2.38
  109  0.329  0.557  0.457-  63 2.22  57 2.26  70 2.26  68 2.31  71 2.37  73 2.50
  110  0.671  0.557  0.457-  64 2.22  58 2.26  69 2.26  68 2.31  72 2.37  73 2.50
- 
+
 
 IMPORTANT INFORMATION: All symmetrisations will be switched off!
 NOSYMM: (Re-)initialisation of all symmetry stuff for point group C_1.
 
- 
- 
- KPOINTS: mesh auto                               
+
+
+ KPOINTS: mesh auto
 
 Automatic generation of k-mesh.
 Space group operators:
  irot       det(A)        alpha          n_x          n_y          n_z        tau_x        tau_y        tau_z
     1     1.000000     0.000000     1.000000     0.000000     0.000000     0.000000     0.000000     0.000000
- 
+
  Subroutine IBZKPT returns following result:
  ===========================================
- 
+
  Found      4 irreducible k-points:
- 
+
  Following reciprocal coordinates:
             Coordinates               Weight
   0.000000  0.000000  0.000000      1.000000
   0.500000  0.000000  0.000000      1.000000
   0.000000  0.500000  0.000000      1.000000
   0.500000  0.500000  0.000000      1.000000
- 
+
  Following cartesian coordinates:
             Coordinates               Weight
   0.000000  0.000000  0.000000      1.000000
   0.043257  0.000000  0.000000      1.000000
   0.000000  0.043257  0.000000      1.000000
   0.043257  0.043257  0.000000      1.000000
- 
- 
+
+
  Subroutine IBZKPT_HF returns following result:
  ==============================================
- 
+
  Found      4 k-points in 1st BZ
  the following      4 k-points will be used (e.g. in the exchange kernel)
  Following reciprocal coordinates:   # in IRBZ
@@ -442,8 +442,8 @@ Space group operators:
 
  I would recommend the setting:
    dimension x,y,z NGX =    75 NGY =   75 NGZ =  149
- SYSTEM =  CO_rxn_TypeI_OA_TS                      
- POSCAR =  AutoCreatByScript: C O Ce               
+ SYSTEM =  CO_rxn_TypeI_OA_TS
+ POSCAR =  AutoCreatByScript: C O Ce
 
  Startparameter for this run:
    NWRITE =      2    write-flag & timer
@@ -461,7 +461,7 @@ Space group operators:
    ENCUT  =  400.0 eV  29.40 Ry    5.42 a.u.  18.85 18.85 37.34*2*pi/ulx,y,z
    ENINI  =  400.0     initial cutoff
    ENAUG  =  644.9 eV  augmentation charge cutoff
-   NELM   =    120;   NELMIN=  2; NELMDL=  0     # of ELM steps 
+   NELM   =    120;   NELMIN=  2; NELMDL=  0     # of ELM steps
    EDIFF  = 0.1E-05   stopping-criterion for ELM
    LREAL  =      T    real-space projection
    NLSPLINE    = F    spline interpolate recip. space projectors
@@ -474,7 +474,7 @@ Space group operators:
  Ionic relaxation
    EDIFFG = -.2E-01   stopping-criterion for IOM
    NSW    =   1357    number of steps for IOM
-   NBLOCK =      1;   KBLOCK =      1    inner block; outer block 
+   NBLOCK =      1;   KBLOCK =      1    inner block; outer block
    IBRION =      5    ionic relax: 0-MD 1-quasi-New 2-CG
    NFREE  =      2    steps in history (QN), initial steepest desc. (CG)
    ISIF   =      2    stress and relaxation
@@ -497,7 +497,7 @@ Space group operators:
    ZVAL   =   4.00  6.00 12.00
   Atomic Wigner-Seitz radii
    RWIGS  =  -1.00 -1.00 -1.00
-  virtual crystal weights 
+  virtual crystal weights
    VCA    =   1.00  1.00  1.00
    NELECT =     874.0000    total number of electrons
    NUPDOWN=      -1.0000    fix difference up-down
@@ -525,14 +525,14 @@ Space group operators:
  Intra band minimization:
    WEIMIN = 0.0010     energy-eigenvalue tresh-hold
    EBREAK =  0.41E-09  absolut break condition
-   DEPER  =   0.30     relativ break condition  
+   DEPER  =   0.30     relativ break condition
 
    TIME   =   0.40     timestep for ELM
 
   volume/ion in A,a.u.               =      27.81       187.68
   Fermi-wavevector in a.u.,A,eV,Ry     =   1.078218  2.037537 15.817507  1.162554
   Thomas-Fermi vector in A             =   2.214151
- 
+
  Write flags
    LWAVE  =      T    write WAVECAR
    LCHARG =      T    write CHGCAR
@@ -545,7 +545,7 @@ Space group operators:
  Dipole corrections
    LMONO  =      F    monopole corrections only (constant potential shift)
    LDIPOL =      F    correct potential (dipole corrections)
-   IDIPOL =      0    1-x, 2-y, 3-z, 4-all directions 
+   IDIPOL =      0    1-x, 2-y, 3-z, 4-all directions
    EPSILON=  1.0000000 bulk dielectric constant
 
  LDA+U is selected, type is set to LDAUTYPE =  2
@@ -596,9 +596,9 @@ Space group operators:
  using additional bands          171
  real space projection scheme for non local part
  use partial core corrections
- calculate Harris-corrections to forces 
+ calculate Harris-corrections to forces
    (improved forces if not selfconsistent)
- use gradient corrections 
+ use gradient corrections
  use of overlap-Matrix (Vanderbilt PP)
  Gauss-broadening in eV      SIGMA  =   0.05
 
@@ -617,20 +617,20 @@ Space group operators:
     11.558780000 11.558780000 22.897720000     0.086514321  0.086514321  0.043672470
 
 
- 
- k-points in units of 2pi/SCALE and weight: mesh auto                               
+
+ k-points in units of 2pi/SCALE and weight: mesh auto
    0.00000000  0.00000000  0.00000000       0.250
    0.04325716  0.00000000  0.00000000       0.250
    0.00000000  0.04325716  0.00000000       0.250
    0.04325716  0.04325716  0.00000000       0.250
- 
- k-points in reciprocal lattice and weights: mesh auto                               
+
+ k-points in reciprocal lattice and weights: mesh auto
    0.00000000  0.00000000  0.00000000       0.250
    0.50000000  0.00000000  0.00000000       0.250
    0.00000000  0.50000000  0.00000000       0.250
    0.50000000  0.50000000  0.00000000       0.250
- 
- position of ions in fractional coordinates (direct lattice) 
+
+ position of ions in fractional coordinates (direct lattice)
    0.50321900  0.32552400  0.53219700
    0.00000000  0.62281000  0.00000000
    0.33333000  0.62281000  0.00000000
@@ -741,7 +741,7 @@ Space group operators:
    0.00000500  0.55331800  0.45647300
    0.32862700  0.55691000  0.45686800
    0.67145300  0.55707900  0.45684000
- 
+
  position of ions in cartesian coordinates  (Angst):
    5.81659771  3.76266030 12.18609789
    0.00000000  7.19892377  0.00000000
@@ -853,7 +853,7 @@ Space group operators:
    0.00005779  6.39568103 10.45219094
    3.79852720  6.43720017 10.46123554
    7.76117751  6.43915360 10.46059440
- 
+
 
 
 --------------------------------------------------------------------------------------------------------
@@ -867,7 +867,7 @@ Space group operators:
  maximum and minimum number of plane-waves per node :     55644    55534
 
  maximum number of plane-waves:     55644
- maximum index in each direction: 
+ maximum index in each direction:
    IXMAX=   18   IYMAX=   18   IZMAX=   37
    IXMIN=  -19   IYMIN=  -19   IZMIN=  -37
 
@@ -889,7 +889,7 @@ Space group operators:
    grid      :      98240. kBytes
    one-center:      10813. kBytes
    wavefun   :     139616. kBytes
- 
+
      INWAV:  cpu time    0.0010: real time    0.0001
  Broyden mixing: mesh for mixing (old mesh)
    NGX = 37   NGY = 37   NGZ = 75
@@ -3440,16 +3440,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8681      97 -84.8683      98 -84.8689      99 -84.8938     100 -84.8935
      101 -84.8938     102 -84.7527     103 -84.7552     104 -84.7675     105 -84.8602
      106 -84.8600     107 -84.7592     108 -84.9556     109 -84.9668     110 -84.9709
- 
- 
- 
+
+
+
  E-fermi :   0.8317     XC(G=0):  -6.1264     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3769      1.00000
       3     -34.3756      1.00000
@@ -4060,7 +4060,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.4658      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4048      1.00000
       2     -34.4036      1.00000
       3     -34.3622      1.00000
@@ -4671,7 +4671,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.4667      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4182      1.00000
       2     -34.3769      1.00000
       3     -34.3756      1.00000
@@ -5282,7 +5282,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.4509      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4049      1.00000
       2     -34.4037      1.00000
       3     -34.3622      1.00000
@@ -5895,7 +5895,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3769      1.00000
       3     -34.3756      1.00000
@@ -6506,7 +6506,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.4571      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4048      1.00000
       2     -34.4036      1.00000
       3     -34.3622      1.00000
@@ -7117,7 +7117,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.4675      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4182      1.00000
       2     -34.3769      1.00000
       3     -34.3756      1.00000
@@ -7728,7 +7728,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.4426      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4049      1.00000
       2     -34.4037      1.00000
       3     -34.3622      1.00000
@@ -8345,11 +8345,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.995   0.013   0.009   0.013   0.000  -0.008  -0.012  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -8546,8 +8546,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.159E+02 -.287E+03 -.286E+04   0.169E+02 0.286E+03 0.285E+04   -.985E+00 0.957E+00 0.611E+01   0.158E-03 0.345E-03 0.810E-03
  -----------------------------------------------------------------------------------------------
    0.104E+01 0.670E+01 0.343E+02   0.117E-12 -.568E-12 -.455E-12   -.103E+01 -.670E+01 -.342E+02   0.213E-04 -.425E-03 -.985E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.18610        -0.003579      0.008779     -0.006853
@@ -8676,7 +8676,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16197399 eV
 
   energy  without entropy=     -876.16197399  energy(sigma->0) =     -876.16197399
- 
+
 
 
 --------------------------------------------------------------------------------------------------------
@@ -9114,16 +9114,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8678      97 -84.8678      98 -84.8691      99 -84.8934     100 -84.8933
      101 -84.8936     102 -84.7512     103 -84.7564     104 -84.7673     105 -84.8596
      106 -84.8604     107 -84.7595     108 -84.9556     109 -84.9642     110 -84.9711
- 
- 
- 
+
+
+
  E-fermi :   0.8707     XC(G=0):  -6.1261     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3768      1.00000
       3     -34.3756      1.00000
@@ -9734,7 +9734,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3851      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4048      1.00000
       2     -34.4035      1.00000
       3     -34.3621      1.00000
@@ -10345,7 +10345,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3853      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3768      1.00000
       3     -34.3755      1.00000
@@ -10956,7 +10956,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3764      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4049      1.00000
       2     -34.4036      1.00000
       3     -34.3621      1.00000
@@ -11569,7 +11569,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3768      1.00000
       3     -34.3756      1.00000
@@ -12180,7 +12180,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3773      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4048      1.00000
       2     -34.4035      1.00000
       3     -34.3621      1.00000
@@ -12791,7 +12791,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3874      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3768      1.00000
       3     -34.3755      1.00000
@@ -13402,7 +13402,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3701      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4049      1.00000
       2     -34.4036      1.00000
       3     -34.3621      1.00000
@@ -14019,11 +14019,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.995   0.013   0.009   0.013   0.000  -0.008  -0.012  -0.000
   0.013  -0.002  -0.000  -0.000   0.000  -0.000  -0.000  -0.000
@@ -14220,8 +14220,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.159E+02 -.287E+03 -.286E+04   0.169E+02 0.286E+03 0.285E+04   -.989E+00 0.954E+00 0.611E+01   -.482E-03 0.156E-02 0.733E-03
  -----------------------------------------------------------------------------------------------
    0.384E+00 0.669E+01 0.343E+02   0.711E-14 -.682E-12 -.909E-11   -.373E+00 -.670E+01 -.343E+02   -.137E-01 0.394E-02 -.202E-02
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.83660      3.76266     12.18610        -0.061049     -0.000762     -0.038564
@@ -14350,7 +14350,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16133275 eV
 
   energy  without entropy=     -876.16133275  energy(sigma->0) =     -876.16133275
- 
+
  d Force =-0.6462734E-03[-0.122E-02,-0.716E-04]  d Energy =-0.6412399E-03-0.503E-05
  d Force =-0.5402948E-01[-0.838E-03,-0.107E+00]  d Ewald  =-0.5404520E-01 0.157E-04
 
@@ -14893,16 +14893,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8684      97 -84.8688      98 -84.8692      99 -84.8943     100 -84.8937
      101 -84.8942     102 -84.7540     103 -84.7546     104 -84.7678     105 -84.8610
      106 -84.8596     107 -84.7600     108 -84.9561     109 -84.9698     110 -84.9693
- 
- 
- 
+
+
+
  E-fermi :   0.8538     XC(G=0):  -6.1261     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4185      1.00000
       2     -34.3772      1.00000
       3     -34.3759      1.00000
@@ -15513,7 +15513,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3624      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4052      1.00000
       2     -34.4039      1.00000
       3     -34.3625      1.00000
@@ -16124,7 +16124,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3663      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4185      1.00000
       2     -34.3772      1.00000
       3     -34.3759      1.00000
@@ -16735,7 +16735,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3600      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4053      1.00000
       2     -34.4040      1.00000
       3     -34.3625      1.00000
@@ -17348,7 +17348,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4185      1.00000
       2     -34.3772      1.00000
       3     -34.3759      1.00000
@@ -17959,7 +17959,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3608      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4052      1.00000
       2     -34.4039      1.00000
       3     -34.3625      1.00000
@@ -18570,7 +18570,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3667      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4185      1.00000
       2     -34.3772      1.00000
       3     -34.3759      1.00000
@@ -19181,7 +19181,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3568      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4053      1.00000
       2     -34.4040      1.00000
       3     -34.3625      1.00000
@@ -19798,11 +19798,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.995   0.013   0.009   0.013   0.001  -0.008  -0.012  -0.001
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -19999,8 +19999,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.160E+02 -.286E+03 -.286E+04   0.169E+02 0.285E+03 0.285E+04   -.981E+00 0.960E+00 0.611E+01   0.896E-03 0.243E-02 -.871E-03
  -----------------------------------------------------------------------------------------------
    0.169E+01 0.669E+01 0.342E+02   0.142E-13 -.341E-12 -.455E-11   -.169E+01 -.670E+01 -.342E+02   -.248E-02 -.103E-03 0.119E-02
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.79660      3.76266     12.18610         0.055879      0.025352      0.055065
@@ -20129,7 +20129,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16146127 eV
 
   energy  without entropy=     -876.16146127  energy(sigma->0) =     -876.16146127
- 
+
  d Force = 0.1033919E-03[-0.224E-02, 0.244E-02]  d Energy = 0.1285137E-03-0.251E-04
  d Force = 0.2141240E+00[ 0.427E+00, 0.168E-02]  d Ewald  = 0.2143355E+00-0.211E-03
 
@@ -20672,16 +20672,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8684      97 -84.8684      98 -84.8691      99 -84.8944     100 -84.8941
      101 -84.8945     102 -84.7507     103 -84.7533     104 -84.7672     105 -84.8596
      106 -84.8594     107 -84.7368     108 -84.9572     109 -84.9693     110 -84.9741
- 
- 
- 
+
+
+
  E-fermi :   0.8686     XC(G=0):  -6.1258     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4180      1.00000
       2     -34.3768      1.00000
       3     -34.3755      1.00000
@@ -21292,7 +21292,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3586      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4047      1.00000
       2     -34.4035      1.00000
       3     -34.3621      1.00000
@@ -21903,7 +21903,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3612      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4180      1.00000
       2     -34.3768      1.00000
       3     -34.3755      1.00000
@@ -22514,7 +22514,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3576      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4048      1.00000
       2     -34.4035      1.00000
       3     -34.3621      1.00000
@@ -23127,7 +23127,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4180      1.00000
       2     -34.3768      1.00000
       3     -34.3755      1.00000
@@ -23738,7 +23738,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3584      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4047      1.00000
       2     -34.4035      1.00000
       3     -34.3621      1.00000
@@ -24349,7 +24349,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3622      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4180      1.00000
       2     -34.3768      1.00000
       3     -34.3755      1.00000
@@ -24960,7 +24960,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3558      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4048      1.00000
       2     -34.4035      1.00000
       3     -34.3621      1.00000
@@ -25577,11 +25577,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.995   0.013   0.009   0.013   0.000  -0.008  -0.012  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -25778,8 +25778,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.162E+02 -.287E+03 -.286E+04   0.172E+02 0.286E+03 0.285E+04   -.100E+01 0.952E+00 0.612E+01   -.595E-03 -.652E-03 -.311E-03
  -----------------------------------------------------------------------------------------------
    0.105E+01 0.615E+01 0.341E+02   -.426E-13 -.455E-12 0.864E-11   -.103E+01 -.617E+01 -.342E+02   -.126E-01 0.772E-02 0.106E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.78266     12.18610        -0.016895     -0.164456     -0.445426
@@ -25908,7 +25908,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16038680 eV
 
   energy  without entropy=     -876.16038680  energy(sigma->0) =     -876.16038680
- 
+
  d Force =-0.1001212E-02[-0.363E-02, 0.162E-02]  d Energy =-0.1074465E-02 0.733E-04
  d Force =-0.3574333E+01[-0.350E+01,-0.365E+01]  d Ewald  =-0.3574837E+01 0.504E-03
 
@@ -26451,16 +26451,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8675      97 -84.8680      98 -84.8686      99 -84.8929     100 -84.8925
      101 -84.8929     102 -84.7544     103 -84.7568     104 -84.7673     105 -84.8606
      106 -84.8603     107 -84.7798     108 -84.9540     109 -84.9632     110 -84.9672
- 
- 
- 
+
+
+
  E-fermi :   0.8435     XC(G=0):  -6.1270     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4182      1.00000
       2     -34.3771      1.00000
       3     -34.3756      1.00000
@@ -27071,7 +27071,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3521      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4050      1.00000
       2     -34.4036      1.00000
       3     -34.3623      1.00000
@@ -27682,7 +27682,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3559      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4183      1.00000
       2     -34.3770      1.00000
       3     -34.3756      1.00000
@@ -28293,7 +28293,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3534      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4051      1.00000
       2     -34.4037      1.00000
       3     -34.3623      1.00000
@@ -28906,7 +28906,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4182      1.00000
       2     -34.3771      1.00000
       3     -34.3756      1.00000
@@ -29517,7 +29517,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3515      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4050      1.00000
       2     -34.4036      1.00000
       3     -34.3623      1.00000
@@ -30128,7 +30128,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3590      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4183      1.00000
       2     -34.3770      1.00000
       3     -34.3756      1.00000
@@ -30739,7 +30739,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3536      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4051      1.00000
       2     -34.4037      1.00000
       3     -34.3623      1.00000
@@ -31356,11 +31356,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.994   0.013   0.009   0.013   0.000  -0.007  -0.012  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -31557,8 +31557,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.157E+02 -.286E+03 -.286E+04   0.166E+02 0.285E+03 0.285E+04   -.969E+00 0.961E+00 0.610E+01   -.373E-02 0.101E-02 0.213E-02
  -----------------------------------------------------------------------------------------------
    0.103E+01 0.724E+01 0.343E+02   0.249E-13 0.227E-12 -.455E-11   -.103E+01 -.725E+01 -.343E+02   0.129E-03 0.718E-02 -.798E-02
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.74266     12.18610         0.009452      0.196254      0.448269
@@ -31687,7 +31687,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.15997155 eV
 
   energy  without entropy=     -876.15997155  energy(sigma->0) =     -876.15997155
- 
+
  d Force =-0.6359516E-03[-0.785E-02, 0.658E-02]  d Energy =-0.4152507E-03-0.221E-03
  d Force = 0.6876989E+01[ 0.697E+01, 0.678E+01]  d Ewald  = 0.6877687E+01-0.699E-03
 
@@ -32230,16 +32230,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8597      97 -84.8597      98 -84.8603      99 -84.8845     100 -84.8842
      101 -84.8828     102 -84.7456     103 -84.7479     104 -84.7596     105 -84.8521
      106 -84.8517     107 -84.7583     108 -84.9445     109 -84.9434     110 -84.9478
- 
- 
- 
+
+
+
  E-fermi :   0.8493     XC(G=0):  -6.1266     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4131      1.00000
       2     -34.3719      1.00000
       3     -34.3706      1.00000
@@ -32850,7 +32850,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3578      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3998      1.00000
       2     -34.3986      1.00000
       3     -34.3572      1.00000
@@ -33461,7 +33461,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3622      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4131      1.00000
       2     -34.3719      1.00000
       3     -34.3706      1.00000
@@ -34072,7 +34072,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3615      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3999      1.00000
       2     -34.3987      1.00000
       3     -34.3572      1.00000
@@ -34685,7 +34685,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4131      1.00000
       2     -34.3719      1.00000
       3     -34.3706      1.00000
@@ -35296,7 +35296,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3592      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3998      1.00000
       2     -34.3986      1.00000
       3     -34.3572      1.00000
@@ -35907,7 +35907,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3629      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4131      1.00000
       2     -34.3719      1.00000
       3     -34.3706      1.00000
@@ -36518,7 +36518,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3600      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3999      1.00000
       2     -34.3987      1.00000
       3     -34.3572      1.00000
@@ -37135,11 +37135,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.998   0.013   0.009   0.015   0.000  -0.008  -0.013  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -37336,8 +37336,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.158E+02 -.286E+03 -.286E+04   0.167E+02 0.285E+03 0.285E+04   -.938E+00 0.975E+00 0.609E+01   0.249E-02 -.700E-03 0.703E-03
  -----------------------------------------------------------------------------------------------
    0.110E+01 0.655E+01 0.356E+02   0.355E-14 -.114E-12 0.455E-12   -.110E+01 -.655E+01 -.357E+02   0.146E-03 -.116E-01 0.134E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.20610        -0.055025     -0.459777     -1.693202
@@ -37466,7 +37466,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.14538087 eV
 
   energy  without entropy=     -876.14538087  energy(sigma->0) =     -876.14538087
- 
+
  d Force =-0.1508456E-01[-0.431E-01, 0.129E-01]  d Energy =-0.1459068E-01-0.494E-03
  d Force = 0.1215748E+02[ 0.121E+02, 0.123E+02]  d Ewald  = 0.1215748E+02-0.687E-06
 
@@ -38163,16 +38163,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8762      97 -84.8768      98 -84.8774      99 -84.9030     100 -84.9026
      101 -84.9047     102 -84.7598     103 -84.7623     104 -84.7750     105 -84.8682
      106 -84.8681     107 -84.7596     108 -84.9662     109 -84.9895     110 -84.9932
- 
- 
- 
+
+
+
  E-fermi :   0.8332     XC(G=0):  -6.1255     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4232      1.00000
       2     -34.3819      1.00000
       3     -34.3807      1.00000
@@ -38783,7 +38783,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3419      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4099      1.00000
       2     -34.4087      1.00000
       3     -34.3673      1.00000
@@ -39394,7 +39394,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3433      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4232      1.00000
       2     -34.3819      1.00000
       3     -34.3807      1.00000
@@ -40005,7 +40005,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3448      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4100      1.00000
       2     -34.4088      1.00000
       3     -34.3673      1.00000
@@ -40618,7 +40618,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4232      1.00000
       2     -34.3819      1.00000
       3     -34.3807      1.00000
@@ -41229,7 +41229,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3423      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4099      1.00000
       2     -34.4087      1.00000
       3     -34.3673      1.00000
@@ -41840,7 +41840,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3451      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4232      1.00000
       2     -34.3819      1.00000
       3     -34.3807      1.00000
@@ -42451,7 +42451,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3438      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4100      1.00000
       2     -34.4088      1.00000
       3     -34.3673      1.00000
@@ -43068,11 +43068,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.992   0.013   0.009   0.012   0.000  -0.007  -0.010  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -43269,8 +43269,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.160E+02 -.287E+03 -.286E+04   0.171E+02 0.286E+03 0.285E+04   -.103E+01 0.939E+00 0.613E+01   0.316E-03 0.683E-03 0.455E-04
  -----------------------------------------------------------------------------------------------
    0.972E+00 0.688E+01 0.329E+02   -.128E-12 -.341E-12 -.364E-11   -.972E+00 -.689E+01 -.329E+02   0.819E-04 0.288E-02 -.170E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.16610         0.038545      0.438016      1.463572
@@ -43399,7 +43399,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.14707048 eV
 
   energy  without entropy=     -876.14707048  energy(sigma->0) =     -876.14707048
- 
+
  d Force = 0.4592585E-02[-0.585E-01, 0.677E-01]  d Energy = 0.1689611E-02 0.290E-02
  d Force =-0.3147278E+02[-0.319E+02,-0.310E+02]  d Ewald  =-0.3147849E+02 0.571E-02
 
@@ -43993,16 +43993,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8684      97 -84.8688      98 -84.8694      99 -84.8942     100 -84.8938
      101 -84.8943     102 -84.7535     103 -84.7554     104 -84.7678     105 -84.8607
      106 -84.8603     107 -84.7600     108 -84.9559     109 -84.9681     110 -84.9709
- 
- 
- 
+
+
+
  E-fermi :   0.8398     XC(G=0):  -6.1266     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4184      1.00000
       2     -34.3772      1.00000
       3     -34.3757      1.00000
@@ -44613,7 +44613,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3474      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4052      1.00000
       2     -34.4037      1.00000
       3     -34.3624      1.00000
@@ -45224,7 +45224,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3489      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4184      1.00000
       2     -34.3772      1.00000
       3     -34.3757      1.00000
@@ -45835,7 +45835,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3512      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4052      1.00000
       2     -34.4038      1.00000
       3     -34.3624      1.00000
@@ -46448,7 +46448,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4184      1.00000
       2     -34.3772      1.00000
       3     -34.3757      1.00000
@@ -47059,7 +47059,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3484      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4052      1.00000
       2     -34.4037      1.00000
       3     -34.3624      1.00000
@@ -47670,7 +47670,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3503      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4184      1.00000
       2     -34.3772      1.00000
       3     -34.3757      1.00000
@@ -48281,7 +48281,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3504      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4052      1.00000
       2     -34.4038      1.00000
       3     -34.3624      1.00000
@@ -48898,11 +48898,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.995   0.013   0.009   0.013   0.001  -0.008  -0.012  -0.001
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -49099,8 +49099,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.159E+02 -.287E+03 -.286E+04   0.169E+02 0.286E+03 0.285E+04   -.985E+00 0.957E+00 0.611E+01   0.407E-02 0.244E-02 0.115E-02
  -----------------------------------------------------------------------------------------------
    0.165E+01 0.668E+01 0.342E+02   0.391E-13 -.341E-12 -.136E-11   -.164E+01 -.668E+01 -.342E+02   -.516E-02 0.653E-03 -.159E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.18610         0.025456      0.021379      0.055338
@@ -49229,7 +49229,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16163983 eV
 
   energy  without entropy=     -876.16163983  energy(sigma->0) =     -876.16163983
- 
+
  d Force = 0.1440811E-01[ 0.592E-03, 0.282E-01]  d Energy = 0.1456935E-01-0.161E-03
  d Force = 0.1609008E+02[ 0.160E+02, 0.162E+02]  d Ewald  = 0.1608967E+02 0.411E-03
 
@@ -49772,16 +49772,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8680      97 -84.8682      98 -84.8689      99 -84.8936     100 -84.8934
      101 -84.8936     102 -84.7526     103 -84.7555     104 -84.7675     105 -84.8601
      106 -84.8599     107 -84.7584     108 -84.9554     109 -84.9657     110 -84.9710
- 
- 
- 
+
+
+
  E-fermi :   0.8401     XC(G=0):  -6.1260     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3770      1.00000
       3     -34.3753      1.00000
@@ -50392,7 +50392,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3474      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4050      1.00000
       2     -34.4034      1.00000
       3     -34.3621      1.00000
@@ -51003,7 +51003,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3486      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3770      1.00000
       3     -34.3753      1.00000
@@ -51614,7 +51614,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3510      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4051      1.00000
       2     -34.4034      1.00000
       3     -34.3621      1.00000
@@ -52227,7 +52227,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3770      1.00000
       3     -34.3753      1.00000
@@ -52838,7 +52838,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3482      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4050      1.00000
       2     -34.4034      1.00000
       3     -34.3621      1.00000
@@ -53449,7 +53449,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3494      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4181      1.00000
       2     -34.3770      1.00000
       3     -34.3753      1.00000
@@ -54060,7 +54060,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3506      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4051      1.00000
       2     -34.4034      1.00000
       3     -34.3621      1.00000
@@ -54677,11 +54677,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.995   0.013   0.009   0.013   0.000  -0.008  -0.012  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -54878,8 +54878,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.160E+02 -.286E+03 -.286E+04   0.170E+02 0.285E+03 0.285E+04   -.986E+00 0.956E+00 0.611E+01   -.391E-03 0.166E-03 0.559E-04
  -----------------------------------------------------------------------------------------------
    0.415E+00 0.671E+01 0.343E+02   0.568E-13 -.227E-12 0.819E-11   -.419E+00 -.671E+01 -.343E+02   0.191E-02 0.333E-03 0.641E-02
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.18610        -0.032005      0.002112     -0.042410
@@ -55008,7 +55008,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16198273 eV
 
   energy  without entropy=     -876.16198273  energy(sigma->0) =     -876.16198273
- 
+
  d Force = 0.3542993E-03[-0.320E-03, 0.103E-02]  d Energy = 0.3428959E-03 0.114E-04
  d Force =-0.3742154E+00[-0.196E+00,-0.552E+00]  d Ewald  =-0.3745045E+00 0.289E-03
 
@@ -55551,16 +55551,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8700      97 -84.8707      98 -84.8713      99 -84.8957     100 -84.8953
      101 -84.8961     102 -84.7555     103 -84.7578     104 -84.7694     105 -84.8625
      106 -84.8622     107 -84.7711     108 -84.9572     109 -84.9689     110 -84.9729
- 
- 
- 
+
+
+
  E-fermi :   0.8379     XC(G=0):  -6.1255     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4196      1.00000
       2     -34.3785      1.00000
       3     -34.3770      1.00000
@@ -56171,7 +56171,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3454      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4064      1.00000
       2     -34.4050      1.00000
       3     -34.3637      1.00000
@@ -56782,7 +56782,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3460      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4197      1.00000
       2     -34.3784      1.00000
       3     -34.3770      1.00000
@@ -57393,7 +57393,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3483      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4065      1.00000
       2     -34.4051      1.00000
       3     -34.3637      1.00000
@@ -58006,7 +58006,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4196      1.00000
       2     -34.3785      1.00000
       3     -34.3770      1.00000
@@ -58617,7 +58617,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3457      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4064      1.00000
       2     -34.4050      1.00000
       3     -34.3637      1.00000
@@ -59228,7 +59228,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3467      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4197      1.00000
       2     -34.3784      1.00000
       3     -34.3770      1.00000
@@ -59839,7 +59839,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3478      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4065      1.00000
       2     -34.4051      1.00000
       3     -34.3637      1.00000
@@ -60456,11 +60456,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.994   0.013   0.009   0.013   0.000  -0.008  -0.011  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -60657,8 +60657,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.161E+02 -.287E+03 -.286E+04   0.171E+02 0.286E+03 0.285E+04   -.985E+00 0.955E+00 0.611E+01   -.569E-03 0.479E-03 0.119E-02
  -----------------------------------------------------------------------------------------------
    0.103E+01 0.749E+01 0.341E+02   0.853E-13 -.227E-12 0.227E-11   -.103E+01 -.749E+01 -.341E+02   -.421E-02 -.583E-02 0.138E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.18610         0.004589      0.167438      0.264486
@@ -60787,7 +60787,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16038938 eV
 
   energy  without entropy=     -876.16038938  energy(sigma->0) =     -876.16038938
- 
+
  d Force =-0.1622906E-02[-0.318E-02,-0.645E-04]  d Energy =-0.1593350E-02-0.296E-04
  d Force =-0.8429824E+00[-0.757E+00,-0.929E+00]  d Ewald  =-0.8426917E+00-0.291E-03
 
@@ -61279,16 +61279,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8659      97 -84.8661      98 -84.8667      99 -84.8917     100 -84.8914
      101 -84.8919     102 -84.7498     103 -84.7522     104 -84.7648     105 -84.8583
      106 -84.8580     107 -84.7483     108 -84.9545     109 -84.9649     110 -84.9688
- 
- 
- 
+
+
+
  E-fermi :   0.8419     XC(G=0):  -6.1271     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4167      1.00000
       2     -34.3752      1.00000
       3     -34.3744      1.00000
@@ -61899,7 +61899,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3490      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4031      1.00000
       2     -34.4024      1.00000
       3     -34.3607      1.00000
@@ -62510,7 +62510,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3505      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4167      1.00000
       2     -34.3752      1.00000
       3     -34.3744      1.00000
@@ -63121,7 +63121,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3529      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4032      1.00000
       2     -34.4025      1.00000
       3     -34.3607      1.00000
@@ -63734,7 +63734,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4167      1.00000
       2     -34.3752      1.00000
       3     -34.3744      1.00000
@@ -64345,7 +64345,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3502      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4031      1.00000
       2     -34.4024      1.00000
       3     -34.3607      1.00000
@@ -64956,7 +64956,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3511      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4167      1.00000
       2     -34.3752      1.00000
       3     -34.3744      1.00000
@@ -65567,7 +65567,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3528      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4032      1.00000
       2     -34.4025      1.00000
       3     -34.3607      1.00000
@@ -66184,11 +66184,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.996   0.013   0.009   0.014   0.000  -0.007  -0.012  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -66385,8 +66385,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.157E+02 -.286E+03 -.286E+04   0.167E+02 0.286E+03 0.285E+04   -.986E+00 0.958E+00 0.611E+01   0.117E-02 0.157E-02 0.218E-02
  -----------------------------------------------------------------------------------------------
    0.104E+01 0.590E+01 0.344E+02   -.533E-13 -.341E-12 -.123E-10   -.104E+01 -.589E+01 -.344E+02   -.540E-03 -.741E-02 -.290E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.18610        -0.010637     -0.138003     -0.259718
@@ -66515,7 +66515,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.16107656 eV
 
   energy  without entropy=     -876.16107656  energy(sigma->0) =     -876.16107656
- 
+
  d Force = 0.8241654E-03[-0.416E-02, 0.581E-02]  d Energy = 0.6871856E-03 0.137E-03
  d Force = 0.2056942E+01[ 0.223E+01, 0.189E+01]  d Ewald  = 0.2056047E+01 0.895E-03
 
@@ -67109,16 +67109,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8757      97 -84.8768      98 -84.8774      99 -84.9020     100 -84.9016
      101 -84.9031     102 -84.7606     103 -84.7631     104 -84.7748     105 -84.8682
      106 -84.8681     107 -84.7736     108 -84.9639     109 -84.9827     110 -84.9863
- 
- 
- 
+
+
+
  E-fermi :   0.8323     XC(G=0):  -6.1244     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4231      1.00000
       2     -34.3819      1.00000
       3     -34.3806      1.00000
@@ -67729,7 +67729,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3409      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4098      1.00000
       2     -34.4086      1.00000
       3     -34.3672      1.00000
@@ -68340,7 +68340,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3401      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4232      1.00000
       2     -34.3819      1.00000
       3     -34.3806      1.00000
@@ -68951,7 +68951,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3418      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4099      1.00000
       2     -34.4087      1.00000
       3     -34.3672      1.00000
@@ -69564,7 +69564,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4231      1.00000
       2     -34.3819      1.00000
       3     -34.3806      1.00000
@@ -70175,7 +70175,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3407      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4098      1.00000
       2     -34.4086      1.00000
       3     -34.3672      1.00000
@@ -70786,7 +70786,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3403      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4232      1.00000
       2     -34.3819      1.00000
       3     -34.3806      1.00000
@@ -71397,7 +71397,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3420      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4099      1.00000
       2     -34.4087      1.00000
       3     -34.3672      1.00000
@@ -72014,11 +72014,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.992   0.013   0.009   0.012   0.000  -0.007  -0.011  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -72215,8 +72215,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.157E+02 -.286E+03 -.286E+04   0.167E+02 0.285E+03 0.285E+04   -.101E+01 0.946E+00 0.612E+01   0.245E-02 0.252E-02 0.169E-04
  -----------------------------------------------------------------------------------------------
    0.969E+00 0.631E+01 0.327E+02   0.924E-13 -.568E-12 0.114E-10   -.970E+00 -.633E+01 -.327E+02   0.979E-03 0.115E-01 -.248E-01
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.18610         0.041071      0.308765      1.438432
@@ -72345,7 +72345,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.14579364 eV
 
   energy  without entropy=     -876.14579364  energy(sigma->0) =     -876.14579364
- 
+
  d Force =-0.1484723E-01[-0.353E-01, 0.563E-02]  d Energy =-0.1528292E-01 0.436E-03
  d Force = 0.2705543E+02[ 0.269E+02, 0.272E+02]  d Ewald  = 0.2705537E+02 0.556E-04
 
@@ -72939,16 +72939,16 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
       96 -84.8603      97 -84.8597      98 -84.8603      99 -84.8855     100 -84.8852
      101 -84.8844     102 -84.7447     103 -84.7471     104 -84.7600     105 -84.8521
      106 -84.8517     107 -84.7447     108 -84.9470     109 -84.9506     110 -84.9550
- 
- 
- 
+
+
+
  E-fermi :   0.8475     XC(G=0):  -6.1281     alpha+bet : -7.7463
 
 
  spin component 1
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4132      1.00000
       2     -34.3719      1.00000
       3     -34.3708      1.00000
@@ -73559,7 +73559,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3534      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3998      1.00000
       2     -34.3987      1.00000
       3     -34.3573      1.00000
@@ -74170,7 +74170,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3566      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4132      1.00000
       2     -34.3718      1.00000
       3     -34.3707      1.00000
@@ -74781,7 +74781,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3592      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3999      1.00000
       2     -34.3988      1.00000
       3     -34.3573      1.00000
@@ -75394,7 +75394,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  spin component 2
 
  k-point     1 :       0.0000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4132      1.00000
       2     -34.3719      1.00000
       3     -34.3708      1.00000
@@ -76005,7 +76005,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3549      0.00000
 
  k-point     2 :       0.5000    0.0000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3998      1.00000
       2     -34.3987      1.00000
       3     -34.3573      1.00000
@@ -76616,7 +76616,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3566      0.00000
 
  k-point     3 :       0.0000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.4132      1.00000
       2     -34.3718      1.00000
       3     -34.3707      1.00000
@@ -77227,7 +77227,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
     608       2.3589      0.00000
 
  k-point     4 :       0.5000    0.5000    0.0000
-  band No.  band energies     occupation 
+  band No.  band energies     occupation
       1     -34.3999      1.00000
       2     -34.3988      1.00000
       3     -34.3573      1.00000
@@ -77844,11 +77844,11 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
  soft charge-density along one line, spin component           1
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  soft charge-density along one line, spin component           2
          0         1         2         3         4         5         6         7         8         9
  total charge-density along one line
- 
+
  pseudopotential strength for first ion, spin component:           1
   9.998   0.013   0.009   0.015   0.000  -0.008  -0.013  -0.000
   0.013  -0.002  -0.000  -0.000  -0.000  -0.000  -0.000  -0.000
@@ -78045,8 +78045,8 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    -.162E+02 -.287E+03 -.286E+04   0.172E+02 0.286E+03 0.285E+04   -.958E+00 0.968E+00 0.610E+01   -.691E-03 -.616E-03 0.948E-03
  -----------------------------------------------------------------------------------------------
    0.110E+01 0.709E+01 0.359E+02   0.639E-13 -.398E-12 -.409E-11   -.110E+01 -.710E+01 -.359E+02   -.307E-03 -.985E-03 0.694E-02
- 
- 
+
+
  POSITION                                       TOTAL-FORCE (eV/Angst)
  -----------------------------------------------------------------------------------
       5.81660      3.76266     12.18610        -0.057477     -0.334451     -1.682912
@@ -78175,7 +78175,7 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   free  energy   TOTEN  =      -876.14445625 eV
 
   energy  without entropy=     -876.14445625  energy(sigma->0) =     -876.14445625
- 
+
  d Force =-0.4424989E-02[-0.719E-01, 0.631E-01]  d Energy =-0.1337384E-02-0.309E-02
  d Force =-0.5655499E+02[-0.572E+02,-0.560E+02]  d Ewald  =-0.5654968E+02-0.531E-02
 
@@ -78193,700 +78193,700 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
   Degree of freedom:   6/  6
   Displacement:        2/  2
   Total:              12/ 12
- 
+
  SECOND DERIVATIVES (NOT SYMMETRIZED)
  ------------------------------------
-               1X          1Y          1Z         74X         74Y         74Z 
+               1X          1Y          1Z         74X         74Y         74Z
   1X    -2.923194   -0.652846   -2.340730    1.417816    0.371394    2.444173
   1Y    -0.658686   -9.017759  -22.342387    0.490381    7.640320   15.991869
   1Z    -2.339274  -22.444811  -78.919352    2.468697   13.154905   77.995418
  74X     1.436526    0.481683    2.443697   -0.843356   -0.288254   -2.695149
  74Y     0.380648    7.636035   13.105096   -0.261598   -6.233148   -9.547779
  74Z     2.463706   16.080386   78.033606   -2.712568   -9.630039  -84.366613
- 
- 
+
+
  Eigenvectors and eigenvalues of the dynamical matrix
  ----------------------------------------------------
- 
- 
+
+
    1 f  =   54.458383 THz   342.172110 2PiTHz 1816.536060 cm-1   225.221848 meV
              X         Y         Z           dx          dy          dz
-      5.816598  3.762660 12.186098     0.022886    0.190619    0.733587  
-      0.000000  7.198924  0.000000            0           0           0  
-      3.852888  7.198924  0.000000            0           0           0  
-      7.705892  7.198924  0.000000            0           0           0  
-      0.000000  4.630216  0.908124            0           0           0  
-      3.852888  4.630216  0.908124            0           0           0  
-      7.705892  4.630216  0.908124            0           0           0  
-      1.926502 10.409606  0.908124            0           0           0  
-      5.779390 10.409606  0.908124            0           0           0  
-      9.632278 10.409606  0.908124            0           0           0  
-      0.000000  2.061624  1.816247            0           0           0  
-      3.852888  2.061624  1.816247            0           0           0  
-      7.705892  2.061624  1.816247            0           0           0  
-      1.926502  7.841014  1.816247            0           0           0  
-      5.779390  7.841014  1.816247            0           0           0  
-      9.632278  7.841014  1.816247            0           0           0  
-      1.926502  5.272422  2.724371            0           0           0  
-      5.779390  5.272422  2.724371            0           0           0  
-      9.632278  5.272422  2.724371            0           0           0  
-      0.000000 11.051812  2.724371            0           0           0  
-      3.852888 11.051812  2.724371            0           0           0  
-      7.705892 11.051812  2.724371            0           0           0  
-      3.852969  8.495472  3.627525            0           0           0  
-      7.705869  8.495495  3.627617            0           0           0  
-      0.000058  8.496085  3.627800            0           0           0  
-      1.926502  2.703830  3.632494            0           0           0  
-      5.779390  2.703830  3.632494            0           0           0  
-      9.632278  2.703830  3.632494            0           0           0  
-      9.630082  0.146427  4.548655            0           0           0  
-      1.928952  0.146392  4.548495            0           0           0  
-      5.779378  0.144462  4.550876            0           0           0  
-      0.000116  5.939190  4.590008            0           0           0  
-      3.858864  5.939803  4.601801            0           0           0  
-      7.699800  5.939803  4.601846            0           0           0  
-      3.849467  3.353306  5.496186            0           0           0  
-      7.709290  3.353329  5.496208            0           0           0  
-     11.558664  3.360762  5.508390            0           0           0  
-      5.779367  9.133401  5.516793            0           0           0  
-      1.926641  9.137505  5.518213            0           0           0  
-      9.632452  9.137632  5.518282            0           0           0  
-      0.000601  0.757562  6.410812            0           0           0  
-      3.852067  0.756603  6.421368            0           0           0  
-      7.706620  0.756765  6.421231            0           0           0  
-      9.636289  6.581928  6.447334            0           0           0  
-      1.922607  6.582055  6.447677            0           0           0  
-      5.779344  6.586436  6.473002            0           0           0  
-      5.779298  3.980312  7.338055            0           0           0  
-      1.947793  4.002343  7.365899            0           0           0  
-      9.610455  4.002597  7.366426            0           0           0  
-      0.000462  9.753772  7.374234            0           0           0  
-      3.853651  9.744907  7.378218            0           0           0  
-      7.705175  9.744872  7.377989            0           0           0  
-      9.646241  1.454233  8.192278            0           0           0  
-      1.914065  1.454441  8.193422            0           0           0  
-      5.778951  1.431335  8.215542            0           0           0  
-      0.000012  7.188151  8.328588            0           0           0  
-      3.824708  7.191619  8.332183            0           0           0  
-      7.734777  7.191688  8.331702            0           0           0  
-      0.000243  4.604105  9.132824            0           0           0  
-      9.636266 10.511346  9.179352            0           0           0  
-      1.923265 10.511242  9.179971            0           0           0  
-      5.779274 10.488738  9.191511            0           0           0  
-      3.902672  4.620241  9.194373            0           0           0  
-      7.654802  4.620611  9.195610            0           0           0  
-      7.743689  2.001322 10.068998            0           0           0  
-      3.817252  2.002709 10.072661            0           0           0  
-      0.000069  2.032034 10.096887            0           0           0  
-      5.780268  7.585311 10.174258            0           0           0  
-      9.645051  7.667968 10.216940            0           0           0  
-      1.914203  7.666407 10.216986            0           0           0  
-      1.915949  5.108345 11.024519            0           0           0  
-      9.642958  5.109836 11.023031            0           0           0  
-      5.777910  5.147518 11.278157            0           0           0  
-      5.854880  3.930135 13.361278    -0.020653   -0.101029   -0.643706  
-      1.926502  5.914512  0.454062            0           0           0  
-      5.779390  5.914512  0.454062            0           0           0  
-      9.632278  5.914512  0.454062            0           0           0  
-      0.000000  9.125310  1.362185            0           0           0  
-      3.852888  9.125310  1.362185            0           0           0  
-      7.705892  9.125310  1.362185            0           0           0  
-      1.926502  0.777328  2.270309            0           0           0  
-      5.779390  0.777328  2.270309            0           0           0  
-      9.632278  0.777328  2.270309            0           0           0  
-      0.000000  3.988126  3.178433            0           0           0  
-      3.852888  3.988126  3.178433            0           0           0  
-      7.705892  3.988126  3.178433            0           0           0  
-      5.779367  7.214956  4.148655            0           0           0  
-      9.630591  7.214054  4.148014            0           0           0  
-      1.928247  7.214100  4.147991            0           0           0  
-      0.000220 10.408924  5.031614            0           0           0  
-      7.703684 10.406162  5.035094            0           0           0  
-      3.855119 10.406162  5.035163            0           0           0  
-      9.630452  2.072975  5.922793            0           0           0  
-      1.928548  2.072998  5.922907            0           0           0  
-      5.779286  2.074743  5.929410            0           0           0  
-     11.558768  5.291818  6.856264            0           0           0  
-      3.862124  5.280848  6.870965            0           0           0  
-      7.696333  5.280779  6.871010            0           0           0  
-      1.920630  8.544019  7.940700            0           0           0  
-      9.638739  8.544389  7.940265            0           0           0  
-      5.779344  8.530865  7.960186            0           0           0  
-      7.710931  0.145768  8.686960            0           0           0  
-      3.848369  0.145710  8.687532            0           0           0  
-      0.000312  0.163684  8.688677            0           0           0  
-      9.630232  3.277423  9.611913            0           0           0  
-      1.928340  3.277677  9.612234            0           0           0  
-      5.778962  3.218219  9.662952            0           0           0  
-      0.000058  6.395681 10.452191            0           0           0  
-      3.798527  6.437200 10.461236            0           0           0  
-      7.761178  6.439154 10.460594            0           0           0  
- 
+      5.816598  3.762660 12.186098     0.022886    0.190619    0.733587
+      0.000000  7.198924  0.000000            0           0           0
+      3.852888  7.198924  0.000000            0           0           0
+      7.705892  7.198924  0.000000            0           0           0
+      0.000000  4.630216  0.908124            0           0           0
+      3.852888  4.630216  0.908124            0           0           0
+      7.705892  4.630216  0.908124            0           0           0
+      1.926502 10.409606  0.908124            0           0           0
+      5.779390 10.409606  0.908124            0           0           0
+      9.632278 10.409606  0.908124            0           0           0
+      0.000000  2.061624  1.816247            0           0           0
+      3.852888  2.061624  1.816247            0           0           0
+      7.705892  2.061624  1.816247            0           0           0
+      1.926502  7.841014  1.816247            0           0           0
+      5.779390  7.841014  1.816247            0           0           0
+      9.632278  7.841014  1.816247            0           0           0
+      1.926502  5.272422  2.724371            0           0           0
+      5.779390  5.272422  2.724371            0           0           0
+      9.632278  5.272422  2.724371            0           0           0
+      0.000000 11.051812  2.724371            0           0           0
+      3.852888 11.051812  2.724371            0           0           0
+      7.705892 11.051812  2.724371            0           0           0
+      3.852969  8.495472  3.627525            0           0           0
+      7.705869  8.495495  3.627617            0           0           0
+      0.000058  8.496085  3.627800            0           0           0
+      1.926502  2.703830  3.632494            0           0           0
+      5.779390  2.703830  3.632494            0           0           0
+      9.632278  2.703830  3.632494            0           0           0
+      9.630082  0.146427  4.548655            0           0           0
+      1.928952  0.146392  4.548495            0           0           0
+      5.779378  0.144462  4.550876            0           0           0
+      0.000116  5.939190  4.590008            0           0           0
+      3.858864  5.939803  4.601801            0           0           0
+      7.699800  5.939803  4.601846            0           0           0
+      3.849467  3.353306  5.496186            0           0           0
+      7.709290  3.353329  5.496208            0           0           0
+     11.558664  3.360762  5.508390            0           0           0
+      5.779367  9.133401  5.516793            0           0           0
+      1.926641  9.137505  5.518213            0           0           0
+      9.632452  9.137632  5.518282            0           0           0
+      0.000601  0.757562  6.410812            0           0           0
+      3.852067  0.756603  6.421368            0           0           0
+      7.706620  0.756765  6.421231            0           0           0
+      9.636289  6.581928  6.447334            0           0           0
+      1.922607  6.582055  6.447677            0           0           0
+      5.779344  6.586436  6.473002            0           0           0
+      5.779298  3.980312  7.338055            0           0           0
+      1.947793  4.002343  7.365899            0           0           0
+      9.610455  4.002597  7.366426            0           0           0
+      0.000462  9.753772  7.374234            0           0           0
+      3.853651  9.744907  7.378218            0           0           0
+      7.705175  9.744872  7.377989            0           0           0
+      9.646241  1.454233  8.192278            0           0           0
+      1.914065  1.454441  8.193422            0           0           0
+      5.778951  1.431335  8.215542            0           0           0
+      0.000012  7.188151  8.328588            0           0           0
+      3.824708  7.191619  8.332183            0           0           0
+      7.734777  7.191688  8.331702            0           0           0
+      0.000243  4.604105  9.132824            0           0           0
+      9.636266 10.511346  9.179352            0           0           0
+      1.923265 10.511242  9.179971            0           0           0
+      5.779274 10.488738  9.191511            0           0           0
+      3.902672  4.620241  9.194373            0           0           0
+      7.654802  4.620611  9.195610            0           0           0
+      7.743689  2.001322 10.068998            0           0           0
+      3.817252  2.002709 10.072661            0           0           0
+      0.000069  2.032034 10.096887            0           0           0
+      5.780268  7.585311 10.174258            0           0           0
+      9.645051  7.667968 10.216940            0           0           0
+      1.914203  7.666407 10.216986            0           0           0
+      1.915949  5.108345 11.024519            0           0           0
+      9.642958  5.109836 11.023031            0           0           0
+      5.777910  5.147518 11.278157            0           0           0
+      5.854880  3.930135 13.361278    -0.020653   -0.101029   -0.643706
+      1.926502  5.914512  0.454062            0           0           0
+      5.779390  5.914512  0.454062            0           0           0
+      9.632278  5.914512  0.454062            0           0           0
+      0.000000  9.125310  1.362185            0           0           0
+      3.852888  9.125310  1.362185            0           0           0
+      7.705892  9.125310  1.362185            0           0           0
+      1.926502  0.777328  2.270309            0           0           0
+      5.779390  0.777328  2.270309            0           0           0
+      9.632278  0.777328  2.270309            0           0           0
+      0.000000  3.988126  3.178433            0           0           0
+      3.852888  3.988126  3.178433            0           0           0
+      7.705892  3.988126  3.178433            0           0           0
+      5.779367  7.214956  4.148655            0           0           0
+      9.630591  7.214054  4.148014            0           0           0
+      1.928247  7.214100  4.147991            0           0           0
+      0.000220 10.408924  5.031614            0           0           0
+      7.703684 10.406162  5.035094            0           0           0
+      3.855119 10.406162  5.035163            0           0           0
+      9.630452  2.072975  5.922793            0           0           0
+      1.928548  2.072998  5.922907            0           0           0
+      5.779286  2.074743  5.929410            0           0           0
+     11.558768  5.291818  6.856264            0           0           0
+      3.862124  5.280848  6.870965            0           0           0
+      7.696333  5.280779  6.871010            0           0           0
+      1.920630  8.544019  7.940700            0           0           0
+      9.638739  8.544389  7.940265            0           0           0
+      5.779344  8.530865  7.960186            0           0           0
+      7.710931  0.145768  8.686960            0           0           0
+      3.848369  0.145710  8.687532            0           0           0
+      0.000312  0.163684  8.688677            0           0           0
+      9.630232  3.277423  9.611913            0           0           0
+      1.928340  3.277677  9.612234            0           0           0
+      5.778962  3.218219  9.662952            0           0           0
+      0.000058  6.395681 10.452191            0           0           0
+      3.798527  6.437200 10.461236            0           0           0
+      7.761178  6.439154 10.460594            0           0           0
+
    2 f  =   14.707541 THz    92.410204 2PiTHz  490.590735 cm-1    60.825521 meV
              X         Y         Z           dx          dy          dz
-      5.816598  3.762660 12.186098    -0.003965    0.647202    0.220789  
-      0.000000  7.198924  0.000000            0           0           0  
-      3.852888  7.198924  0.000000            0           0           0  
-      7.705892  7.198924  0.000000            0           0           0  
-      0.000000  4.630216  0.908124            0           0           0  
-      3.852888  4.630216  0.908124            0           0           0  
-      7.705892  4.630216  0.908124            0           0           0  
-      1.926502 10.409606  0.908124            0           0           0  
-      5.779390 10.409606  0.908124            0           0           0  
-      9.632278 10.409606  0.908124            0           0           0  
-      0.000000  2.061624  1.816247            0           0           0  
-      3.852888  2.061624  1.816247            0           0           0  
-      7.705892  2.061624  1.816247            0           0           0  
-      1.926502  7.841014  1.816247            0           0           0  
-      5.779390  7.841014  1.816247            0           0           0  
-      9.632278  7.841014  1.816247            0           0           0  
-      1.926502  5.272422  2.724371            0           0           0  
-      5.779390  5.272422  2.724371            0           0           0  
-      9.632278  5.272422  2.724371            0           0           0  
-      0.000000 11.051812  2.724371            0           0           0  
-      3.852888 11.051812  2.724371            0           0           0  
-      7.705892 11.051812  2.724371            0           0           0  
-      3.852969  8.495472  3.627525            0           0           0  
-      7.705869  8.495495  3.627617            0           0           0  
-      0.000058  8.496085  3.627800            0           0           0  
-      1.926502  2.703830  3.632494            0           0           0  
-      5.779390  2.703830  3.632494            0           0           0  
-      9.632278  2.703830  3.632494            0           0           0  
-      9.630082  0.146427  4.548655            0           0           0  
-      1.928952  0.146392  4.548495            0           0           0  
-      5.779378  0.144462  4.550876            0           0           0  
-      0.000116  5.939190  4.590008            0           0           0  
-      3.858864  5.939803  4.601801            0           0           0  
-      7.699800  5.939803  4.601846            0           0           0  
-      3.849467  3.353306  5.496186            0           0           0  
-      7.709290  3.353329  5.496208            0           0           0  
-     11.558664  3.360762  5.508390            0           0           0  
-      5.779367  9.133401  5.516793            0           0           0  
-      1.926641  9.137505  5.518213            0           0           0  
-      9.632452  9.137632  5.518282            0           0           0  
-      0.000601  0.757562  6.410812            0           0           0  
-      3.852067  0.756603  6.421368            0           0           0  
-      7.706620  0.756765  6.421231            0           0           0  
-      9.636289  6.581928  6.447334            0           0           0  
-      1.922607  6.582055  6.447677            0           0           0  
-      5.779344  6.586436  6.473002            0           0           0  
-      5.779298  3.980312  7.338055            0           0           0  
-      1.947793  4.002343  7.365899            0           0           0  
-      9.610455  4.002597  7.366426            0           0           0  
-      0.000462  9.753772  7.374234            0           0           0  
-      3.853651  9.744907  7.378218            0           0           0  
-      7.705175  9.744872  7.377989            0           0           0  
-      9.646241  1.454233  8.192278            0           0           0  
-      1.914065  1.454441  8.193422            0           0           0  
-      5.778951  1.431335  8.215542            0           0           0  
-      0.000012  7.188151  8.328588            0           0           0  
-      3.824708  7.191619  8.332183            0           0           0  
-      7.734777  7.191688  8.331702            0           0           0  
-      0.000243  4.604105  9.132824            0           0           0  
-      9.636266 10.511346  9.179352            0           0           0  
-      1.923265 10.511242  9.179971            0           0           0  
-      5.779274 10.488738  9.191511            0           0           0  
-      3.902672  4.620241  9.194373            0           0           0  
-      7.654802  4.620611  9.195610            0           0           0  
-      7.743689  2.001322 10.068998            0           0           0  
-      3.817252  2.002709 10.072661            0           0           0  
-      0.000069  2.032034 10.096887            0           0           0  
-      5.780268  7.585311 10.174258            0           0           0  
-      9.645051  7.667968 10.216940            0           0           0  
-      1.914203  7.666407 10.216986            0           0           0  
-      1.915949  5.108345 11.024519            0           0           0  
-      9.642958  5.109836 11.023031            0           0           0  
-      5.777910  5.147518 11.278157            0           0           0  
-      5.854880  3.930135 13.361278     0.021768   -0.508994    0.522319  
-      1.926502  5.914512  0.454062            0           0           0  
-      5.779390  5.914512  0.454062            0           0           0  
-      9.632278  5.914512  0.454062            0           0           0  
-      0.000000  9.125310  1.362185            0           0           0  
-      3.852888  9.125310  1.362185            0           0           0  
-      7.705892  9.125310  1.362185            0           0           0  
-      1.926502  0.777328  2.270309            0           0           0  
-      5.779390  0.777328  2.270309            0           0           0  
-      9.632278  0.777328  2.270309            0           0           0  
-      0.000000  3.988126  3.178433            0           0           0  
-      3.852888  3.988126  3.178433            0           0           0  
-      7.705892  3.988126  3.178433            0           0           0  
-      5.779367  7.214956  4.148655            0           0           0  
-      9.630591  7.214054  4.148014            0           0           0  
-      1.928247  7.214100  4.147991            0           0           0  
-      0.000220 10.408924  5.031614            0           0           0  
-      7.703684 10.406162  5.035094            0           0           0  
-      3.855119 10.406162  5.035163            0           0           0  
-      9.630452  2.072975  5.922793            0           0           0  
-      1.928548  2.072998  5.922907            0           0           0  
-      5.779286  2.074743  5.929410            0           0           0  
-     11.558768  5.291818  6.856264            0           0           0  
-      3.862124  5.280848  6.870965            0           0           0  
-      7.696333  5.280779  6.871010            0           0           0  
-      1.920630  8.544019  7.940700            0           0           0  
-      9.638739  8.544389  7.940265            0           0           0  
-      5.779344  8.530865  7.960186            0           0           0  
-      7.710931  0.145768  8.686960            0           0           0  
-      3.848369  0.145710  8.687532            0           0           0  
-      0.000312  0.163684  8.688677            0           0           0  
-      9.630232  3.277423  9.611913            0           0           0  
-      1.928340  3.277677  9.612234            0           0           0  
-      5.778962  3.218219  9.662952            0           0           0  
-      0.000058  6.395681 10.452191            0           0           0  
-      3.798527  6.437200 10.461236            0           0           0  
-      7.761178  6.439154 10.460594            0           0           0  
- 
+      5.816598  3.762660 12.186098    -0.003965    0.647202    0.220789
+      0.000000  7.198924  0.000000            0           0           0
+      3.852888  7.198924  0.000000            0           0           0
+      7.705892  7.198924  0.000000            0           0           0
+      0.000000  4.630216  0.908124            0           0           0
+      3.852888  4.630216  0.908124            0           0           0
+      7.705892  4.630216  0.908124            0           0           0
+      1.926502 10.409606  0.908124            0           0           0
+      5.779390 10.409606  0.908124            0           0           0
+      9.632278 10.409606  0.908124            0           0           0
+      0.000000  2.061624  1.816247            0           0           0
+      3.852888  2.061624  1.816247            0           0           0
+      7.705892  2.061624  1.816247            0           0           0
+      1.926502  7.841014  1.816247            0           0           0
+      5.779390  7.841014  1.816247            0           0           0
+      9.632278  7.841014  1.816247            0           0           0
+      1.926502  5.272422  2.724371            0           0           0
+      5.779390  5.272422  2.724371            0           0           0
+      9.632278  5.272422  2.724371            0           0           0
+      0.000000 11.051812  2.724371            0           0           0
+      3.852888 11.051812  2.724371            0           0           0
+      7.705892 11.051812  2.724371            0           0           0
+      3.852969  8.495472  3.627525            0           0           0
+      7.705869  8.495495  3.627617            0           0           0
+      0.000058  8.496085  3.627800            0           0           0
+      1.926502  2.703830  3.632494            0           0           0
+      5.779390  2.703830  3.632494            0           0           0
+      9.632278  2.703830  3.632494            0           0           0
+      9.630082  0.146427  4.548655            0           0           0
+      1.928952  0.146392  4.548495            0           0           0
+      5.779378  0.144462  4.550876            0           0           0
+      0.000116  5.939190  4.590008            0           0           0
+      3.858864  5.939803  4.601801            0           0           0
+      7.699800  5.939803  4.601846            0           0           0
+      3.849467  3.353306  5.496186            0           0           0
+      7.709290  3.353329  5.496208            0           0           0
+     11.558664  3.360762  5.508390            0           0           0
+      5.779367  9.133401  5.516793            0           0           0
+      1.926641  9.137505  5.518213            0           0           0
+      9.632452  9.137632  5.518282            0           0           0
+      0.000601  0.757562  6.410812            0           0           0
+      3.852067  0.756603  6.421368            0           0           0
+      7.706620  0.756765  6.421231            0           0           0
+      9.636289  6.581928  6.447334            0           0           0
+      1.922607  6.582055  6.447677            0           0           0
+      5.779344  6.586436  6.473002            0           0           0
+      5.779298  3.980312  7.338055            0           0           0
+      1.947793  4.002343  7.365899            0           0           0
+      9.610455  4.002597  7.366426            0           0           0
+      0.000462  9.753772  7.374234            0           0           0
+      3.853651  9.744907  7.378218            0           0           0
+      7.705175  9.744872  7.377989            0           0           0
+      9.646241  1.454233  8.192278            0           0           0
+      1.914065  1.454441  8.193422            0           0           0
+      5.778951  1.431335  8.215542            0           0           0
+      0.000012  7.188151  8.328588            0           0           0
+      3.824708  7.191619  8.332183            0           0           0
+      7.734777  7.191688  8.331702            0           0           0
+      0.000243  4.604105  9.132824            0           0           0
+      9.636266 10.511346  9.179352            0           0           0
+      1.923265 10.511242  9.179971            0           0           0
+      5.779274 10.488738  9.191511            0           0           0
+      3.902672  4.620241  9.194373            0           0           0
+      7.654802  4.620611  9.195610            0           0           0
+      7.743689  2.001322 10.068998            0           0           0
+      3.817252  2.002709 10.072661            0           0           0
+      0.000069  2.032034 10.096887            0           0           0
+      5.780268  7.585311 10.174258            0           0           0
+      9.645051  7.667968 10.216940            0           0           0
+      1.914203  7.666407 10.216986            0           0           0
+      1.915949  5.108345 11.024519            0           0           0
+      9.642958  5.109836 11.023031            0           0           0
+      5.777910  5.147518 11.278157            0           0           0
+      5.854880  3.930135 13.361278     0.021768   -0.508994    0.522319
+      1.926502  5.914512  0.454062            0           0           0
+      5.779390  5.914512  0.454062            0           0           0
+      9.632278  5.914512  0.454062            0           0           0
+      0.000000  9.125310  1.362185            0           0           0
+      3.852888  9.125310  1.362185            0           0           0
+      7.705892  9.125310  1.362185            0           0           0
+      1.926502  0.777328  2.270309            0           0           0
+      5.779390  0.777328  2.270309            0           0           0
+      9.632278  0.777328  2.270309            0           0           0
+      0.000000  3.988126  3.178433            0           0           0
+      3.852888  3.988126  3.178433            0           0           0
+      7.705892  3.988126  3.178433            0           0           0
+      5.779367  7.214956  4.148655            0           0           0
+      9.630591  7.214054  4.148014            0           0           0
+      1.928247  7.214100  4.147991            0           0           0
+      0.000220 10.408924  5.031614            0           0           0
+      7.703684 10.406162  5.035094            0           0           0
+      3.855119 10.406162  5.035163            0           0           0
+      9.630452  2.072975  5.922793            0           0           0
+      1.928548  2.072998  5.922907            0           0           0
+      5.779286  2.074743  5.929410            0           0           0
+     11.558768  5.291818  6.856264            0           0           0
+      3.862124  5.280848  6.870965            0           0           0
+      7.696333  5.280779  6.871010            0           0           0
+      1.920630  8.544019  7.940700            0           0           0
+      9.638739  8.544389  7.940265            0           0           0
+      5.779344  8.530865  7.960186            0           0           0
+      7.710931  0.145768  8.686960            0           0           0
+      3.848369  0.145710  8.687532            0           0           0
+      0.000312  0.163684  8.688677            0           0           0
+      9.630232  3.277423  9.611913            0           0           0
+      1.928340  3.277677  9.612234            0           0           0
+      5.778962  3.218219  9.662952            0           0           0
+      0.000058  6.395681 10.452191            0           0           0
+      3.798527  6.437200 10.461236            0           0           0
+      7.761178  6.439154 10.460594            0           0           0
+
    3 f  =    8.246630 THz    51.815103 2PiTHz  275.077950 cm-1    34.105331 meV
              X         Y         Z           dx          dy          dz
-      5.816598  3.762660 12.186098    -0.921089   -0.008925    0.030599  
-      0.000000  7.198924  0.000000            0           0           0  
-      3.852888  7.198924  0.000000            0           0           0  
-      7.705892  7.198924  0.000000            0           0           0  
-      0.000000  4.630216  0.908124            0           0           0  
-      3.852888  4.630216  0.908124            0           0           0  
-      7.705892  4.630216  0.908124            0           0           0  
-      1.926502 10.409606  0.908124            0           0           0  
-      5.779390 10.409606  0.908124            0           0           0  
-      9.632278 10.409606  0.908124            0           0           0  
-      0.000000  2.061624  1.816247            0           0           0  
-      3.852888  2.061624  1.816247            0           0           0  
-      7.705892  2.061624  1.816247            0           0           0  
-      1.926502  7.841014  1.816247            0           0           0  
-      5.779390  7.841014  1.816247            0           0           0  
-      9.632278  7.841014  1.816247            0           0           0  
-      1.926502  5.272422  2.724371            0           0           0  
-      5.779390  5.272422  2.724371            0           0           0  
-      9.632278  5.272422  2.724371            0           0           0  
-      0.000000 11.051812  2.724371            0           0           0  
-      3.852888 11.051812  2.724371            0           0           0  
-      7.705892 11.051812  2.724371            0           0           0  
-      3.852969  8.495472  3.627525            0           0           0  
-      7.705869  8.495495  3.627617            0           0           0  
-      0.000058  8.496085  3.627800            0           0           0  
-      1.926502  2.703830  3.632494            0           0           0  
-      5.779390  2.703830  3.632494            0           0           0  
-      9.632278  2.703830  3.632494            0           0           0  
-      9.630082  0.146427  4.548655            0           0           0  
-      1.928952  0.146392  4.548495            0           0           0  
-      5.779378  0.144462  4.550876            0           0           0  
-      0.000116  5.939190  4.590008            0           0           0  
-      3.858864  5.939803  4.601801            0           0           0  
-      7.699800  5.939803  4.601846            0           0           0  
-      3.849467  3.353306  5.496186            0           0           0  
-      7.709290  3.353329  5.496208            0           0           0  
-     11.558664  3.360762  5.508390            0           0           0  
-      5.779367  9.133401  5.516793            0           0           0  
-      1.926641  9.137505  5.518213            0           0           0  
-      9.632452  9.137632  5.518282            0           0           0  
-      0.000601  0.757562  6.410812            0           0           0  
-      3.852067  0.756603  6.421368            0           0           0  
-      7.706620  0.756765  6.421231            0           0           0  
-      9.636289  6.581928  6.447334            0           0           0  
-      1.922607  6.582055  6.447677            0           0           0  
-      5.779344  6.586436  6.473002            0           0           0  
-      5.779298  3.980312  7.338055            0           0           0  
-      1.947793  4.002343  7.365899            0           0           0  
-      9.610455  4.002597  7.366426            0           0           0  
-      0.000462  9.753772  7.374234            0           0           0  
-      3.853651  9.744907  7.378218            0           0           0  
-      7.705175  9.744872  7.377989            0           0           0  
-      9.646241  1.454233  8.192278            0           0           0  
-      1.914065  1.454441  8.193422            0           0           0  
-      5.778951  1.431335  8.215542            0           0           0  
-      0.000012  7.188151  8.328588            0           0           0  
-      3.824708  7.191619  8.332183            0           0           0  
-      7.734777  7.191688  8.331702            0           0           0  
-      0.000243  4.604105  9.132824            0           0           0  
-      9.636266 10.511346  9.179352            0           0           0  
-      1.923265 10.511242  9.179971            0           0           0  
-      5.779274 10.488738  9.191511            0           0           0  
-      3.902672  4.620241  9.194373            0           0           0  
-      7.654802  4.620611  9.195610            0           0           0  
-      7.743689  2.001322 10.068998            0           0           0  
-      3.817252  2.002709 10.072661            0           0           0  
-      0.000069  2.032034 10.096887            0           0           0  
-      5.780268  7.585311 10.174258            0           0           0  
-      9.645051  7.667968 10.216940            0           0           0  
-      1.914203  7.666407 10.216986            0           0           0  
-      1.915949  5.108345 11.024519            0           0           0  
-      9.642958  5.109836 11.023031            0           0           0  
-      5.777910  5.147518 11.278157            0           0           0  
-      5.854880  3.930135 13.361278     0.387623    0.010665   -0.014629  
-      1.926502  5.914512  0.454062            0           0           0  
-      5.779390  5.914512  0.454062            0           0           0  
-      9.632278  5.914512  0.454062            0           0           0  
-      0.000000  9.125310  1.362185            0           0           0  
-      3.852888  9.125310  1.362185            0           0           0  
-      7.705892  9.125310  1.362185            0           0           0  
-      1.926502  0.777328  2.270309            0           0           0  
-      5.779390  0.777328  2.270309            0           0           0  
-      9.632278  0.777328  2.270309            0           0           0  
-      0.000000  3.988126  3.178433            0           0           0  
-      3.852888  3.988126  3.178433            0           0           0  
-      7.705892  3.988126  3.178433            0           0           0  
-      5.779367  7.214956  4.148655            0           0           0  
-      9.630591  7.214054  4.148014            0           0           0  
-      1.928247  7.214100  4.147991            0           0           0  
-      0.000220 10.408924  5.031614            0           0           0  
-      7.703684 10.406162  5.035094            0           0           0  
-      3.855119 10.406162  5.035163            0           0           0  
-      9.630452  2.072975  5.922793            0           0           0  
-      1.928548  2.072998  5.922907            0           0           0  
-      5.779286  2.074743  5.929410            0           0           0  
-     11.558768  5.291818  6.856264            0           0           0  
-      3.862124  5.280848  6.870965            0           0           0  
-      7.696333  5.280779  6.871010            0           0           0  
-      1.920630  8.544019  7.940700            0           0           0  
-      9.638739  8.544389  7.940265            0           0           0  
-      5.779344  8.530865  7.960186            0           0           0  
-      7.710931  0.145768  8.686960            0           0           0  
-      3.848369  0.145710  8.687532            0           0           0  
-      0.000312  0.163684  8.688677            0           0           0  
-      9.630232  3.277423  9.611913            0           0           0  
-      1.928340  3.277677  9.612234            0           0           0  
-      5.778962  3.218219  9.662952            0           0           0  
-      0.000058  6.395681 10.452191            0           0           0  
-      3.798527  6.437200 10.461236            0           0           0  
-      7.761178  6.439154 10.460594            0           0           0  
- 
+      5.816598  3.762660 12.186098    -0.921089   -0.008925    0.030599
+      0.000000  7.198924  0.000000            0           0           0
+      3.852888  7.198924  0.000000            0           0           0
+      7.705892  7.198924  0.000000            0           0           0
+      0.000000  4.630216  0.908124            0           0           0
+      3.852888  4.630216  0.908124            0           0           0
+      7.705892  4.630216  0.908124            0           0           0
+      1.926502 10.409606  0.908124            0           0           0
+      5.779390 10.409606  0.908124            0           0           0
+      9.632278 10.409606  0.908124            0           0           0
+      0.000000  2.061624  1.816247            0           0           0
+      3.852888  2.061624  1.816247            0           0           0
+      7.705892  2.061624  1.816247            0           0           0
+      1.926502  7.841014  1.816247            0           0           0
+      5.779390  7.841014  1.816247            0           0           0
+      9.632278  7.841014  1.816247            0           0           0
+      1.926502  5.272422  2.724371            0           0           0
+      5.779390  5.272422  2.724371            0           0           0
+      9.632278  5.272422  2.724371            0           0           0
+      0.000000 11.051812  2.724371            0           0           0
+      3.852888 11.051812  2.724371            0           0           0
+      7.705892 11.051812  2.724371            0           0           0
+      3.852969  8.495472  3.627525            0           0           0
+      7.705869  8.495495  3.627617            0           0           0
+      0.000058  8.496085  3.627800            0           0           0
+      1.926502  2.703830  3.632494            0           0           0
+      5.779390  2.703830  3.632494            0           0           0
+      9.632278  2.703830  3.632494            0           0           0
+      9.630082  0.146427  4.548655            0           0           0
+      1.928952  0.146392  4.548495            0           0           0
+      5.779378  0.144462  4.550876            0           0           0
+      0.000116  5.939190  4.590008            0           0           0
+      3.858864  5.939803  4.601801            0           0           0
+      7.699800  5.939803  4.601846            0           0           0
+      3.849467  3.353306  5.496186            0           0           0
+      7.709290  3.353329  5.496208            0           0           0
+     11.558664  3.360762  5.508390            0           0           0
+      5.779367  9.133401  5.516793            0           0           0
+      1.926641  9.137505  5.518213            0           0           0
+      9.632452  9.137632  5.518282            0           0           0
+      0.000601  0.757562  6.410812            0           0           0
+      3.852067  0.756603  6.421368            0           0           0
+      7.706620  0.756765  6.421231            0           0           0
+      9.636289  6.581928  6.447334            0           0           0
+      1.922607  6.582055  6.447677            0           0           0
+      5.779344  6.586436  6.473002            0           0           0
+      5.779298  3.980312  7.338055            0           0           0
+      1.947793  4.002343  7.365899            0           0           0
+      9.610455  4.002597  7.366426            0           0           0
+      0.000462  9.753772  7.374234            0           0           0
+      3.853651  9.744907  7.378218            0           0           0
+      7.705175  9.744872  7.377989            0           0           0
+      9.646241  1.454233  8.192278            0           0           0
+      1.914065  1.454441  8.193422            0           0           0
+      5.778951  1.431335  8.215542            0           0           0
+      0.000012  7.188151  8.328588            0           0           0
+      3.824708  7.191619  8.332183            0           0           0
+      7.734777  7.191688  8.331702            0           0           0
+      0.000243  4.604105  9.132824            0           0           0
+      9.636266 10.511346  9.179352            0           0           0
+      1.923265 10.511242  9.179971            0           0           0
+      5.779274 10.488738  9.191511            0           0           0
+      3.902672  4.620241  9.194373            0           0           0
+      7.654802  4.620611  9.195610            0           0           0
+      7.743689  2.001322 10.068998            0           0           0
+      3.817252  2.002709 10.072661            0           0           0
+      0.000069  2.032034 10.096887            0           0           0
+      5.780268  7.585311 10.174258            0           0           0
+      9.645051  7.667968 10.216940            0           0           0
+      1.914203  7.666407 10.216986            0           0           0
+      1.915949  5.108345 11.024519            0           0           0
+      9.642958  5.109836 11.023031            0           0           0
+      5.777910  5.147518 11.278157            0           0           0
+      5.854880  3.930135 13.361278     0.387623    0.010665   -0.014629
+      1.926502  5.914512  0.454062            0           0           0
+      5.779390  5.914512  0.454062            0           0           0
+      9.632278  5.914512  0.454062            0           0           0
+      0.000000  9.125310  1.362185            0           0           0
+      3.852888  9.125310  1.362185            0           0           0
+      7.705892  9.125310  1.362185            0           0           0
+      1.926502  0.777328  2.270309            0           0           0
+      5.779390  0.777328  2.270309            0           0           0
+      9.632278  0.777328  2.270309            0           0           0
+      0.000000  3.988126  3.178433            0           0           0
+      3.852888  3.988126  3.178433            0           0           0
+      7.705892  3.988126  3.178433            0           0           0
+      5.779367  7.214956  4.148655            0           0           0
+      9.630591  7.214054  4.148014            0           0           0
+      1.928247  7.214100  4.147991            0           0           0
+      0.000220 10.408924  5.031614            0           0           0
+      7.703684 10.406162  5.035094            0           0           0
+      3.855119 10.406162  5.035163            0           0           0
+      9.630452  2.072975  5.922793            0           0           0
+      1.928548  2.072998  5.922907            0           0           0
+      5.779286  2.074743  5.929410            0           0           0
+     11.558768  5.291818  6.856264            0           0           0
+      3.862124  5.280848  6.870965            0           0           0
+      7.696333  5.280779  6.871010            0           0           0
+      1.920630  8.544019  7.940700            0           0           0
+      9.638739  8.544389  7.940265            0           0           0
+      5.779344  8.530865  7.960186            0           0           0
+      7.710931  0.145768  8.686960            0           0           0
+      3.848369  0.145710  8.687532            0           0           0
+      0.000312  0.163684  8.688677            0           0           0
+      9.630232  3.277423  9.611913            0           0           0
+      1.928340  3.277677  9.612234            0           0           0
+      5.778962  3.218219  9.662952            0           0           0
+      0.000058  6.395681 10.452191            0           0           0
+      3.798527  6.437200 10.461236            0           0           0
+      7.761178  6.439154 10.460594            0           0           0
+
    4 f  =    4.705293 THz    29.564230 2PiTHz  156.951687 cm-1    19.459536 meV
              X         Y         Z           dx          dy          dz
-      5.816598  3.762660 12.186098     0.015345    0.091359    0.464102  
-      0.000000  7.198924  0.000000            0           0           0  
-      3.852888  7.198924  0.000000            0           0           0  
-      7.705892  7.198924  0.000000            0           0           0  
-      0.000000  4.630216  0.908124            0           0           0  
-      3.852888  4.630216  0.908124            0           0           0  
-      7.705892  4.630216  0.908124            0           0           0  
-      1.926502 10.409606  0.908124            0           0           0  
-      5.779390 10.409606  0.908124            0           0           0  
-      9.632278 10.409606  0.908124            0           0           0  
-      0.000000  2.061624  1.816247            0           0           0  
-      3.852888  2.061624  1.816247            0           0           0  
-      7.705892  2.061624  1.816247            0           0           0  
-      1.926502  7.841014  1.816247            0           0           0  
-      5.779390  7.841014  1.816247            0           0           0  
-      9.632278  7.841014  1.816247            0           0           0  
-      1.926502  5.272422  2.724371            0           0           0  
-      5.779390  5.272422  2.724371            0           0           0  
-      9.632278  5.272422  2.724371            0           0           0  
-      0.000000 11.051812  2.724371            0           0           0  
-      3.852888 11.051812  2.724371            0           0           0  
-      7.705892 11.051812  2.724371            0           0           0  
-      3.852969  8.495472  3.627525            0           0           0  
-      7.705869  8.495495  3.627617            0           0           0  
-      0.000058  8.496085  3.627800            0           0           0  
-      1.926502  2.703830  3.632494            0           0           0  
-      5.779390  2.703830  3.632494            0           0           0  
-      9.632278  2.703830  3.632494            0           0           0  
-      9.630082  0.146427  4.548655            0           0           0  
-      1.928952  0.146392  4.548495            0           0           0  
-      5.779378  0.144462  4.550876            0           0           0  
-      0.000116  5.939190  4.590008            0           0           0  
-      3.858864  5.939803  4.601801            0           0           0  
-      7.699800  5.939803  4.601846            0           0           0  
-      3.849467  3.353306  5.496186            0           0           0  
-      7.709290  3.353329  5.496208            0           0           0  
-     11.558664  3.360762  5.508390            0           0           0  
-      5.779367  9.133401  5.516793            0           0           0  
-      1.926641  9.137505  5.518213            0           0           0  
-      9.632452  9.137632  5.518282            0           0           0  
-      0.000601  0.757562  6.410812            0           0           0  
-      3.852067  0.756603  6.421368            0           0           0  
-      7.706620  0.756765  6.421231            0           0           0  
-      9.636289  6.581928  6.447334            0           0           0  
-      1.922607  6.582055  6.447677            0           0           0  
-      5.779344  6.586436  6.473002            0           0           0  
-      5.779298  3.980312  7.338055            0           0           0  
-      1.947793  4.002343  7.365899            0           0           0  
-      9.610455  4.002597  7.366426            0           0           0  
-      0.000462  9.753772  7.374234            0           0           0  
-      3.853651  9.744907  7.378218            0           0           0  
-      7.705175  9.744872  7.377989            0           0           0  
-      9.646241  1.454233  8.192278            0           0           0  
-      1.914065  1.454441  8.193422            0           0           0  
-      5.778951  1.431335  8.215542            0           0           0  
-      0.000012  7.188151  8.328588            0           0           0  
-      3.824708  7.191619  8.332183            0           0           0  
-      7.734777  7.191688  8.331702            0           0           0  
-      0.000243  4.604105  9.132824            0           0           0  
-      9.636266 10.511346  9.179352            0           0           0  
-      1.923265 10.511242  9.179971            0           0           0  
-      5.779274 10.488738  9.191511            0           0           0  
-      3.902672  4.620241  9.194373            0           0           0  
-      7.654802  4.620611  9.195610            0           0           0  
-      7.743689  2.001322 10.068998            0           0           0  
-      3.817252  2.002709 10.072661            0           0           0  
-      0.000069  2.032034 10.096887            0           0           0  
-      5.780268  7.585311 10.174258            0           0           0  
-      9.645051  7.667968 10.216940            0           0           0  
-      1.914203  7.666407 10.216986            0           0           0  
-      1.915949  5.108345 11.024519            0           0           0  
-      9.642958  5.109836 11.023031            0           0           0  
-      5.777910  5.147518 11.278157            0           0           0  
-      5.854880  3.930135 13.361278    -0.002648    0.765173    0.436497  
-      1.926502  5.914512  0.454062            0           0           0  
-      5.779390  5.914512  0.454062            0           0           0  
-      9.632278  5.914512  0.454062            0           0           0  
-      0.000000  9.125310  1.362185            0           0           0  
-      3.852888  9.125310  1.362185            0           0           0  
-      7.705892  9.125310  1.362185            0           0           0  
-      1.926502  0.777328  2.270309            0           0           0  
-      5.779390  0.777328  2.270309            0           0           0  
-      9.632278  0.777328  2.270309            0           0           0  
-      0.000000  3.988126  3.178433            0           0           0  
-      3.852888  3.988126  3.178433            0           0           0  
-      7.705892  3.988126  3.178433            0           0           0  
-      5.779367  7.214956  4.148655            0           0           0  
-      9.630591  7.214054  4.148014            0           0           0  
-      1.928247  7.214100  4.147991            0           0           0  
-      0.000220 10.408924  5.031614            0           0           0  
-      7.703684 10.406162  5.035094            0           0           0  
-      3.855119 10.406162  5.035163            0           0           0  
-      9.630452  2.072975  5.922793            0           0           0  
-      1.928548  2.072998  5.922907            0           0           0  
-      5.779286  2.074743  5.929410            0           0           0  
-     11.558768  5.291818  6.856264            0           0           0  
-      3.862124  5.280848  6.870965            0           0           0  
-      7.696333  5.280779  6.871010            0           0           0  
-      1.920630  8.544019  7.940700            0           0           0  
-      9.638739  8.544389  7.940265            0           0           0  
-      5.779344  8.530865  7.960186            0           0           0  
-      7.710931  0.145768  8.686960            0           0           0  
-      3.848369  0.145710  8.687532            0           0           0  
-      0.000312  0.163684  8.688677            0           0           0  
-      9.630232  3.277423  9.611913            0           0           0  
-      1.928340  3.277677  9.612234            0           0           0  
-      5.778962  3.218219  9.662952            0           0           0  
-      0.000058  6.395681 10.452191            0           0           0  
-      3.798527  6.437200 10.461236            0           0           0  
-      7.761178  6.439154 10.460594            0           0           0  
- 
+      5.816598  3.762660 12.186098     0.015345    0.091359    0.464102
+      0.000000  7.198924  0.000000            0           0           0
+      3.852888  7.198924  0.000000            0           0           0
+      7.705892  7.198924  0.000000            0           0           0
+      0.000000  4.630216  0.908124            0           0           0
+      3.852888  4.630216  0.908124            0           0           0
+      7.705892  4.630216  0.908124            0           0           0
+      1.926502 10.409606  0.908124            0           0           0
+      5.779390 10.409606  0.908124            0           0           0
+      9.632278 10.409606  0.908124            0           0           0
+      0.000000  2.061624  1.816247            0           0           0
+      3.852888  2.061624  1.816247            0           0           0
+      7.705892  2.061624  1.816247            0           0           0
+      1.926502  7.841014  1.816247            0           0           0
+      5.779390  7.841014  1.816247            0           0           0
+      9.632278  7.841014  1.816247            0           0           0
+      1.926502  5.272422  2.724371            0           0           0
+      5.779390  5.272422  2.724371            0           0           0
+      9.632278  5.272422  2.724371            0           0           0
+      0.000000 11.051812  2.724371            0           0           0
+      3.852888 11.051812  2.724371            0           0           0
+      7.705892 11.051812  2.724371            0           0           0
+      3.852969  8.495472  3.627525            0           0           0
+      7.705869  8.495495  3.627617            0           0           0
+      0.000058  8.496085  3.627800            0           0           0
+      1.926502  2.703830  3.632494            0           0           0
+      5.779390  2.703830  3.632494            0           0           0
+      9.632278  2.703830  3.632494            0           0           0
+      9.630082  0.146427  4.548655            0           0           0
+      1.928952  0.146392  4.548495            0           0           0
+      5.779378  0.144462  4.550876            0           0           0
+      0.000116  5.939190  4.590008            0           0           0
+      3.858864  5.939803  4.601801            0           0           0
+      7.699800  5.939803  4.601846            0           0           0
+      3.849467  3.353306  5.496186            0           0           0
+      7.709290  3.353329  5.496208            0           0           0
+     11.558664  3.360762  5.508390            0           0           0
+      5.779367  9.133401  5.516793            0           0           0
+      1.926641  9.137505  5.518213            0           0           0
+      9.632452  9.137632  5.518282            0           0           0
+      0.000601  0.757562  6.410812            0           0           0
+      3.852067  0.756603  6.421368            0           0           0
+      7.706620  0.756765  6.421231            0           0           0
+      9.636289  6.581928  6.447334            0           0           0
+      1.922607  6.582055  6.447677            0           0           0
+      5.779344  6.586436  6.473002            0           0           0
+      5.779298  3.980312  7.338055            0           0           0
+      1.947793  4.002343  7.365899            0           0           0
+      9.610455  4.002597  7.366426            0           0           0
+      0.000462  9.753772  7.374234            0           0           0
+      3.853651  9.744907  7.378218            0           0           0
+      7.705175  9.744872  7.377989            0           0           0
+      9.646241  1.454233  8.192278            0           0           0
+      1.914065  1.454441  8.193422            0           0           0
+      5.778951  1.431335  8.215542            0           0           0
+      0.000012  7.188151  8.328588            0           0           0
+      3.824708  7.191619  8.332183            0           0           0
+      7.734777  7.191688  8.331702            0           0           0
+      0.000243  4.604105  9.132824            0           0           0
+      9.636266 10.511346  9.179352            0           0           0
+      1.923265 10.511242  9.179971            0           0           0
+      5.779274 10.488738  9.191511            0           0           0
+      3.902672  4.620241  9.194373            0           0           0
+      7.654802  4.620611  9.195610            0           0           0
+      7.743689  2.001322 10.068998            0           0           0
+      3.817252  2.002709 10.072661            0           0           0
+      0.000069  2.032034 10.096887            0           0           0
+      5.780268  7.585311 10.174258            0           0           0
+      9.645051  7.667968 10.216940            0           0           0
+      1.914203  7.666407 10.216986            0           0           0
+      1.915949  5.108345 11.024519            0           0           0
+      9.642958  5.109836 11.023031            0           0           0
+      5.777910  5.147518 11.278157            0           0           0
+      5.854880  3.930135 13.361278    -0.002648    0.765173    0.436497
+      1.926502  5.914512  0.454062            0           0           0
+      5.779390  5.914512  0.454062            0           0           0
+      9.632278  5.914512  0.454062            0           0           0
+      0.000000  9.125310  1.362185            0           0           0
+      3.852888  9.125310  1.362185            0           0           0
+      7.705892  9.125310  1.362185            0           0           0
+      1.926502  0.777328  2.270309            0           0           0
+      5.779390  0.777328  2.270309            0           0           0
+      9.632278  0.777328  2.270309            0           0           0
+      0.000000  3.988126  3.178433            0           0           0
+      3.852888  3.988126  3.178433            0           0           0
+      7.705892  3.988126  3.178433            0           0           0
+      5.779367  7.214956  4.148655            0           0           0
+      9.630591  7.214054  4.148014            0           0           0
+      1.928247  7.214100  4.147991            0           0           0
+      0.000220 10.408924  5.031614            0           0           0
+      7.703684 10.406162  5.035094            0           0           0
+      3.855119 10.406162  5.035163            0           0           0
+      9.630452  2.072975  5.922793            0           0           0
+      1.928548  2.072998  5.922907            0           0           0
+      5.779286  2.074743  5.929410            0           0           0
+     11.558768  5.291818  6.856264            0           0           0
+      3.862124  5.280848  6.870965            0           0           0
+      7.696333  5.280779  6.871010            0           0           0
+      1.920630  8.544019  7.940700            0           0           0
+      9.638739  8.544389  7.940265            0           0           0
+      5.779344  8.530865  7.960186            0           0           0
+      7.710931  0.145768  8.686960            0           0           0
+      3.848369  0.145710  8.687532            0           0           0
+      0.000312  0.163684  8.688677            0           0           0
+      9.630232  3.277423  9.611913            0           0           0
+      1.928340  3.277677  9.612234            0           0           0
+      5.778962  3.218219  9.662952            0           0           0
+      0.000058  6.395681 10.452191            0           0           0
+      3.798527  6.437200 10.461236            0           0           0
+      7.761178  6.439154 10.460594            0           0           0
+
    5 f  =    1.238723 THz     7.783126 2PiTHz   41.319347 cm-1     5.122948 meV
              X         Y         Z           dx          dy          dz
-      5.816598  3.762660 12.186098     0.387943    0.004360   -0.007193  
-      0.000000  7.198924  0.000000            0           0           0  
-      3.852888  7.198924  0.000000            0           0           0  
-      7.705892  7.198924  0.000000            0           0           0  
-      0.000000  4.630216  0.908124            0           0           0  
-      3.852888  4.630216  0.908124            0           0           0  
-      7.705892  4.630216  0.908124            0           0           0  
-      1.926502 10.409606  0.908124            0           0           0  
-      5.779390 10.409606  0.908124            0           0           0  
-      9.632278 10.409606  0.908124            0           0           0  
-      0.000000  2.061624  1.816247            0           0           0  
-      3.852888  2.061624  1.816247            0           0           0  
-      7.705892  2.061624  1.816247            0           0           0  
-      1.926502  7.841014  1.816247            0           0           0  
-      5.779390  7.841014  1.816247            0           0           0  
-      9.632278  7.841014  1.816247            0           0           0  
-      1.926502  5.272422  2.724371            0           0           0  
-      5.779390  5.272422  2.724371            0           0           0  
-      9.632278  5.272422  2.724371            0           0           0  
-      0.000000 11.051812  2.724371            0           0           0  
-      3.852888 11.051812  2.724371            0           0           0  
-      7.705892 11.051812  2.724371            0           0           0  
-      3.852969  8.495472  3.627525            0           0           0  
-      7.705869  8.495495  3.627617            0           0           0  
-      0.000058  8.496085  3.627800            0           0           0  
-      1.926502  2.703830  3.632494            0           0           0  
-      5.779390  2.703830  3.632494            0           0           0  
-      9.632278  2.703830  3.632494            0           0           0  
-      9.630082  0.146427  4.548655            0           0           0  
-      1.928952  0.146392  4.548495            0           0           0  
-      5.779378  0.144462  4.550876            0           0           0  
-      0.000116  5.939190  4.590008            0           0           0  
-      3.858864  5.939803  4.601801            0           0           0  
-      7.699800  5.939803  4.601846            0           0           0  
-      3.849467  3.353306  5.496186            0           0           0  
-      7.709290  3.353329  5.496208            0           0           0  
-     11.558664  3.360762  5.508390            0           0           0  
-      5.779367  9.133401  5.516793            0           0           0  
-      1.926641  9.137505  5.518213            0           0           0  
-      9.632452  9.137632  5.518282            0           0           0  
-      0.000601  0.757562  6.410812            0           0           0  
-      3.852067  0.756603  6.421368            0           0           0  
-      7.706620  0.756765  6.421231            0           0           0  
-      9.636289  6.581928  6.447334            0           0           0  
-      1.922607  6.582055  6.447677            0           0           0  
-      5.779344  6.586436  6.473002            0           0           0  
-      5.779298  3.980312  7.338055            0           0           0  
-      1.947793  4.002343  7.365899            0           0           0  
-      9.610455  4.002597  7.366426            0           0           0  
-      0.000462  9.753772  7.374234            0           0           0  
-      3.853651  9.744907  7.378218            0           0           0  
-      7.705175  9.744872  7.377989            0           0           0  
-      9.646241  1.454233  8.192278            0           0           0  
-      1.914065  1.454441  8.193422            0           0           0  
-      5.778951  1.431335  8.215542            0           0           0  
-      0.000012  7.188151  8.328588            0           0           0  
-      3.824708  7.191619  8.332183            0           0           0  
-      7.734777  7.191688  8.331702            0           0           0  
-      0.000243  4.604105  9.132824            0           0           0  
-      9.636266 10.511346  9.179352            0           0           0  
-      1.923265 10.511242  9.179971            0           0           0  
-      5.779274 10.488738  9.191511            0           0           0  
-      3.902672  4.620241  9.194373            0           0           0  
-      7.654802  4.620611  9.195610            0           0           0  
-      7.743689  2.001322 10.068998            0           0           0  
-      3.817252  2.002709 10.072661            0           0           0  
-      0.000069  2.032034 10.096887            0           0           0  
-      5.780268  7.585311 10.174258            0           0           0  
-      9.645051  7.667968 10.216940            0           0           0  
-      1.914203  7.666407 10.216986            0           0           0  
-      1.915949  5.108345 11.024519            0           0           0  
-      9.642958  5.109836 11.023031            0           0           0  
-      5.777910  5.147518 11.278157            0           0           0  
-      5.854880  3.930135 13.361278     0.921215    0.013380   -0.024771  
-      1.926502  5.914512  0.454062            0           0           0  
-      5.779390  5.914512  0.454062            0           0           0  
-      9.632278  5.914512  0.454062            0           0           0  
-      0.000000  9.125310  1.362185            0           0           0  
-      3.852888  9.125310  1.362185            0           0           0  
-      7.705892  9.125310  1.362185            0           0           0  
-      1.926502  0.777328  2.270309            0           0           0  
-      5.779390  0.777328  2.270309            0           0           0  
-      9.632278  0.777328  2.270309            0           0           0  
-      0.000000  3.988126  3.178433            0           0           0  
-      3.852888  3.988126  3.178433            0           0           0  
-      7.705892  3.988126  3.178433            0           0           0  
-      5.779367  7.214956  4.148655            0           0           0  
-      9.630591  7.214054  4.148014            0           0           0  
-      1.928247  7.214100  4.147991            0           0           0  
-      0.000220 10.408924  5.031614            0           0           0  
-      7.703684 10.406162  5.035094            0           0           0  
-      3.855119 10.406162  5.035163            0           0           0  
-      9.630452  2.072975  5.922793            0           0           0  
-      1.928548  2.072998  5.922907            0           0           0  
-      5.779286  2.074743  5.929410            0           0           0  
-     11.558768  5.291818  6.856264            0           0           0  
-      3.862124  5.280848  6.870965            0           0           0  
-      7.696333  5.280779  6.871010            0           0           0  
-      1.920630  8.544019  7.940700            0           0           0  
-      9.638739  8.544389  7.940265            0           0           0  
-      5.779344  8.530865  7.960186            0           0           0  
-      7.710931  0.145768  8.686960            0           0           0  
-      3.848369  0.145710  8.687532            0           0           0  
-      0.000312  0.163684  8.688677            0           0           0  
-      9.630232  3.277423  9.611913            0           0           0  
-      1.928340  3.277677  9.612234            0           0           0  
-      5.778962  3.218219  9.662952            0           0           0  
-      0.000058  6.395681 10.452191            0           0           0  
-      3.798527  6.437200 10.461236            0           0           0  
-      7.761178  6.439154 10.460594            0           0           0  
- 
+      5.816598  3.762660 12.186098     0.387943    0.004360   -0.007193
+      0.000000  7.198924  0.000000            0           0           0
+      3.852888  7.198924  0.000000            0           0           0
+      7.705892  7.198924  0.000000            0           0           0
+      0.000000  4.630216  0.908124            0           0           0
+      3.852888  4.630216  0.908124            0           0           0
+      7.705892  4.630216  0.908124            0           0           0
+      1.926502 10.409606  0.908124            0           0           0
+      5.779390 10.409606  0.908124            0           0           0
+      9.632278 10.409606  0.908124            0           0           0
+      0.000000  2.061624  1.816247            0           0           0
+      3.852888  2.061624  1.816247            0           0           0
+      7.705892  2.061624  1.816247            0           0           0
+      1.926502  7.841014  1.816247            0           0           0
+      5.779390  7.841014  1.816247            0           0           0
+      9.632278  7.841014  1.816247            0           0           0
+      1.926502  5.272422  2.724371            0           0           0
+      5.779390  5.272422  2.724371            0           0           0
+      9.632278  5.272422  2.724371            0           0           0
+      0.000000 11.051812  2.724371            0           0           0
+      3.852888 11.051812  2.724371            0           0           0
+      7.705892 11.051812  2.724371            0           0           0
+      3.852969  8.495472  3.627525            0           0           0
+      7.705869  8.495495  3.627617            0           0           0
+      0.000058  8.496085  3.627800            0           0           0
+      1.926502  2.703830  3.632494            0           0           0
+      5.779390  2.703830  3.632494            0           0           0
+      9.632278  2.703830  3.632494            0           0           0
+      9.630082  0.146427  4.548655            0           0           0
+      1.928952  0.146392  4.548495            0           0           0
+      5.779378  0.144462  4.550876            0           0           0
+      0.000116  5.939190  4.590008            0           0           0
+      3.858864  5.939803  4.601801            0           0           0
+      7.699800  5.939803  4.601846            0           0           0
+      3.849467  3.353306  5.496186            0           0           0
+      7.709290  3.353329  5.496208            0           0           0
+     11.558664  3.360762  5.508390            0           0           0
+      5.779367  9.133401  5.516793            0           0           0
+      1.926641  9.137505  5.518213            0           0           0
+      9.632452  9.137632  5.518282            0           0           0
+      0.000601  0.757562  6.410812            0           0           0
+      3.852067  0.756603  6.421368            0           0           0
+      7.706620  0.756765  6.421231            0           0           0
+      9.636289  6.581928  6.447334            0           0           0
+      1.922607  6.582055  6.447677            0           0           0
+      5.779344  6.586436  6.473002            0           0           0
+      5.779298  3.980312  7.338055            0           0           0
+      1.947793  4.002343  7.365899            0           0           0
+      9.610455  4.002597  7.366426            0           0           0
+      0.000462  9.753772  7.374234            0           0           0
+      3.853651  9.744907  7.378218            0           0           0
+      7.705175  9.744872  7.377989            0           0           0
+      9.646241  1.454233  8.192278            0           0           0
+      1.914065  1.454441  8.193422            0           0           0
+      5.778951  1.431335  8.215542            0           0           0
+      0.000012  7.188151  8.328588            0           0           0
+      3.824708  7.191619  8.332183            0           0           0
+      7.734777  7.191688  8.331702            0           0           0
+      0.000243  4.604105  9.132824            0           0           0
+      9.636266 10.511346  9.179352            0           0           0
+      1.923265 10.511242  9.179971            0           0           0
+      5.779274 10.488738  9.191511            0           0           0
+      3.902672  4.620241  9.194373            0           0           0
+      7.654802  4.620611  9.195610            0           0           0
+      7.743689  2.001322 10.068998            0           0           0
+      3.817252  2.002709 10.072661            0           0           0
+      0.000069  2.032034 10.096887            0           0           0
+      5.780268  7.585311 10.174258            0           0           0
+      9.645051  7.667968 10.216940            0           0           0
+      1.914203  7.666407 10.216986            0           0           0
+      1.915949  5.108345 11.024519            0           0           0
+      9.642958  5.109836 11.023031            0           0           0
+      5.777910  5.147518 11.278157            0           0           0
+      5.854880  3.930135 13.361278     0.921215    0.013380   -0.024771
+      1.926502  5.914512  0.454062            0           0           0
+      5.779390  5.914512  0.454062            0           0           0
+      9.632278  5.914512  0.454062            0           0           0
+      0.000000  9.125310  1.362185            0           0           0
+      3.852888  9.125310  1.362185            0           0           0
+      7.705892  9.125310  1.362185            0           0           0
+      1.926502  0.777328  2.270309            0           0           0
+      5.779390  0.777328  2.270309            0           0           0
+      9.632278  0.777328  2.270309            0           0           0
+      0.000000  3.988126  3.178433            0           0           0
+      3.852888  3.988126  3.178433            0           0           0
+      7.705892  3.988126  3.178433            0           0           0
+      5.779367  7.214956  4.148655            0           0           0
+      9.630591  7.214054  4.148014            0           0           0
+      1.928247  7.214100  4.147991            0           0           0
+      0.000220 10.408924  5.031614            0           0           0
+      7.703684 10.406162  5.035094            0           0           0
+      3.855119 10.406162  5.035163            0           0           0
+      9.630452  2.072975  5.922793            0           0           0
+      1.928548  2.072998  5.922907            0           0           0
+      5.779286  2.074743  5.929410            0           0           0
+     11.558768  5.291818  6.856264            0           0           0
+      3.862124  5.280848  6.870965            0           0           0
+      7.696333  5.280779  6.871010            0           0           0
+      1.920630  8.544019  7.940700            0           0           0
+      9.638739  8.544389  7.940265            0           0           0
+      5.779344  8.530865  7.960186            0           0           0
+      7.710931  0.145768  8.686960            0           0           0
+      3.848369  0.145710  8.687532            0           0           0
+      0.000312  0.163684  8.688677            0           0           0
+      9.630232  3.277423  9.611913            0           0           0
+      1.928340  3.277677  9.612234            0           0           0
+      5.778962  3.218219  9.662952            0           0           0
+      0.000058  6.395681 10.452191            0           0           0
+      3.798527  6.437200 10.461236            0           0           0
+      7.761178  6.439154 10.460594            0           0           0
+
    6 f/i=    5.299638 THz    33.298605 2PiTHz  176.776878 cm-1    21.917547 meV
              X         Y         Z           dx          dy          dz
-      5.816598  3.762660 12.186098     0.017901   -0.732359    0.443534  
-      0.000000  7.198924  0.000000            0           0           0  
-      3.852888  7.198924  0.000000            0           0           0  
-      7.705892  7.198924  0.000000            0           0           0  
-      0.000000  4.630216  0.908124            0           0           0  
-      3.852888  4.630216  0.908124            0           0           0  
-      7.705892  4.630216  0.908124            0           0           0  
-      1.926502 10.409606  0.908124            0           0           0  
-      5.779390 10.409606  0.908124            0           0           0  
-      9.632278 10.409606  0.908124            0           0           0  
-      0.000000  2.061624  1.816247            0           0           0  
-      3.852888  2.061624  1.816247            0           0           0  
-      7.705892  2.061624  1.816247            0           0           0  
-      1.926502  7.841014  1.816247            0           0           0  
-      5.779390  7.841014  1.816247            0           0           0  
-      9.632278  7.841014  1.816247            0           0           0  
-      1.926502  5.272422  2.724371            0           0           0  
-      5.779390  5.272422  2.724371            0           0           0  
-      9.632278  5.272422  2.724371            0           0           0  
-      0.000000 11.051812  2.724371            0           0           0  
-      3.852888 11.051812  2.724371            0           0           0  
-      7.705892 11.051812  2.724371            0           0           0  
-      3.852969  8.495472  3.627525            0           0           0  
-      7.705869  8.495495  3.627617            0           0           0  
-      0.000058  8.496085  3.627800            0           0           0  
-      1.926502  2.703830  3.632494            0           0           0  
-      5.779390  2.703830  3.632494            0           0           0  
-      9.632278  2.703830  3.632494            0           0           0  
-      9.630082  0.146427  4.548655            0           0           0  
-      1.928952  0.146392  4.548495            0           0           0  
-      5.779378  0.144462  4.550876            0           0           0  
-      0.000116  5.939190  4.590008            0           0           0  
-      3.858864  5.939803  4.601801            0           0           0  
-      7.699800  5.939803  4.601846            0           0           0  
-      3.849467  3.353306  5.496186            0           0           0  
-      7.709290  3.353329  5.496208            0           0           0  
-     11.558664  3.360762  5.508390            0           0           0  
-      5.779367  9.133401  5.516793            0           0           0  
-      1.926641  9.137505  5.518213            0           0           0  
-      9.632452  9.137632  5.518282            0           0           0  
-      0.000601  0.757562  6.410812            0           0           0  
-      3.852067  0.756603  6.421368            0           0           0  
-      7.706620  0.756765  6.421231            0           0           0  
-      9.636289  6.581928  6.447334            0           0           0  
-      1.922607  6.582055  6.447677            0           0           0  
-      5.779344  6.586436  6.473002            0           0           0  
-      5.779298  3.980312  7.338055            0           0           0  
-      1.947793  4.002343  7.365899            0           0           0  
-      9.610455  4.002597  7.366426            0           0           0  
-      0.000462  9.753772  7.374234            0           0           0  
-      3.853651  9.744907  7.378218            0           0           0  
-      7.705175  9.744872  7.377989            0           0           0  
-      9.646241  1.454233  8.192278            0           0           0  
-      1.914065  1.454441  8.193422            0           0           0  
-      5.778951  1.431335  8.215542            0           0           0  
-      0.000012  7.188151  8.328588            0           0           0  
-      3.824708  7.191619  8.332183            0           0           0  
-      7.734777  7.191688  8.331702            0           0           0  
-      0.000243  4.604105  9.132824            0           0           0  
-      9.636266 10.511346  9.179352            0           0           0  
-      1.923265 10.511242  9.179971            0           0           0  
-      5.779274 10.488738  9.191511            0           0           0  
-      3.902672  4.620241  9.194373            0           0           0  
-      7.654802  4.620611  9.195610            0           0           0  
-      7.743689  2.001322 10.068998            0           0           0  
-      3.817252  2.002709 10.072661            0           0           0  
-      0.000069  2.032034 10.096887            0           0           0  
-      5.780268  7.585311 10.174258            0           0           0  
-      9.645051  7.667968 10.216940            0           0           0  
-      1.914203  7.666407 10.216986            0           0           0  
-      1.915949  5.108345 11.024519            0           0           0  
-      9.642958  5.109836 11.023031            0           0           0  
-      5.777910  5.147518 11.278157            0           0           0  
-      5.854880  3.930135 13.361278     0.014292   -0.380703    0.348523  
-      1.926502  5.914512  0.454062            0           0           0  
-      5.779390  5.914512  0.454062            0           0           0  
-      9.632278  5.914512  0.454062            0           0           0  
-      0.000000  9.125310  1.362185            0           0           0  
-      3.852888  9.125310  1.362185            0           0           0  
-      7.705892  9.125310  1.362185            0           0           0  
-      1.926502  0.777328  2.270309            0           0           0  
-      5.779390  0.777328  2.270309            0           0           0  
-      9.632278  0.777328  2.270309            0           0           0  
-      0.000000  3.988126  3.178433            0           0           0  
-      3.852888  3.988126  3.178433            0           0           0  
-      7.705892  3.988126  3.178433            0           0           0  
-      5.779367  7.214956  4.148655            0           0           0  
-      9.630591  7.214054  4.148014            0           0           0  
-      1.928247  7.214100  4.147991            0           0           0  
-      0.000220 10.408924  5.031614            0           0           0  
-      7.703684 10.406162  5.035094            0           0           0  
-      3.855119 10.406162  5.035163            0           0           0  
-      9.630452  2.072975  5.922793            0           0           0  
-      1.928548  2.072998  5.922907            0           0           0  
-      5.779286  2.074743  5.929410            0           0           0  
-     11.558768  5.291818  6.856264            0           0           0  
-      3.862124  5.280848  6.870965            0           0           0  
-      7.696333  5.280779  6.871010            0           0           0  
-      1.920630  8.544019  7.940700            0           0           0  
-      9.638739  8.544389  7.940265            0           0           0  
-      5.779344  8.530865  7.960186            0           0           0  
-      7.710931  0.145768  8.686960            0           0           0  
-      3.848369  0.145710  8.687532            0           0           0  
-      0.000312  0.163684  8.688677            0           0           0  
-      9.630232  3.277423  9.611913            0           0           0  
-      1.928340  3.277677  9.612234            0           0           0  
-      5.778962  3.218219  9.662952            0           0           0  
-      0.000058  6.395681 10.452191            0           0           0  
-      3.798527  6.437200 10.461236            0           0           0  
-      7.761178  6.439154 10.460594            0           0           0  
- 
+      5.816598  3.762660 12.186098     0.017901   -0.732359    0.443534
+      0.000000  7.198924  0.000000            0           0           0
+      3.852888  7.198924  0.000000            0           0           0
+      7.705892  7.198924  0.000000            0           0           0
+      0.000000  4.630216  0.908124            0           0           0
+      3.852888  4.630216  0.908124            0           0           0
+      7.705892  4.630216  0.908124            0           0           0
+      1.926502 10.409606  0.908124            0           0           0
+      5.779390 10.409606  0.908124            0           0           0
+      9.632278 10.409606  0.908124            0           0           0
+      0.000000  2.061624  1.816247            0           0           0
+      3.852888  2.061624  1.816247            0           0           0
+      7.705892  2.061624  1.816247            0           0           0
+      1.926502  7.841014  1.816247            0           0           0
+      5.779390  7.841014  1.816247            0           0           0
+      9.632278  7.841014  1.816247            0           0           0
+      1.926502  5.272422  2.724371            0           0           0
+      5.779390  5.272422  2.724371            0           0           0
+      9.632278  5.272422  2.724371            0           0           0
+      0.000000 11.051812  2.724371            0           0           0
+      3.852888 11.051812  2.724371            0           0           0
+      7.705892 11.051812  2.724371            0           0           0
+      3.852969  8.495472  3.627525            0           0           0
+      7.705869  8.495495  3.627617            0           0           0
+      0.000058  8.496085  3.627800            0           0           0
+      1.926502  2.703830  3.632494            0           0           0
+      5.779390  2.703830  3.632494            0           0           0
+      9.632278  2.703830  3.632494            0           0           0
+      9.630082  0.146427  4.548655            0           0           0
+      1.928952  0.146392  4.548495            0           0           0
+      5.779378  0.144462  4.550876            0           0           0
+      0.000116  5.939190  4.590008            0           0           0
+      3.858864  5.939803  4.601801            0           0           0
+      7.699800  5.939803  4.601846            0           0           0
+      3.849467  3.353306  5.496186            0           0           0
+      7.709290  3.353329  5.496208            0           0           0
+     11.558664  3.360762  5.508390            0           0           0
+      5.779367  9.133401  5.516793            0           0           0
+      1.926641  9.137505  5.518213            0           0           0
+      9.632452  9.137632  5.518282            0           0           0
+      0.000601  0.757562  6.410812            0           0           0
+      3.852067  0.756603  6.421368            0           0           0
+      7.706620  0.756765  6.421231            0           0           0
+      9.636289  6.581928  6.447334            0           0           0
+      1.922607  6.582055  6.447677            0           0           0
+      5.779344  6.586436  6.473002            0           0           0
+      5.779298  3.980312  7.338055            0           0           0
+      1.947793  4.002343  7.365899            0           0           0
+      9.610455  4.002597  7.366426            0           0           0
+      0.000462  9.753772  7.374234            0           0           0
+      3.853651  9.744907  7.378218            0           0           0
+      7.705175  9.744872  7.377989            0           0           0
+      9.646241  1.454233  8.192278            0           0           0
+      1.914065  1.454441  8.193422            0           0           0
+      5.778951  1.431335  8.215542            0           0           0
+      0.000012  7.188151  8.328588            0           0           0
+      3.824708  7.191619  8.332183            0           0           0
+      7.734777  7.191688  8.331702            0           0           0
+      0.000243  4.604105  9.132824            0           0           0
+      9.636266 10.511346  9.179352            0           0           0
+      1.923265 10.511242  9.179971            0           0           0
+      5.779274 10.488738  9.191511            0           0           0
+      3.902672  4.620241  9.194373            0           0           0
+      7.654802  4.620611  9.195610            0           0           0
+      7.743689  2.001322 10.068998            0           0           0
+      3.817252  2.002709 10.072661            0           0           0
+      0.000069  2.032034 10.096887            0           0           0
+      5.780268  7.585311 10.174258            0           0           0
+      9.645051  7.667968 10.216940            0           0           0
+      1.914203  7.666407 10.216986            0           0           0
+      1.915949  5.108345 11.024519            0           0           0
+      9.642958  5.109836 11.023031            0           0           0
+      5.777910  5.147518 11.278157            0           0           0
+      5.854880  3.930135 13.361278     0.014292   -0.380703    0.348523
+      1.926502  5.914512  0.454062            0           0           0
+      5.779390  5.914512  0.454062            0           0           0
+      9.632278  5.914512  0.454062            0           0           0
+      0.000000  9.125310  1.362185            0           0           0
+      3.852888  9.125310  1.362185            0           0           0
+      7.705892  9.125310  1.362185            0           0           0
+      1.926502  0.777328  2.270309            0           0           0
+      5.779390  0.777328  2.270309            0           0           0
+      9.632278  0.777328  2.270309            0           0           0
+      0.000000  3.988126  3.178433            0           0           0
+      3.852888  3.988126  3.178433            0           0           0
+      7.705892  3.988126  3.178433            0           0           0
+      5.779367  7.214956  4.148655            0           0           0
+      9.630591  7.214054  4.148014            0           0           0
+      1.928247  7.214100  4.147991            0           0           0
+      0.000220 10.408924  5.031614            0           0           0
+      7.703684 10.406162  5.035094            0           0           0
+      3.855119 10.406162  5.035163            0           0           0
+      9.630452  2.072975  5.922793            0           0           0
+      1.928548  2.072998  5.922907            0           0           0
+      5.779286  2.074743  5.929410            0           0           0
+     11.558768  5.291818  6.856264            0           0           0
+      3.862124  5.280848  6.870965            0           0           0
+      7.696333  5.280779  6.871010            0           0           0
+      1.920630  8.544019  7.940700            0           0           0
+      9.638739  8.544389  7.940265            0           0           0
+      5.779344  8.530865  7.960186            0           0           0
+      7.710931  0.145768  8.686960            0           0           0
+      3.848369  0.145710  8.687532            0           0           0
+      0.000312  0.163684  8.688677            0           0           0
+      9.630232  3.277423  9.611913            0           0           0
+      1.928340  3.277677  9.612234            0           0           0
+      5.778962  3.218219  9.662952            0           0           0
+      0.000058  6.395681 10.452191            0           0           0
+      3.798527  6.437200 10.461236            0           0           0
+      7.761178  6.439154 10.460594            0           0           0
+
  Finite differences POTIM=  2.000000000000000E-002
  writing wavefunctions
      LOOP+:  cpu time 1416.1937: real time 1435.9080
@@ -78901,20 +78901,20 @@ WARNING in EDDRMM: call to ZHEGV failed, returncode =   8  4  1
    grid      :      98240. kBytes
    one-center:      10813. kBytes
    wavefun   :     139616. kBytes
- 
-  
-  
+
+
+
  General timing and accounting informations for this job:
  ========================================================
-  
+
                   Total CPU time used (sec):    22845.721
                             User time (sec):    21791.671
                           System time (sec):     1054.049
                          Elapsed time (sec):    22867.341
-  
+
                    Maximum memory used (kb):      655016.
                    Average memory used (kb):           0.
-  
+
                           Minor page faults:      3053988
                           Major page faults:            0
                  Voluntary context switches:         4354

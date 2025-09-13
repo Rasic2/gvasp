@@ -15,7 +15,7 @@ from gvasp.common.utils import redefine_frac
 yaml.warnings({'YAMLLoadWarning': False})
 
 
-class Lattice(object):
+class Lattice:
 
     def __init__(self, matrix: np.ndarray):
         """
@@ -146,7 +146,7 @@ class Lattice(object):
         return Lattice.from_string(cfg[2:5])
 
 
-class  Atom(object):
+class  Atom:
     """
     Atom class represent one atom in periodic solid system
 
@@ -312,7 +312,7 @@ class Atoms(Atom):
     """
 
     def __init__(self, *args, **kwargs):
-        super(Atoms, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.order = list(range(len(self.formula))) if isinstance(self.order, int) or None in self.order else self.order
         self.frac_coord = [None] * len(self.formula) if self.frac_coord is None else self.frac_coord

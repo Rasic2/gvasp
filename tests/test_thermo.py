@@ -16,7 +16,7 @@ def change_dir(func):
     return wrapper
 
 
-class TestThermo(object):
+class TestThermo:
 
     @change_dir
     def test_gas(self):

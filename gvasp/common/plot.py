@@ -55,7 +55,7 @@ class PostDOS(Figure):
 
     def __init__(self, dos_files: list, pos_files: list, ISPIN=2, LORBIT=12, align=None, xlabel='Energy (eV)',
                  ylabel='Density of States (a.u.)', **kargs):
-        super(PostDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
+        super().__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
 
         self.managers = [DOSData(dos_file=dos_file, pos_file=pos_file, ISPIN=ISPIN, LORBIT=LORBIT) for
                          dos_file, pos_file in zip(dos_files, pos_files)]
@@ -307,7 +307,7 @@ class DOSData():
 
 class PlotOpt(Figure):
     def __init__(self, name='OUTCAR', width=16, title='Structure Optimization', xlabel='Steps', **kargs):
-        super(PlotOpt, self).__init__(width=width, title=title, xlabel=xlabel, **kargs)
+        super().__init__(width=width, title=title, xlabel=xlabel, **kargs)
         self.name = name
         outcar = OUTCAR(name=self.name)
         self.energy = outcar.energy
@@ -343,7 +343,7 @@ class PlotBand(Figure):
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
             self.energy = self.energy.transpose((1, 0, 2))
 
-        super(PlotBand, self).__init__(title=title, xlim=[self.kcoord[0], self.kcoord[-1]], **kwargs)
+        super().__init__(title=title, xlim=[self.kcoord[0], self.kcoord[-1]], **kwargs)
 
         try:
             self.fermi = OUTCAR('OUTCAR').fermi
@@ -371,7 +371,7 @@ class PlotBand(Figure):
 class PlotEPotential(Figure):
     def __init__(self, direction='z', output=True, title='Local Potential', xlabel='Position (Å)', ylabel='Energy (eV)',
                  **kargs):
-        super(PlotEPotential, self).__init__(title=title, xlabel=xlabel, ylabel=ylabel, **kargs)
+        super().__init__(title=title, xlabel=xlabel, ylabel=ylabel, **kargs)
         self.lpotential = LOCPOT(name='LOCPOT').line_potential(direction=direction)
 
         if output:
@@ -389,7 +389,7 @@ class PlotEPotential(Figure):
 
 class PlotCCD(Figure):
     def __init__(self, direction='z', xlabel='Position along z-axis (Å)', ylabel='Charge density (e/Å)', **kargs):
-        super(PlotCCD, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
+        super().__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
         self.lpotential = CHGCAR_diff(name='CHGCAR_diff').line_potential(direction=direction)
 
     @plot_wrapper
@@ -400,7 +400,7 @@ class PlotCCD(Figure):
         plt.plot(*self.lpotential)
 
 
-class PESData(object):
+class PESData:
     """
     Generate the data for PlotPES
 
@@ -483,7 +483,7 @@ class PlotPES(Figure):
 
     def __init__(self, width=15.6, height=4, weight='bold', xlabel='Reaction coordinate', ylabel='Energy (eV)',
                  xticks=[], bwidth=3, **kargs):
-        super(PlotPES, self).__init__(width=width, height=height, weight=weight, xlabel=xlabel, ylabel=ylabel,
+        super().__init__(width=width, height=height, weight=weight, xlabel=xlabel, ylabel=ylabel,
                                       xticks=xticks, bwidth=bwidth, **kargs)
 
         self.texts = defaultdict(list)
@@ -552,7 +552,7 @@ class PlotPES(Figure):
 class PlotNEB(Figure):
 
     def __init__(self, xlabel='Distance (Å)', ylabel='Energy (eV)', width=10, **kargs):
-        super(PlotNEB, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width, **kargs)
+        super().__init__(xlabel=xlabel, ylabel=ylabel, width=width, **kargs)
 
     @plot_wrapper
     def plot(self, color='#ed0345', workdir=None):

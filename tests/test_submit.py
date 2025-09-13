@@ -19,7 +19,7 @@ def file_cleaner(func):
     return wrapper
 
 
-class TestSubmitTask(object):
+class TestSubmitTask:
 
     def test_opt(self):
         task = OptTask()

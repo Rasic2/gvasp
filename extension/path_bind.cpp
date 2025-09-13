@@ -146,14 +146,14 @@ PyNumpy _get_funcs_and_forces(py::array_t<double> x,
             temp_matrix.push_back(temp_vector);
         }
         grad.assign(temp_matrix.begin(), temp_matrix.end()); // (atoms_num, 3)
-        
+
         // funcs.append(func)
         py::array_t<double> func_np = py::array_t<double>(1);
         py::buffer_info buf_func_np = func_np.request();
         double *ptr_func_np = (double *)buf_func_np.ptr;
         ptr_func_np[0] = func;
         ReturnValue.funcs.push_back(func_np);
-        
+
         // funcs_prime.append(grad)
         py::array_t<double> grad_np = py::array_t<double>(grad.size() * 3);
         py::buffer_info buf_grad_np = grad_np.request();

@@ -4,7 +4,7 @@ import yaml
 
 file = '/Applications/VESTA/VESTA.app/Contents/Resources/style.ini'
 
-with open(file, 'r') as f:
+with open(file) as f:
     content = f.readlines()[15:929]
 
 bonds = [item.split() for item in content]

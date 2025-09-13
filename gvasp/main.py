@@ -322,7 +322,7 @@ def main(argv=None):
 
         elif args.which == 'output':  # output task
             if Path('submit.script').exists():
-                with open('submit.script', 'r') as f:
+                with open('submit.script') as f:
                     content = f.readlines()
                 name = content[1].split()[2]
             else:
@@ -353,7 +353,7 @@ def main(argv=None):
         elif args.which == 'plot':  # plot task
 
             # load json file to read setting and data
-            with open(args.json, 'r') as f:
+            with open(args.json) as f:
                 arguments = json.load(f)
 
             # record color lack
@@ -434,7 +434,7 @@ def main(argv=None):
                 logger.info(f'Figure has been saved as `{args.name}`, please check')
 
         elif args.which == 'band-center':  # band-center task
-            with open(args.json, 'r') as f:  # load json file to read setting and data
+            with open(args.json) as f:  # load json file to read setting and data
                 arguments = json.load(f)
 
             if 'pos_file' not in arguments:

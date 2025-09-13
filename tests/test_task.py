@@ -16,19 +16,19 @@ def change_test_dir(request, monkeypatch):
     monkeypatch.chdir(request.fspath.dirname)
 
 
-class TestXDATMovie(object):
+class TestXDATMovie:
     def test_new(self):
         with pytest.raises(TypeError):
             XDATMovie()
 
 
-class TestNormalTask(object):
+class TestNormalTask:
     def test_new(self):
         with pytest.raises(TypeError):
             NormalTask()
 
 
-class TestOptTask(object):
+class TestOptTask:
 
     @change_dir('continuous')
     def test_continuous(self, change_test_dir):
@@ -49,7 +49,7 @@ class TestOptTask(object):
         task.generate(static=True)
 
 
-class TestConTSTask(object):
+class TestConTSTask:
 
     @change_dir('continuous')
     def test_continuous(self, change_test_dir):
@@ -57,7 +57,7 @@ class TestConTSTask(object):
         task.generate(continuous=True)
 
 
-class TestChargeTask(object):
+class TestChargeTask:
 
     @change_dir('continuous')
     def test_analysis(self, change_test_dir):
@@ -65,7 +65,7 @@ class TestChargeTask(object):
         task.generate(continuous=True, analysis=True)
 
 
-class TestWorkFuncTask(object):
+class TestWorkFuncTask:
 
     @change_dir('continuous')
     def test_continuous(self, change_test_dir):
@@ -73,7 +73,7 @@ class TestWorkFuncTask(object):
         task.generate(continuous=True)
 
 
-class TestDOSTask(object):
+class TestDOSTask:
 
     @change_dir('continuous')
     def test_continuous(self, change_test_dir):
@@ -81,7 +81,7 @@ class TestDOSTask(object):
         task.generate(continuous=True)
 
 
-class TestNEBTask(object):
+class TestNEBTask:
 
     @change_dir('neb')
     def test_monitor(self):

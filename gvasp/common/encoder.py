@@ -11,4 +11,4 @@ class PathJSONEncoder(JSONEncoder):
         if isinstance(o, Path):
             return o.absolute().as_posix()
         else:
-            return super(PathJSONEncoder, self).default(o)
+            return super().default(o)

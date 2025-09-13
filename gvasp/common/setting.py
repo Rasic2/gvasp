@@ -15,7 +15,7 @@ WorkDir = Path.cwd()
 HomeDir = get_HOME()
 
 
-class ConfigManager(object):
+class ConfigManager:
 
     def __init__(self):
         self.config_dir = None
@@ -43,7 +43,7 @@ class ConfigManager(object):
         """
         # check config.json, if not exist, `config set to {}`
         try:
-            with open(f'{RootDir}/config.json', 'r') as f:
+            with open(f'{RootDir}/config.json') as f:
                 config = json.load(f)
         except NotADirectoryError:
             config = {}

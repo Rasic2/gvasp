@@ -9,7 +9,7 @@ from gvasp.main import main
 from tests.utils import change_dir
 
 
-class TestMain(object):
+class TestMain:
     def test_help(self):
         main([])
 

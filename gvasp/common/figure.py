@@ -59,7 +59,7 @@ def plot_wrapper(type='default'):
     return decorator
 
 
-class Figure(object):
+class Figure:
     """
     Plot-type class' parent, unify the figure format
     """
@@ -70,7 +70,7 @@ class Figure(object):
     def __new__(cls, *args, **kwargs):
         if cls is Figure:
             raise TypeError(f'<{cls.__name__} class> may not be instantiated')
-        return super(Figure, cls).__new__(cls)
+        return super().__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
                  xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, twidth=2, tlength=5, lloc='best',
@@ -104,13 +104,13 @@ class Figure(object):
         plt.savefig(name, bbox_inches='tight')
 
 
-class LineBase(object):
+class LineBase:
     """Line-Base-class, cant' instantiated"""
 
     def __new__(cls, *args, **kwargs):
         if cls is LineBase:
             raise TypeError(f'<{cls.__name__} class> may not be instantiated')
-        return super(LineBase, cls).__new__(cls)
+        return super().__new__(cls)
 
     def __init__(self, x, y, color, linewidth='', linestyle='-'):
         self.x = x
@@ -144,7 +144,7 @@ class DashLine(LineBase):
 
 class PchipLine(LineBase):
     def __init__(self, linewidth=1, num=100, **kargs):
-        super(PchipLine, self).__init__(linewidth=linewidth, **kargs)
+        super().__init__(linewidth=linewidth, **kargs)
         self.x_ori = self.x
         self.y_ori = self.y
         self.num = num
@@ -158,7 +158,7 @@ class PchipLine(LineBase):
         return x_new, y_new
 
 
-class Text(object):
+class Text:
     """
     Add text on the figure, for PlotPES.
 
