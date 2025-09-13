@@ -15,7 +15,7 @@ class BasePath(object):
 
     def __new__(cls, *args, **kwargs):
         if cls is BasePath:
-            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
+            raise TypeError(f'<{cls.__name__} class> may not be instantiated')
         return super(BasePath, cls).__new__(cls)
 
     def __init__(self):
@@ -23,12 +23,12 @@ class BasePath(object):
 
     def write(self):
         if not isinstance(self.path, list):
-            raise PathNotExistError("structure path is not exist, please generate it first")
+            raise PathNotExistError('structure path is not exist, please generate it first')
 
         for index, structure in enumerate(self.path):
-            image_dir = f"{index:02d}"
+            image_dir = f'{index:02d}'
             Path(image_dir).mkdir(exist_ok=True)
-            structure.write_POSCAR(f"{image_dir}/POSCAR")
+            structure.write_POSCAR(f'{image_dir}/POSCAR')
 
 
 class LinearPath(BasePath):
@@ -162,7 +162,7 @@ class IdppPath(BasePath):
 
             old_funcs = funcs
         else:
-            warnings.warn("Maximum iteration number is reached without convergence!", UserWarning)
+            warnings.warn('Maximum iteration number is reached without convergence!', UserWarning)
 
         for ni in range(self.images):
             # generate the improved image structure

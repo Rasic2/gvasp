@@ -8,7 +8,7 @@ class Descriptor(object):
 
     def __new__(cls, *args, **kwargs):
         if cls is Descriptor:
-            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
+            raise TypeError(f'<{cls.__name__} class> may not be instantiated')
         return super().__new__(cls)
 
     def __init__(self, name):

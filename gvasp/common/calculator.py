@@ -20,8 +20,8 @@ def surface_energy(crystal_dir: str, slab_dir: str):
     Returns:
         E_surf:		surface energy, unit: J/m^2
     """
-    crystal_outcar = OUTCAR(Path(crystal_dir) / "OUTCAR")
-    slab_outcar = OUTCAR(Path(slab_dir) / "OUTCAR")
+    crystal_outcar = OUTCAR(Path(crystal_dir) / 'OUTCAR')
+    slab_outcar = OUTCAR(Path(slab_dir) / 'OUTCAR')
 
     E_crystal = crystal_outcar.last_energy
     E_slab = slab_outcar.last_energy
@@ -36,40 +36,40 @@ def surface_energy(crystal_dir: str, slab_dir: str):
 
     E_surf = (E_slab - n * E_crystal) / (2 * A) * 16.02
 
-    print(f"The surface energy: {E_surf}")
+    print(f'The surface energy: {E_surf}')
     return E_surf
 
 
-def electrostatic_energy(atoms, workdir="."):
-    structure = POSCAR(Path(workdir) / "CONTCAR").structure
-    potcar = POTCAR(Path(workdir) / "POTCAR")
+def electrostatic_energy(atoms, workdir='.'):
+    structure = POSCAR(Path(workdir) / 'CONTCAR').structure
+    potcar = POTCAR(Path(workdir) / 'POTCAR')
     atom_valence = np.array([potcar.valence[potcar.element.index(atom.formula)] for atom in structure.atoms])
-    acf = ACFFile("ACF.dat")
+    acf = ACFFile('ACF.dat')
     atom_charge = atom_valence - acf.charge
     structure.find_neighbour_table(neighbour_num=None, cut_radius=3.)
     neighbour_table = structure.neighbour_table
 
     if isinstance(atoms, (list, int, str)):
-        atoms = identify_atoms(atoms, [""] + structure.atoms.formula)
+        atoms = identify_atoms(atoms, [''] + structure.atoms.formula)
 
     E_static = []
-    print("| atom_i | atom_j | i_charge | j_charge | distance | E_static |")
+    print('| atom_i | atom_j | i_charge | j_charge | distance | E_static |')
     for atom in atoms:
         pair_order, pair_distance = list(
             map(list, zip(*[(item[0].order, item[1]) for item in neighbour_table[structure.atoms[atom - 1]]])))
         pair_charge = [(atom_charge[atom - 1], atom_charge[order]) for order in pair_order]
 
-        print("-".center(63, "-"))
+        print('-'.center(63, '-'))
         E_static_inner = []
         for order, (i_charge, j_charge), distance in zip(pair_order, pair_charge, pair_distance):
             e_static = i_charge * j_charge / distance
             print(
-                f"| {atom:>6d} | {order + 1:>6d} | {i_charge:+8.5f} | {j_charge:+8.5f} | {distance:8.6f} | {e_static:+8.5f} |")
+                f'| {atom:>6d} | {order + 1:>6d} | {i_charge:+8.5f} | {j_charge:+8.5f} | {distance:8.6f} | {e_static:+8.5f} |')
             E_static_inner.append(e_static)
             E_static.append(e_static)
-        print(f"{GREEN}Atom Electrostatic Energy: {sum(E_static_inner):+8.5f} e^2/Å{RESET}".rjust(74))
-    print("-".center(63, "-"))
-    print(f"\n{RED}Total Electrostatic Energy: {sum(E_static):+8.5f} e^2/Å.{RESET}")
+        print(f'{GREEN}Atom Electrostatic Energy: {sum(E_static_inner):+8.5f} e^2/Å{RESET}'.rjust(74))
+    print('-'.center(63, '-'))
+    print(f'\n{RED}Total Electrostatic Energy: {sum(E_static):+8.5f} e^2/Å.{RESET}')
 
 
 h_p = constants.h  # Plank Constant: 6.62606957E-34 J*s
@@ -90,7 +90,7 @@ def thermo_adsorbent(temperature: float = 298.15):
         entropy = R_gas * pf
         return enthalpy, entropy
 
-    frequency = OUTCAR("OUTCAR").frequency
+    frequency = OUTCAR('OUTCAR').frequency
     w_number_list, v_energy_list = list(map(list,
                                             zip(*[(frequency.wave_number[index], frequency.vib_energy[index])
                                                   for index, freq in enumerate(frequency.image) if not freq])))
@@ -105,21 +105,21 @@ def thermo_adsorbent(temperature: float = 298.15):
     TS_tot = temperature * S_tot
     G_tot = H_tot - TS_tot
 
-    E_DFT = OUTCAR("OUTCAR").last_energy
+    E_DFT = OUTCAR('OUTCAR').last_energy
     G = E_DFT + G_tot
 
-    print("+" + "-".center(55, "-") + "+")
-    print("|" + f"Thermo Correction for adsorbent (T = {temperature:.2f} K)".center(55, " ") + "|")
-    print("|" + "-".center(55, "-") + "|")
-    print("|" + f" Zero-point energy E_ZPE".ljust(30, " ") + f": {E_zpe:10.7f} eV".ljust(25, " ") + "|")
-    print("|" + f" Thermal correction to H(T)".ljust(30, " ") + f": {H_tot:10.7f} eV".ljust(25, " ") + "|")
-    print("|" + f" Thermal correction to G(T)".ljust(30, " ") + f": {G_tot:10.7f} eV".ljust(25, " ") + "|")
-    print("|" + f" Entropy S".ljust(30, " ") + f": {S_tot:10.7f} eV/K".ljust(25, " ") + "|")
-    print("|" + f" Entropy contribution T*S".ljust(30, " ") + f": {TS_tot:10.7f} eV".ljust(25, " ") + "|")
-    print("+" + f"-".center(55, "-") + "+")
-    print("|" + f" DFT energy E_DFT".ljust(30, " ") + f": {E_DFT:10.4f} eV".ljust(25, " ") + "|")
-    print("|" + f" Gibbs Free Energy G(T)".ljust(30, " ") + f": {G:10.4f} eV".ljust(25, " ") + "|")
-    print("+" + "-".center(55, "-") + "+")
+    print('+' + '-'.center(55, '-') + '+')
+    print('|' + f'Thermo Correction for adsorbent (T = {temperature:.2f} K)'.center(55, ' ') + '|')
+    print('|' + '-'.center(55, '-') + '|')
+    print('|' + f' Zero-point energy E_ZPE'.ljust(30, ' ') + f': {E_zpe:10.7f} eV'.ljust(25, ' ') + '|')
+    print('|' + f' Thermal correction to H(T)'.ljust(30, ' ') + f': {H_tot:10.7f} eV'.ljust(25, ' ') + '|')
+    print('|' + f' Thermal correction to G(T)'.ljust(30, ' ') + f': {G_tot:10.7f} eV'.ljust(25, ' ') + '|')
+    print('|' + f' Entropy S'.ljust(30, ' ') + f': {S_tot:10.7f} eV/K'.ljust(25, ' ') + '|')
+    print('|' + f' Entropy contribution T*S'.ljust(30, ' ') + f': {TS_tot:10.7f} eV'.ljust(25, ' ') + '|')
+    print('+' + f'-'.center(55, '-') + '+')
+    print('|' + f' DFT energy E_DFT'.ljust(30, ' ') + f': {E_DFT:10.4f} eV'.ljust(25, ' ') + '|')
+    print('|' + f' Gibbs Free Energy G(T)'.ljust(30, ' ') + f': {G:10.4f} eV'.ljust(25, ' ') + '|')
+    print('+' + '-'.center(55, '-') + '+')
 
 
 def thermo_gas(temperature=298.15, pressure=1, multiplicity=1):
@@ -135,7 +135,7 @@ def thermo_gas(temperature=298.15, pressure=1, multiplicity=1):
         entropy = R_gas * pf
         return enthalpy, entropy
 
-    outcar = OUTCAR("OUTCAR")
+    outcar = OUTCAR('OUTCAR')
     frequency = outcar.frequency
     w_number_list, v_energy_list = list(map(list,
                                             zip(*[(frequency.wave_number[index], frequency.vib_energy[index])
@@ -149,11 +149,11 @@ def thermo_gas(temperature=298.15, pressure=1, multiplicity=1):
     H_vib = sum(partition_function(i * 100)[0] for i in real_vib_w_number)
     H_tot = (H_trans + H_rot + H_vib) / 1000 / 96.485 + E_zpe
 
-    print("+" + "-".center(55, "-") + "+")
-    print("|" + f"Thermo Correction for adsorbent".center(55, " ") + "|")
-    print("|" + f"Condition: T = {temperature:.2f} K, P = {pressure:.2f} atm, I = {multiplicity:2d}".center(55,
-                                                                                                            " ") + "|")
-    print("|" + "-".center(55, "-") + "|")
-    print("|" + f" Zero-point energy E_ZPE".ljust(30, " ") + f": {E_zpe:10.7f} eV".ljust(25, " ") + "|")
-    print("|" + f" Thermal correction to H(T)".ljust(30, " ") + f": {H_tot:10.7f} eV".ljust(25, " ") + "|")
-    print("+" + "-".center(55, "-") + "+")
+    print('+' + '-'.center(55, '-') + '+')
+    print('|' + f'Thermo Correction for adsorbent'.center(55, ' ') + '|')
+    print('|' + f'Condition: T = {temperature:.2f} K, P = {pressure:.2f} atm, I = {multiplicity:2d}'.center(55,
+                                                                                                            ' ') + '|')
+    print('|' + '-'.center(55, '-') + '|')
+    print('|' + f' Zero-point energy E_ZPE'.ljust(30, ' ') + f': {E_zpe:10.7f} eV'.ljust(25, ' ') + '|')
+    print('|' + f' Thermal correction to H(T)'.ljust(30, ' ') + f': {H_tot:10.7f} eV'.ljust(25, ' ') + '|')
+    print('+' + '-'.center(55, '-') + '+')

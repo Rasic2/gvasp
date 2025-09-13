@@ -13,7 +13,7 @@ def change_test_dir(request, monkeypatch):
 
 
 class TestPlotBand:
-    @change_dir("band_kpath")
+    @change_dir('band_kpath')
     def test_align(self, change_test_dir):
         plotter = PlotBand(ylim=[-5, 5], xticks=[])
         plotter.plot()
@@ -32,115 +32,115 @@ class TestPlotPES:
         energy = [0, -0.09, 0.75, 0.06, 0.26, -2.46, -1.02, -1.58]
 
         plotter = PlotPES(width=8, height=6)
-        plotter.plot(data=energy, color="#000000", text_type="solid")
+        plotter.plot(data=energy, color='#000000', text_type='solid')
 
         plotter.save()
 
     def test_pes_solid_curve(self):
         energy_1 = [0, -0.09, 0.75, 0.06, 0.26, -2.46, -1.02, -1.58]
-        label_1 = ["MS", "MS", "TS", "MS", "TS", "MS", "TS", "MS"]
+        label_1 = ['MS', 'MS', 'TS', 'MS', 'TS', 'MS', 'TS', 'MS']
 
         energy_2 = [None, None, None, None, None, -2.46, -0.95, -1.66]
-        label_2 = [None, None, None, None, None, "MS", "TS", "MS"]
+        label_2 = [None, None, None, None, None, 'MS', 'TS', 'MS']
 
         energy_3 = [0, None, None, 0.06, None, None, 0.39, -1.51]
-        label_3 = ["MS", None, None, "MS", None, None, "TS", "MS"]
+        label_3 = ['MS', None, None, 'MS', None, None, 'TS', 'MS']
 
         plotter = PlotPES(width=8, height=6)
-        plotter.plot(data=(energy_1, label_1), color="#000000", style="solid_curve")
-        plotter.plot(data=(energy_2, label_2), color="#ed0345", style="solid_curve")
-        plotter.plot(data=(energy_3, label_3), color="#A8F760", style="solid_curve")
+        plotter.plot(data=(energy_1, label_1), color='#000000', style='solid_curve')
+        plotter.plot(data=(energy_2, label_2), color='#ed0345', style='solid_curve')
+        plotter.plot(data=(energy_3, label_3), color='#A8F760', style='solid_curve')
 
         plotter.save()
 
 
 class TestPlotDOS(object):
-    selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760"}],
-                "1": [{"atoms": 81, "orbitals": ["s"], "color": "#ed0345"}]}
+    selector = {'0': [{'atoms': 78, 'orbitals': ['s'], 'color': '#098760'}],
+                '1': [{'atoms': 81, 'orbitals': ['s'], 'color': '#ed0345'}]}
 
-    dos_files = ["DOSCAR_N_doped_A_101_0e_Na", "DOSCAR_N_doped_A_101_0e_K"]
-    pos_files = ["CONTCAR_N_doped_A_101_0e_Na", "CONTCAR_N_doped_A_101_0e_K"]
+    dos_files = ['DOSCAR_N_doped_A_101_0e_Na', 'DOSCAR_N_doped_A_101_0e_K']
+    pos_files = ['CONTCAR_N_doped_A_101_0e_Na', 'CONTCAR_N_doped_A_101_0e_K']
 
-    @change_dir("dos")
+    @change_dir('dos')
     def test_align(self, change_test_dir):
-        poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(78, "s"), (81, "s")])
+        poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(78, 's'), (81, 's')])
         poster.plot(selector=self.selector)
         poster.save()
-        os.remove("figure.svg")
+        os.remove('figure.svg')
 
-    @change_dir("dos")
+    @change_dir('dos')
     def test_align_error(self, change_test_dir):
         with pytest.raises(TypeError):
-            poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(78,), (81, "s")])
+            poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(78,), (81, 's')])
             poster.plot(selector=self.selector)
 
-    @change_dir("dos")
+    @change_dir('dos')
     def test_align_warning(self, change_test_dir):
-        poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(81, "s")])
+        poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files, align=[(81, 's')])
         poster.plot(selector=self.selector)
 
-    @change_dir("dos")
+    @change_dir('dos')
     def test_method(self, change_test_dir):
         poster = PostDOS(dos_files=self.dos_files, pos_files=self.pos_files)
 
-        selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760", "method": "dash line"}]}
+        selector = {'0': [{'atoms': 78, 'orbitals': ['s'], 'color': '#098760', 'method': 'dash line'}]}
         poster.plot(selector=selector)
 
-        selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760", "method": "fill"}]}
+        selector = {'0': [{'atoms': 78, 'orbitals': ['s'], 'color': '#098760', 'method': 'fill'}]}
         poster.plot(selector=selector)
 
-        selector = {"0": [{"atoms": 78, "orbitals": ["s"], "color": "#098760", "method": "output"}]}
+        selector = {'0': [{'atoms': 78, 'orbitals': ['s'], 'color': '#098760', 'method': 'output'}]}
         poster.plot(selector=selector)
-        os.remove("DOS_F0_L0")
+        os.remove('DOS_F0_L0')
 
-    @change_dir("plot_center")
+    @change_dir('plot_center')
     def test_ispin(self, change_test_dir):
-        selector = {"0": [{"atoms": "Pt", "orbitals": ["s"], "color": "#ed0345", "method": "line"}]}
-        poster = PostDOS(dos_files=["DOSCAR_ispin"], pos_files=["CONTCAR_ispin"], ISPIN=1)
+        selector = {'0': [{'atoms': 'Pt', 'orbitals': ['s'], 'color': '#ed0345', 'method': 'line'}]}
+        poster = PostDOS(dos_files=['DOSCAR_ispin'], pos_files=['CONTCAR_ispin'], ISPIN=1)
         poster.plot(selector=selector)
 
-    @change_dir("plot_center")
+    @change_dir('plot_center')
     def test_center(self, change_test_dir):
         selector = {
-            "atoms": "Pt",
-            "orbitals": "d",
-            "xlim": [-15, 0]
+            'atoms': 'Pt',
+            'orbitals': 'd',
+            'xlim': [-15, 0]
         }
 
-        poster = PostDOS(dos_files=["DOSCAR"], pos_files=["CONTCAR"], LORBIT=10)
+        poster = PostDOS(dos_files=['DOSCAR'], pos_files=['CONTCAR'], LORBIT=10)
         poster.center(selector)
 
-    @change_dir("plot_center")
+    @change_dir('plot_center')
     def test_center_atoms_None(self, change_test_dir):
         selector = {
-            "orbitals": "d",
-            "xlim": [-15, 0]
+            'orbitals': 'd',
+            'xlim': [-15, 0]
         }
 
-        poster = PostDOS(dos_files=["DOSCAR"], pos_files=["CONTCAR"], LORBIT=10)
+        poster = PostDOS(dos_files=['DOSCAR'], pos_files=['CONTCAR'], LORBIT=10)
         poster.center(selector)
 
-    @change_dir("plot_center")
+    @change_dir('plot_center')
     def test_center_orbitals_None(self, change_test_dir):
         selector = {
-            "atoms": "Pt",
-            "xlim": [-15, 0]
+            'atoms': 'Pt',
+            'xlim': [-15, 0]
         }
 
-        poster = PostDOS(dos_files=["DOSCAR"], pos_files=["CONTCAR"], LORBIT=10)
+        poster = PostDOS(dos_files=['DOSCAR'], pos_files=['CONTCAR'], LORBIT=10)
         poster.center(selector)
 
-    @change_dir("plot_center")
+    @change_dir('plot_center')
     def test_center_ispin(self, change_test_dir):
         selector = {
-            "ispin": 1,
-            "atoms": "Pt",
-            "xlim": [-15, 0]
+            'ispin': 1,
+            'atoms': 'Pt',
+            'xlim': [-15, 0]
         }
 
-        poster = PostDOS(dos_files=["DOSCAR_ispin"], pos_files=["CONTCAR_ispin"], LORBIT=12)
+        poster = PostDOS(dos_files=['DOSCAR_ispin'], pos_files=['CONTCAR_ispin'], LORBIT=12)
         poster.center(selector)
 
 
 if __name__ == '__main__':
-    pytest.main([__file__, "-s"])
+    pytest.main([__file__, '-s'])

@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def interpolated_wrapper(func):
     @wraps(func)
     def wrapper(self):
-        DOSL_data = namedtuple("DOSL_data", ("energy", "up", "down"))
+        DOSL_data = namedtuple('DOSL_data', ('energy', 'up', 'down'))
         x_out, y_out = [], []
         for x, y, number, magnification in func(self):
             x_arr = np.array(x)
@@ -53,8 +53,8 @@ def interpolated_wrapper(func):
 
 class PostDOS(Figure):
 
-    def __init__(self, dos_files: list, pos_files: list, ISPIN=2, LORBIT=12, align=None, xlabel="Energy (eV)",
-                 ylabel="Density of States (a.u.)", **kargs):
+    def __init__(self, dos_files: list, pos_files: list, ISPIN=2, LORBIT=12, align=None, xlabel='Energy (eV)',
+                 ylabel='Density of States (a.u.)', **kargs):
         super(PostDOS, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
 
         self.managers = [DOSData(dos_file=dos_file, pos_file=pos_file, ISPIN=ISPIN, LORBIT=LORBIT) for
@@ -92,9 +92,9 @@ class PostDOS(Figure):
         # Align the DOS
         if self.align is not None:
             if len(self.align) == len(self.managers):
-                logger.info(" +" + "-".center(80, "-") + "+")
-                logger.info(" |" + f"Align DOS relative to the first system".center(80, " ") + "|")
-                logger.info(" |" + "-".center(80, "-") + "|")
+                logger.info(' +' + '-'.center(80, '-') + '+')
+                logger.info(' |' + f'Align DOS relative to the first system'.center(80, ' ') + '|')
+                logger.info(' |' + '-'.center(80, '-') + '|')
                 for index, item in enumerate(self.align):
                     if len(item) == 2:
                         if index == 0:
@@ -105,35 +105,35 @@ class PostDOS(Figure):
                         diff_extreme = current_extremes[0] - refer_extremes[0]
                         for dos_line in DOSdata[str(index)]:
                             dos_line.energy -= diff_extreme
-                        logger.info("|" + f" Align {index + 1}".center(10) + "|"
-                                    + f"atom: {item[0]} orbital: {item[1]}".center(24) + "|"
-                                    + f"ε_ref: {current_extremes[0]:.4f} eV".center(22)
-                                    + f"Δε: {diff_extreme:+.4f} eV".center(22) + "|")
+                        logger.info('|' + f' Align {index + 1}'.center(10) + '|'
+                                    + f'atom: {item[0]} orbital: {item[1]}'.center(24) + '|'
+                                    + f'ε_ref: {current_extremes[0]:.4f} eV'.center(22)
+                                    + f'Δε: {diff_extreme:+.4f} eV'.center(22) + '|')
                     else:
                         raise TypeError(f"<align> should specify the atom and orbital at the same time, e.g. (10, 's')")
 
-                logger.info("|" + "-".center(80, "-") + "|")
+                logger.info('|' + '-'.center(80, '-') + '|')
             else:
-                logger.warning(f"The number of `align` is not equal to that of the files, ignore it.")
+                logger.warning(f'The number of `align` is not equal to that of the files, ignore it.')
 
         for key in selector.keys():
             for index, line_argument in enumerate(selector[key]):
-                method = line_argument.get("method", "line")
-                label = line_argument.get("label", None)
+                method = line_argument.get('method', 'line')
+                label = line_argument.get('label', None)
                 DOSL_data = DOSdata[key][index]
                 if method == 'line':
-                    plt.plot(DOSL_data.energy, DOSL_data.up, color=line_argument.get("color"), label=label)
-                    plt.plot(DOSL_data.energy, DOSL_data.down, color=line_argument.get("color"))
+                    plt.plot(DOSL_data.energy, DOSL_data.up, color=line_argument.get('color'), label=label)
+                    plt.plot(DOSL_data.energy, DOSL_data.down, color=line_argument.get('color'))
                 elif method == 'dash line':
-                    plt.plot(DOSL_data.energy, DOSL_data.up, '--', color=line_argument.get("color"))
-                    plt.plot(DOSL_data.energy, DOSL_data.down, '--', color=line_argument.get("color"))
+                    plt.plot(DOSL_data.energy, DOSL_data.up, '--', color=line_argument.get('color'))
+                    plt.plot(DOSL_data.energy, DOSL_data.down, '--', color=line_argument.get('color'))
                 elif method == 'fill':
-                    plt.fill_between(DOSL_data.energy, DOSL_data.up, DOSL_data.down, color=line_argument.get("color"),
-                                     alpha=line_argument.get("alpha", 1.))
+                    plt.fill_between(DOSL_data.energy, DOSL_data.up, DOSL_data.down, color=line_argument.get('color'),
+                                     alpha=line_argument.get('alpha', 1.))
                 elif method == 'output':
                     DOSL_ndata = np.array([DOSL_data.energy, DOSL_data.up, DOSL_data.down]).transpose((1, 0))
-                    np.savetxt(f"DOS_F{key}_L{index}", DOSL_ndata, fmt='%.6e', delimiter="\t",
-                               header="energy, up, down")
+                    np.savetxt(f'DOS_F{key}_L{index}', DOSL_ndata, fmt='%.6e', delimiter='\t',
+                               header='energy, up, down')
 
     def center(self, selector: dict):
         """Calculate Band-Center Value"""
@@ -143,18 +143,18 @@ class PostDOS(Figure):
         total_dos = manager.total_dos
         atom_list = manager.atom_list
 
-        atoms = identify_atoms(selector.get("atoms", None), elements)
-        orbitals = selector.get("orbitals", None)
-        xlim = selector["xlim"]
+        atoms = identify_atoms(selector.get('atoms', None), elements)
+        orbitals = selector.get('orbitals', None)
+        xlim = selector['xlim']
 
         y = 0
         rang = (total_dos.index.values < xlim[1]) & (total_dos.index.values > xlim[0])
         if len(atoms) == len(elements) - 1 and orbitals is None:
-            orbitals = "All"
+            orbitals = 'All'
             y += total_dos.loc[rang, 'tot_up']
             y -= total_dos.loc[rang, 'tot_down']
         elif orbitals is None:
-            orbitals = "All"
+            orbitals = 'All'
             for atom in atoms:
                 y += atom_list[atom].loc[rang, 'up']
                 y -= atom_list[atom].loc[rang, 'down']
@@ -168,29 +168,29 @@ class PostDOS(Figure):
         dos = simps([a * b for a, b in zip(y.values, y.index.values)], y.index.values)
 
         # format atoms output
-        format_atoms = ""
-        loop_atoms = ""
+        format_atoms = ''
+        loop_atoms = ''
         for index, atom in enumerate(atoms):
-            loop_atoms += f"{atom} "
+            loop_atoms += f'{atom} '
             if len(loop_atoms) == 36 or index == len(atoms) - 1:
-                loop_atoms = loop_atoms.ljust(38) + "|"
-                loop_atoms += "\n"
+                loop_atoms = loop_atoms.ljust(38) + '|'
+                loop_atoms += '\n'
                 format_atoms += loop_atoms
                 if index != len(atoms) - 1:
-                    format_atoms += "| ".ljust(18)
+                    format_atoms += '| '.ljust(18)
                 else:
-                    format_atoms += "| ".ljust(56) + "|"
-                loop_atoms = ""
+                    format_atoms += '| '.ljust(56) + '|'
+                loop_atoms = ''
 
-        print("+" + "-".center(55, "-") + "+")
-        print("|" + f"Band-Center Calculation".center(55, " ") + "|")
-        print("|" + "-".center(55, "-") + "|")
-        print(f"| Selected Atoms: {format_atoms}")
-        print(f"| Selected Orbitals: {orbitals}".ljust(56, ) + "|")
-        print(f"| Energy Range: {xlim}".ljust(56, ) + "|")
-        print(f"| Number of Electrons: {e_count:.4f}".ljust(56, ) + "|")
-        print(f"| Center Value: {dos / e_count:.4f}".ljust(56, ) + "|")
-        print("+" + "-".center(55, "-") + "+")
+        print('+' + '-'.center(55, '-') + '+')
+        print('|' + f'Band-Center Calculation'.center(55, ' ') + '|')
+        print('|' + '-'.center(55, '-') + '|')
+        print(f'| Selected Atoms: {format_atoms}')
+        print(f'| Selected Orbitals: {orbitals}'.ljust(56, ) + '|')
+        print(f'| Energy Range: {xlim}'.ljust(56, ) + '|')
+        print(f'| Number of Electrons: {e_count:.4f}'.ljust(56, ) + '|')
+        print(f'| Center Value: {dos / e_count:.4f}'.ljust(56, ) + '|')
+        print('+' + '-'.center(55, '-') + '+')
 
 
 class DOSData():
@@ -271,7 +271,7 @@ class DOSData():
                 self.atoms = list(set(self.atoms) - set(self.exclude))
             return LDOS_data(self)
         else:
-            raise ValueError(f"The format of {self.atoms} is not correct!")
+            raise ValueError(f'The format of {self.atoms} is not correct!')
 
     @staticmethod
     def parse_contcar(name):
@@ -306,39 +306,39 @@ class DOSData():
 
 
 class PlotOpt(Figure):
-    def __init__(self, name="OUTCAR", width=16, title="Structure Optimization", xlabel="Steps", **kargs):
+    def __init__(self, name='OUTCAR', width=16, title='Structure Optimization', xlabel='Steps', **kargs):
         super(PlotOpt, self).__init__(width=width, title=title, xlabel=xlabel, **kargs)
         self.name = name
         outcar = OUTCAR(name=self.name)
         self.energy = outcar.energy
         self.force = outcar.force
 
-    def plot(self, color=("#ed0345", "#009734")):
+    def plot(self, color=('#ed0345', '#009734')):
         self._plot_energy(color=color[0])
         self._plot_force(color=color[1])
 
     @plot_wrapper
     def _plot_energy(self, color):
         plt.subplot(121)
-        plt.plot(self.energy, "-o", color=color)
+        plt.plot(self.energy, '-o', color=color)
 
     @plot_wrapper
     def _plot_force(self, color):
         plt.subplot(122)
-        plt.plot(self.force, "-o", color=color)
+        plt.plot(self.force, '-o', color=color)
 
 
 class PlotBand(Figure):
-    def __init__(self, name="EIGENVAL", type="EIGENVAL", title='Band Structure', **kwargs):
+    def __init__(self, name='EIGENVAL', type='EIGENVAL', title='Band Structure', **kwargs):
         self.name = name
         self.type = type
-        if self.type == "EIGENVAL":
+        if self.type == 'EIGENVAL':
             eigenval = EIGENVAL(self.name)
             self.energy, self.kcoord, self.klabel = eigenval.energy, eigenval.KPoint_dist, eigenval.KPoint_label
             self.pticks, self.plabel = list(
                 map(list, zip(*[(self.kcoord[index], self.klabel[index]) for index, label in enumerate(self.klabel) if
                                 len(label)])))
-        elif self.type == "OUTCAR":
+        elif self.type == 'OUTCAR':
             energy = OUTCAR(self.name).band_info
             self.energy = np.concatenate((energy.up[:, :, np.newaxis], energy.down[:, :, np.newaxis]), axis=2)
             self.energy = self.energy.transpose((1, 0, 2))
@@ -346,24 +346,24 @@ class PlotBand(Figure):
         super(PlotBand, self).__init__(title=title, xlim=[self.kcoord[0], self.kcoord[-1]], **kwargs)
 
         try:
-            self.fermi = OUTCAR("OUTCAR").fermi
+            self.fermi = OUTCAR('OUTCAR').fermi
         except FileNotFoundError:
-            logger.warning("`OUTCAR` not found, set E-fermi=0.0")
+            logger.warning('`OUTCAR` not found, set E-fermi=0.0')
             self.fermi = 0.
 
-    @plot_wrapper(type="PlotBand")
+    @plot_wrapper(type='PlotBand')
     def plot(self):
         """
         Plot Band Structure, for spin-system, the average energy was applied
         """
         energy_avg = self.energy.mean(axis=-1) - self.fermi
         for band_index in range(energy_avg.shape[1]):
-            plt.plot(self.kcoord, energy_avg[:, band_index], "-o")
+            plt.plot(self.kcoord, energy_avg[:, band_index], '-o')
 
         for line in self.pticks:
             if line == 0. or line == self.kcoord[-1]:
                 continue
-            plt.vlines(line, ymin=self.ylim[0], ymax=self.ylim[1], linestyles="dashed", linewidth=2)
+            plt.vlines(line, ymin=self.ylim[0], ymax=self.ylim[1], linestyles='dashed', linewidth=2)
 
         plt.xticks(ticks=self.pticks, labels=self.plabel, fontsize=self.fontsize)
 
@@ -372,12 +372,12 @@ class PlotEPotential(Figure):
     def __init__(self, direction='z', output=True, title='Local Potential', xlabel='Position (Å)', ylabel='Energy (eV)',
                  **kargs):
         super(PlotEPotential, self).__init__(title=title, xlabel=xlabel, ylabel=ylabel, **kargs)
-        self.lpotential = LOCPOT(name="LOCPOT").line_potential(direction=direction)
+        self.lpotential = LOCPOT(name='LOCPOT').line_potential(direction=direction)
 
         if output:
             pos, value = self.lpotential
             lpotential2col = np.concatenate((pos.reshape(-1, 1), value.reshape(-1, 1)), axis=1)
-            np.savetxt("VLINE", lpotential2col, fmt='%.6f', delimiter="\t")
+            np.savetxt('VLINE', lpotential2col, fmt='%.6f', delimiter='\t')
 
     @plot_wrapper
     def plot(self):
@@ -390,7 +390,7 @@ class PlotEPotential(Figure):
 class PlotCCD(Figure):
     def __init__(self, direction='z', xlabel='Position along z-axis (Å)', ylabel='Charge density (e/Å)', **kargs):
         super(PlotCCD, self).__init__(xlabel=xlabel, ylabel=ylabel, **kargs)
-        self.lpotential = CHGCAR_diff(name="CHGCAR_diff").line_potential(direction=direction)
+        self.lpotential = CHGCAR_diff(name='CHGCAR_diff').line_potential(direction=direction)
 
     @plot_wrapper
     def plot(self):
@@ -412,10 +412,10 @@ class PESData(object):
     def __init__(self, data):
         self.data = data
 
-    def __call__(self, style="solid_dash"):
-        if style == "solid_dash":
+    def __call__(self, style='solid_dash'):
+        if style == 'solid_dash':
             self.solid_x, self.solid_y, self.dash_x, self.dash_y = self.convert_sd()
-        elif style == "solid_curve":
+        elif style == 'solid_curve':
             self.solid_x_1, self.solid_y_1, self.solid_x_2, self.solid_y_2, self.pchip_x, self.pchip_y = self.convert_sc()
         return self
 
@@ -452,18 +452,18 @@ class PESData(object):
             pchip_y: y position in tri-tuple format of pchip-type line (MS-TS-MS)
         """
         energies, labels = self.data
-        solid_x_1 = [[0.75 + 2 * i, 1.25 + 2 * i] for i, label in enumerate(labels) if label != "TS"]
-        solid_y_1 = [[energy, energy] for energy, label in zip(energies, labels) if label != "TS"]
+        solid_x_1 = [[0.75 + 2 * i, 1.25 + 2 * i] for i, label in enumerate(labels) if label != 'TS']
+        solid_y_1 = [[energy, energy] for energy, label in zip(energies, labels) if label != 'TS']
 
         solid_i_2 = [i for i, item in enumerate(energies) if item is not None]  # locate non-None index
         solid_i_2 = [[i1, i2] for i1, i2 in zip(solid_i_2[:-1], solid_i_2[1:]) if
-                     labels[i1] != "TS" and labels[i2] != "TS"]
+                     labels[i1] != 'TS' and labels[i2] != 'TS']
         solid_x_2 = [[1.25 + 2 * i1, 0.75 + 2 * i2] for i1, i2 in solid_i_2]
         solid_y_2 = [[energies[i1], energies[i2]] for i1, i2 in solid_i_2]
 
         pchip_i = [i for i, item in enumerate(energies) if item is not None]  # locate non-None index
         pchip_i = [[i1, i2, i3] for i1, i2, i3 in zip(pchip_i[:-2], pchip_i[1:-1], pchip_i[2:]) if
-                   labels[i1] == "MS" and labels[i2] == "TS" and labels[i3] == "MS"]
+                   labels[i1] == 'MS' and labels[i2] == 'TS' and labels[i3] == 'MS']
         pchip_x = [[1.25 + 2 * i1, 1 + 2 * i2, 0.75 + 2 * i3] for i1, i2, i3 in pchip_i]
         pchip_y = [[energies[i1], energies[i2], energies[i3]] for i1, i2, i3 in pchip_i]
         return solid_x_1, solid_y_1, solid_x_2, solid_y_2, pchip_x, pchip_y
@@ -481,7 +481,7 @@ class PlotPES(Figure):
         add_text:   auxiliary func, add text
     """
 
-    def __init__(self, width=15.6, height=4, weight='bold', xlabel="Reaction coordinate", ylabel="Energy (eV)",
+    def __init__(self, width=15.6, height=4, weight='bold', xlabel='Reaction coordinate', ylabel='Energy (eV)',
                  xticks=[], bwidth=3, **kargs):
         super(PlotPES, self).__init__(width=width, height=height, weight=weight, xlabel=xlabel, ylabel=ylabel,
                                       xticks=xticks, bwidth=bwidth, **kargs)
@@ -504,7 +504,7 @@ class PlotPES(Figure):
         self.texts[color].append(Text(self, x, y, text, color))
 
     @plot_wrapper
-    def plot(self, data, color, text_type=None, style="solid_dash", legend=None):
+    def plot(self, data, color, text_type=None, style='solid_dash', legend=None):
         """
         Main plot func of <PlotPES class>
 
@@ -517,26 +517,26 @@ class PlotPES(Figure):
         """
         data = PESData(data)(style=style)
 
-        if style == "solid_dash":
+        if style == 'solid_dash':
             self._plot_solid_dash(data, color, text_type=text_type)
-        elif style == "solid_curve":
+        elif style == 'solid_curve':
             self._plot_solid_curve(data, color)
         else:
-            raise NotImplementedError("style should be `solid_dash` or `solid_curve`")
+            raise NotImplementedError('style should be `solid_dash` or `solid_curve`')
 
         if legend is not None:
-            plt.plot(legend[0], legend[1], color=color, label=rf"{legend[2]}")
+            plt.plot(legend[0], legend[1], color=color, label=rf'{legend[2]}')
 
     def _plot_solid_dash(self, data, color, text_type):
         for x, y in zip(data.solid_x, data.solid_y):
             self.add_solid(5, x, y, color)
             if y[0] is not None:
-                self.add_text(x, [yi + 0.1 for yi in y], '{:.2f}'.format(y[1]), color) if text_type in ["all",
-                                                                                                        "solid"] else 0
+                self.add_text(x, [yi + 0.1 for yi in y], '{:.2f}'.format(y[1]), color) if text_type in ['all',
+                                                                                                        'solid'] else 0
 
         for x, y in zip(data.dash_x, data.dash_y):
             self.add_dash(1.5, x, y, color)
-            self.add_text(x, y, '{:.2f}'.format(abs(y[1] - y[0])), color) if text_type in ["all", "dash"] else 0
+            self.add_text(x, y, '{:.2f}'.format(abs(y[1] - y[0])), color) if text_type in ['all', 'dash'] else 0
 
     def _plot_solid_curve(self, data, color):
         for x, y in zip(data.solid_x_1, data.solid_y_1):
@@ -551,19 +551,19 @@ class PlotPES(Figure):
 
 class PlotNEB(Figure):
 
-    def __init__(self, xlabel="Distance (Å)", ylabel="Energy (eV)", width=10, **kargs):
+    def __init__(self, xlabel='Distance (Å)', ylabel='Energy (eV)', width=10, **kargs):
         super(PlotNEB, self).__init__(xlabel=xlabel, ylabel=ylabel, width=width, **kargs)
 
     @plot_wrapper
-    def plot(self, color="#ed0345", workdir=None):
+    def plot(self, color='#ed0345', workdir=None):
         neb_dirs = NEBTask._search_neb_dir(workdir)
         dists = []
         energy = []
         ini_energy = 0.
         for image in neb_dirs:
-            posfile = "CONTCAR" if Path(f"{image}/CONTCAR").exists() else "POSCAR"
-            outcar = OUTCAR(f"{image}/OUTCAR")
-            structure = POSCAR(f"{image}/{posfile}").structure
+            posfile = 'CONTCAR' if Path(f'{image}/CONTCAR').exists() else 'POSCAR'
+            outcar = OUTCAR(f'{image}/OUTCAR')
+            structure = POSCAR(f'{image}/{posfile}').structure
             if not int(image.stem):
                 ini_energy = outcar.last_energy
                 ini_structure = structure
@@ -571,5 +571,5 @@ class PlotNEB(Figure):
             dists.append(Structure.dist(structure, ini_structure))
             energy.append(outcar.last_energy - ini_energy)
 
-        plt.plot(dists, energy, "o")
+        plt.plot(dists, energy, 'o')
         PchipLine(x=dists, y=energy, color=color, linewidth=2)()

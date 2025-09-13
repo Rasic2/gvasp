@@ -10,9 +10,9 @@ def change_dir(directory):
     def inner(func):
         @wraps(func)
         def wrapper(self, *args, **kargs):
-            os.chdir(f"{Path(RootDir).parent}/tests/{directory}")
+            os.chdir(f'{Path(RootDir).parent}/tests/{directory}')
             func(self, *args, **kargs)
-            os.chdir("../")
+            os.chdir('../')
 
         return wrapper
 

@@ -34,22 +34,22 @@ def get_HOME() -> Path:
 
 
 def get_HIGH_SYM():
-    if Path("KPATH.in").exists():
+    if Path('KPATH.in').exists():
         from gvasp.common.file import KPATHIN
 
-        kpath_in = KPATHIN("KPATH.in")
+        kpath_in = KPATHIN('KPATH.in')
         return kpath_in.high_sym
     else:
-        return {"G": [0.00000, 0.00000, 0.00000],
-                "Z": [0.00000, 0.00000, 0.50000],
-                "X": [0.00000, 0.50000, 0.00000],
-                "R": [0.00000, 0.50000, 0.50000],
-                "K": [1 / 3, 1 / 3, 0.00000],
-                "H": [1 / 3, 1 / 3, 0.5],
-                "HM": [0.50000, 0.00000, 0.00000],
-                "L": [0.50000, 0.00000, 0.50000],
-                "M": [0.50000, 0.50000, 0.00000],
-                "A": [0.50000, 0.50000, 0.50000]}
+        return {'G': [0.00000, 0.00000, 0.00000],
+                'Z': [0.00000, 0.00000, 0.50000],
+                'X': [0.00000, 0.50000, 0.00000],
+                'R': [0.00000, 0.50000, 0.50000],
+                'K': [1 / 3, 1 / 3, 0.00000],
+                'H': [1 / 3, 1 / 3, 0.5],
+                'HM': [0.50000, 0.00000, 0.00000],
+                'L': [0.50000, 0.00000, 0.50000],
+                'M': [0.50000, 0.50000, 0.00000],
+                'A': [0.50000, 0.50000, 0.50000]}
 
 
 def identify_atoms(atoms, elements):
@@ -68,7 +68,7 @@ def identify_atoms(atoms, elements):
             if '-' in item:
                 slice_atoms = [int(item) for item in item.split('-')]
                 if slice_atoms[1] >= len(elements):
-                    logger.error(f"The end index `{slice_atoms[1]}` > atoms count ({len(elements) - 1})")
+                    logger.error(f'The end index `{slice_atoms[1]}` > atoms count ({len(elements) - 1})')
                     exit(1)
                 inner_atoms += list(range(slice_atoms[0], slice_atoms[1] + 1, 1))
             else:
@@ -77,11 +77,11 @@ def identify_atoms(atoms, elements):
                     logger.warning(f"Atoms don't have <Element {item}>, ignore it!")
                 inner_atoms += element_atoms
         else:
-            raise TypeError(f"The format of {atoms} is not correct!")
+            raise TypeError(f'The format of {atoms} is not correct!')
 
     set_atoms = set(inner_atoms)
     if len(inner_atoms) != len(set_atoms):
-        logger.warning("The specification of atoms have repeat items, we will only use once for it!")
+        logger.warning('The specification of atoms have repeat items, we will only use once for it!')
 
     return list(set_atoms)
 
@@ -147,4 +147,4 @@ def str_list(_list):
     """
     Transform the list to strings with \s delimiter, e.g. [1, 2, 3] => 1 2 3
     """
-    return " ".join(map(str, _list))
+    return ' '.join(map(str, _list))

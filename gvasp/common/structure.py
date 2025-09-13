@@ -48,14 +48,14 @@ class Structure(object):
         return self.lattice == other.lattice and self.atoms == other.atoms
 
     def __repr__(self):
-        return f"------------------------------------------------------------\n" \
-               f"<Structure>                                                 \n" \
-               f"-Lattice-                                                   \n" \
-               f"{self.lattice.matrix}                                       \n" \
-               f"-Atoms-                                                     \n" \
-               f"{self.atoms}                                                \n" \
-               f"------------------------------------------------------------" \
-            if self.lattice is not None else f"<Structure object>"
+        return f'------------------------------------------------------------\n' \
+               f'<Structure>                                                 \n' \
+               f'-Lattice-                                                   \n' \
+               f'{self.lattice.matrix}                                       \n' \
+               f'-Atoms-                                                     \n' \
+               f'{self.atoms}                                                \n' \
+               f'------------------------------------------------------------' \
+            if self.lattice is not None else f'<Structure object>'
 
     @staticmethod
     def dist(structure1, structure2):
@@ -98,7 +98,7 @@ class Structure(object):
                         atom_j_image = Atom(formula=atom_j.formula, frac_coord=atom_j.frac_coord + image).set_coord(
                             lattice=structure2.lattice)
                         distance = np.linalg.norm(atom_j_image.cart_coord - atom_i.cart_coord)
-                        logger.debug(f"distance={distance}")
+                        logger.debug(f'distance={distance}')
                         if distance <= tolerance:
                             distances_candidate.append((atom_j, distance))
                 if len(distances_candidate):
@@ -152,7 +152,7 @@ class Structure(object):
                 atom_j_image = Atom(formula=atom_j.formula, frac_coord=atom_j.frac_coord + image).set_coord(
                     lattice=self.lattice)
                 distance = np.linalg.norm(atom_j_image.cart_coord - atom_i.cart_coord)
-                logger.debug(f"distance={distance}")
+                logger.debug(f'distance={distance}')
                 if f'Element {atom_j.formula}' in atom_i._default_bonds.keys() \
                         and distance <= atom_i._default_bonds[f'Element {atom_j.formula}'] * 1.1:
                     neighbour_table_i.append((atom_j, distance, (atom_j_image.cart_coord - atom_i.cart_coord), 1))
@@ -175,7 +175,7 @@ class Structure(object):
             new_atoms.append(atom_i)
 
         self.atoms = Atoms.from_list(new_atoms)
-        setattr(self, "neighbour_table", neighbour_table)
+        setattr(self, 'neighbour_table', neighbour_table)
 
         return self
 
@@ -185,11 +185,11 @@ class Structure(object):
         if dist[np.where(dist <= cutoff)].size:
             raise StructureOverlapError(f"Exist atoms' distance <= {cutoff}, please check")
         else:
-            logger.info("No structure overlap occurrence")
+            logger.info('No structure overlap occurrence')
 
     @staticmethod
     def from_POSCAR(name):
-        logger.debug(f"Handle the {name}")
+        logger.debug(f'Handle the {name}')
         with open(name) as f:
             cfg = f.readlines()
         lattice = Lattice.from_string(cfg[2:5])
@@ -197,7 +197,7 @@ class Structure(object):
         formula = [(name, int(count)) for name, count in zip(cfg[5].split(), cfg[6].split())]
         formula = sum([[formula] * count for (formula, count) in formula], [])
 
-        selective = cfg[7].lower()[0] == "s"
+        selective = cfg[7].lower()[0] == 's'
         coor_type_index = 8 if selective else 7
 
         coor_type = cfg[coor_type_index].rstrip()
@@ -205,8 +205,8 @@ class Structure(object):
             [[float(item) for item in coor.split()[:3]] for coor in
              cfg[coor_type_index + 1:coor_type_index + 1 + len(formula)]])
 
-        frac_coord = coords if coor_type.lower()[0] == "d" else None
-        cart_coord = coords if coor_type.lower()[0] == "c" else None
+        frac_coord = coords if coor_type.lower()[0] == 'd' else None
+        cart_coord = coords if coor_type.lower()[0] == 'c' else None
         selective_matrix = np.array(
             list([item.split()[3:6] for item in
                   cfg[coor_type_index + 1:coor_type_index + 1 + len(formula)]])) if selective else None
@@ -218,12 +218,12 @@ class Structure(object):
 
     @staticmethod
     def from_cell(name):
-        logger.debug(f"Handle the {name}")
-        with open(name, "r") as f:
+        logger.debug(f'Handle the {name}')
+        with open(name, 'r') as f:
             strings = f.readlines()
 
-        lattice_index = [index for index, line in enumerate(strings) if line.find("LATTICE_CART") != -1]
-        atom_index = [index for index, line in enumerate(strings) if line.find("POSITIONS_FRAC") != -1]
+        lattice_index = [index for index, line in enumerate(strings) if line.find('LATTICE_CART') != -1]
+        atom_index = [index for index, line in enumerate(strings) if line.find('POSITIONS_FRAC') != -1]
         lattice = Lattice.from_string(strings[lattice_index[0] + 1:lattice_index[1]])
         atom = [(line.split()[0], line.split()[1:]) for line in strings[atom_index[0] + 1:atom_index[1]]]
         formula, frac_coord = list(map(list, zip(*atom)))
@@ -233,7 +233,7 @@ class Structure(object):
         return Structure(atoms=atoms, lattice=lattice)
 
     @staticmethod
-    def from_structure(structure, coord, type="cart"):
+    def from_structure(structure, coord, type='cart'):
         """
         Generate the Structure instance from original structure with changing its atoms' coord
 
@@ -246,48 +246,48 @@ class Structure(object):
 
         """
         atoms = copy.deepcopy(structure.atoms)
-        if type == "cart":
+        if type == 'cart':
             atoms.frac_coord = [None] * len(atoms)
             atoms.cart_coord = coord
-        elif type == "frac":
+        elif type == 'frac':
             atoms.cart_coord = [None] * len(atoms)
             atoms.frac_coord = coord
         else:
-            raise TypeError(f"{type} not supported, should be `cart` or `frac`")
+            raise TypeError(f'{type} not supported, should be `cart` or `frac`')
         atoms.set_coord(structure.lattice)
         return Structure(atoms=atoms, lattice=structure.lattice)
 
     def write_POSCAR(self, name, title=None, factor=1.0):
-        title = title if title is not None else "AutoGenerated"
+        title = title if title is not None else 'AutoGenerated'
         lattice = self.lattice.strings
         elements = [(key, str(len(list(value)))) for key, value in itertools.groupby(self.atoms.formula)]
         element_name, element_count = list(map(list, zip(*elements)))
-        element_name, element_count = " ".join(element_name), " ".join(element_count)
-        selective = None not in getattr(self.atoms, "selective_matrix")
-        coords = "\n".join([" ".join([f"{item:15.12f}" for item in atom.frac_coord]) for atom in self.atoms])
+        element_name, element_count = ' '.join(element_name), ' '.join(element_count)
+        selective = None not in getattr(self.atoms, 'selective_matrix')
+        coords = '\n'.join([' '.join([f'{item:15.12f}' for item in atom.frac_coord]) for atom in self.atoms])
         if selective:
-            coords = "".join([coord + "\t" + "   ".join(selective_matrix) + "\n" for coord, selective_matrix in
-                              zip(coords.split("\n"), self.atoms.selective_matrix)])
+            coords = ''.join([coord + '\t' + '   '.join(selective_matrix) + '\n' for coord, selective_matrix in
+                              zip(coords.split('\n'), self.atoms.selective_matrix)])
 
-        with open(name, "w") as f:
-            f.write(f"{title}\n")
-            f.write(f"{factor}\n")
+        with open(name, 'w') as f:
+            f.write(f'{title}\n')
+            f.write(f'{factor}\n')
             f.write(lattice)
-            f.write(f"{element_name}\n")
-            f.write(f"{element_count}\n")
+            f.write(f'{element_name}\n')
+            f.write(f'{element_count}\n')
             if selective:
-                f.write("Selective Dynamics\n")
-            f.write("Direct\n")
+                f.write('Selective Dynamics\n')
+            f.write('Direct\n')
             f.write(coords)
-            f.write("\n\n")
+            f.write('\n\n')
 
-        logger.debug(f"{name} write finished!")
+        logger.debug(f'{name} write finished!')
 
 
 class NeighbourTable(defaultdict):
 
     def __repr__(self):
-        return " ".join([f"{key} <---> <{value[0]}> \n" for key, value in self.items()])
+        return ' '.join([f'{key} <---> <{value[0]}> \n' for key, value in self.items()])
 
     @property
     def index(self):  # adj_matrix

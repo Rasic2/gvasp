@@ -33,7 +33,7 @@ class Lattice(object):
         return hash(self.volume)
 
     def __repr__(self):
-        return f"{self.matrix}"
+        return f'{self.matrix}'
 
     @property
     def strings(self) -> str:
@@ -43,7 +43,7 @@ class Lattice(object):
         Returns:
             strings (str): Lattice instance in string format
         """
-        return "".join([" ".join([f"{ii:>9.6f}" for ii in item]) + "\n" for item in self.matrix])
+        return ''.join([' '.join([f'{ii:>9.6f}' for ii in item]) + '\n' for item in self.matrix])
 
     @property
     def length(self) -> np.ndarray:
@@ -172,7 +172,7 @@ class  Atom(object):
         __initialize_attrs(self): initialize the attributes from the element.yaml
     """
 
-    _config_file = Path(f"{RootDir}/element.yaml")
+    _config_file = Path(f'{RootDir}/element.yaml')
     _attributes_yaml = ['number', '_default_bonds']
     _load = False
     _attrs = None
@@ -214,7 +214,7 @@ class  Atom(object):
         return hash(self.number) + hash(str(self.order))
 
     def __repr__(self):
-        return f"(Atom {self.order} : {self.formula} : {self.cart_coord})"
+        return f'(Atom {self.order} : {self.formula} : {self.cart_coord})'
 
     @classmethod
     def __load_config(cls):
@@ -237,7 +237,7 @@ class  Atom(object):
     @property
     def atom_type(self):
         """register atom_type property"""
-        return f"{self.formula}{self.coordination_number}c"
+        return f'{self.formula}{self.coordination_number}c'
 
     def set_coord(self, lattice: Lattice):
         """
@@ -268,14 +268,14 @@ class  Atom(object):
         """
 
         if not isinstance(atom_i, Atom) or not isinstance(atom_j, Atom):
-            SystemError("The parameters should be <class Atom>!")
+            SystemError('The parameters should be <class Atom>!')
 
         return search_image_bind(atom_i.frac_coord, atom_j.frac_coord)
 
     @staticmethod
     def distance(atom_i, atom_j, lattice: Lattice):
         if not isinstance(atom_i, Atom) or not isinstance(atom_j, Atom):
-            raise TypeError(f"{atom_i} and {atom_j} should be <class Atom>")
+            raise TypeError(f'{atom_i} and {atom_j} should be <class Atom>')
 
         image = Atom.search_image(atom_i, atom_j)
         atom_j_image = copy.deepcopy(atom_j)
@@ -328,9 +328,9 @@ class Atoms(Atom):
         return len(self.formula)
 
     def __repr__(self):
-        string = ""
+        string = ''
         for order, formula, cart_coord in zip(self.order, self.formula, self.cart_coord):
-            string += f"(Atom {order} : {formula} : {cart_coord}) \n"
+            string += f'(Atom {order} : {formula} : {cart_coord}) \n'
         return string
 
     def __iter__(self):
@@ -395,7 +395,7 @@ class Atoms(Atom):
 
     @property
     def atom_type(self):  # override this property
-        return [f"{atom.formula}{atom.coordination_number}c" for atom in self]
+        return [f'{atom.formula}{atom.coordination_number}c' for atom in self]
 
     def set_coord(self, lattice: Lattice):  # overwrite this method
         assert lattice is not None
@@ -449,7 +449,7 @@ class Atoms(Atom):
         perturb_item = perturb_matrix + random_normal
 
         # resolve fix_atom
-        fix_item = np.where(self.selective_matrix == "F", 0, 1)
+        fix_item = np.where(self.selective_matrix == 'F', 0, 1)
         perturb_item = perturb_item * fix_item
 
         self.cart_coord = self.cart_coord + perturb_item

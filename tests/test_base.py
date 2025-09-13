@@ -6,7 +6,7 @@ import pytest
 from gvasp.common.file import CONTCAR
 from gvasp.common.base import Lattice
 
-logger = logging.getLogger("TestLogger")
+logger = logging.getLogger('TestLogger')
 
 
 class TestLattice(object):
@@ -17,12 +17,12 @@ class TestLattice(object):
         logger.info(lattice)
 
     def test_from_POSCAR(self):
-        Lattice.from_POSCAR("CONTCAR")
+        Lattice.from_POSCAR('CONTCAR')
 
 
 class TestAtom(object):
-    atom_1 = CONTCAR("CONTCAR").structure.atoms[0]
-    atom_2 = CONTCAR("CONTCAR").structure.atoms[1]
+    atom_1 = CONTCAR('CONTCAR').structure.atoms[0]
+    atom_2 = CONTCAR('CONTCAR').structure.atoms[1]
 
     def test_lt(self):
         logger.info(self.atom_1 < self.atom_2)
@@ -38,7 +38,7 @@ class TestAtom(object):
 
 
 class TestAtoms(object):
-    structure = CONTCAR("CONTCAR").structure
+    structure = CONTCAR('CONTCAR').structure
     atoms = structure.atoms
 
     def test_repr(self):

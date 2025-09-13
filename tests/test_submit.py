@@ -12,9 +12,9 @@ from gvasp.common.task import OptTask, ChargeTask, DOSTask, FreqTask, MDTask, ST
 def file_cleaner(func):
     def wrapper(self, *args, **kargs):
         func(self, *args, **kargs)
-        os.remove("INCAR")
-        os.remove("KPOINTS")
-        os.remove("POTCAR")
+        os.remove('INCAR')
+        os.remove('KPOINTS')
+        os.remove('POTCAR')
 
     return wrapper
 
@@ -32,15 +32,15 @@ class TestSubmitTask(object):
     def test_chg(self):
         task = ChargeTask()
         task.generate(vdw=True, sol=True, continuous=True)
-        os.chdir("../")
-        shutil.rmtree("chg_cal")
+        os.chdir('../')
+        shutil.rmtree('chg_cal')
 
     @file_cleaner
     def test_band(self):
         task = BandTask()
         task.generate(vdw=True, sol=True, continuous=True)
-        os.chdir("../")
-        shutil.rmtree("band_cal")
+        os.chdir('../')
+        shutil.rmtree('band_cal')
 
     @file_cleaner
     def test_wf(self):
@@ -84,18 +84,18 @@ class TestSubmitTask(object):
 
     @file_cleaner
     def test_neb_linear(self):
-        task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
-                       fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
-        task.generate(method="linear", vdw=True, sol=True)
+        task = NEBTask(ini_poscar=f'{Path(RootDir).parent}/tests/POSCAR_IS_sort',
+                       fni_poscar=f'{Path(RootDir).parent}/tests/POSCAR_FS_sort', images=4)
+        task.generate(method='linear', vdw=True, sol=True)
 
         for dir in NEBTask._search_neb_dir():
             shutil.rmtree(dir)
 
     @file_cleaner
     def test_neb_idpp(self):
-        task = NEBTask(ini_poscar=f"{Path(RootDir).parent}/tests/POSCAR_IS_sort",
-                       fni_poscar=f"{Path(RootDir).parent}/tests/POSCAR_FS_sort", images=4)
-        task.generate(method="idpp", vdw=True, sol=True)
+        task = NEBTask(ini_poscar=f'{Path(RootDir).parent}/tests/POSCAR_IS_sort',
+                       fni_poscar=f'{Path(RootDir).parent}/tests/POSCAR_FS_sort', images=4)
+        task.generate(method='idpp', vdw=True, sol=True)
 
         for dir in NEBTask._search_neb_dir():
             shutil.rmtree(dir)
