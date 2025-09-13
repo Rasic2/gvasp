@@ -1,0 +1,82 @@
+name: "Auto Label by Title"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited # 注意：增加了 edited 类型，标题编辑时也会触发
+      - synchronize
+
+jobs:
+  label-by-title:
+    runs-on: ubuntu-latest
+    # 添加权限配置
+    permissions:
+      issues: write # 或者 contents: write
+      pull-requests: write
+    steps:
+      - name: Label PR based on title keywords
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = context.payload.pull_request.title.toLowerCase();
+            const labelsToAdd = new Set(); // 使用 Set 避免重复添加
+
+            // 定义关键词与标签的映射
+            const keywordMap = {
+              'bug': 'bug',
+              'fix': 'bug',
+              'error': 'bug',
+              'feat': 'feature',
+              'feature': 'feature',
+              'improvement': 'enhancement',
+              'doc': 'documentation',
+              'readme': 'documentation',
+              'chore': 'chore',
+              'bump': 'dependencies',
+              'dependabot': 'dependencies',
+              'upgrade': 'dependencies',
+              'security': 'security',
+              'ci': 'ci'
+            };
+
+            // 提取标题的第一个单词（冒号前的部分）
+            const firstPart = title.split(':')[0].trim();
+            const words = firstPart.split(/\s+/); // 分割成单词数组
+
+            // 检查第一个单词或前缀是否匹配关键词
+            for (const word of words) {
+              const normalizedWord = word.toLowerCase().replace(/^[\W_]+|[\W_]+$/g, '');
+              
+              if (keywordMap.hasOwnProperty(normalizedWord)) {
+                labelsToAdd.add(keywordMap[normalizedWord]);
+                break; // 找到第一个匹配就停止
+              }
+            }
+
+            // 如果有匹配的标签，则先清除现有标签，再添加新标签
+            if (labelsToAdd.size > 0) {
+              const labelsArray = Array.from(labelsToAdd);
+              console.log(`Clearing existing labels and adding: ${labelsArray.join(', ')}`);
+
+              // 首先清除所有现有标签
+              try {
+                await github.rest.issues.removeAllLabels({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo
+                });
+                console.log('All existing labels removed');
+              } catch (error) {
+                console.log('Error removing labels:', error.message);
+              }
+
+              // 然后添加新的标签
+              await github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: labelsArray
+              });
+              console.log('New labels added successfully');
+            }
