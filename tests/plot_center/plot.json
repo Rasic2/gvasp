@@ -1,13 +1,41 @@
 {
-  "width":12,
-  "height": 4,
-  "fontsize": 10,
-  "xlim": [-10,5],
   "LORBIT": 10,
-  "dos_file": ["DOSCAR"],
-  "pos_file": ["CONTCAR"],
-  "data": {"0": [{"atoms":"41-80","orbitals": ["s"], "color": "#ed0345"},
-                 {"atoms":"41-80","orbitals": ["p"], "color": "#098760"},
-                 {"atoms":"41-80","orbitals": ["d"], "color": "#66ccff"}]}
+  "data": {
+    "0": [
+      {
+        "atoms": "41-80",
+        "color": "#ed0345",
+        "orbitals": [
+          "s"
+        ]
+      },
+      {
+        "atoms": "41-80",
+        "color": "#098760",
+        "orbitals": [
+          "p"
+        ]
+      },
+      {
+        "atoms": "41-80",
+        "color": "#66ccff",
+        "orbitals": [
+          "d"
+        ]
+      }
+    ]
+  },
+  "dos_file": [
+    "DOSCAR"
+  ],
+  "fontsize": 10,
+  "height": 4,
+  "pos_file": [
+    "CONTCAR"
+  ],
+  "width": 12,
+  "xlim": [
+    -10,
+    5
+  ]
 }
-
