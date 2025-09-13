@@ -11,6 +11,12 @@ repos:
       - id: check-illegal-windows-names
       - id: check-json
       - id: check-shebang-scripts-are-executable
+        exclude: |
+          gvasp/slurm.submit
+          tests/module/gzy.vtst.conTS.submit
+          tests/submit.script
+          auto_conda.sh
+          gvasp/gvasp-bash-completion.sh
       - id: pretty-format-json
       - id: check-merge-conflict
       - id: check-symlinks
