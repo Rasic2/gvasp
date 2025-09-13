@@ -2,6 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/Rasic2/gvasp)
 [![Documentation Status](https://readthedocs.org/projects/qvasp/badge/?version=latest)](https://qvasp.readthedocs.io/en/latest/?badge=latest)
+![PyPI - Version](https://img.shields.io/pypi/v/gvasp)
 [![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/version.svg)](https://anaconda.org/hui_zhou/gvasp)
 [![Anaconda-Server Badge](https://anaconda.org/hui_zhou/gvasp/badges/platforms.svg)](https://anaconda.org/hui_zhou/gvasp)
 ![Codecov](https://img.shields.io/codecov/c/github/Rasic2/gvasp)
