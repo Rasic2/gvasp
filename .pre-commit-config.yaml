@@ -44,6 +44,14 @@ repos:
       - id: forbid-submodules
       - id: mixed-line-ending
       - id: name-tests-test
+        args: [ --pytest-test-first ]
+        exclude: |
+          (?x)^(
+            tests/modify_config.py|
+            tests/add_font.py|
+            tests/plot_center/dos_plot.py|
+            tests/utils.py
+          )$
       - id: no-commit-to-branch
       - id: requirements-txt-fixer
       - id: sort-simple-yaml
