@@ -13,10 +13,10 @@ repos:
       - id: check-shebang-scripts-are-executable
         exclude: |
           (?x)^(
-            gvasp/slurm.submit
-            tests/module/gzy.vtst.conTS.submit
-            tests/submit.script
-            auto_conda.sh
+            gvasp/slurm.submit|
+            tests/module/gzy.vtst.conTS.submit|
+            tests/submit.script|
+            auto_conda.sh|
             gvasp/gvasp-bash-completion.sh
           )$
       - id: pretty-format-json
