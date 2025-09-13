@@ -36,4 +36,3 @@ The only parameter in plot.json is :code:`height`, certainly it is optional.
 
 .. note::
     **-\-show** or **-\-save** should specify one, and only need to one, otherwise nothing happen.
-

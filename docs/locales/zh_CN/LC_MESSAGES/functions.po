@@ -1338,4 +1338,3 @@ msgstr "之后，该作业会先从结构优化任务开始，结束后再进行
 #: ../../source/functions/submit/wf.rst:40
 msgid "Sequential task also support the :ref:`low <low>` option."
 msgstr "连续任务也支持开启 :ref:`low <low>` 选项。"
-

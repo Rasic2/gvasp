@@ -142,4 +142,3 @@ The plot.json is like this:
 Where the legends are described by a tri-tuple (x_position, y_position, label).
 
 Here, you may known how to plot the PES with :program:`GVasp`, of course, it can do better in the future.
-

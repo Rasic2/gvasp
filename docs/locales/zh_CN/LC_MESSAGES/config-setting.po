@@ -143,4 +143,3 @@ msgid ""
 "the :program:`GVasp` will select the directory which is nearest to the "
 "work directory."
 msgstr "如果你在上述目录中同时存在两个或更多的同种模板文件，:program:`GVasp` 会选择离工作目录最近的模板作为最终的输入参考。"
-

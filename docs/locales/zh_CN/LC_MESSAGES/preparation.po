@@ -57,4 +57,3 @@ msgstr "可以修改 :file:`~/.pip/pip.conf` 文件来更换pip的镜像源，�
 #~ " to install `conda <https://anaconda.org/>`_ "
 #~ "before."
 #~ msgstr ""
-

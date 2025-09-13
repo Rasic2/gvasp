@@ -20,4 +20,3 @@ msgstr ""
 #: ../../source/gvasp.lib.rst:2
 msgid "gvasp.lib package"
 msgstr ""
-
