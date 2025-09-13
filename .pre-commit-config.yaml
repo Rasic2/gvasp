@@ -20,7 +20,7 @@ repos:
             gvasp/gvasp-bash-completion.sh
           )$
       - id: pretty-format-json
-        args: [--autofix]
+        args: [ --autofix ]
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
@@ -34,13 +34,12 @@ repos:
       - id: debug-statements
       - id: destroyed-symlinks
       - id: detect-aws-credentials
-        args: [--allow-missing-credentials]
+        args: [ --allow-missing-credentials ]
       - id: detect-private-key
       - id: double-quote-string-fixer
       - id: end-of-file-fixer
       - id: file-contents-sorter
       - id: fix-byte-order-marker
-      - id: fix-encoding-pragma
       - id: forbid-new-submodules
       - id: forbid-submodules
       - id: mixed-line-ending
@@ -49,3 +48,7 @@ repos:
       - id: requirements-txt-fixer
       - id: sort-simple-yaml
       - id: trailing-whitespace
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.20.0
+    hooks:
+      - id: pyupgrade
