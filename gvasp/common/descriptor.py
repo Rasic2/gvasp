@@ -1,14 +1,14 @@
 from typing import List
 
 
-class Descriptor(object):
+class Descriptor:
     """
     Base Descriptor, <get, set, del> method of each param is unlimited
     """
 
     def __new__(cls, *args, **kwargs):
         if cls is Descriptor:
-            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
+            raise TypeError(f'<{cls.__name__} class> may not be instantiated')
         return super().__new__(cls)
 
     def __init__(self, name):
@@ -35,7 +35,7 @@ class TypeDescriptor(Descriptor):
     """
 
     def __init__(self, name, type):
-        super(TypeDescriptor, self).__init__(name=name)
+        super().__init__(name=name)
         self.type = type
 
     def __set__(self, instance, value):
@@ -50,7 +50,7 @@ class TypeListDescriptor(Descriptor):
     """
 
     def __init__(self, name, type):
-        super(TypeListDescriptor, self).__init__(name=name)
+        super().__init__(name=name)
         self.type = type
 
     def __set__(self, instance, values: List):
@@ -66,7 +66,7 @@ class ValueDescriptor(Descriptor):
     """
 
     def __init__(self, name, value):
-        super(ValueDescriptor, self).__init__(name=name)
+        super().__init__(name=name)
         self.value = value
 
     def __set__(self, instance, value):

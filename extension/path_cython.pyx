@@ -5,9 +5,9 @@ cimport cython
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def _get_funcs_and_forces(cnp.ndarray[double, ndim=3] x, 
-                          cnp.ndarray[double, ndim=4] trans, 
-                          cnp.ndarray[double, ndim=3] weights, 
+def _get_funcs_and_forces(cnp.ndarray[double, ndim=3] x,
+                          cnp.ndarray[double, ndim=4] trans,
+                          cnp.ndarray[double, ndim=3] weights,
                           cnp.ndarray[double, ndim=3] target_dists):
 
     cdef:
@@ -16,7 +16,7 @@ def _get_funcs_and_forces(cnp.ndarray[double, ndim=3] x,
         list funcs=[], funcs_prime=[]
 
         int ni=0;
-        int i=0; 
+        int i=0;
 
     for ni from 0<=ni<images:
         vec = [x[ni + 1, i] - x[ni + 1] - trans[ni, i] for i in range(atoms_num)]

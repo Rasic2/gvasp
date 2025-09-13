@@ -8,7 +8,7 @@ from gvasp.common.setting import RootDir
 from gvasp.common.task import OptTask, XDATMovie, NormalTask, ConTSTask, ChargeTask, WorkFuncTask, DOSTask, NEBTask
 from tests.utils import change_dir
 
-logger = logging.getLogger("TestLogger")
+logger = logging.getLogger('TestLogger')
 
 
 @pytest.fixture()
@@ -16,26 +16,26 @@ def change_test_dir(request, monkeypatch):
     monkeypatch.chdir(request.fspath.dirname)
 
 
-class TestXDATMovie(object):
+class TestXDATMovie:
     def test_new(self):
         with pytest.raises(TypeError):
             XDATMovie()
 
 
-class TestNormalTask(object):
+class TestNormalTask:
     def test_new(self):
         with pytest.raises(TypeError):
             NormalTask()
 
 
-class TestOptTask(object):
+class TestOptTask:
 
-    @change_dir("continuous")
+    @change_dir('continuous')
     def test_continuous(self, change_test_dir):
         task = OptTask()
         task.generate(continuous=True)
 
-    @change_dir("continuous")
+    @change_dir('continuous')
     def test_continuous_hse(self, change_test_dir):
         task = OptTask()
         task.generate(continuous=True, hse=True)
@@ -49,41 +49,41 @@ class TestOptTask(object):
         task.generate(static=True)
 
 
-class TestConTSTask(object):
+class TestConTSTask:
 
-    @change_dir("continuous")
+    @change_dir('continuous')
     def test_continuous(self, change_test_dir):
         task = ConTSTask()
         task.generate(continuous=True)
 
 
-class TestChargeTask(object):
+class TestChargeTask:
 
-    @change_dir("continuous")
+    @change_dir('continuous')
     def test_analysis(self, change_test_dir):
         task = ChargeTask()
         task.generate(continuous=True, analysis=True)
 
 
-class TestWorkFuncTask(object):
+class TestWorkFuncTask:
 
-    @change_dir("continuous")
+    @change_dir('continuous')
     def test_continuous(self, change_test_dir):
         task = WorkFuncTask()
         task.generate(continuous=True)
 
 
-class TestDOSTask(object):
+class TestDOSTask:
 
-    @change_dir("continuous")
+    @change_dir('continuous')
     def test_continuous(self, change_test_dir):
         task = DOSTask()
         task.generate(continuous=True)
 
 
-class TestNEBTask(object):
+class TestNEBTask:
 
-    @change_dir("neb")
+    @change_dir('neb')
     def test_monitor(self):
         NEBTask.monitor()
 
@@ -96,7 +96,7 @@ def teardown_module():
         shutil.rmtree(f"{Path(RootDir).parent / 'tests' / 'continuous' / 'chg_cal'}")
         shutil.rmtree(f"{Path(RootDir).parent / 'tests' / 'continuous' / 'dos_cal'}")
         shutil.rmtree(f"{Path(RootDir).parent / 'tests' / 'continuous' / 'workfunc'}")
-        logger.info(f"Clean the Directory Success!")
+        logger.info(f'Clean the Directory Success!')
     except FileNotFoundError:
         pass
 

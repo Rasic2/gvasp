@@ -52,4 +52,3 @@ msgid ""
 "If you run the :code:`gvasp -v` and print version information, then you "
 "install the :program:`GVasp` successful ~~"
 msgstr "如果你运行 :code:`gvasp -v` 并且打印出如下所示的版本信息，表示你已经成功安装了 :program:`GVasp` 。"
-

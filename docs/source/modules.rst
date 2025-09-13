@@ -17,5 +17,3 @@ Submodules
    :maxdepth: 4
 
    gvasp.main
-
-

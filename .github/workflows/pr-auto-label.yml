@@ -47,7 +47,7 @@ jobs:
             // 检查第一个单词或前缀是否匹配关键词
             for (const word of words) {
               const normalizedWord = word.toLowerCase().replace(/^[\W_]+|[\W_]+$/g, '');
-              
+
               if (keywordMap.hasOwnProperty(normalizedWord)) {
                 labelsToAdd.add(keywordMap[normalizedWord]);
                 break; // 找到第一个匹配就停止

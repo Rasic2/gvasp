@@ -27,5 +27,5 @@ def load(list strings, int NDOS, int ISPIN, double E_Fermi):
 				atom_list.append(DATA_list)
 				DATA_list=[]
 		index+=1
-		
+
 	return energy_list, Total_up, Total_down, atom_list, len(var)

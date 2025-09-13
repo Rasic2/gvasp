@@ -11,29 +11,29 @@ from gvasp.common.structure import Structure
 from gvasp.lib.path_cython import _get_funcs_and_forces as _get_funcs_and_forces_cython
 
 
-class BasePath(object):
+class BasePath:
 
     def __new__(cls, *args, **kwargs):
         if cls is BasePath:
-            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
-        return super(BasePath, cls).__new__(cls)
+            raise TypeError(f'<{cls.__name__} class> may not be instantiated')
+        return super().__new__(cls)
 
     def __init__(self):
         self.path = None
 
     def write(self):
         if not isinstance(self.path, list):
-            raise PathNotExistError("structure path is not exist, please generate it first")
+            raise PathNotExistError('structure path is not exist, please generate it first')
 
         for index, structure in enumerate(self.path):
-            image_dir = f"{index:02d}"
+            image_dir = f'{index:02d}'
             Path(image_dir).mkdir(exist_ok=True)
-            structure.write_POSCAR(f"{image_dir}/POSCAR")
+            structure.write_POSCAR(f'{image_dir}/POSCAR')
 
 
 class LinearPath(BasePath):
     def __init__(self, ini_poscar, fni_poscar, images):
-        super(LinearPath, self).__init__()
+        super().__init__()
         self.ini_structure = Structure.from_POSCAR(ini_poscar)
         self.fni_structure = Structure.from_POSCAR(fni_poscar)
         self.images = images
@@ -61,7 +61,7 @@ class IdppPath(BasePath):
         Args:
             structures (list): Initial guess of the NEB path (including initial and final end-point structures).
         """
-        super(IdppPath, self).__init__()
+        super().__init__()
 
         lattice = structures[0].lattice
         atoms_num = structures[0].atoms.count
@@ -162,7 +162,7 @@ class IdppPath(BasePath):
 
             old_funcs = funcs
         else:
-            warnings.warn("Maximum iteration number is reached without convergence!", UserWarning)
+            warnings.warn('Maximum iteration number is reached without convergence!', UserWarning)
 
         for ni in range(self.images):
             # generate the improved image structure

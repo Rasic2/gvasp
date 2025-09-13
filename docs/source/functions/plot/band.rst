@@ -37,4 +37,3 @@ For this task, the :file:`plot.json` is like this
     }
 
 The attention of :code:`--show`, :code:`--save` and :code:`--json` can be seen in :ref:`optimization <show_plot>` part.
-

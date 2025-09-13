@@ -1,8 +1,4 @@
 {
-  "dos_file": "DOSCAR_dos",
-  "pos_file": [
-    "CONTCAR_dos"
-  ],
   "data": {
     "0": [
       {
@@ -13,5 +9,9 @@
         "color": "#000000"
       }
     ]
-  }
+  },
+  "dos_file": "DOSCAR_dos",
+  "pos_file": [
+    "CONTCAR_dos"
+  ]
 }

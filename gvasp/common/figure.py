@@ -10,7 +10,7 @@ from gvasp.common.descriptor import ValueDescriptor
 logger = logging.getLogger(__name__)
 
 
-def plot_wrapper(type="default"):
+def plot_wrapper(type='default'):
     def decorator(func):
         @wraps(func)
         def wrapper(self, *args, **kargs):
@@ -26,13 +26,13 @@ def plot_wrapper(type="default"):
             ax.spines['top'].set_linewidth(self.bwidth)
             ax.spines['right'].set_linewidth(self.bwidth)
             try:
-                plt.ticklabel_format(useOffset=False, style="plain")
+                plt.ticklabel_format(useOffset=False, style='plain')
             except:
                 pass
             plt.xlim() if self.xlim is None else plt.xlim(self.xlim)
             plt.ylim() if self.ylim is None else plt.ylim(self.ylim)
             self.fontsize = self.fontsize * self.fontsize / 20 * max(min(self.width, self.height), 6) / 6
-            if type == "PlotBand":
+            if type == 'PlotBand':
                 if len(self.xticks) != len(self.pticks):
                     logger.warning(f"Specified High SYMM Points aren't included, use default...")
                 else:
@@ -41,8 +41,8 @@ def plot_wrapper(type="default"):
                 plt.xticks(ticks=None if self.xticks is None else range(1, 2 * len(self.xticks), 2), labels=self.xticks,
                            fontsize=self.fontsize)
             plt.yticks(fontsize=self.fontsize)
-            plt.xlabel(self.xlabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
-            plt.ylabel(self.ylabel, fontdict={"weight": self.weight, "size": self.fontsize + 1})
+            plt.xlabel(self.xlabel, fontdict={'weight': self.weight, 'size': self.fontsize + 1})
+            plt.ylabel(self.ylabel, fontdict={'weight': self.weight, 'size': self.fontsize + 1})
 
             legends = plt.gca().axes.get_legend_handles_labels()
             if len(legends[0]):
@@ -59,21 +59,21 @@ def plot_wrapper(type="default"):
     return decorator
 
 
-class Figure(object):
+class Figure:
     """
     Plot-type class' parent, unify the figure format
     """
-    lloc = ValueDescriptor("lloc",
+    lloc = ValueDescriptor('lloc',
                            ['best', 'upper right', 'upper left', 'lower left', 'lower right', 'right', 'center left',
                             'center right', 'lower center', 'upper center', 'center'])
 
     def __new__(cls, *args, **kwargs):
         if cls is Figure:
-            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
-        return super(Figure, cls).__new__(cls)
+            raise TypeError(f'<{cls.__name__} class> may not be instantiated')
+        return super().__new__(cls)
 
     def __init__(self, width=8, height=6, family='Arial', weight='regular', fontsize=20, title='', xlim=None, ylim=None,
-                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, twidth=2, tlength=5, lloc="best",
+                 xticks=None, xlabel=None, ylabel=None, bwidth=1, linewidth=2, twidth=2, tlength=5, lloc='best',
                  **kargs):
         self.width = width
         self.height = height
@@ -100,17 +100,17 @@ class Figure(object):
         plt.show()
 
     @staticmethod
-    def save(name="figure.svg"):
-        plt.savefig(name, bbox_inches="tight")
+    def save(name='figure.svg'):
+        plt.savefig(name, bbox_inches='tight')
 
 
-class LineBase(object):
+class LineBase:
     """Line-Base-class, cant' instantiated"""
 
     def __new__(cls, *args, **kwargs):
         if cls is LineBase:
-            raise TypeError(f"<{cls.__name__} class> may not be instantiated")
-        return super(LineBase, cls).__new__(cls)
+            raise TypeError(f'<{cls.__name__} class> may not be instantiated')
+        return super().__new__(cls)
 
     def __init__(self, x, y, color, linewidth='', linestyle='-'):
         self.x = x
@@ -144,7 +144,7 @@ class DashLine(LineBase):
 
 class PchipLine(LineBase):
     def __init__(self, linewidth=1, num=100, **kargs):
-        super(PchipLine, self).__init__(linewidth=linewidth, **kargs)
+        super().__init__(linewidth=linewidth, **kargs)
         self.x_ori = self.x
         self.y_ori = self.y
         self.num = num
@@ -158,7 +158,7 @@ class PchipLine(LineBase):
         return x_new, y_new
 
 
-class Text(object):
+class Text:
     """
     Add text on the figure, for PlotPES.
 
@@ -242,7 +242,7 @@ class Text(object):
                     self.x_ave = sum(self.x) / 2
                     self.y_ave = sum(self.y) / 2 + (top_m - bottom_m) / 100 * slide_vertical * (-1) ** slide_vertical
                     limit_range = (self.x_ave + right_m < self.x[1] and self.x_ave + left_m > self.x[0])
-                    logger.debug(f"{self.x}: Adjust the intercept {slide_vertical - 1} times")
+                    logger.debug(f'{self.x}: Adjust the intercept {slide_vertical - 1} times')
 
     def tailor_text(self):
         self.text.set_position((self.x_ave, self.y_ave))

@@ -9,14 +9,14 @@ from gvasp.common.setting import RootDir
 
 def change_dir(func):
     def wrapper(self, *args, **kargs):
-        os.chdir(f"{Path(RootDir).parent}/tests/entropy")
+        os.chdir(f'{Path(RootDir).parent}/tests/entropy')
         func(self, *args, **kargs)
-        os.chdir("../")
+        os.chdir('../')
 
     return wrapper
 
 
-class TestThermo(object):
+class TestThermo:
 
     @change_dir
     def test_gas(self):

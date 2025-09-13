@@ -28,4 +28,3 @@ msgstr "模块"
 #: ../../source/index.rst:2
 msgid "Welcome to GVasp's documentation!"
 msgstr "欢迎来到 GVasp 的中文文档！"
-

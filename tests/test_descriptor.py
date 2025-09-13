@@ -11,13 +11,13 @@ class Parameters:
 class TestDescriptor:
     def test(self):
         with pytest.raises(TypeError):
-            descriptor = Descriptor(name="descriptor")
+            descriptor = Descriptor(name='descriptor')
 
 
 class TestTypeDescriptor:
     def test(self):
         parameters = Parameters()
-        parameters.SYSTEM = "Test"
+        parameters.SYSTEM = 'Test'
 
         result = Parameters.SYSTEM.__get__(None, TypeDescriptor)
 

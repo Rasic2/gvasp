@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J H2 
+#SBATCH -J H2
 #SBATCH -p standard
 #SBATCH -N 1
 #SBATCH -c 32
@@ -15,4 +15,3 @@ mpirun -np $SLURM_JOB_CPUS_PER_NODE $EXEC > print-out 2>&1
 
 echo `date` >> ~/finish
 echo `pwd` >> ~/finish
-
