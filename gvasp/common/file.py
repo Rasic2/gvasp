@@ -596,9 +596,15 @@ class XSDFile(MetaFile):
                     name = atom.attrib.get('Name', atom.attrib['Components'])
                     restricted_property = atom.attrib.get('RestrictedProperties', 'T T T')
                     tf = restricted_property.replace('FractionalXYZ', 'F F F').split()
+                    xyz = list(map(float, atom.attrib.get('XYZ', '0,0,0').split(',')))
 
-                identify_coord = [float(value) for index, value in enumerate(identify.attrib['Constraint'].split(','))
-                                  if (index + 1) % 4 == 0]
+                elements = list(map(float, identify.attrib['Element'].split(',')))
+
+                # 使用列表推导式
+                rotate_matrix = [elements[i:i + 3] for i in [0, 4, 8]]
+                translate_matrix = [elements[i] for i in [3, 7, 11]]
+
+                identify_coord = np.dot(np.array(rotate_matrix), np.array(xyz)) + np.array(translate_matrix)
                 atoms.append((formula, identify_coord, formal_spin, name, tf))
             identity_atoms = remove_mapping(atoms)
             Components = [atom[0] for atom in identity_atoms]

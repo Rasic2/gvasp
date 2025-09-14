@@ -74,9 +74,17 @@ class TestSubmitFile:
 
 
 class TestXSDFile:
+    def test_parse_R_3C(self):
+        V2O3_P1_xsd_file = XSDFile(name=Path(RootDir).parent / 'tests' / 'xsd_files' / 'V2O3' / 'V2O3-P1.xsd')
+        V2O3_xsd_file = XSDFile(name=Path(RootDir).parent / 'tests' / 'xsd_files' / 'V2O3' / 'V2O3.xsd')
 
-    def test_parse(self):
-        XSDFile(name=Path(RootDir).parent / 'tests' / 'P1xsd' / 'Fe' / 'Fe.xsd')
+        assert V2O3_P1_xsd_file.structure == V2O3_xsd_file.structure
+
+    def test_parse_IM_3M(self):
+        Fe_P1_xsd_file = XSDFile(name=Path(RootDir).parent / 'tests' / 'xsd_files' / 'Fe' / 'Fe.xsd')
+        Fe_xsd_file = XSDFile(name=Path(RootDir).parent / 'tests' / 'test_sym' / 'Fe.xsd')
+
+        assert Fe_P1_xsd_file.structure == Fe_xsd_file.structure
 
     def test_write_relax(self):
         XSDFile.write(contcar=Path(RootDir).parent / 'tests' / 'CONTCAR',
