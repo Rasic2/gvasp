@@ -596,7 +596,7 @@ class XSDFile(MetaFile):
                     name = atom.attrib.get('Name', atom.attrib['Components'])
                     restricted_property = atom.attrib.get('RestrictedProperties', 'T T T')
                     tf = restricted_property.replace('FractionalXYZ', 'F F F').split()
-                    xyz = list(map(float, atom.attrib['XYZ'].split(",")))
+                    xyz = list(map(float, atom.attrib.get('XYZ', '0,0,0').split(",")))
 
                 elements = list(map(float, identify.attrib['Element'].split(',')))
 
