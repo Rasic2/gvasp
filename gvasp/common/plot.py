@@ -434,7 +434,7 @@ class PESData:
         real_index = [index for index, value in enumerate(self.data) if value is not None]
         dash_x_1 = [2 * index + 1.25 for index in real_index[:-1]]
         dash_x_2 = [2 * index + 0.75 for index in real_index[1:]]
-        dash_x = [item for item in zip(dash_x_1, dash_x_2)]
+        dash_x = [*zip(dash_x_1, dash_x_2)]
         dash_y = [[self.data[int((index[0] - 1.25) / 2)], self.data[int((index[1] - 2.75) / 2 + 1)]] for index in
                   dash_x]
         return solid_x, solid_y, dash_x, dash_y

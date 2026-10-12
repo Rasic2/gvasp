@@ -93,7 +93,7 @@ class BaseTask(metaclass=abc.ABCMeta):
             else:
                 yield path
 
-        return [path for path in get_parent(WorkDir.absolute())]
+        return [*get_parent(WorkDir.absolute())]
 
     @staticmethod
     def _search_suffix(suffix):
